@@ -1,0 +1,56 @@
+node_modules
+dist
+.env
+.env.*
+*.pem
+*.key
+*credentials*
+*secret*
+.DS_Store
+*.local
+
+# 用户放入供阅读的版权书籍 / 教程，不入库
+*.docx
+*.pdf
+
+# 介绍 / 演示用 PPT，保密不外泄
+*.pptx
+
+# 后端数据底座 / 私有资料库：二进制链接库、城市数据与坐标元数据不入库（私有）
+resource-library/audio.db
+resource-library/cities/
+resource-library/city-meta.json
+
+# 照片库（高清 full + 缩略 thumb，私有，不入库）
+resource-library/photos/
+resource-library/world-photos.json
+
+# 本地生成 / 准备用的临时产物，不入库
+outputs/
+
+# 第三方研究项目（hermes / openhanako / claude-desktop-buddy / langchain 等，各有上游来源，不进本仓库备份）
+hermes-agent-main/
+openhanako-main/
+Frost Buddy/
+docx_render_qa/
+langchain-master/
+*.zip
+
+# 原始照片源（已处理上 OSS + resource-library，原图不入库）
+照片替换/
+
+# 开发工具配置 / 优化日志：含服务器信息与开发过程记录，不进公开仓库
+.claude/
+OPTIMIZATION-LOG.md
+
+# Injective 集成：clone 的第三方研究库（@injective/agent-sdk 等，照 INJECTIVE-INTEGRATION/README 从源码 build，不入库）
+INJECTIVE-INTEGRATION/_research/repos/
+
+# .env.example 是配置模板（不含真值）——要进仓库指引复现，覆盖上面 .env.* 的排除
+!.env.example
+
+# Demo 视频与处理产物（大文件，不进仓库；录制成品另行分发）
+video_processing_preview/
+视频最终版/
+*.mp4
+*.mov

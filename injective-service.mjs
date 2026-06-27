@@ -1,0 +1,180 @@
+// ════════════════════════════════════════════════════════════════════════════
+// Injective 链上 agent 身份服务（server 端 · ESM · Injective 集成 P0-2/4/5）
+// ────────────────────────────────────────────────────────────────────────────
+// 路由 /api/injective?tool=ping | list-agents | get-status | register
+//  · SDK(@injective/agent-sdk) 用 dynamic import 容错：装好就走真链，没装好返回 stub/error 不崩。
+//  · 隐私：私钥只在本服务端从 env 读，绝不进前端 bundle；register 的脱敏 Taste Passport 由前端生成后 POST 进来。
+//  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
+// ════════════════════════════════════════════════════════════════════════════
+
+let _sdk = null, _sdkTried = false
+async function getSDK() {
+  if (_sdkTried) return _sdk
+  _sdkTried = true
+  try { _sdk = await import('@injective/agent-sdk') }
+  catch { _sdk = null }   // 未装好(本地 build + file: 依赖未就绪)时静默降级
+  return _sdk
+}
+
+let _reader = null
+async function getReader(network) {
+  const sdk = await getSDK(); if (!sdk) return null
+  try { if (!_reader) _reader = new sdk.AgentReadClient({ network }) } catch { return null }
+  return _reader
+}
+
+function json(res, obj, code = 200) {
+  res.writeHead(code, { 'content-type': 'application/json; charset=utf-8' })
+  res.end(JSON.stringify(obj, (_k, v) => (typeof v === 'bigint' ? v.toString() : v)))
+}
+function readBody(req) {
+  return new Promise((resolve) => {
+    let d = ''
+    req.on('data', (c) => { d += c; if (d.length > 2e6) req.destroy() })
+    req.on('end', () => { try { resolve(d ? JSON.parse(d) : {}) } catch { resolve({}) } })
+    req.on('error', () => resolve({}))
+  })
+}
+
+// 解码 data:application/json;base64,… 的内联 Agent Card（口味名片内联上链时用）→ 对象 / null
+function decodeDataCard(uri) {
+  const P = 'data:application/json;base64,'
+  if (typeof uri !== 'string' || !uri.startsWith(P)) return null
+  try { return JSON.parse(Buffer.from(uri.slice(P.length), 'base64').toString('utf8')) } catch { return null }
+}
+
+/** /api/injective 分发。cfg = { privateKey, network, pinataJwt, cardUrl }（来自 server.mjs 的 env）。 */
+export async function handleInjective(req, res, url, cfg = {}) {
+  const tool = url.searchParams.get('tool') || ''
+  const network = cfg.network || 'testnet'
+  try {
+    // —— 只读：探活（无需私钥）——
+    if (tool === 'ping') {
+      const reader = await getReader(network)
+      if (!reader) return json(res, { reachable: false, sdk: false, hint: 'SDK 未就绪（本地 build + file: 依赖）' })
+      const ok = await reader.ping().catch(() => false)
+      return json(res, { reachable: !!ok, sdk: true, network })
+    }
+
+    // —— 只读：列出链上真实 agent（广场发现，无需私钥）——
+    // 默认快查：并行 getStatus 最近 limit 个 agentId（比扫全链 Transfer 事件快一个量级，demo agent 在高位 id）。
+    // 传 full=1 才走 discoverAgentIds 全量发现（慢，扫全链）。
+    if (tool === 'list-agents') {
+      const reader = await getReader(network)
+      if (!reader) return json(res, { agents: [], total: 0, sdk: false, hint: 'SDK 未就绪，前端请回落示意邻居' })
+      const offset = Math.max(0, Number(url.searchParams.get('offset') || 0))
+      const limit = Math.min(50, Math.max(1, Number(url.searchParams.get('limit') || 20)))
+      const enrich = url.searchParams.get('enrich') !== '0'
+      const full = url.searchParams.get('full') === '1'
+      let agents = [], total = 0
+      if (full) {
+        try {
+          const page = await Promise.race([
+            reader.listAgents({ offset, limit, enrich }),
+            new Promise((_, rej) => setTimeout(() => rej(new Error('list_timeout')), 12000)),
+          ])
+          agents = page.agents || []; total = page.total ?? agents.length
+        } catch { /* 落到下方快查 */ }
+      }
+      if (!agents.length) {
+        // 快查：并行 getStatus 最近 limit 个 agentId（top 向下；不存在的 id 返回 null 滤掉）
+        const top = Number(url.searchParams.get('top') || 47)
+        const ids = []
+        for (let id = top - offset; id >= Math.max(1, top - offset - limit + 1); id--) ids.push(id)
+        const settled = await Promise.all(ids.map((id) => Promise.race([
+          reader.getStatus(BigInt(id)),
+          new Promise((rs) => setTimeout(() => rs(null), 2500)), // 不存在/慢的 id 2.5s 超时回 null，不拖累整体
+        ]).catch(() => null)))
+        agents = settled.filter(Boolean)
+        total = agents.length
+      }
+      // 服务端解码 data: URI card → 前端直接拿到口味标签（不依赖 SDK fetchCard 对 data: 的支持）
+      for (const a of agents) { if (a && !a.card && a.tokenUri) { const c = decodeDataCard(a.tokenUri); if (c) a.card = c } }
+      return json(res, { agents, total, offset, limit, sdk: true })
+    }
+
+    // —— 只读：查单个 agent 状态 ——
+    if (tool === 'get-status') {
+      const reader = await getReader(network); if (!reader) return json(res, { error: 'sdk_unavailable' })
+      const id = url.searchParams.get('agentId'); if (!id) return json(res, { error: 'no_agentId' })
+      const st = await reader.getStatus(BigInt(id))
+      return json(res, st)
+    }
+
+    // —— 只读：查 agent 声誉分（P1-3 读部分，无需私钥；失败回落零分不崩）——
+    if (tool === 'get-reputation') {
+      const reader = await getReader(network); if (!reader) return json(res, { error: 'sdk_unavailable' })
+      const id = url.searchParams.get('agentId'); if (!id) return json(res, { error: 'no_agentId' })
+      const rep = await reader.getReputation(BigInt(id)).catch(() => ({ score: 0, count: 0, clients: [] }))
+      return json(res, rep)
+    }
+
+    // —— 写：注册 Frost 链上身份（需私钥；无私钥/未显式确认时强制 dryRun 不上链）——
+    if (tool === 'register' && req.method === 'POST') {
+      const sdk = await getSDK(); if (!sdk) return json(res, { error: 'sdk_unavailable' })
+      const body = await readBody(req)
+      const passport = body.passport || {}
+      const pk = cfg.privateKey || ''
+      // 无私钥 → 必 dryRun；有私钥 → 仅当 body.confirm===true 才真上链，否则也 dryRun（Boundary: suggest-then-confirm）
+      const dryRun = !pk || body.confirm !== true
+      if (!pk && body.confirm === true) return json(res, { error: 'no_private_key', hint: '需在 server .env 配 INJ_PRIVATE_KEY（仅 testnet）' })
+      // 名片来源三级：Pinata(真上 IPFS) > 自托管 cardUrl > data: URI 内联（口味自带上链、无需外部托管，demo 默认）
+      const regName = String(body.name || 'PocketEarth-FROST').slice(0, 100)
+      const regDesc = String(passport.description || body.description || 'Pocket Earth 探索 agent 的链上身份').slice(0, 500)
+      const regTags = Array.isArray(passport.topTags) ? passport.topTags.slice(0, 10) : []
+      let storage, inlineUri
+      if (cfg.pinataJwt) storage = new sdk.PinataStorage({ jwt: cfg.pinataJwt })
+      else if (cfg.cardUrl && body.useCardUrl) storage = new sdk.CustomUrlStorage(cfg.cardUrl)
+      else {
+        const card = { type: 'https://eips.ethereum.org/EIPS/eip-8004#registration-v1', name: regName, description: regDesc, tags: regTags, metadata: { chain: 'injective', builderCode: 'pocket-earth' } }
+        inlineUri = 'data:application/json;base64,' + Buffer.from(JSON.stringify(card)).toString('base64')
+      }
+      const client = new sdk.AgentClient({ privateKey: pk || undefined, network, storage })
+      const result = await client.register({
+        name: regName,
+        type: 'other',
+        builderCode: 'pocket-earth',
+        wallet: client.address,                 // SDK 仅支持自签绑定：wallet 必须 = 签名者地址
+        description: regDesc,
+        tags: regTags,
+        services: Array.isArray(body.services) ? body.services : [],
+        x402: false,
+        ...(inlineUri ? { uri: inlineUri } : {}),
+        dryRun,
+      })
+      return json(res, { ok: true, dryRun, address: client.address, ...result })
+    }
+
+    // —— 写：社交握手（P1-2）。需私钥 + 已部署 SocialHandshake 合约地址 + confirm 才真上链，否则 dryRun 返回将写内容。——
+    if (tool === 'handshake' && req.method === 'POST') {
+      const body = await readBody(req)
+      const { agentA, agentB, score = 0, confirm } = body
+      const profileHashA = body.profileHashA || '0x' + '0'.repeat(64)
+      const profileHashB = body.profileHashB || '0x' + '0'.repeat(64)
+      if (agentA == null || agentB == null) return json(res, { error: 'need_agentA_agentB' })
+      const pk = cfg.privateKey || ''
+      const contract = cfg.handshakeContract || ''
+      const willEmit = { agentA: String(agentA), agentB: String(agentB), profileHashA, profileHashB, score: Number(score), timestamp: Math.floor(Date.now() / 1000) }
+      // Boundary：无私钥 / 未部署合约 / 未显式 confirm → 一律 dryRun，只回「将要写什么」
+      if (!(pk && contract && confirm === true)) {
+        return json(res, { ok: true, dryRun: true, willEmit, hint: !pk ? '需配 INJ_PRIVATE_KEY' : !contract ? '需先部署 SocialHandshake 合约并配 INJ_HANDSHAKE_CONTRACT' : '加 confirm:true 真上链' })
+      }
+      try {
+        const { createWalletClient, http, defineChain } = await import('viem')
+        const { privateKeyToAccount } = await import('viem/accounts')
+        const chain = defineChain({ id: network === 'mainnet' ? 1776 : 1439, name: 'Injective', nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 }, rpcUrls: { default: { http: [cfg.rpcUrl || 'https://testnet.sentry.chain.json-rpc.injective.network'] } } })
+        const account = privateKeyToAccount(pk.startsWith('0x') ? pk : '0x' + pk)
+        const wallet = createWalletClient({ account, chain, transport: http() })
+        const abi = [{ type: 'function', name: 'recordHandshake', stateMutability: 'nonpayable', inputs: [{ name: 'agentA', type: 'uint256' }, { name: 'agentB', type: 'uint256' }, { name: 'profileHashA', type: 'bytes32' }, { name: 'profileHashB', type: 'bytes32' }, { name: 'score', type: 'uint16' }], outputs: [] }]
+        const txHash = await wallet.writeContract({ address: contract, abi, functionName: 'recordHandshake', args: [BigInt(agentA), BigInt(agentB), profileHashA, profileHashB, Number(score)] })
+        return json(res, { ok: true, dryRun: false, txHash, scanUrl: `https://testnet.blockscout.injective.network/tx/${txHash}` })
+      } catch (e) {
+        return json(res, { error: String(e?.message || e) })
+      }
+    }
+
+    return json(res, { error: 'unknown_tool', tool })
+  } catch (e) {
+    return json(res, { error: String(e?.message || e) })
+  }
+}
