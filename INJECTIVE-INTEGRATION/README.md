@@ -11,7 +11,7 @@
 | 能力 | 文件 | 状态 |
 |---|---|---|
 | Taste Passport 脱敏名片（只导标签字符串、不含原文 / 热度） | `src/app/lib/injective/passport.ts` | ✅ |
-| `/api/injective` 服务（ping / list-agents / get-status / register / handshake） | `injective-service.mjs` | ✅ |
+| `/api/injective` 服务（ping / list-agents / get-status / get-wallet-timeline / register / handshake） | `injective-service.mjs` | ✅ |
 | server + dev 双挂路由 | `server.mjs` / `vite.config.ts` | ✅ |
 | **真连 Injective testnet**（ping `reachable:true`） | — | ✅ |
 | Agent Plaza 读链上真实 agent（空 / 失败回落示意不白屏） | `PublicPlazaPage.tsx` | ✅ |
@@ -58,6 +58,7 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{agents, total}`，可直接复验 Pocket Earth agent fleet | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
+| GET | `?tool=get-wallet-timeline` | `{events}`，直接从 Injective RPC 复验钱包交易时间线 | 否 |
 | POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
 | POST | `?tool=handshake` `{agentA, agentB, profileHashA, profileHashB, score, confirm}` | `{txHash}`（无私钥/合约 → dryRun + willEmit；真写必须带非零 `bytes32` 名片哈希） | 真写需 |
 
@@ -134,6 +135,6 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 - 真实握手交易：`0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6`，`verify-handshake.mjs` 会用公开脱敏 demo seed 重算两个 profileHash，并核验 calldata 与事件参数均为 `agentA 43`、`agentB 44`、`score 88`，以及两个非零 `bytes32` 名片哈希字段与事件时间戳。
 - Frost Buddy 硬件桥：`hardware/frost-buddy/` 把 `music-agent` 播放事件和 `public-plaza` 链上见闻转成 JSONL，供 Raspberry Pi / BLE / TTS 适配器消费；`raspi/frost_pi_skill_agent.py` 则把树莓派侧的松散语音请求路由到音乐命令或 `chain_dispatch` 公开事件；`verify-hardware-bridge.mjs` 会核验事件只包含公开字段，不包含私钥、密钥名、画像原文或 `bytes32` 名片哈希。
 
-评审复验证据包见 `CHAIN-EVIDENCE.md`。这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents&builderCode=pocket-earth` 处理器，确认产品后端能从 Injective testnet 按 builderCode 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation` 三个只读工具；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-chain-timeline.mjs` 会读取 RPC 交易/区块时间线；`verify-demo-links.mjs` 会确认 README、证据包与录屏脚本里的公开 Blockscout 证据页仍可打开；`verify-hardware-bridge.mjs` 会确认硬件播报桥只接收公开事件。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
+评审复验证据包见 `CHAIN-EVIDENCE.md`。这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents&builderCode=pocket-earth` 处理器，确认产品后端能从 Injective testnet 按 builderCode 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation`、`get-wallet-timeline` 四个只读工具；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-chain-timeline.mjs` 会读取 RPC 交易/区块时间线；`verify-demo-links.mjs` 会确认 README、证据包与录屏脚本里的公开 Blockscout 证据页仍可打开；`verify-hardware-bridge.mjs` 会确认硬件播报桥只接收公开事件。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
 
 详见 `PLAN.md`（完整方案 + Demo 5 幕 + Pitch 要点）、`RESEARCH.md`（agent-sdk API 精读）、`PROGRESS.md`（断点续作清单）。

@@ -1,7 +1,7 @@
 // ════════════════════════════════════════════════════════════════════════════
 // Injective 链上 agent 身份服务（server 端 · ESM · Injective 集成 P0-2/4/5）
 // ────────────────────────────────────────────────────────────────────────────
-// 路由 /api/injective?tool=ping | list-agents | get-status | register
+// 路由 /api/injective?tool=ping | list-agents | get-status | get-wallet-timeline | register
 //  · SDK(@injective/agent-sdk) 用 dynamic import 容错：装好就走真链，没装好返回 stub/error 不崩。
 //  · 隐私：私钥只在本服务端从 env 读，绝不进前端 bundle；register 的脱敏 Taste Passport 由前端生成后 POST 进来。
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
@@ -49,6 +49,22 @@ function normalizeBytes32(value) {
 }
 function isBytes32(value) {
   return /^0x[0-9a-f]{64}$/i.test(String(value || ''))
+}
+
+const TIMELINE_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
+const TIMELINE_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
+const TIMELINE_HANDSHAKE = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
+const TIMELINE_EVENTS = [
+  { label: 'Frost main identity registration', role: 'agentId 43', hash: '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554', to: TIMELINE_REGISTRY, blockNumber: 131678496n, timestamp: '2026-06-27T01:46:30.000Z' },
+  { label: 'SocialHandshake deployment', role: 'contract deployment', hash: '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722', to: null, contractAddress: TIMELINE_HANDSHAKE, blockNumber: 131678987n, timestamp: '2026-06-27T01:53:16.000Z' },
+  { label: 'Fleet agent registration', role: 'agentId 44', hash: '0x02a0590c2f1bc1e475d7cdfb2fa4c3eb5e0b9f7de4ac1f97e66663e0f5a38f44', to: TIMELINE_REGISTRY, blockNumber: 131679781n, timestamp: '2026-06-27T02:04:14.000Z' },
+  { label: 'Fleet agent registration', role: 'agentId 45', hash: '0xc161f0df707b1c9b1e29311e944b7c1b40f3d525c9d1cbd2d71c67713333fffe', to: TIMELINE_REGISTRY, blockNumber: 131679930n, timestamp: '2026-06-27T02:06:17.000Z' },
+  { label: 'Fleet agent registration', role: 'agentId 46', hash: '0x1bbd3df139b2558ff315d2029f00c01dc881a45542d5854176bbc49e6dfaea4e', to: TIMELINE_REGISTRY, blockNumber: 131679941n, timestamp: '2026-06-27T02:06:26.000Z' },
+  { label: 'Fleet agent registration', role: 'agentId 47', hash: '0xada3e082b8e8988e414bcf201739f2a2a3b5fe9c947db71ebe1e7467f3de1a50', to: TIMELINE_REGISTRY, blockNumber: 131679948n, timestamp: '2026-06-27T02:06:32.000Z' },
+  { label: 'Real SocialHandshake', role: 'agentId 43 <-> 44', hash: '0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6', to: TIMELINE_HANDSHAKE, blockNumber: 131869118n, timestamp: '2026-06-28T21:34:21.000Z' },
+]
+function sameAddress(a, b) {
+  return String(a ?? '').toLowerCase() === String(b ?? '').toLowerCase()
 }
 
 // list-agents 结果缓存（id → {agent, at}），抹平 testnet RPC 抖动：本次 getStatus 没返回的、但 60s 内查到过的 agent 仍带上，避免广场在场数忽多忽少。
@@ -137,6 +153,49 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const id = url.searchParams.get('agentId'); if (!id) return json(res, { error: 'no_agentId' })
       const rep = await reader.getReputation(BigInt(id)).catch(() => ({ score: 0, count: 0, clients: [] }))
       return json(res, rep)
+    }
+
+    // —— 只读：钱包证据时间线（直接读 Injective RPC 的 tx/receipt/block，无需私钥）——
+    if (tool === 'get-wallet-timeline') {
+      const { createPublicClient, defineChain, http } = await import('viem')
+      const rpcUrl = cfg.rpcUrl || 'https://testnet.sentry.chain.json-rpc.injective.network'
+      const chain = defineChain({ id: network === 'mainnet' ? 1776 : 1439, name: 'Injective', nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 }, rpcUrls: { default: { http: [rpcUrl] } } })
+      const client = createPublicClient({ chain, transport: http(rpcUrl) })
+      const events = []
+      for (const expected of TIMELINE_EVENTS) {
+        const [tx, receipt] = await Promise.all([
+          client.getTransaction({ hash: expected.hash }),
+          client.getTransactionReceipt({ hash: expected.hash }),
+        ])
+        const block = await client.getBlock({ blockNumber: receipt.blockNumber })
+        const timestamp = new Date(Number(block.timestamp) * 1000).toISOString()
+        if (!sameAddress(tx.from, TIMELINE_OWNER)) throw new Error(`timeline_from_mismatch:${expected.role}`)
+        if (!sameAddress(tx.to, expected.to)) throw new Error(`timeline_to_mismatch:${expected.role}`)
+        if (String(receipt.status) !== 'success') throw new Error(`timeline_receipt_failed:${expected.role}`)
+        if (receipt.blockNumber !== expected.blockNumber) throw new Error(`timeline_block_mismatch:${expected.role}`)
+        if (timestamp !== expected.timestamp) throw new Error(`timeline_time_mismatch:${expected.role}`)
+        if (expected.contractAddress && !sameAddress(receipt.contractAddress, expected.contractAddress)) throw new Error(`timeline_contract_mismatch:${expected.role}`)
+        events.push({
+          label: expected.label,
+          role: expected.role,
+          hash: expected.hash,
+          from: tx.from,
+          to: tx.to,
+          status: receipt.status,
+          blockNumber: receipt.blockNumber,
+          timestamp,
+          contractAddress: receipt.contractAddress || null,
+          scanUrl: `https://testnet.blockscout.injective.network/tx/${expected.hash}`,
+        })
+      }
+      return json(res, {
+        ok: true,
+        network,
+        owner: TIMELINE_OWNER,
+        registry: TIMELINE_REGISTRY,
+        handshakeContract: TIMELINE_HANDSHAKE,
+        events,
+      })
     }
 
     // —— 写：注册 Frost 链上身份（需私钥；无私钥/未显式确认时强制 dryRun 不上链）——
