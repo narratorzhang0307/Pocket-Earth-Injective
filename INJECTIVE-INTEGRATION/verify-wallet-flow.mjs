@@ -61,12 +61,18 @@ const [registerTx, registerReceipt, handshakeTx, handshakeReceipt, handshakeCode
   client.getTransactionReceipt({ hash: HANDSHAKE_TX }),
   client.getCode({ address: HANDSHAKE_CONTRACT }),
 ])
+const [registerBlock, handshakeBlock, handshakeCodeBeforeTx] = await Promise.all([
+  client.getBlock({ blockNumber: registerReceipt.blockNumber }),
+  client.getBlock({ blockNumber: handshakeReceipt.blockNumber }),
+  client.getCode({ address: HANDSHAKE_CONTRACT, blockNumber: handshakeReceipt.blockNumber - 1n }),
+])
 
 console.log('Registration transaction')
 assertEqual('register tx.from', registerTx.from, OWNER)
 assertEqual('register tx.to', registerTx.to, REGISTRY)
 assertEqual('register receipt.status', registerReceipt.status, 'success')
 assertTrue('register receipt has registry logs', registerReceipt.logs.some((log) => log.address.toLowerCase() === REGISTRY.toLowerCase()))
+console.log(`OK register block timestamp: ${new Date(Number(registerBlock.timestamp) * 1000).toISOString()}`)
 
 const transferLog = registerReceipt.logs.find((log) => log.address.toLowerCase() === REGISTRY.toLowerCase())
 if (!transferLog) throw new Error('agentId 43 Transfer log not found')
@@ -76,9 +82,12 @@ assertEqual('register event owner', transfer.args.to, OWNER)
 
 console.log('\nHandshake contract and transaction')
 assertTrue('SocialHandshake contract code deployed', typeof handshakeCode === 'string' && handshakeCode.length > 2)
+assertTrue('SocialHandshake code existed before handshake tx', typeof handshakeCodeBeforeTx === 'string' && handshakeCodeBeforeTx.length > 2)
 assertEqual('handshake tx.from', handshakeTx.from, OWNER)
 assertEqual('handshake tx.to', handshakeTx.to, HANDSHAKE_CONTRACT)
 assertEqual('handshake receipt.status', handshakeReceipt.status, 'success')
+assertTrue('registration block is before handshake block', registerReceipt.blockNumber < handshakeReceipt.blockNumber)
+console.log(`OK handshake block timestamp: ${new Date(Number(handshakeBlock.timestamp) * 1000).toISOString()}`)
 
 const handshakeLog = handshakeReceipt.logs.find((log) => log.address.toLowerCase() === HANDSHAKE_CONTRACT.toLowerCase())
 if (!handshakeLog) throw new Error('Handshake log not found')
