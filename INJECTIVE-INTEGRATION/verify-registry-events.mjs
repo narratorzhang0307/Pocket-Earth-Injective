@@ -69,7 +69,17 @@ for (const [tokenId, txHash] of EXPECTED) {
   assertEqual(`agent ${tokenId} mint to`, item.args.to, OWNER)
   assertEqual(`agent ${tokenId} transactionHash`, item.log.transactionHash, txHash)
   console.log(`OK agent ${tokenId} blockNumber: ${item.log.blockNumber}`)
+
+  const [tx, receipt] = await Promise.all([
+    client.getTransaction({ hash: txHash }),
+    client.getTransactionReceipt({ hash: txHash }),
+  ])
+  assertEqual(`agent ${tokenId} tx.from`, tx.from, OWNER)
+  assertEqual(`agent ${tokenId} tx.to`, tx.to, REGISTRY)
+  assertEqual(`agent ${tokenId} receipt.status`, receipt.status, 'success')
+  assertEqual(`agent ${tokenId} receipt.blockNumber`, receipt.blockNumber, item.log.blockNumber)
+
   await assertHttp200(`agent ${tokenId} tx`, `https://testnet.blockscout.injective.network/tx/${txHash}`)
 }
 
-console.log('\nOK ERC-8004 registry mint events for agentId 43-47 are verifiable.')
+console.log('\nOK ERC-8004 registry mint events and registration transactions for agentId 43-47 are verifiable.')
