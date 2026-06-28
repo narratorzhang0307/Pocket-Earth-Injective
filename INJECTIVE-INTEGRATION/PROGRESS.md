@@ -11,7 +11,7 @@
 
 **最新里程碑**：
 - ✅ **GitHub 参赛仓库**：公开仓库已就绪并持续推送：`https://github.com/narratorzhang0307/Pocket-Earth-Injective`；本地 `main` 跟踪 `origin/main`。
-- ✅ **真·链上身份**：Frost 注册成功 agentId 43；又批量注册 4 个不同口味 agent（44 拉美文学旅人 / 45 黑色电影迷 / 46 爵士夜行者 / 47 北欧极光客），口味用 **data: URI 内联上链**（无需 Pinata），8004 身份 tuple 可查。
+- ✅ **真·链上身份**：Frost 注册成功 agentId 43；又批量注册 4 个不同口味 agent（44 拉美文学旅人 / 45 黑色电影迷 / 46 爵士夜行者 / 47 北欧极光客），口味用 **data: URI 内联上链**（无需 Pinata），8004 身份 tuple 可查；`verify-fleet.mjs` 会校验名片只含公开字段。
 - ✅ **真·握手合约**：`SocialHandshake` 部署到 testnet `0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署 tx `0x6048425a…`（比赛钱包 nonce 2）；真握手上链 tx `0x0e597f33…`（agentA 43 · agentB 44 · score 88 · 非零名片哈希）。
 - ✅ **前端无人值守验证**（puppeteer 走查广场）：广场读链上 agent、口味解码、相似度差异化排序（79/73/67）、钉地球、夜间报告，UI 与现有像素风协调。验证中修了 4 个真实问题：①list-agents 扫全链 14s → 并行快查 2.6s；②空 agentId 拖慢 → getStatus 2.5s 超时；③相似度一排全 55% → 差异化算法；④定位 demoReset 刷新清画像。
 - ✅ **链上证据脚本**：`verify-agent43.mjs` 可读回 `builderCode: pocket-earth` 并核验 #43、钱包页、握手合约页；`verify-handshake-contract.mjs` 可核验 SocialHandshake 部署交易/部署者/部署时序，并重编译 `SocialHandshake.sol` 比对 Injective testnet creation/runtime bytecode；`verify-handshake.mjs` 可重算脱敏名片哈希并解码真实握手 calldata + event（agentA 43 · agentB 44 · score 88 · 非零名片哈希）。

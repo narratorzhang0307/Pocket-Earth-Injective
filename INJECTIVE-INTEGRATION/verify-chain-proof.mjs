@@ -7,7 +7,7 @@ const checks = [
     moduleUrl: new URL('./verify-agent43.mjs', import.meta.url),
   },
   {
-    label: 'Pocket Earth agent fleet: agentId 43-47 + builderCode pocket-earth',
+    label: 'Pocket Earth agent fleet: agentId 43-47 + public data URI cards',
     moduleUrl: new URL('./verify-fleet.mjs', import.meta.url),
   },
   {

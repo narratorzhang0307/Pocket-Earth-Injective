@@ -6,6 +6,9 @@ const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 const BUILDER_CODE = 'pocket-earth'
 const REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 const REGISTRY_URL = `https://testnet.blockscout.injective.network/token/${REGISTRY}`
+const CARD_TYPE = 'https://eips.ethereum.org/EIPS/eip-8004#registration-v1'
+const CARD_KEYS = ['description', 'metadata', 'name', 'tags', 'type']
+const METADATA_KEYS = ['builderCode', 'chain']
 
 const AGENTS = [
   { id: 43n, label: 'Frost main identity' },
@@ -27,10 +30,24 @@ function assertTrue(label, condition) {
   console.log(`OK ${label}`)
 }
 
+function assertKeys(label, object, expected) {
+  const keys = Object.keys(object || {}).sort()
+  assertEqual(label, keys.join(','), expected.join(','))
+}
+
 function decodeDataCard(uri) {
   const prefix = 'data:application/json;base64,'
   if (typeof uri !== 'string' || !uri.startsWith(prefix)) return null
   return JSON.parse(Buffer.from(uri.slice(prefix.length), 'base64').toString('utf8'))
+}
+
+function assertPublicCardShape(id, card) {
+  assertKeys(`agent ${id} card public fields`, card, CARD_KEYS)
+  assertEqual(`agent ${id} card type`, card.type, CARD_TYPE)
+  assertKeys(`agent ${id} card metadata public fields`, card.metadata, METADATA_KEYS)
+  assertEqual(`agent ${id} card chain`, card.metadata.chain, 'injective')
+  assertTrue(`agent ${id} card description is short public text`, typeof card.description === 'string' && card.description.length > 0 && card.description.length <= 160)
+  assertTrue(`agent ${id} card tags are short public labels`, Array.isArray(card.tags) && card.tags.length > 0 && card.tags.length <= 10 && card.tags.every((tag) => typeof tag === 'string' && tag.length > 0 && tag.length <= 40))
 }
 
 async function assertHttp200(label, url) {
@@ -81,6 +98,7 @@ for (const { agent, status } of statuses) {
   const card = decodeDataCard(status.tokenUri)
   if (agent.requiredTag) {
     assertTrue(`agent ${id} data URI card`, !!card)
+    assertPublicCardShape(id, card)
     assertEqual(`agent ${id} card builderCode`, card.metadata?.builderCode, BUILDER_CODE)
     assertEqual(`agent ${id} card name`, card.name, agent.label)
     assertTrue(`agent ${id} card tag ${agent.requiredTag}`, Array.isArray(card.tags) && card.tags.includes(agent.requiredTag))
@@ -91,4 +109,4 @@ if (sdkWarnings.length) {
   console.log('\nNOTE Agent SDK card fetch warnings were suppressed; chain fields and data URI cards were verified directly.')
 }
 
-console.log('\nOK Pocket Earth agent fleet 43-47 is verifiable on Injective testnet.')
+console.log('\nOK Pocket Earth agent fleet 43-47 and public data URI cards are verifiable on Injective testnet.')
