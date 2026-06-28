@@ -15,6 +15,25 @@ const CHECKS = [
   'INJECTIVE-INTEGRATION/verify-plaza-install.mjs',
 ]
 
+let suppressedSdkWarnings = 0
+
+function isExpectedSdkCardWarning(line) {
+  return line.includes('[AgentSDK] Failed to fetch card')
+    && (line.includes('Unsupported URI scheme: data:') || line.includes('Unexpected token'))
+}
+
+function writeViteOutput(chunk, stream = process.stdout) {
+  const lines = String(chunk).split(/\r?\n/)
+  for (const line of lines) {
+    if (!line) continue
+    if (isExpectedSdkCardWarning(line)) {
+      suppressedSdkWarnings += 1
+      continue
+    }
+    stream.write(`[vite] ${line}\n`)
+  }
+}
+
 async function canReach(url) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 2000)
@@ -43,8 +62,8 @@ function startDevServer() {
     env: { ...process.env, BROWSER: 'none' },
     stdio: ['ignore', 'pipe', 'pipe'],
   })
-  child.stdout.on('data', (chunk) => process.stdout.write(`[vite] ${chunk}`))
-  child.stderr.on('data', (chunk) => process.stderr.write(`[vite] ${chunk}`))
+  child.stdout.on('data', (chunk) => writeViteOutput(chunk, process.stdout))
+  child.stderr.on('data', (chunk) => writeViteOutput(chunk, process.stderr))
   child.on('exit', (code, signal) => {
     if (code !== null && code !== 0) process.stderr.write(`[vite] exited with code ${code}\n`)
     if (signal) process.stderr.write(`[vite] exited by ${signal}\n`)
@@ -95,6 +114,9 @@ try {
   }
 
   console.log('\nOK plaza smoke passed.')
+  if (suppressedSdkWarnings) {
+    console.log(`NOTE suppressed ${suppressedSdkWarnings} expected AgentSDK card-fetch warnings for data URI cards.`)
+  }
 } finally {
   if (startedServer) {
     stopDevServer(server)
