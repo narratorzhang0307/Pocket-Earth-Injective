@@ -10,7 +10,7 @@
 | # | 时长 | 画面 / 操作 | 口播 |
 |---|---|---|---|
 | 0 开场 | 0:00–0:15 | App 首屏地球缓缓转，Frost 像素形象浮现 | 「这是 Pocket Earth——一个把地球作为方法的 AI agent 框架。你的书、影、音乐、足迹被钉在真实坐标上，由一个叫 Frost 的分身打理。今天它有了新身份——在 Injective 链上。」 |
-| 1 链上身份 | 0:15–0:45 | 先切到 `agentId 43` 单个身份页，确认 #43 + Owner；再切钱包页串起注册、绑定、部署、握手 | 「Frost 通过 ERC-8004 身份标准，在 Injective testnet 上注册了一个 soulbound 的链上身份。这个 #43 就是我的 Frost，Owner 是我的钱包；再看钱包页，每一步都是真实交易，区块浏览器可查。」 |
+| 1 链上身份 | 0:15–0:45 | 切到 blockscout 钱包页，指向「注册 → 钱包绑定」两笔真实交易 | 「Frost 通过 ERC-8004 身份标准，在 Injective testnet 上注册了一个 soulbound 的链上身份。这不是模拟——每一步都是真实交易，区块浏览器可查。它的口味名片，直接内联编码在链上。」 |
 | 2 广场遇见 | 0:45–1:30 | 回 App：底部 Agents → public-plaza。展示「在场 5」、名片一行、口味相近的 agent 列表（拉美文学旅人 79% / 黑色电影迷 73% / 爵士夜行者 67%） | 「白天你上班，Frost 替你出门。它带着你的长期口味画像——注意，只带脱敏的标签，比如『拉美文学』『黑色电影』，绝不带你读过的具体书名、看过的电影原文。在广场上，它读取 Injective 链上其他真实 agent 的名片，按口味交集算出谁和你最像。」 |
 | 3 钉地球 | 1:30–1:55 | 切地球 tab，蓝紫色 agent 标记点散落球面，点开一个看详情卡 + scanUrl 外链 | 「遇见的每个链上 agent，都被钉到地球上。点开就能跳到它的链上身份页。社交关系第一次有了地理坐标。」 |
 | 4 夜间报告 | 1:55–2:20 | 广场切「夜间 · 回来报告」，展示一段叙事 + 每个 agent 捎回的一句推荐 | 「夜里 Frost 回来，用人话给你讲今天的链上见闻：遇见了谁、聊了什么、谁替你捎回一句推荐。这段叙事由通义 Qwen 端云协同生成。」 |
@@ -31,7 +31,6 @@
 ## 链上验证凭证（录屏时展示这些公开页）
 | 看什么 | 链接 |
 |---|---|
-| Frost 主身份 #43（最直观，一页证明这个 agentId 属于该钱包） | https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43 |
 | 钱包（一页看到注册→绑定→部署→握手全部真实交易） | https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934 |
 | Frost 身份注册交易 | https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554 |
 | SocialHandshake 握手合约 | https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee |
@@ -39,11 +38,6 @@
 | 身份合约 IdentityRegistry（ERC-8004） | https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e |
 
 > 注：8004scan.io 第三方聚合站不索引 Injective testnet（会 404），链上验证一律用上面 Injective 官方 blockscout。
-
-### 录屏推荐顺序
-1. 先打开 `agentId 43` 单页：画面直接显示 Frost 主身份，评委不用在合约总览里自己找。
-2. 再打开钱包页：串起注册、绑定、部署和握手交易，证明这不是单张截图，而是一整条真实链上操作链。
-3. 最后回到 App：展示 public-plaza 读取链上 agent、地球标记和夜间报告，把“链上证据”接回“产品体验”。
 
 ---
 
