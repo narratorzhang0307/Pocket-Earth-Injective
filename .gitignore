@@ -8,6 +8,7 @@ dist
 *secret*
 .DS_Store
 *.local
+__pycache__/
 
 # 用户放入供阅读的版权书籍 / 教程，不入库
 *.docx

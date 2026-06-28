@@ -1,5 +1,7 @@
 // Verify the optional Frost Buddy hardware bridge event contract.
 // Usage: node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs
+import { execFileSync } from 'node:child_process'
+
 import {
   EVENT_KIND,
   createChainDispatchEvent,
@@ -57,5 +59,9 @@ assertNoSecrets('chain hardware event', chain)
 const jsonLine = toJsonLine(chain)
 assertTrue('hardware bridge emits JSONL', jsonLine.endsWith('\n'))
 assertEqual('hardware JSONL round-trip kind', JSON.parse(jsonLine).kind, EVENT_KIND.CHAIN_DISPATCH)
+
+console.log('\nRaspberry Pi skill router smoke')
+const python = process.env.PYTHON || 'python3'
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nOK Frost Buddy hardware bridge can carry music-agent and Injective chain-dispatch events safely.')

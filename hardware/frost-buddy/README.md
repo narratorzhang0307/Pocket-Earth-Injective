@@ -6,6 +6,7 @@ Pocket Earth already has a software Frost Buddy in the app. This folder keeps th
 
 - Turns `music-agent` / Frost Radio activity into a physical "now playing" event.
 - Turns Injective public-plaza chain dispatch into a physical "chain sights" event.
+- Adds a Raspberry Pi skill router that can turn loose voice text into safe music commands or public chain-dispatch events.
 - Emits newline-delimited JSON envelopes that a Raspberry Pi process can forward to BLE, serial, MQTT, local TTS, or a small display.
 - Keeps the hardware bridge read-only: no private keys, no wallet signing, no raw Taste Passport, no precise location payload.
 
@@ -36,12 +37,14 @@ Current repo-owned piece:
 
 1. App / server creates public events.
 2. `frost-hardware-bridge.mjs` converts them to safe JSONL.
-3. A future Raspberry Pi adapter reads JSONL and handles transport/audio.
+3. `raspi/frost_pi_skill_agent.py` maps loose Pi voice requests to canonical music commands or public chain-dispatch events.
+4. A future Raspberry Pi adapter reads JSONL and handles transport/audio.
 
 Ignored local reference material:
 
 - `Frost Buddy/claude-desktop-buddy-main/REFERENCE.md` documents the BLE-style hardware buddy protocol that inspired this bridge.
 - `frost-agent/agents/music-agent`, `radio-24h-director`, and `script-tts-pipeline` define the existing music/radio/TTS product surface.
+- Claude's isolated Sunset Radio Pi worktree was reviewed read-only for its skill-router pattern: whitelist skill registry, canonical command loopback, offline smoke checks, and tiny daemon hook. This repository keeps only a Pocket Earth specific, decoupled adaptation under `raspi/`.
 
 ## Source Notes
 

@@ -26,7 +26,7 @@
 - **若相似度没差异 / 显示画像太薄**：确认地址栏带了 `?demo`（刷新会被 demoReset 清画像，`?demo` 会自动重新预置）。
 - **地球的 agent 点**：蓝紫色（`#7c5cff`），和音乐绿 / 照片青等其他图层区分；缩放后会自动散开不重叠。
 - **录制前 smoke**：本地跑 `npm run verify:plaza`，会自动启动页面并检查 public-plaza 读链上 agent、agent-plaza 页面和「咖啡地图」安装闭环。
-- **硬件一句话**：如果录屏里出现实体 Frost Buddy，只说「我们预留了 Raspberry Pi / BLE / TTS 事件桥，让 music-agent 和 Injective 链上见闻可以被实体 Frost 播报」；不要说成已量产或完整硬件闭环。
+- **硬件一句话**：如果录屏里出现实体 Frost Buddy，只说「我们预留了 Raspberry Pi / BLE / TTS 事件桥和 Pi 侧技能路由，让 music-agent 和 Injective 链上见闻可以被实体 Frost 播报」；不要说成已量产或完整硬件闭环。
 - **录屏别露**：`.env`、私钥、服务器 IP、终端。只露 App UI + 区块浏览器公开页。
 
 ---
