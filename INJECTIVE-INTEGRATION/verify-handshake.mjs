@@ -1,6 +1,6 @@
 // Verify the real SocialHandshake transaction on Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-handshake.mjs
-import { createPublicClient, decodeEventLog, decodeFunctionData, defineChain, http, parseAbi } from 'viem'
+import { createPublicClient, decodeEventLog, decodeFunctionData, defineChain, http, keccak256, parseAbi } from 'viem'
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
 const CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
@@ -12,6 +12,11 @@ const EXPECTED = {
   score: 88,
   profileHashA: '0x7e8a254adf8ec98cacbf4f998433553532045748f6973d1be1e7a94d06165fb9',
   profileHashB: '0x34ec93bc1f4a69f6c3f37fab98c5a6e5ca493107bceff10d085d6d29b7bc0785',
+}
+// Public demo hash inputs contain only redacted taste labels, not private raw memories.
+const HASH_INPUTS = {
+  profileHashA: 'pocket-earth:frost-agent-43:taste-passport:2026-06-29:lam-fiction-noir-jazz',
+  profileHashB: 'pocket-earth:frost-agent-44:taste-passport:2026-06-29:latam-literature-traveler',
 }
 
 const abi = parseAbi([
@@ -56,6 +61,10 @@ async function assertHttp200(label, url) {
 }
 
 const client = createPublicClient({ chain, transport: http() })
+const encoder = new TextEncoder()
+assertEqual('profileHashA derivation', keccak256(encoder.encode(HASH_INPUTS.profileHashA)), EXPECTED.profileHashA)
+assertEqual('profileHashB derivation', keccak256(encoder.encode(HASH_INPUTS.profileHashB)), EXPECTED.profileHashB)
+
 const tx = await client.getTransaction({ hash: TX_HASH })
 const receipt = await client.getTransactionReceipt({ hash: TX_HASH })
 const block = await client.getBlock({ blockNumber: receipt.blockNumber })
