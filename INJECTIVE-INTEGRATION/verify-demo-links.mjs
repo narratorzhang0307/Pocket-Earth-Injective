@@ -31,6 +31,12 @@ const REQUIRED_EVIDENCE_LINKS = [
   'https://testnet.blockscout.injective.network/tx/0xada3e082b8e8988e414bcf201739f2a2a3b5fe9c947db71ebe1e7467f3de1a50',
 ]
 
+const REQUIRED_EVIDENCE_SNIPPETS = [
+  '/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47',
+  '/api/injective?tool=get-wallet-timeline',
+  'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
+]
+
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
   console.log(`OK ${label}`)
@@ -71,6 +77,9 @@ for (const link of REQUIRED_DEMO_LINKS) {
 const evidencePack = docs.get('INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md') || ''
 for (const link of REQUIRED_EVIDENCE_LINKS) {
   assertTrue(`CHAIN-EVIDENCE contains ${link}`, evidencePack.includes(link))
+}
+for (const snippet of REQUIRED_EVIDENCE_SNIPPETS) {
+  assertTrue(`CHAIN-EVIDENCE contains ${snippet}`, evidencePack.includes(snippet))
 }
 
 for (const [index, link] of blockscoutLinks.entries()) {

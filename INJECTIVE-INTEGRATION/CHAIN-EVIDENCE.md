@@ -56,6 +56,18 @@
 | Agent #47 registration | `131679948` | `2026-06-27T02:06:32.000Z` | `0xada3e0...1a50` |
 | Real SocialHandshake 43 <-> 44 | `131869118` | `2026-06-28T21:34:21.000Z` | `0x0e597f...f2d6` |
 
+## Product API Checks
+
+Reviewers can also verify the same chain facts through Pocket Earth itself. These are read-only API calls; they do not need a private key and do not create transactions:
+
+```bash
+curl 'http://localhost:5173/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47'
+curl 'http://localhost:5173/api/injective?tool=get-wallet-timeline'
+node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
+```
+
+The first call reads `agentId 43-47` by `builderCode = pocket-earth`. The second call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake.
+
 Handshake calldata and event both decode to:
 
 - `agentA`: `43`
@@ -75,7 +87,7 @@ This read-only proof suite verifies:
 - `agentId 43-47` on Injective testnet
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
-- `/api/injective` read path for `ping`, `list-agents`, `get-status`, and `get-reputation`
+- `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, and `get-wallet-timeline`
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
 - wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links
