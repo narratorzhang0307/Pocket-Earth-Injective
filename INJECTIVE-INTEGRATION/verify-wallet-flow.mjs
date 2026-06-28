@@ -1,6 +1,6 @@
 // Verify the wallet-level evidence chain shown in the demo.
 // Usage: node INJECTIVE-INTEGRATION/verify-wallet-flow.mjs
-import { createPublicClient, decodeEventLog, defineChain, http, parseAbi, parseAbiItem } from 'viem'
+import { createPublicClient, decodeEventLog, decodeFunctionData, defineChain, http, parseAbi, parseAbiItem } from 'viem'
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
 const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
@@ -20,6 +20,7 @@ const chain = defineChain({
 })
 
 const handshakeAbi = parseAbi([
+  'function recordHandshake(uint256 agentA,uint256 agentB,bytes32 profileHashA,bytes32 profileHashB,uint16 score)',
   'event Handshake(uint256 indexed agentA,uint256 indexed agentB,bytes32 profileHashA,bytes32 profileHashB,uint16 score,uint256 timestamp)',
 ])
 const transferEvent = parseAbiItem('event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)')
@@ -91,6 +92,14 @@ assertEqual('handshake tx.to', handshakeTx.to, HANDSHAKE_CONTRACT)
 assertEqual('handshake receipt.status', handshakeReceipt.status, 'success')
 assertTrue('registration block is before handshake block', registerReceipt.blockNumber < handshakeReceipt.blockNumber)
 console.log(`OK handshake block timestamp: ${new Date(Number(handshakeBlock.timestamp) * 1000).toISOString()}`)
+
+const call = decodeFunctionData({ abi: handshakeAbi, data: handshakeTx.input })
+assertEqual('handshake call function', call.functionName, 'recordHandshake')
+assertEqual('handshake call agentA', call.args[0], 43n)
+assertEqual('handshake call agentB', call.args[1], 44n)
+assertEqual('handshake call profileHashA', call.args[2], PROFILE_HASH_A)
+assertEqual('handshake call profileHashB', call.args[3], PROFILE_HASH_B)
+assertEqual('handshake call score', call.args[4], 88)
 
 const handshakeLog = handshakeReceipt.logs.find((log) => log.address.toLowerCase() === HANDSHAKE_CONTRACT.toLowerCase())
 if (!handshakeLog) throw new Error('Handshake log not found')

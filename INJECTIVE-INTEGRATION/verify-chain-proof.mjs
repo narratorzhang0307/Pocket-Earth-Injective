@@ -35,7 +35,7 @@ const checks = [
     moduleUrl: new URL('./verify-handshake-contract.mjs', import.meta.url),
   },
   {
-    label: 'SocialHandshake event: agentA 43, agentB 44, score 88, non-zero hashes, timestamp',
+    label: 'SocialHandshake calldata + event: agentA 43, agentB 44, score 88, non-zero hashes',
     moduleUrl: new URL('./verify-handshake.mjs', import.meta.url),
   },
   {

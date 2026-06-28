@@ -1,6 +1,6 @@
 // Verify the real SocialHandshake transaction on Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-handshake.mjs
-import { createPublicClient, decodeEventLog, defineChain, http, parseAbi } from 'viem'
+import { createPublicClient, decodeEventLog, decodeFunctionData, defineChain, http, parseAbi } from 'viem'
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
 const CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
@@ -15,6 +15,7 @@ const EXPECTED = {
 }
 
 const abi = parseAbi([
+  'function recordHandshake(uint256 agentA,uint256 agentB,bytes32 profileHashA,bytes32 profileHashB,uint16 score)',
   'event Handshake(uint256 indexed agentA,uint256 indexed agentB,bytes32 profileHashA,bytes32 profileHashB,uint16 score,uint256 timestamp)',
 ])
 
@@ -61,6 +62,14 @@ const block = await client.getBlock({ blockNumber: receipt.blockNumber })
 
 assertEqual('tx.to', tx.to, CONTRACT)
 assertEqual('receipt.status', receipt.status, 'success')
+
+const call = decodeFunctionData({ abi, data: tx.input })
+assertEqual('call function', call.functionName, 'recordHandshake')
+assertEqual('call agentA', call.args[0], EXPECTED.agentA)
+assertEqual('call agentB', call.args[1], EXPECTED.agentB)
+assertEqual('call profileHashA', call.args[2], EXPECTED.profileHashA)
+assertEqual('call profileHashB', call.args[3], EXPECTED.profileHashB)
+assertEqual('call score', call.args[4], EXPECTED.score)
 
 const log = receipt.logs.find((item) => item.address.toLowerCase() === CONTRACT.toLowerCase())
 if (!log) throw new Error('Handshake log not found on SocialHandshake contract')
