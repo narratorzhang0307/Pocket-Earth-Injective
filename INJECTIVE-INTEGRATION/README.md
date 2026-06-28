@@ -74,6 +74,9 @@ npm run build && node server.mjs
 
 # 3. 验证真连 testnet
 curl 'localhost:5173/api/injective?tool=ping'   # → {reachable:true,sdk:true,network:testnet}
+
+# 4. 验证 Frost 主身份 agentId 43（builderCode 必须读回 pocket-earth）
+node INJECTIVE-INTEGRATION/verify-agent43.mjs
 ```
 
 ### 需要的 env（副本 `.env`，server 端读、绝不进前端）
