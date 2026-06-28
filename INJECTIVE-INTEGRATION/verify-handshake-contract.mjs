@@ -10,6 +10,8 @@ const CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
 const SOURCE_FILE = 'INJECTIVE-INTEGRATION/contracts/SocialHandshake.sol'
 const DEPLOY_NONCE = 2n
 const FROST_REGISTRATION_BLOCK = 131678496n
+const CONTRACT_DEPLOY_BLOCK = 131678987n
+const CONTRACT_DEPLOY_TX = '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722'
 const HANDSHAKE_BLOCK = 131679041n
 
 const chain = defineChain({
@@ -88,12 +90,29 @@ const compiledRuntime = '0x' + compiledObject
 const client = createPublicClient({ chain, transport: http() })
 const derivedAddress = getContractAddress({ from: OWNER, nonce: DEPLOY_NONCE })
 assertEqual('deployer-derived contract address', derivedAddress, CONTRACT)
+assertTrue('contract deploy block is after Frost registration', FROST_REGISTRATION_BLOCK < CONTRACT_DEPLOY_BLOCK)
+assertTrue('contract deploy block is before handshake block', CONTRACT_DEPLOY_BLOCK < HANDSHAKE_BLOCK)
+
+const deployBlock = await retry('deployment block', () => client.getBlock({ blockNumber: CONTRACT_DEPLOY_BLOCK, includeTransactions: true }))
+const deployTx = deployBlock.transactions.find((tx) => tx.hash.toLowerCase() === CONTRACT_DEPLOY_TX.toLowerCase())
+assertTrue('deployment tx is in deployment block', !!deployTx)
+assertEqual('deployment tx.from', deployTx.from, OWNER)
+assertEqual('deployment tx.to', deployTx.to, null)
+assertEqual('deployment tx.nonce', deployTx.nonce, Number(DEPLOY_NONCE))
+assertEqual('deployment tx creates', getContractAddress({ from: deployTx.from, nonce: BigInt(deployTx.nonce) }), CONTRACT)
+
+const deployReceipt = await retry('deployment receipt', () => client.getTransactionReceipt({ hash: CONTRACT_DEPLOY_TX }))
+assertEqual('deployment receipt.status', deployReceipt.status, 'success')
+assertEqual('deployment receipt.contractAddress', deployReceipt.contractAddress, CONTRACT)
+assertEqual('deployment receipt.blockNumber', deployReceipt.blockNumber, CONTRACT_DEPLOY_BLOCK)
 
 const deployedRuntime = await retry('latest contract code', () => client.getCode({ address: CONTRACT }))
 const codeAtRegistrationBlock = await retry('registration-block contract code', () => client.getCode({ address: CONTRACT, blockNumber: FROST_REGISTRATION_BLOCK }))
+const codeBeforeDeploy = await retry('pre-deploy contract code', () => client.getCode({ address: CONTRACT, blockNumber: CONTRACT_DEPLOY_BLOCK - 1n }))
 const codeBeforeHandshake = await retry('pre-handshake contract code', () => client.getCode({ address: CONTRACT, blockNumber: HANDSHAKE_BLOCK - 1n }))
 
 assertTrue('no contract code at Frost registration block', !codeAtRegistrationBlock || codeAtRegistrationBlock === '0x')
+assertTrue('no contract code before deployment block', !codeBeforeDeploy || codeBeforeDeploy === '0x')
 assertTrue('contract code existed before handshake block', typeof codeBeforeHandshake === 'string' && codeBeforeHandshake.length > 2)
 assertTrue('deployed runtime bytecode exists', typeof deployedRuntime === 'string' && deployedRuntime.length > 2)
 assertEqual('runtime bytecode length', deployedRuntime.length, compiledRuntime.length)
@@ -102,6 +121,7 @@ assertSame('deployed runtime bytecode', deployedRuntime, compiledRuntime)
 assertSame('pre-handshake runtime bytecode', codeBeforeHandshake, deployedRuntime)
 
 await assertHttp200('contract', `https://testnet.blockscout.injective.network/address/${CONTRACT}`)
+await assertHttp200('deployment tx', `https://testnet.blockscout.injective.network/tx/${CONTRACT_DEPLOY_TX}`)
 
 console.log(`OK solc version: ${solc.version()}`)
 console.log('OK SocialHandshake deployed bytecode matches the local Solidity source.')

@@ -35,6 +35,7 @@
 | 钱包（一页看到注册→绑定→部署→握手全部真实交易） | https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934 |
 | Frost 身份注册交易 | https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554 |
 | SocialHandshake 握手合约 | https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee |
+| SocialHandshake 部署交易（比赛钱包 nonce 2 创建合约） | https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722 |
 | 一笔真实握手交易（agentA 43 · agentB 44 · score 88） | https://testnet.blockscout.injective.network/tx/0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e |
 | 身份合约 IdentityRegistry（ERC-8004） | https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e |
 
