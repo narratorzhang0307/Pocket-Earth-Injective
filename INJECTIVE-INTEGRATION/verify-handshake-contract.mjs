@@ -2,11 +2,15 @@
 // Usage: node INJECTIVE-INTEGRATION/verify-handshake-contract.mjs
 import { readFileSync } from 'node:fs'
 import solc from 'solc'
-import { createPublicClient, defineChain, http, keccak256 } from 'viem'
+import { createPublicClient, defineChain, getContractAddress, http, keccak256 } from 'viem'
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
+const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 const CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
 const SOURCE_FILE = 'INJECTIVE-INTEGRATION/contracts/SocialHandshake.sol'
+const DEPLOY_NONCE = 2n
+const FROST_REGISTRATION_BLOCK = 131678496n
+const HANDSHAKE_BLOCK = 131679041n
 
 const chain = defineChain({
   id: 1439,
@@ -32,6 +36,21 @@ function assertSame(label, actual, expected) {
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
   console.log(`OK ${label}`)
+}
+
+async function retry(label, fn, attempts = 4) {
+  let lastError
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error
+      if (attempt === attempts) break
+      console.log(`RETRY ${label}: ${attempt}/${attempts}`)
+      await new Promise((resolve) => setTimeout(resolve, attempt * 1000))
+    }
+  }
+  throw lastError
 }
 
 async function assertHttp200(label, url) {
@@ -67,11 +86,20 @@ assertTrue('compiled runtime bytecode exists', typeof compiledObject === 'string
 const compiledRuntime = '0x' + compiledObject
 
 const client = createPublicClient({ chain, transport: http() })
-const deployedRuntime = await client.getCode({ address: CONTRACT })
+const derivedAddress = getContractAddress({ from: OWNER, nonce: DEPLOY_NONCE })
+assertEqual('deployer-derived contract address', derivedAddress, CONTRACT)
+
+const deployedRuntime = await retry('latest contract code', () => client.getCode({ address: CONTRACT }))
+const codeAtRegistrationBlock = await retry('registration-block contract code', () => client.getCode({ address: CONTRACT, blockNumber: FROST_REGISTRATION_BLOCK }))
+const codeBeforeHandshake = await retry('pre-handshake contract code', () => client.getCode({ address: CONTRACT, blockNumber: HANDSHAKE_BLOCK - 1n }))
+
+assertTrue('no contract code at Frost registration block', !codeAtRegistrationBlock || codeAtRegistrationBlock === '0x')
+assertTrue('contract code existed before handshake block', typeof codeBeforeHandshake === 'string' && codeBeforeHandshake.length > 2)
 assertTrue('deployed runtime bytecode exists', typeof deployedRuntime === 'string' && deployedRuntime.length > 2)
 assertEqual('runtime bytecode length', deployedRuntime.length, compiledRuntime.length)
 assertEqual('runtime bytecode hash', keccak256(deployedRuntime), keccak256(compiledRuntime))
 assertSame('deployed runtime bytecode', deployedRuntime, compiledRuntime)
+assertSame('pre-handshake runtime bytecode', codeBeforeHandshake, deployedRuntime)
 
 await assertHttp200('contract', `https://testnet.blockscout.injective.network/address/${CONTRACT}`)
 

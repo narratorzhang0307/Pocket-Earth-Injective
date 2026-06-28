@@ -31,7 +31,7 @@ const checks = [
     moduleUrl: new URL('./verify-wallet-flow.mjs', import.meta.url),
   },
   {
-    label: 'SocialHandshake source matches deployed runtime bytecode',
+    label: 'SocialHandshake deployer, timing, and source bytecode',
     moduleUrl: new URL('./verify-handshake-contract.mjs', import.meta.url),
   },
   {
