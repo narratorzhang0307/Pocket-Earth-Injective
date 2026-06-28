@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
+    "verify:hardware": "node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs",
     "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs"
   },
   "dependencies": {

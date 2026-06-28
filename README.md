@@ -16,7 +16,8 @@
 - **钱包证据链**：注册、绑定、部署和握手交易都在同一个测试网钱包下：[`0x6D5A...C934`](https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934)。
 - **握手合约**：`SocialHandshake` 只记录 agentId、名片哈希、相似度和时间戳，不上链私人原文：[`0xe533...e3aee`](https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee)。
 - **产品闭环**：`/api/injective?tool=list-agents&builderCode=pocket-earth` 从 Injective 链上按 builderCode 读回 `agentId 43–47`，`public-plaza` 展示相似 agent，地球出现蓝紫色链上标记，Nightly Chain Dispatch 把链上见闻翻译成人话。
-- **一键验链**：本地运行 `npm run verify:injective`，会只读核验 `agentId 43–47`、公开 data URI 名片结构、`builderCode: pocket-earth`、`/api/injective` 读链路（ping/status/reputation/list）、写链 dry-run 边界、ERC-8004 registry mint 事件、钱包证据链、SocialHandshake 部署交易/源码字节码、Demo/README 的 Blockscout 链接，以及带非零名片哈希的真实握手 hash derivation + calldata + event。
+- **硬件延展**：`hardware/frost-buddy/` 预留 Raspberry Pi / BLE / TTS 事件桥，让 music-agent 的实体 Frost 能播歌，也能把 public-plaza 读到的 Injective 链上见闻读给用户听；当前只传公开事件，不碰私钥和画像原文。
+- **一键验链**：本地运行 `npm run verify:injective`，会只读核验 `agentId 43–47`、公开 data URI 名片结构、`builderCode: pocket-earth`、`/api/injective` 读链路（ping/status/reputation/list）、写链 dry-run 边界、ERC-8004 registry mint 事件、钱包证据链、SocialHandshake 部署交易/源码字节码、Demo/README 的 Blockscout 链接、带非零名片哈希的真实握手 hash derivation + calldata + event，以及 Frost Buddy 硬件桥不会泄露私钥或画像原文。
 
 完整集成说明见 [`INJECTIVE-INTEGRATION/README.md`](INJECTIVE-INTEGRATION/README.md)，录屏脚本见 [`INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`](INJECTIVE-INTEGRATION/DEMO-SCRIPT.md)。
 评审复验证据包见 [`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`](INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md)。

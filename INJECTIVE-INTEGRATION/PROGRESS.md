@@ -15,6 +15,7 @@
 - ✅ **真·握手合约**：`SocialHandshake` 部署到 testnet `0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署 tx `0x6048425a…`（比赛钱包 nonce 2）；真握手上链 tx `0x0e597f33…`（agentA 43 · agentB 44 · score 88 · 非零名片哈希）。
 - ✅ **前端无人值守验证**（`npm run verify:plaza` 自动起停 Vite）：puppeteer 走查 public-plaza 读链上 agent、agent-plaza 页面与「咖啡地图」安装闭环；广场前端直接用 `/api/injective?tool=list-agents&builderCode=pocket-earth` 按 builderCode 读取 `agentId 43–47`，口味解码、相似度差异化排序（79/73/67）、钉地球、夜间报告，UI 与现有像素风协调。验证中修了 4 个真实问题：①list-agents 扫全链 14s → 并行快查 2.6s；②空 agentId 拖慢 → getStatus 2.5s 超时；③相似度一排全 55% → 差异化算法；④定位 demoReset 刷新清画像。
 - ✅ **链上证据脚本**：`CHAIN-EVIDENCE.md` 汇总评审可直接点击的身份、钱包、注册交易、合约、握手证据；`verify-agent43.mjs` 可读回 `builderCode: pocket-earth` 并核验 #43、钱包页、握手合约页；`verify-handshake-contract.mjs` 可核验 SocialHandshake 部署交易/部署者/部署时序，并重编译 `SocialHandshake.sol` 比对 Injective testnet creation/runtime bytecode；`verify-handshake.mjs` 可重算脱敏名片哈希并解码真实握手 calldata + event（agentA 43 · agentB 44 · score 88 · 非零名片哈希）。
+- ✅ **Frost Buddy 硬件桥**：`hardware/frost-buddy/` 已加入解耦事件契约，把 `music-agent` 播放和 public-plaza 读到的 Injective 链上见闻转成安全 JSONL，供 Raspberry Pi / BLE / TTS 适配；`verify-hardware-bridge.mjs` 已接入 `npm run verify:injective`，确认不带私钥、密钥名、画像原文或名片哈希。
 - ✅ **demo 预置画像**：`?demo` 参数清零后自动注入示例口味画像，录 demo 一进广场就丰满（`demoReset.ts`）。
 - ✅ **交付物**：`.gitignore` 加固（私钥/第三方库不入库）、`.env.example` 补 INJ_ 说明、`DEMO-SCRIPT.md`（3 分钟分镜 + 链上验证凭证）、`register-fleet.mjs` / `verify-plaza*.mjs` / `verify-agent43.mjs` / `verify-handshake-contract.mjs` / `verify-handshake.mjs` 复现工具。
 - ⏳ **继续打磨**：优先优化 public-plaza / agent-plaza 演示、README 评审入口、轻量 smoke、链上证据可读性和录屏稳定性。
@@ -97,8 +98,8 @@
 - [~] **P1-3** 读部分 `?tool=get-reputation`(getReputation) 已加 ✅、无需私钥；写部分 `giveFeedback` 互评待私钥。
 - [ ] **P1-4** 足迹存在性凭证（钉点哈希+时间戳上链，不上坐标原文）。
 - [ ] **P2-1** 先验 x402 facilitator 支持 Injective；`x402:true` + 付费路由中间件 + `inj_tip` 限额校验器。
-- [ ] **P2-2** Nightly Dispatch 经 BLE 推桌面硬件 Frost（`FrostSignals.chainEvent` 源 + derive 折 celebrate/heart/attention/dizzy）。
-- [ ] **P2-3** 树莓派常驻播报端（可选）。
+- [~] **P2-2** Nightly Dispatch 经 BLE 推桌面硬件 Frost（已完成安全 JSONL 事件桥；真实 BLE/TTS adapter 待硬件进程）。
+- [~] **P2-3** 树莓派常驻播报端（已预留 Raspberry Pi / BLE / TTS 接口；常驻 daemon 与实体调试待做）。
 
 ---
 

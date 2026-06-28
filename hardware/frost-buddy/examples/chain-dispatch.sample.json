@@ -1,0 +1,7 @@
+{
+  "count": 5,
+  "agentIds": [43, 44, 45, 46, 47],
+  "body": "builderCode=pocket-earth returned agentId 43-47 from Injective testnet.",
+  "scanUrl": "https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e",
+  "createdAt": "2026-06-29T00:00:01.000Z"
+}

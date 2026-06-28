@@ -65,5 +65,6 @@ This read-only proof suite verifies:
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
 - wallet evidence chain, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links
+- Frost Buddy hardware bridge events for music-agent and Injective chain dispatch stay public-only and contain no private keys, secret env names, raw profile text, or profile hashes
 
 Note: `8004scan.io` does not index Injective testnet, so the public demo uses Injective Blockscout links above.
