@@ -19,7 +19,7 @@
 | Nightly Chain Dispatch 夜间链上见闻报告 | `PublicPlazaPage.tsx` | ✅ |
 | `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 已部署 |
 | register / handshake 真写逻辑（confirm 闸门，testnet-only） | `injective-service.mjs` | ✅ 已上链验证 |
-| 一键链上证明套件（agentId 43–47 + `/api/injective` 读链路 + 写链 dry-run 边界 + registry mint 事件 + 钱包证据链 + 合约部署者/源码字节码 + Demo/README 链接 + 握手事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
+| 一键链上证明套件（agentId 43–47 + `/api/injective` 读链路 + 写链 dry-run 边界 + registry mint 事件 + 钱包证据链 + 合约部署交易/源码字节码 + Demo/README 链接 + 握手事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
 
 ---
 
@@ -117,7 +117,7 @@ node INJECTIVE-INTEGRATION/verify-demo-links.mjs
 - Pocket Earth agent fleet：`agentId 43–47` 均可读回 `builderCode = pocket-earth`；44–47 的脱敏口味名片用 data URI 内联上链，无需 Pinata。
 - Registry 事件级证据：`verify-registry-events.mjs` 会读取 ERC-8004 `Transfer(0x0 → wallet, tokenId)` mint 事件，核验 `agentId 43–47` 的注册交易哈希。
 - 钱包证据链：注册交易 `0xd2b574...0554` 与握手交易 `0xce15c7...c42e` 都由同一个测试网钱包发起；`verify-wallet-flow.mjs` 会核验交易 from/to、注册事件、合约代码和公开页面。
-- SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署交易 `0x6048425a...fa722` 由比赛钱包 nonce 2 创建。`verify-handshake-contract.mjs` 会核验这笔部署交易、合约地址推导、代码在 Frost 注册后且握手前出现，并重新编译本仓库的 `SocialHandshake.sol` 比对 Injective testnet runtime bytecode。
+- SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署交易 `0x6048425a...fa722` 由比赛钱包 nonce 2 创建。`verify-handshake-contract.mjs` 会核验这笔部署交易、合约地址推导、交易 input 与本地 creation bytecode 一致、代码在 Frost 注册后且握手前出现，并重新编译本仓库的 `SocialHandshake.sol` 比对 Injective testnet runtime bytecode。
 - 真实握手交易：`0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e`，事件参数为 `agentA 43`、`agentB 44`、`score 88`，并可核验 `bytes32` 名片哈希字段与事件时间戳。
 
 这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents` 处理器，确认产品后端能从 Injective testnet 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation` 三个只读工具；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-demo-links.mjs` 会确认 README 与录屏脚本里的公开 Blockscout 证据页仍可打开。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。

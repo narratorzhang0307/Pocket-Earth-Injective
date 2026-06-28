@@ -74,7 +74,7 @@ const input = {
   settings: {
     evmVersion: 'paris',
     optimizer: { enabled: true, runs: 200 },
-    outputSelection: { '*': { '*': ['evm.deployedBytecode.object'] } },
+    outputSelection: { '*': { '*': ['evm.bytecode.object', 'evm.deployedBytecode.object'] } },
   },
 }
 
@@ -83,9 +83,12 @@ const errors = (output.errors || []).filter((item) => item.severity === 'error')
 if (errors.length) throw new Error(errors.map((item) => item.formattedMessage).join('\n'))
 
 const contract = output.contracts?.['SocialHandshake.sol']?.SocialHandshake
-const compiledObject = contract?.evm?.deployedBytecode?.object
-assertTrue('compiled runtime bytecode exists', typeof compiledObject === 'string' && compiledObject.length > 0)
-const compiledRuntime = '0x' + compiledObject
+const compiledCreationObject = contract?.evm?.bytecode?.object
+const compiledRuntimeObject = contract?.evm?.deployedBytecode?.object
+assertTrue('compiled creation bytecode exists', typeof compiledCreationObject === 'string' && compiledCreationObject.length > 0)
+assertTrue('compiled runtime bytecode exists', typeof compiledRuntimeObject === 'string' && compiledRuntimeObject.length > 0)
+const compiledCreation = '0x' + compiledCreationObject
+const compiledRuntime = '0x' + compiledRuntimeObject
 
 const client = createPublicClient({ chain, transport: http() })
 const derivedAddress = getContractAddress({ from: OWNER, nonce: DEPLOY_NONCE })
@@ -100,6 +103,10 @@ assertEqual('deployment tx.from', deployTx.from, OWNER)
 assertEqual('deployment tx.to', deployTx.to, null)
 assertEqual('deployment tx.nonce', deployTx.nonce, Number(DEPLOY_NONCE))
 assertEqual('deployment tx creates', getContractAddress({ from: deployTx.from, nonce: BigInt(deployTx.nonce) }), CONTRACT)
+assertTrue('deployment tx input exists', typeof deployTx.input === 'string' && deployTx.input.length > 2)
+assertEqual('deployment creation bytecode length', deployTx.input.length, compiledCreation.length)
+assertEqual('deployment creation bytecode hash', keccak256(deployTx.input), keccak256(compiledCreation))
+assertSame('deployment creation bytecode', deployTx.input, compiledCreation)
 
 const deployReceipt = await retry('deployment receipt', () => client.getTransactionReceipt({ hash: CONTRACT_DEPLOY_TX }))
 assertEqual('deployment receipt.status', deployReceipt.status, 'success')
