@@ -17,8 +17,9 @@
 | Agent Plaza 读链上真实 agent（空 / 失败回落示意不白屏） | `PublicPlazaPage.tsx` | ✅ |
 | 链上 agent 钉地球（新 `'agent'` 标记类型） | `mapMarkers.ts` | ✅ |
 | Nightly Chain Dispatch 夜间链上见闻报告 | `PublicPlazaPage.tsx` | ✅ |
-| `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 代码 |
-| register / handshake 真写逻辑（dryRun 闸门，待私钥 + 合约部署） | `injective-service.mjs` | 🟡 骨架 |
+| `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 已部署 |
+| register / handshake 真写逻辑（confirm 闸门，testnet-only） | `injective-service.mjs` | ✅ 已上链验证 |
+| 一键链上证明套件（agentId 43 + builderCode + 握手事件 + Blockscout 链接） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
 
 ---
 
@@ -75,10 +76,11 @@ npm run build && node server.mjs
 # 3. 验证真连 testnet
 curl 'localhost:5173/api/injective?tool=ping'   # → {reachable:true,sdk:true,network:testnet}
 
-# 4. 验证 Frost 主身份 agentId 43（builderCode 必须读回 pocket-earth）
-node INJECTIVE-INTEGRATION/verify-agent43.mjs
+# 4. 一键验证 Injective 链上证据（只读，不需要私钥）
+npm run verify:injective
 
-# 5. 验证真实 SocialHandshake 交易（agentA 43 · agentB 44 · score 88）
+# 也可以单独验证两段证据
+node INJECTIVE-INTEGRATION/verify-agent43.mjs
 node INJECTIVE-INTEGRATION/verify-handshake.mjs
 ```
 
@@ -100,11 +102,12 @@ node INJECTIVE-INTEGRATION/verify-handshake.mjs
 
 ---
 
-## 待用户提供（只卡真上链，前面全部可跑）
+## 已上链凭证
 
-1. **`INJ_PRIVATE_KEY`**（testnet）→ 副本 `.env`
-2. 用该地址去[水龙头](https://testnet.faucet.injective.network/)领 testnet INJ 付 gas
+- Frost 主身份：`agentId 43`，`builderCode = pocket-earth`，Owner/Wallet 为 `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`。
+- SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`。
+- 真实握手交易：`0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e`，事件参数为 `agentA 43`、`agentB 44`、`score 88`。
 
-一到位即可：真·注册 Frost 链上身份（8004scan 可查）→ 部署握手合约 → 真握手上链。
+这些证据可用 `npm run verify:injective` 复验；写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
 
 详见 `PLAN.md`（完整方案 + Demo 5 幕 + Pitch 要点）、`RESEARCH.md`（agent-sdk API 精读）、`PROGRESS.md`（断点续作清单）。

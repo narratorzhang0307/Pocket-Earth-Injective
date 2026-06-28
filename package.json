@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs"
   },
   "dependencies": {
     "@injective/agent-sdk": "file:INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk",
