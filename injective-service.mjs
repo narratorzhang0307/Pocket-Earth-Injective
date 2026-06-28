@@ -141,6 +141,27 @@ export async function handleInjective(req, res, url, cfg = {}) {
         const card = { type: 'https://eips.ethereum.org/EIPS/eip-8004#registration-v1', name: regName, description: regDesc, tags: regTags, metadata: { chain: 'injective', builderCode: 'pocket-earth' } }
         inlineUri = 'data:application/json;base64,' + Buffer.from(JSON.stringify(card)).toString('base64')
       }
+      if (dryRun && !pk) {
+        return json(res, {
+          ok: true,
+          dryRun: true,
+          address: null,
+          agentId: null,
+          txHashes: [],
+          scanUrl: null,
+          willRegister: {
+            name: regName,
+            type: 'other',
+            builderCode: 'pocket-earth',
+            description: regDesc,
+            tags: regTags,
+            services: Array.isArray(body.services) ? body.services : [],
+            x402: false,
+            uri: inlineUri,
+          },
+          hint: 'dryRun preview only; set INJ_PRIVATE_KEY and confirm:true to write on Injective testnet',
+        })
+      }
       const client = new sdk.AgentClient({ privateKey: pk || undefined, network, storage })
       const result = await client.register({
         name: regName,

@@ -19,6 +19,10 @@ const checks = [
     moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
   },
   {
+    label: 'App /api/injective write tools stay dry-run without confirmation',
+    moduleUrl: new URL('./verify-api-write-boundaries.mjs', import.meta.url),
+  },
+  {
     label: 'ERC-8004 registry mint events: agentId 43-47',
     moduleUrl: new URL('./verify-registry-events.mjs', import.meta.url),
   },

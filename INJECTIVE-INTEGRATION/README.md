@@ -19,7 +19,7 @@
 | Nightly Chain Dispatch 夜间链上见闻报告 | `PublicPlazaPage.tsx` | ✅ |
 | `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 已部署 |
 | register / handshake 真写逻辑（confirm 闸门，testnet-only） | `injective-service.mjs` | ✅ 已上链验证 |
-| 一键链上证明套件（agentId 43–47 + `/api/injective` 读链路 + registry mint 事件 + 钱包证据链 + Demo/README 链接 + 握手事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
+| 一键链上证明套件（agentId 43–47 + `/api/injective` 读链路 + 写链 dry-run 边界 + registry mint 事件 + 钱包证据链 + Demo/README 链接 + 握手事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
 
 ---
 
@@ -55,7 +55,7 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | GET | `?tool=list-agents&limit=20` | `{agents, total}` | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
-| POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun + gasEstimate） | 真写需 |
+| POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
 | POST | `?tool=handshake` `{agentA, agentB, score, confirm}` | `{txHash}`（无私钥/合约 → dryRun + willEmit） | 真写需 |
 
 ---
@@ -85,6 +85,7 @@ node INJECTIVE-INTEGRATION/verify-agent43.mjs
 node INJECTIVE-INTEGRATION/verify-fleet.mjs
 node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
+node INJECTIVE-INTEGRATION/verify-api-write-boundaries.mjs
 node INJECTIVE-INTEGRATION/verify-registry-events.mjs
 node INJECTIVE-INTEGRATION/verify-wallet-flow.mjs
 node INJECTIVE-INTEGRATION/verify-handshake.mjs
@@ -118,6 +119,6 @@ node INJECTIVE-INTEGRATION/verify-demo-links.mjs
 - SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`。
 - 真实握手交易：`0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e`，事件参数为 `agentA 43`、`agentB 44`、`score 88`。
 
-这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents` 处理器，确认产品后端能从 Injective testnet 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation` 三个只读工具；`verify-demo-links.mjs` 会确认 README 与录屏脚本里的公开 Blockscout 证据页仍可打开。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
+这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents` 处理器，确认产品后端能从 Injective testnet 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation` 三个只读工具；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-demo-links.mjs` 会确认 README 与录屏脚本里的公开 Blockscout 证据页仍可打开。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
 
 详见 `PLAN.md`（完整方案 + Demo 5 幕 + Pitch 要点）、`RESEARCH.md`（agent-sdk API 精读）、`PROGRESS.md`（断点续作清单）。
