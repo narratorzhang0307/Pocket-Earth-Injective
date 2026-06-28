@@ -7,13 +7,30 @@ const OUT = '/tmp'
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: 'new',
-  args: ['--no-sandbox', '--disable-gpu'],
+  args: ['--no-sandbox', '--disable-gpu', '--use-gl=swiftshader', '--enable-unsafe-swiftshader'],
   defaultViewport: { width: 440, height: 900, deviceScaleFactor: 2 },
 })
 const page = await browser.newPage()
 const errors = []
-page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text().slice(0, 220)) })
-page.on('pageerror', (e) => errors.push('PAGEERROR: ' + e.message.slice(0, 220)))
+const ignoredErrors = []
+const listAgentResponses = []
+const recordError = (message) => {
+  const text = String(message || '').slice(0, 220)
+  // Headless Chrome can fail WebGL before the script opens AGENTS; it is not a plaza/API regression.
+  if (text.includes('Failed to initialize WebGL')) ignoredErrors.push(text)
+  else errors.push(text)
+}
+page.on('console', (m) => { if (m.type() === 'error') recordError(m.text()) })
+page.on('pageerror', (e) => recordError('PAGEERROR: ' + e.message))
+page.on('response', async (res) => {
+  const url = res.url()
+  if (!url.includes('/api/injective') || !url.includes('tool=list-agents')) return
+  try {
+    listAgentResponses.push({ status: res.status(), body: await res.json() })
+  } catch (e) {
+    listAgentResponses.push({ status: res.status(), error: String(e?.message || e) })
+  }
+})
 
 const clickText = (txt) => page.evaluate((t) => {
   const els = [...document.querySelectorAll('button, [role="button"], div, span, a')]
@@ -22,6 +39,9 @@ const clickText = (txt) => page.evaluate((t) => {
   return false
 }, txt)
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const expect = (condition, message) => {
+  if (!condition) throw new Error(message)
+}
 
 try {
   // ?demo：demoReset 清零后自动注入示例画像（验证「预置画像」功能，不再手动注入）
@@ -29,7 +49,9 @@ try {
   await sleep(1800)
   await page.screenshot({ path: OUT + '/inj_1_earth.png' })
 
-  console.log('点 Agents tab:', await clickText('Agents'))
+  const clickedAgents = await clickText('Agents')
+  console.log('点 Agents tab:', clickedAgents)
+  expect(clickedAgents, 'Agents tab not found')
   await sleep(3000) // 等 MusicAgentsTab 懒加载完成
   await page.screenshot({ path: OUT + '/inj_2_agents.png' })
 
@@ -45,14 +67,32 @@ try {
     card.click(); return 'clicked-card'
   })
   console.log('点 public-plaza:', plazaClick)
+  expect(plazaClick !== 'no-label', 'public-plaza card not found')
   await sleep(5000) // 等 list-agents 拉链上 agent
   await page.screenshot({ path: OUT + '/inj_3_plaza.png' })
 
   const plazaText = await page.evaluate(() => document.body.innerText.replace(/\n{2,}/g, '\n').slice(0, 1800))
+  const chainPayload = listAgentResponses.at(-1)
+  expect(chainPayload, 'list-agents API was not requested')
+  expect(chainPayload.status === 200, `list-agents HTTP ${chainPayload.status}`)
+  expect(!chainPayload.error, `list-agents JSON parse failed: ${chainPayload.error}`)
+  const agents = Array.isArray(chainPayload.body?.agents) ? chainPayload.body.agents : []
+  const ids = agents.map((a) => String(a?.agentId ?? ''))
+  expect(agents.length > 0, 'list-agents returned no on-chain agents')
+  expect(ids.includes('43'), `agentId 43 missing from list-agents response: [${ids.join(', ')}]`)
+  expect(agents.some((a) => String(a?.builderCode || '').toLowerCase() === 'pocket-earth'), 'builderCode pocket-earth missing from list-agents response')
+  expect(plazaText.includes('PUBLIC-PLAZA'), 'PUBLIC-PLAZA header missing')
+  expect(plazaText.includes('INJECTIVE 链上'), 'Injective on-chain stat strip missing')
+  expect(/Injective #4[3-7]/.test(plazaText), 'on-chain agent badge missing from plaza UI')
+  expect(errors.length === 0, 'console/page errors:\n' + errors.join('\n'))
   console.log('\n=== 广场可见文本 ===\n' + plazaText)
+  console.log('\n=== list-agents 摘要 ===')
+  console.log(JSON.stringify({ count: agents.length, ids, pocketEarth: agents.filter((a) => a?.builderCode === 'pocket-earth').length }, null, 2))
   console.log('\n=== console 报错 ===\n' + (errors.length ? errors.join('\n') : '✅ 无'))
+  if (ignoredErrors.length) console.log('\n=== 已忽略的 headless WebGL 噪声 ===\n' + ignoredErrors.join('\n'))
 } catch (e) {
   console.error('脚本错:', e.message)
+  process.exitCode = 1
 } finally {
   await browser.close()
 }
