@@ -7,7 +7,10 @@ const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 const REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 const HANDSHAKE_CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
 const REGISTER_TX = '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554'
-const HANDSHAKE_TX = '0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e'
+const HANDSHAKE_TX = '0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6'
+const ZERO_BYTES32 = '0x' + '0'.repeat(64)
+const PROFILE_HASH_A = '0x7e8a254adf8ec98cacbf4f998433553532045748f6973d1be1e7a94d06165fb9'
+const PROFILE_HASH_B = '0x34ec93bc1f4a69f6c3f37fab98c5a6e5ca493107bceff10d085d6d29b7bc0785'
 
 const chain = defineChain({
   id: 1439,
@@ -96,6 +99,10 @@ assertEqual('handshake event', event.eventName, 'Handshake')
 assertEqual('handshake agentA', event.args.agentA, 43n)
 assertEqual('handshake agentB', event.args.agentB, 44n)
 assertEqual('handshake score', event.args.score, 88)
+assertTrue('handshake profileHashA is non-zero', event.args.profileHashA.toLowerCase() !== ZERO_BYTES32)
+assertTrue('handshake profileHashB is non-zero', event.args.profileHashB.toLowerCase() !== ZERO_BYTES32)
+assertEqual('handshake profileHashA', event.args.profileHashA, PROFILE_HASH_A)
+assertEqual('handshake profileHashB', event.args.profileHashB, PROFILE_HASH_B)
 
 for (const [label, url] of Object.entries(links)) {
   await assertHttp200(label, url)

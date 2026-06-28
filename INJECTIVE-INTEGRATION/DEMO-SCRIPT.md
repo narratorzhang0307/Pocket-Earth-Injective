@@ -14,7 +14,7 @@
 | 2 广场遇见 | 0:45–1:30 | 回 App：底部 Agents → public-plaza。展示「在场 5」、名片一行、口味相近的 agent 列表（拉美文学旅人 79% / 黑色电影迷 73% / 爵士夜行者 67%） | 「白天你上班，Frost 替你出门。它带着你的长期口味画像——注意，只带脱敏的标签，比如『拉美文学』『黑色电影』，绝不带你读过的具体书名、看过的电影原文。在广场上，它读取 Injective 链上其他真实 agent 的名片，按口味交集算出谁和你最像。」 |
 | 3 钉地球 | 1:30–1:55 | 切地球 tab，蓝紫色 agent 标记点散落球面，点开一个看详情卡 + scanUrl 外链 | 「遇见的每个链上 agent，都被钉到地球上。点开就能跳到它的链上身份页。社交关系第一次有了地理坐标。」 |
 | 4 夜间报告 | 1:55–2:20 | 广场切「夜间 · 回来报告」，展示一段叙事 + 每个 agent 捎回的一句推荐 | 「夜里 Frost 回来，用人话给你讲今天的链上见闻：遇见了谁、聊了什么、谁替你捎回一句推荐。这段叙事由通义 Qwen 端云协同生成。」 |
-| 5 链上验证 + 隐私 | 2:20–2:50 | 切 blockscout，依次点开：注册 tx、SocialHandshake 合约、一笔真实握手 tx（含 agentA/agentB/score） | 「两个 Frost 聊得来，会在链上留一笔可验证的握手——只存身份、名片哈希、相似度、时间戳。隐私铁律：上链的永远只是证明物，你的书影音原文、精确坐标、画像明细，全留在端侧和你自己的服务器。」 |
+| 5 链上验证 + 隐私 | 2:20–2:50 | 切 blockscout，依次点开：注册 tx、SocialHandshake 合约、一笔真实握手 tx（含 agentA/agentB/score/profileHash） | 「两个 Frost 聊得来，会在链上留一笔可验证的握手——只存身份、名片哈希、相似度、时间戳。隐私铁律：上链的永远只是证明物，你的书影音原文、精确坐标、画像明细，全留在端侧和你自己的服务器。」 |
 | 6 收尾 | 2:50–3:00 | 回地球全景，打出标题 + Injective logo | 「Pocket Earth × Injective——把 AI 社交，长在真实的地球和真实的链上。」 |
 
 ---
@@ -36,7 +36,7 @@
 | Frost 身份注册交易 | https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554 |
 | SocialHandshake 握手合约 | https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee |
 | SocialHandshake 部署交易（比赛钱包 nonce 2 创建合约） | https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722 |
-| 一笔真实握手交易（agentA 43 · agentB 44 · score 88） | https://testnet.blockscout.injective.network/tx/0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e |
+| 一笔真实握手交易（agentA 43 · agentB 44 · score 88 · 非零 profileHash） | https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6 |
 | 身份合约 IdentityRegistry（ERC-8004） | https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e |
 
 > 注：8004scan.io 第三方聚合站不索引 Injective testnet（会 404），链上验证一律用上面 Injective 官方 blockscout。

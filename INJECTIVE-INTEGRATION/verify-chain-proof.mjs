@@ -35,7 +35,7 @@ const checks = [
     moduleUrl: new URL('./verify-handshake-contract.mjs', import.meta.url),
   },
   {
-    label: 'SocialHandshake event: agentA 43, agentB 44, score 88, hashes, timestamp',
+    label: 'SocialHandshake event: agentA 43, agentB 44, score 88, non-zero hashes, timestamp',
     moduleUrl: new URL('./verify-handshake.mjs', import.meta.url),
   },
   {
@@ -60,4 +60,4 @@ console.log('- wallet: https://testnet.blockscout.injective.network/address/0x6D
 console.log('- registration tx: https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554')
 console.log('- fleet registration txs: 0x02a0590c...a38f44, 0xc161f0df...33fffe, 0x1bbd3df1...aea4e, 0xada3e082...e1a50')
 console.log('- SocialHandshake deploy tx: https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722')
-console.log('- handshake tx: https://testnet.blockscout.injective.network/tx/0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e')
+console.log('- handshake tx: https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6')

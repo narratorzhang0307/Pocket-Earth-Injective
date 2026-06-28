@@ -4,14 +4,14 @@ import { createPublicClient, decodeEventLog, defineChain, http, parseAbi } from 
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
 const CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
-const TX_HASH = '0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e'
+const TX_HASH = '0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6'
 const ZERO_BYTES32 = '0x' + '0'.repeat(64)
 const EXPECTED = {
   agentA: 43n,
   agentB: 44n,
   score: 88,
-  profileHashA: ZERO_BYTES32,
-  profileHashB: ZERO_BYTES32,
+  profileHashA: '0x7e8a254adf8ec98cacbf4f998433553532045748f6973d1be1e7a94d06165fb9',
+  profileHashB: '0x34ec93bc1f4a69f6c3f37fab98c5a6e5ca493107bceff10d085d6d29b7bc0785',
 }
 
 const abi = parseAbi([
@@ -72,6 +72,8 @@ assertEqual('agentB', event.args.agentB, EXPECTED.agentB)
 assertEqual('score', event.args.score, EXPECTED.score)
 assertTrue('profileHashA is bytes32', /^0x[0-9a-f]{64}$/i.test(event.args.profileHashA))
 assertTrue('profileHashB is bytes32', /^0x[0-9a-f]{64}$/i.test(event.args.profileHashB))
+assertTrue('profileHashA is non-zero', event.args.profileHashA.toLowerCase() !== ZERO_BYTES32)
+assertTrue('profileHashB is non-zero', event.args.profileHashB.toLowerCase() !== ZERO_BYTES32)
 assertEqual('profileHashA', event.args.profileHashA, EXPECTED.profileHashA)
 assertEqual('profileHashB', event.args.profileHashB, EXPECTED.profileHashB)
 assertEqual('event timestamp', event.args.timestamp, block.timestamp)

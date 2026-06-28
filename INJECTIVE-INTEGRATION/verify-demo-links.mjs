@@ -14,7 +14,7 @@ const REQUIRED_DEMO_LINKS = [
   'https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554',
   'https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee',
   'https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722',
-  'https://testnet.blockscout.injective.network/tx/0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e',
+  'https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6',
   'https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e',
 ]
 
