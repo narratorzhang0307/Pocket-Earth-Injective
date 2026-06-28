@@ -21,6 +21,7 @@
 
 ## 操作要点（别卡壳）
 - **进广场**：底部 `AGENTS`（右下角 ✦）→ 卡片列表往下滑到 `PLAZA` 区 → 点 `public-plaza` 卡的 `▶ RUN`。
+- **API 复验**：评委想看接口时，可展示 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`，它会从 Injective testnet 直接读回 `agentId 43–47`。
 - **广场加载**：链上 agent 约 2–3 秒出现（先显示本机示意，随后替换为链上真实 agent，正常现象）。
 - **若相似度没差异 / 显示画像太薄**：确认地址栏带了 `?demo`（刷新会被 demoReset 清画像，`?demo` 会自动重新预置）。
 - **地球的 agent 点**：蓝紫色（`#7c5cff`），和音乐绿 / 照片青等其他图层区分；缩放后会自动散开不重叠。

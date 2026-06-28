@@ -5,7 +5,7 @@ import { handleInjective } from '../injective-service.mjs'
 const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 const BUILDER_CODE = 'pocket-earth'
 const REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
-const API_URL = 'http://localhost/api/injective?tool=list-agents&limit=5&top=47'
+const API_URL = 'http://localhost/api/injective?tool=list-agents&limit=5&top=47&builderCode=pocket-earth'
 
 const REQUIRED = [
   { id: '43', label: 'Frost main identity' },
@@ -63,6 +63,7 @@ try {
 }
 
 assertEqual('api sdk flag', payload.sdk, true)
+assertEqual('api builderCode filter', payload.builderCode, BUILDER_CODE)
 assertTrue('api agents array', Array.isArray(payload.agents))
 assertTrue('api returned full Pocket Earth fleet', payload.agents.length >= REQUIRED.length)
 

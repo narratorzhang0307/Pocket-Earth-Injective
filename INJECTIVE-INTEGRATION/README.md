@@ -52,7 +52,7 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | 方法 | 端点 | 返回 | 私钥 |
 |---|---|---|---|
 | GET | `/api/injective?tool=ping` | `{reachable, sdk, network}` | 否 |
-| GET | `?tool=list-agents&limit=20` | `{agents, total}` | 否 |
+| GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{agents, total}`，可直接复验 Pocket Earth agent fleet | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
 | POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
@@ -123,6 +123,6 @@ node INJECTIVE-INTEGRATION/verify-demo-links.mjs
 - SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署交易 `0x6048425a...fa722` 由比赛钱包 nonce 2 创建。`verify-handshake-contract.mjs` 会核验这笔部署交易、合约地址推导、交易 input 与本地 creation bytecode 一致、代码在 Frost 注册后且握手前出现，并重新编译本仓库的 `SocialHandshake.sol` 比对 Injective testnet runtime bytecode。
 - 真实握手交易：`0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6`，`verify-handshake.mjs` 会用公开脱敏 demo seed 重算两个 profileHash，并核验 calldata 与事件参数均为 `agentA 43`、`agentB 44`、`score 88`，以及两个非零 `bytes32` 名片哈希字段与事件时间戳。
 
-评审复验证据包见 `CHAIN-EVIDENCE.md`。这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents` 处理器，确认产品后端能从 Injective testnet 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation` 三个只读工具；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-demo-links.mjs` 会确认 README、证据包与录屏脚本里的公开 Blockscout 证据页仍可打开。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
+评审复验证据包见 `CHAIN-EVIDENCE.md`。这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents&builderCode=pocket-earth` 处理器，确认产品后端能从 Injective testnet 按 builderCode 读回并解码这组链上 agent；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation` 三个只读工具；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-demo-links.mjs` 会确认 README、证据包与录屏脚本里的公开 Blockscout 证据页仍可打开。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
 
 详见 `PLAN.md`（完整方案 + Demo 5 幕 + Pitch 要点）、`RESEARCH.md`（agent-sdk API 精读）、`PROGRESS.md`（断点续作清单）。

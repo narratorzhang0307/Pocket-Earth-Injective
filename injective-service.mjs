@@ -82,6 +82,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
       if (!reader) return json(res, { agents: [], total: 0, sdk: false, hint: 'SDK 未就绪，前端请回落示意邻居' })
       const offset = Math.max(0, Number(url.searchParams.get('offset') || 0))
       const limit = Math.min(50, Math.max(1, Number(url.searchParams.get('limit') || 20)))
+      const builderCodeFilter = String(url.searchParams.get('builderCode') || '').trim().toLowerCase()
       const enrich = url.searchParams.get('enrich') !== '0'
       const full = url.searchParams.get('full') === '1'
       let agents = [], total = 0
@@ -99,18 +100,27 @@ export async function handleInjective(req, res, url, cfg = {}) {
         const top = Number(url.searchParams.get('top') || 47)
         const ids = []
         for (let id = top - offset; id >= Math.max(1, top - offset - limit + 1); id--) ids.push(id)
-        const settled = await Promise.all(ids.map((id) => Promise.race([
+        const getStatusWithTimeout = (id, timeoutMs = 4000) => Promise.race([
           reader.getStatus(BigInt(id)),
-          new Promise((rs) => setTimeout(() => rs(null), 4000)), // 不存在/慢的 id 超时回 null，不拖累整体
-        ]).catch(() => null)))
+          new Promise((rs) => setTimeout(() => rs(null), timeoutMs)), // 不存在/慢的 id 超时回 null，不拖累整体
+        ]).catch(() => null)
+        const settled = await Promise.all(ids.map((id) => getStatusWithTimeout(id)))
         agents = settled.filter(Boolean)
+        if (builderCodeFilter && agents.length < Math.min(limit, ids.length)) {
+          const seen = new Set(agents.map((a) => String(a.agentId)))
+          const retryIds = ids.filter((id) => !seen.has(String(id)))
+          const retried = await Promise.all(retryIds.map((id) => getStatusWithTimeout(id, 8000)))
+          agents = [...agents, ...retried.filter(Boolean)]
+        }
         total = agents.length
       }
       // 服务端解码 data: URI card → 前端直接拿到口味标签（不依赖 SDK fetchCard 对 data: 的支持）
       for (const a of agents) { if (a && !a.card && a.tokenUri) { const c = decodeDataCard(a.tokenUri); if (c) a.card = c } }
       // 合并缓存抹平 RPC 抖动（本次没查到、但 60s 内查到过的 agent 仍带上），裁到 limit
-      agents = mergeAgentCache(agents).slice(0, limit)
-      return json(res, { agents, total: agents.length, offset, limit, sdk: true })
+      agents = mergeAgentCache(agents)
+      if (builderCodeFilter) agents = agents.filter((a) => String(a?.builderCode || '').toLowerCase() === builderCodeFilter)
+      agents = agents.slice(0, limit)
+      return json(res, { agents, total: agents.length, offset, limit, ...(builderCodeFilter ? { builderCode: builderCodeFilter } : {}), sdk: true })
     }
 
     // —— 只读：查单个 agent 状态 ——
