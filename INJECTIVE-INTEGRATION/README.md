@@ -77,6 +77,9 @@ curl 'localhost:5173/api/injective?tool=ping'   # → {reachable:true,sdk:true,n
 
 # 4. 验证 Frost 主身份 agentId 43（builderCode 必须读回 pocket-earth）
 node INJECTIVE-INTEGRATION/verify-agent43.mjs
+
+# 5. 验证真实 SocialHandshake 交易（agentA 43 · agentB 44 · score 88）
+node INJECTIVE-INTEGRATION/verify-handshake.mjs
 ```
 
 ### 需要的 env（副本 `.env`，server 端读、绝不进前端）
