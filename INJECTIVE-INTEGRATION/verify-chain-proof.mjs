@@ -11,6 +11,10 @@ const checks = [
     moduleUrl: new URL('./verify-fleet.mjs', import.meta.url),
   },
   {
+    label: 'ERC-8004 registry mint events: agentId 43-47',
+    moduleUrl: new URL('./verify-registry-events.mjs', import.meta.url),
+  },
+  {
     label: 'Wallet evidence chain: registration tx + contract code + handshake tx',
     moduleUrl: new URL('./verify-wallet-flow.mjs', import.meta.url),
   },
@@ -34,4 +38,5 @@ console.log('- agentId 43: https://testnet.blockscout.injective.network/token/0x
 console.log('- agent fleet 43-47: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e')
 console.log('- wallet: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934')
 console.log('- registration tx: https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554')
+console.log('- fleet registration txs: 0x02a0590c...a38f44, 0xc161f0df...33fffe, 0x1bbd3df1...aea4e, 0xada3e082...e1a50')
 console.log('- handshake tx: https://testnet.blockscout.injective.network/tx/0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e')
