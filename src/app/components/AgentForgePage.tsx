@@ -15,7 +15,7 @@ import { startAgentRun } from '../lib/observe/bus';
 
 const ACCENT = '#ff8a3d';
 
-export default function AgentForgePage({ onBack }: { onBack: () => void }) {
+export default function AgentForgePage({ onBack, initialRunId }: { onBack: () => void; initialRunId?: string }) {
   const [agents, setAgents] = useState<AgentManifest[]>(getCustomAgents());
   useEffect(() => subscribeCustomAgents(() => setAgents([...getCustomAgents()])), []);
 
@@ -28,8 +28,8 @@ export default function AgentForgePage({ onBack }: { onBack: () => void }) {
   const [via, setVia] = useState<'edge' | 'cloud' | 'none'>('none');
   const [err, setErr] = useState('');
 
-  // 跑：选中一个自建 agent
-  const [run, setRun] = useState<AgentManifest | null>(null);
+  // 跑：选中一个自建 agent（带 initialRunId 进来则直达它的运行页，如「我的 AGENT」里点 RUN）
+  const [run, setRun] = useState<AgentManifest | null>(() => (initialRunId ? getCustomAgents().find((a) => a.id === initialRunId) ?? null : null));
 
   const generate = async () => {
     const d = desc.trim();

@@ -3,14 +3,15 @@
 // 真 agent（旅行/音乐/电影/读书/照片）OPEN 直达真运行页（复用 onRun=runSkill），让前瞻广场立刻可信；
 // 前瞻例（观鸟/播客/链上见闻）免费的 INSTALL 只切本地态、不真装载远程代码（PWA 跑第三方代码=安全黑洞），
 // 付费的价签只展示不可点（支付入口随平台开放），底部守则带如实标注。
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, Boxes, Cpu, Cloud, Link2, ExternalLink, Lock, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SPACE_AGENTS } from '../lib/plaza/catalog';
 import {
-  SPACE_OBJECT_LABEL, SCOPE_LABEL, RUNTIME_LABEL, pricingLabel,
+  SPACE_OBJECT_LABEL, SCOPE_LABEL, RUNTIME_LABEL, pricingLabel, toManifest,
   type SpaceAgent, type OnChainIdentity,
 } from '../lib/plaza/spaceAgent';
+import { installAgent, getCustomAgents, subscribeCustomAgents } from '../lib/agent';
 
 interface Props {
   onBack: () => void;
@@ -19,11 +20,6 @@ interface Props {
 
 const ACCENT = '#7c5cff';           // Injective 链上紫（与 public-plaza OnChainBadge 同源）
 const PILL = 'text-[9px] border border-black px-1.5 py-0.5 bg-[#EAEAEA] tracking-wide inline-flex items-center gap-1';
-const KEY = 'pe.plaza.installed';
-
-function loadInstalled(): Set<string> {
-  try { const raw = localStorage.getItem(KEY); return new Set(raw ? JSON.parse(raw) : []); } catch { return new Set(); }
-}
 
 // 链上身份徽章：实心紫 + 白字 + 黑框（与 PublicPlazaPage 的 OnChainBadge 逐字同款），点击跳 Injective blockscout（真实可查）。
 function ChainBadge({ id }: { id: OnChainIdentity }) {
@@ -100,23 +96,23 @@ function match(a: SpaceAgent, f: Filter): boolean {
 }
 
 export default function AgentPlazaPage({ onBack, onRun }: Props) {
-  const [installed, setInstalled] = useState<Set<string>>(loadInstalled);
+  // 已装 = 控制台里已有同名 agent（订阅 customAgents，与 AGENTS tab 实时同步）
+  const [installedNames, setInstalledNames] = useState<Set<string>>(() => new Set(getCustomAgents().map((c) => c.name)));
+  useEffect(() => subscribeCustomAgents(() => setInstalledNames(new Set(getCustomAgents().map((c) => c.name)))), []);
   const [filter, setFilter] = useState<Filter>('all');
 
-  const install = (id: string) => {
-    setInstalled((prev) => {
-      const next = new Set(prev); next.add(id);
-      try { localStorage.setItem(KEY, JSON.stringify([...next])); } catch { /* 隐私模式：内存仍可用 */ }
-      return next;
-    });
+  // 添加 = 过安全闸 installAgent，真的进控制台「我的 AGENT」（切回 AGENTS tab 即可见）
+  const install = (a: SpaceAgent) => {
+    const { review } = installAgent(toManifest(a));
+    if (!review.ok) console.warn('[plaza] 安装失败：', a.name, review.reasons);   // 防未来改 catalog 触发静默失败
   };
 
   const shown = SPACE_AGENTS.filter((a) => match(a, filter));
   const featured = shown.filter((a) => a.group === 'featured');
   const builtin = shown.filter((a) => a.group === 'installed');
-  // 状态条是广场总况（不随筛选变）：已装=自带真 agent + 本地装过的前瞻例；可装=免费前瞻例里还没装的。
-  const nInstalled = SPACE_AGENTS.filter((a) => a.group === 'installed').length + installed.size;
-  const nAvail = SPACE_AGENTS.filter((a) => a.group === 'featured' && !a.runTarget && a.pricing.model === 'free' && !installed.has(a.id)).length;
+  // 状态条是广场总况（不随筛选变）：已装=自带真 agent + 已添加的前瞻例；可装=免费前瞻例里还没添加的。
+  const nInstalled = SPACE_AGENTS.filter((a) => a.group === 'installed').length + SPACE_AGENTS.filter((a) => a.group === 'featured' && installedNames.has(a.name)).length;
+  const nAvail = SPACE_AGENTS.filter((a) => a.group === 'featured' && !a.runTarget && a.pricing.model === 'free' && !installedNames.has(a.name)).length;
 
   return (
     <div className="h-full flex flex-col font-sans overflow-hidden" style={{ background: '#EAEAEA' }}>
@@ -191,7 +187,7 @@ export default function AgentPlazaPage({ onBack, onRun }: Props) {
               <span className="text-[9px] text-black/45">符合空间逻辑的示例</span>
             </div>
             {featured.map((a, i) => (
-              <SpaceAgentCard key={a.id} a={a} index={i} isInstalled={installed.has(a.id)} onInstall={() => install(a.id)} onRun={onRun} />
+              <SpaceAgentCard key={a.id} a={a} index={i} isInstalled={installedNames.has(a.name)} onInstall={() => install(a)} onRun={onRun} />
             ))}
           </div>
         )}
@@ -204,7 +200,7 @@ export default function AgentPlazaPage({ onBack, onRun }: Props) {
               <span className="text-[9px] text-black/45">已上架运行</span>
             </div>
             {builtin.map((a, i) => (
-              <SpaceAgentCard key={a.id} a={a} index={i} isInstalled={installed.has(a.id)} onInstall={() => install(a.id)} onRun={onRun} />
+              <SpaceAgentCard key={a.id} a={a} index={i} isInstalled={installedNames.has(a.name)} onInstall={() => install(a)} onRun={onRun} />
             ))}
           </div>
         )}

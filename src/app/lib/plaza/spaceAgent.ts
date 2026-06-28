@@ -2,7 +2,7 @@
 // 每个上架 agent 必须声明的「五要素」即审核清单：
 //   ① 处理哪类空间对象 ② 需要哪些权限 ③ 端侧 / 云端 ④ 有没有 Injective 链上身份 ⑤ 未来是否需要支付。
 // 这套硬字段把「符合空间逻辑 + 有边界 + 有审核」落到 TS 类型约束上——缺一不可即过不了审。
-import type { AgentTool } from '../agent/manifest';
+import type { AgentTool, AgentManifest, GeoStrategy } from '../agent/manifest';
 
 /** ① 空间对象（审核闸：必须能落到地球某类对象上 = 符合空间逻辑，杂七杂八的 agent 进不来） */
 export type SpaceObjectKind = 'sighting' | 'place' | 'route' | 'event' | 'media' | 'onchain';
@@ -39,6 +39,7 @@ export interface SpaceAgent {
   name: string;            // 显示名，font-pixel
   tagline: string;         // 一句话说明，sans
   publisher: string;       // 'Pocket Earth 官方' | '@dev'
+  emoji: string;           // 安装到控制台后的图标（单 emoji）
   color: string;           // 像素方块主色 #rrggbb（按领域分配，只在方块内用）
   // —— 五要素（硬字段，缺一不可，即审核清单）——
   spaceObject: SpaceObjectKind;                              // ①
@@ -56,4 +57,28 @@ export interface SpaceAgent {
 export function pricingLabel(p: Pricing): { text: string; paid: boolean } {
   if (p.model === 'free') return { text: '免费', paid: false };
   return { text: p.price + (p.comingSoon ? ' · 即将' : ''), paid: true };
+}
+
+// 空间对象 → 落点策略（复用 manifest 的 GeoStrategy 枚举），安装后让 agent 知道往哪钉。
+const GEO_BY_OBJECT: Record<SpaceObjectKind, GeoStrategy[]> = {
+  sighting: ['visited'], place: ['origin', 'story'], route: ['visited'],
+  event: ['story'], media: ['story', 'made'], onchain: ['manual'],
+};
+
+/** 把广场 agent 转成可安装的声明式 manifest（喂给 lib/agent 的 installAgent 过安全闸）。
+ *  只取 manifest 白名单字段、不带 URL / 支付，避开 reviewManifest 的 DANGER 扫描。 */
+export function toManifest(a: SpaceAgent): Partial<AgentManifest> {
+  return {
+    name: a.name.slice(0, 20),
+    emoji: a.emoji,
+    domain: SPACE_OBJECT_LABEL[a.spaceObject].slice(0, 12),
+    desc: a.tagline.slice(0, 40),
+    keywords: [a.name, SPACE_OBJECT_LABEL[a.spaceObject]].map((k) => k.slice(0, 12)),
+    geoStrategy: GEO_BY_OBJECT[a.spaceObject],
+    tagFields: ['类型', '位置'],
+    tools: a.permissions.tools,
+    cardStyle: 'generic',
+    color: a.color,
+    persona: '空间 agent · 把对象钉回地球',
+  };
 }

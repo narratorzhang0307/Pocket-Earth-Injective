@@ -46,9 +46,10 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
   },
   {
     title: 'PLAZA',
-    sub: 'agent 代理社交 · 前瞻',
+    sub: 'agent 广场 · 前瞻',
     items: [
-      { name: 'public-plaza', role: '委派你的 agent 去公共广场，带画像遇见相似的人，夜里回来报告', status: '可运行' },
+      { name: 'public-plaza', role: '代理社交：带画像去公共广场遇见口味相近的人、链上握手，夜里回来报告', status: '可运行' },
+      { name: 'agent-plaza', role: '空间 agent 广场：装免费 / 付费 agent，开发者按五要素发布，可链上交易', status: '可运行' },
     ],
   },
 ];
@@ -59,7 +60,7 @@ const RUN_BY_NAME: Record<string, Running> = {
   'music-agent': 'music', 'movies-agent': 'movies',
   'books-agent': 'books', 'photos-agent': 'photos', 'travel-agent': 'travel',
   'council-room': 'council', 'jot-agent': 'jot',
-  'public-plaza': 'plaza',
+  'public-plaza': 'plaza', 'agent-plaza': 'spaceplaza',
 };
 // FROST 总 agent 可直达的「非 agent」hero 入口（不计入上面 AGENTS 计数）：造物主 AGENT-FORGE。
 // 让 FROST 的快捷入口能像调子 agent 一样把活派给它（route A：显式委派）。
@@ -67,6 +68,7 @@ const HERO_BY_NAME: Record<string, Running> = { 'agent-forge': 'agentforge' };
 
 export default function MusicAgentsTab() {
   const [running, setRunning] = useState<Running>(null);
+  const [forgeRunId, setForgeRunId] = useState<string | undefined>();   // 「我的 AGENT」点 RUN → 透传给 AgentForge 直达该 agent 运行页
   // P2-I：已学技能（点击=路由到其目标 agent）
   const [learned, setLearned] = useState<LearnedSkill[]>(getLearnedSkills());
   useEffect(() => subscribeSkills(() => setLearned([...getLearnedSkills()])), []);
@@ -86,7 +88,7 @@ export default function MusicAgentsTab() {
   if (running === 'travel') return <TravelRunPage onBack={() => setRunning(null)} />;
   if (running === 'council') return <CouncilPage onBack={() => setRunning(null)} />;
   if (running === 'plaza') return <PublicPlazaPage onBack={() => setRunning(null)} />;
-  if (running === 'agentforge') return <AgentForgePage onBack={() => setRunning(null)} />;
+  if (running === 'agentforge') return <AgentForgePage onBack={() => { setRunning(null); setForgeRunId(undefined); }} initialRunId={forgeRunId} />;
   if (running === 'spaceplaza') return <AgentPlazaPage onBack={() => setRunning(null)} onRun={runSkill} />;
   if (running === 'jot') return <UniversalCaptureRunPage onBack={() => setRunning(null)} />;
 
@@ -148,28 +150,12 @@ export default function MusicAgentsTab() {
           <span className="shrink-0 font-pixel text-[6px] uppercase tracking-wider border border-black bg-black text-[#ff8a3d] px-1.5 py-1">▶ RUN</span>
         </button>
 
-        {/* 空间 Agent 广场入口（前瞻）：AGENTS 从功能列表 → 有边界 / 审核 / 分发 / 支付的 agent 平台 */}
-        <button
-          onClick={() => setRunning('spaceplaza')}
-          className="w-full text-left flex items-center gap-2.5 border-2 border-black p-2.5 shadow-[3px_3px_0_rgba(0,0,0,0.85)] active:translate-y-px"
-          style={{ background: '#f1eeff' }}
-        >
-          <div className="w-3 h-3 shrink-0 bg-black flex items-center justify-center border border-black" style={{ boxShadow: '1px 1px 0px #7c5cff' }}>
-            <div className="w-1.5 h-1.5" style={{ background: '#7c5cff' }} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="font-pixel text-[11px] tracking-wider text-black">SPACE-PLAZA</div>
-            <div className="text-[10px] text-black/60 leading-snug mt-0.5">空间 agent 广场（前瞻）：装免费 / 付费 agent，开发者按五要素发布</div>
-          </div>
-          <span className="shrink-0 font-pixel text-[6px] uppercase tracking-wider border border-black bg-black text-[#7c5cff] px-1.5 py-1">▶ OPEN</span>
-        </button>
-
         {/* 已造的自建 agent（造物主产出，直接可跑） */}
         {customAgents.length > 0 && (
           <div className="space-y-2">
-            <div className="font-pixel text-[8px] tracking-widest text-black/55 px-0.5">我的自建 AGENT</div>
+            <div className="font-pixel text-[8px] tracking-widest text-black/55 px-0.5">我的 AGENT · 自建 / 广场添加</div>
             {customAgents.map((a) => (
-              <button key={a.id} onClick={() => setRunning('agentforge')}
+              <button key={a.id} onClick={() => { setForgeRunId(a.id); setRunning('agentforge'); }}
                 className="w-full text-left flex items-center gap-2.5 border-2 border-black p-2 bg-white shadow-[2px_2px_0_rgba(0,0,0,0.85)] active:translate-y-px">
                 <div className="shrink-0 w-8 h-8 border-2 border-black flex items-center justify-center text-[16px]" style={{ background: a.color }}>{a.emoji}</div>
                 <div className="min-w-0 flex-1">
@@ -192,14 +178,16 @@ export default function MusicAgentsTab() {
               {g.items.map((a) => {
                 const target = RUN_BY_NAME[a.name];
                 const runnable = !!target;
-                const plaza = a.name === 'public-plaza';   // 代理社交：克制的区分色（石板蓝灰）
-                const dot = plaza ? '#6b7a8f' : '#00ff88';
+                const social = a.name === 'public-plaza';   // 代理社交：石板蓝灰
+                const market = a.name === 'agent-plaza';     // agent 商业广场：链上紫
+                const dot = social ? '#6b7a8f' : market ? '#7c5cff' : '#00ff88';
+                const hover = social ? 'hover:bg-[#6b7a8f]/10' : market ? 'hover:bg-[#7c5cff]/10' : 'hover:bg-[#00ff88]/10';
                 return (
                   <button
                     key={a.name}
                     onClick={runnable ? () => setRunning(target) : undefined}
                     className={`w-full text-left flex items-center gap-3 bg-white border-2 border-black p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)] transition-colors ${
-                      runnable ? (plaza ? 'hover:bg-[#6b7a8f]/10 active:translate-y-px' : 'hover:bg-[#00ff88]/10 active:translate-y-px') : 'cursor-default'
+                      runnable ? `${hover} active:translate-y-px` : 'cursor-default'
                     }`}
                   >
                     {/* 方块（呼应地图标记）；代理社交用区分色 */}
