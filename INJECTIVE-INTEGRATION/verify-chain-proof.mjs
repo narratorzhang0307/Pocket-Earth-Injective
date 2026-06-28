@@ -31,6 +31,10 @@ const checks = [
     moduleUrl: new URL('./verify-wallet-flow.mjs', import.meta.url),
   },
   {
+    label: 'Wallet transaction timeline: blocks + timestamps from Injective RPC',
+    moduleUrl: new URL('./verify-chain-timeline.mjs', import.meta.url),
+  },
+  {
     label: 'SocialHandshake deployer, timing, and source bytecode',
     moduleUrl: new URL('./verify-handshake-contract.mjs', import.meta.url),
   },

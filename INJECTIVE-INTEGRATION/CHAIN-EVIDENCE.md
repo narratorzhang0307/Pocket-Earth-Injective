@@ -42,6 +42,20 @@
 | SocialHandshake deployment tx | https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722 |
 | Real handshake tx | https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6 |
 
+## RPC Timeline
+
+`verify-chain-timeline.mjs` reads these transaction receipts and blocks from Injective testnet JSON-RPC, so the wallet-page story is not only a set of screenshots:
+
+| Step | Block | UTC time | Transaction |
+|---|---:|---|---|
+| Frost main identity #43 registration | `131678496` | `2026-06-27T01:46:30.000Z` | `0xd2b574...0554` |
+| SocialHandshake deployment | `131678987` | `2026-06-27T01:53:16.000Z` | `0x604842...a722` |
+| Agent #44 registration | `131679781` | `2026-06-27T02:04:14.000Z` | `0x02a059...8f44` |
+| Agent #45 registration | `131679930` | `2026-06-27T02:06:17.000Z` | `0xc161f0...fffe` |
+| Agent #46 registration | `131679941` | `2026-06-27T02:06:26.000Z` | `0x1bbd3d...a4e` |
+| Agent #47 registration | `131679948` | `2026-06-27T02:06:32.000Z` | `0xada3e0...1a50` |
+| Real SocialHandshake 43 <-> 44 | `131869118` | `2026-06-28T21:34:21.000Z` | `0x0e597f...f2d6` |
+
 Handshake calldata and event both decode to:
 
 - `agentA`: `43`
@@ -64,7 +78,7 @@ This read-only proof suite verifies:
 - `/api/injective` read path for `ping`, `list-agents`, `get-status`, and `get-reputation`
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
-- wallet evidence chain, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links
+- wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links
 - Frost Buddy hardware bridge events and the Raspberry Pi skill router stay public-only and contain no private keys, secret env names, raw profile text, or profile hashes
 
 Note: `8004scan.io` does not index Injective testnet, so the public demo uses Injective Blockscout links above.

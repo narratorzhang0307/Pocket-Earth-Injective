@@ -47,7 +47,8 @@
 ### 录屏推荐顺序
 1. 先打开 `agentId 43` 单页：画面直接显示 Frost 主身份，评委不用在合约总览里自己找。
 2. 再打开钱包页：串起注册、绑定、部署和握手交易，证明这不是单张截图，而是一整条真实链上操作链。
-3. 最后回到 App：展示 public-plaza 读取链上 agent、地球标记和夜间报告，把“链上证据”接回“产品体验”。
+3. 若评委要求机器复验，可展示 `npm run verify:injective` 里的 `Wallet transaction timeline` 小节：它直接读 Injective RPC 的 transaction / receipt / block timestamp。
+4. 最后回到 App：展示 public-plaza 读取链上 agent、地球标记和夜间报告，把“链上证据”接回“产品体验”。
 
 ---
 
