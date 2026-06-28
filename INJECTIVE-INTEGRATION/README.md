@@ -19,7 +19,7 @@
 | Nightly Chain Dispatch 夜间链上见闻报告 | `PublicPlazaPage.tsx` | ✅ |
 | `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 已部署 |
 | register / handshake 真写逻辑（confirm 闸门，testnet-only） | `injective-service.mjs` | ✅ 已上链验证 |
-| 一键链上证明套件（agentId 43–47 + builderCode + 握手事件 + Blockscout 链接） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
+| 一键链上证明套件（agentId 43–47 + builderCode + 钱包证据链 + 握手事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
 
 ---
 
@@ -82,6 +82,7 @@ npm run verify:injective
 # 也可以单独验证具体证据
 node INJECTIVE-INTEGRATION/verify-agent43.mjs
 node INJECTIVE-INTEGRATION/verify-fleet.mjs
+node INJECTIVE-INTEGRATION/verify-wallet-flow.mjs
 node INJECTIVE-INTEGRATION/verify-handshake.mjs
 ```
 
@@ -107,6 +108,7 @@ node INJECTIVE-INTEGRATION/verify-handshake.mjs
 
 - Frost 主身份：`agentId 43`，`builderCode = pocket-earth`，Owner/Wallet 为 `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`。
 - Pocket Earth agent fleet：`agentId 43–47` 均可读回 `builderCode = pocket-earth`；44–47 的脱敏口味名片用 data URI 内联上链，无需 Pinata。
+- 钱包证据链：注册交易 `0xd2b574...0554` 与握手交易 `0xce15c7...c42e` 都由同一个测试网钱包发起；`verify-wallet-flow.mjs` 会核验交易 from/to、注册事件、合约代码和公开页面。
 - SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`。
 - 真实握手交易：`0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e`，事件参数为 `agentA 43`、`agentB 44`、`score 88`。
 

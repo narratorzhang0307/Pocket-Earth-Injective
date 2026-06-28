@@ -11,6 +11,10 @@ const checks = [
     moduleUrl: new URL('./verify-fleet.mjs', import.meta.url),
   },
   {
+    label: 'Wallet evidence chain: registration tx + contract code + handshake tx',
+    moduleUrl: new URL('./verify-wallet-flow.mjs', import.meta.url),
+  },
+  {
     label: 'SocialHandshake event: agentA 43, agentB 44, score 88',
     moduleUrl: new URL('./verify-handshake.mjs', import.meta.url),
   },
@@ -29,4 +33,5 @@ console.log('Evidence:')
 console.log('- agentId 43: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43')
 console.log('- agent fleet 43-47: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e')
 console.log('- wallet: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934')
+console.log('- registration tx: https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554')
 console.log('- handshake tx: https://testnet.blockscout.injective.network/tx/0xce15c72f42fb3d8b70acebff11560227613c347a3f28c70b9d885d310515c42e')
