@@ -26,6 +26,10 @@ const checks = [
     label: 'SocialHandshake event: agentA 43, agentB 44, score 88',
     moduleUrl: new URL('./verify-handshake.mjs', import.meta.url),
   },
+  {
+    label: 'README and demo Blockscout links are reachable',
+    moduleUrl: new URL('./verify-demo-links.mjs', import.meta.url),
+  },
 ]
 
 console.log('Pocket Earth x Injective chain proof')
