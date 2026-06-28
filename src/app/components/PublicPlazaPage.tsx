@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ChevronLeft, Users, Moon, FileText, Star, Check, Clock } from 'lucide-react';
+import { ChevronLeft, Users, Moon, FileText, Star, Check, Clock, Link2, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getProfile, profileFingerprint, summarizeTaste } from '../../../frost-agent/harness/profile';
 import { getFrostBrain } from '../../../frost-agent/harness/brain';
@@ -38,6 +38,20 @@ function hash(s: string): number {
 
 interface Neighbor { tag: string; field: string; alias: string; blurb: string; sim: number; color: string; theme: FrostTheme; agentId?: string; scanUrl?: string; onChain?: boolean }
 
+// ERC-8004 IdentityRegistry 合约（Injective testnet）在 blockscout 的页面——所有 Frost 身份都注册在这里。
+const INJ_REGISTRY_URL = 'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e';
+
+// 链上身份徽章：紫色，点击跳 Injective blockscout 验证——让「在链上」在 UI 上一眼可见、可点查证。
+function OnChainBadge({ href, label }: { href: string; label: string }) {
+  return (
+    <a href={href} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
+      className="inline-flex items-center gap-1 text-[9px] font-pixel tracking-wide border border-black px-1.5 py-0.5 text-white active:translate-y-px"
+      style={{ background: '#7c5cff' }}>
+      <Link2 className="w-2.5 h-2.5" strokeWidth={2.5} />{label}<ExternalLink className="w-2.5 h-2.5" strokeWidth={2.5} />
+    </a>
+  );
+}
+
 // 把 Injective 链上 agent（/api/injective list-agents 返回）映射成广场邻居：card.tags 与我的 top 标签算交集相似度。
 function chainAgentToNeighbor(a: { agentId?: unknown; identityTuple?: string; name?: string; scanUrl?: string; card?: { name?: string; description?: string; tags?: string[] } }, myTags: string[]): Neighbor {
   const card = a?.card || {};
@@ -54,7 +68,8 @@ function chainAgentToNeighbor(a: { agentId?: unknown; identityTuple?: string; na
     blurb: (card.description || '一个在 Injective 链上注册了身份的 agent').slice(0, 30),
     sim, color: '#7c5cff', theme: 'none', onChain: true,
     agentId: String(a?.agentId ?? ''),
-    scanUrl: a?.scanUrl || (a?.identityTuple ? `https://8004scan.io/agent/${a.identityTuple}` : ''),
+    // 链上验证链接：Injective blockscout 的 ERC-8004 身份 NFT instance 页（该 agent 的链上身份，可查证）
+    scanUrl: a?.agentId != null ? `${INJ_REGISTRY_URL}/instance/${a.agentId}` : INJ_REGISTRY_URL,
   };
 }
 
@@ -195,7 +210,7 @@ export default function PublicPlazaPage({ onBack }: Props) {
         <div className="font-pixel text-[8px] flex justify-between items-center tracking-wider">
           <span>在场 {neighbors.length}</span><span className="opacity-40">|</span>
           <span>夜间匹配 {report.length}</span><span className="opacity-40">|</span>
-          <span>前瞻 · UGC</span>
+          <span className="inline-flex items-center gap-1"><Link2 className="w-2.5 h-2.5" strokeWidth={2.5} />INJECTIVE 链上</span>
         </div>
       </div>
 
@@ -228,6 +243,11 @@ export default function PublicPlazaPage({ onBack }: Props) {
               ))}
             </div>
           )}
+          {/* 你的 Frost 自己也在 Injective 链上有身份（ERC-8004），点徽章可去 blockscout 验证 */}
+          <div className="mt-2 pt-2 border-t border-black/15 flex items-center gap-1.5 flex-wrap">
+            <span className="font-pixel text-[7px] tracking-widest text-black/45">你的 FROST · 链上身份</span>
+            <OnChainBadge href={INJ_REGISTRY_URL} label="已注册 Injective testnet" />
+          </div>
         </div>
       </div>
 
@@ -292,8 +312,11 @@ export default function PublicPlazaPage({ onBack }: Props) {
                 <Star className="w-3 h-3" strokeWidth={2.5} />{n.sim}%
               </div>
             </div>
-            <div className="mt-2 text-[10px] tracking-wide border border-black bg-[#EAEAEA] px-2 py-1 inline-block">
-              共同点 · {FIELD_LABEL[n.field] || n.field} {n.tag}
+            <div className="mt-2 flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] tracking-wide border border-black bg-[#EAEAEA] px-2 py-1">
+                共同点 · {FIELD_LABEL[n.field] || n.field} {n.tag}
+              </span>
+              {n.onChain && n.agentId && <OnChainBadge href={n.scanUrl || INJ_REGISTRY_URL} label={`Injective #${n.agentId}`} />}
             </div>
           </motion.div>
           ))}

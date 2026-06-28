@@ -43,6 +43,16 @@ function decodeDataCard(uri) {
   try { return JSON.parse(Buffer.from(uri.slice(P.length), 'base64').toString('utf8')) } catch { return null }
 }
 
+// list-agents 结果缓存（id → {agent, at}），抹平 testnet RPC 抖动：本次 getStatus 没返回的、但 60s 内查到过的 agent 仍带上，避免广场在场数忽多忽少。
+const _agentCache = new Map()
+function mergeAgentCache(fresh, maxAgeMs = 60000) {
+  const now = Date.now()
+  for (const a of fresh) if (a?.agentId != null) _agentCache.set(String(a.agentId), { agent: a, at: now })
+  const merged = new Map()
+  for (const [id, { agent, at }] of _agentCache) { if (now - at < maxAgeMs) merged.set(id, agent); else _agentCache.delete(id) }
+  return [...merged.values()].sort((x, y) => Number(y.agentId) - Number(x.agentId))
+}
+
 /** /api/injective 分发。cfg = { privateKey, network, pinataJwt, cardUrl }（来自 server.mjs 的 env）。 */
 export async function handleInjective(req, res, url, cfg = {}) {
   const tool = url.searchParams.get('tool') || ''
@@ -83,14 +93,16 @@ export async function handleInjective(req, res, url, cfg = {}) {
         for (let id = top - offset; id >= Math.max(1, top - offset - limit + 1); id--) ids.push(id)
         const settled = await Promise.all(ids.map((id) => Promise.race([
           reader.getStatus(BigInt(id)),
-          new Promise((rs) => setTimeout(() => rs(null), 2500)), // 不存在/慢的 id 2.5s 超时回 null，不拖累整体
+          new Promise((rs) => setTimeout(() => rs(null), 4000)), // 不存在/慢的 id 超时回 null，不拖累整体
         ]).catch(() => null)))
         agents = settled.filter(Boolean)
         total = agents.length
       }
       // 服务端解码 data: URI card → 前端直接拿到口味标签（不依赖 SDK fetchCard 对 data: 的支持）
       for (const a of agents) { if (a && !a.card && a.tokenUri) { const c = decodeDataCard(a.tokenUri); if (c) a.card = c } }
-      return json(res, { agents, total, offset, limit, sdk: true })
+      // 合并缓存抹平 RPC 抖动（本次没查到、但 60s 内查到过的 agent 仍带上），裁到 limit
+      agents = mergeAgentCache(agents).slice(0, limit)
+      return json(res, { agents, total: agents.length, offset, limit, sdk: true })
     }
 
     // —— 只读：查单个 agent 状态 ——

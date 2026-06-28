@@ -12,6 +12,7 @@ import FrostBuddyPage from './FrostBuddyPage';
 import FrostBuddy from './FrostBuddy';
 import OnDeviceBrainPanel from './OnDeviceBrainPanel';
 import AgentForgePage from './AgentForgePage';
+import AgentPlazaPage from './AgentPlazaPage';
 import UniversalCaptureRunPage from './UniversalCaptureRunPage';
 import { getCustomAgents, subscribeCustomAgents, type AgentManifest } from '../lib/agent';
 import { getLearnedSkills, subscribeSkills, type LearnedSkill } from '../../../frost-agent/harness/skillForge';
@@ -53,7 +54,7 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
 ];
 
 
-type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | null;
+type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | null;
 const RUN_BY_NAME: Record<string, Running> = {
   'music-agent': 'music', 'movies-agent': 'movies',
   'books-agent': 'books', 'photos-agent': 'photos', 'travel-agent': 'travel',
@@ -86,6 +87,7 @@ export default function MusicAgentsTab() {
   if (running === 'council') return <CouncilPage onBack={() => setRunning(null)} />;
   if (running === 'plaza') return <PublicPlazaPage onBack={() => setRunning(null)} />;
   if (running === 'agentforge') return <AgentForgePage onBack={() => setRunning(null)} />;
+  if (running === 'spaceplaza') return <AgentPlazaPage onBack={() => setRunning(null)} onRun={runSkill} />;
   if (running === 'jot') return <UniversalCaptureRunPage onBack={() => setRunning(null)} />;
 
   return (
@@ -144,6 +146,22 @@ export default function MusicAgentsTab() {
             <div className="text-[10px] text-black/60 leading-snug mt-0.5">说一句话，让 frost 造一个新 agent（端侧/云 Qwen 拟稿 → 安全闸 → 钉地球）</div>
           </div>
           <span className="shrink-0 font-pixel text-[6px] uppercase tracking-wider border border-black bg-black text-[#ff8a3d] px-1.5 py-1">▶ RUN</span>
+        </button>
+
+        {/* 空间 Agent 广场入口（前瞻）：AGENTS 从功能列表 → 有边界 / 审核 / 分发 / 支付的 agent 平台 */}
+        <button
+          onClick={() => setRunning('spaceplaza')}
+          className="w-full text-left flex items-center gap-2.5 border-2 border-black p-2.5 shadow-[3px_3px_0_rgba(0,0,0,0.85)] active:translate-y-px"
+          style={{ background: '#f1eeff' }}
+        >
+          <div className="w-3 h-3 shrink-0 bg-black flex items-center justify-center border border-black" style={{ boxShadow: '1px 1px 0px #7c5cff' }}>
+            <div className="w-1.5 h-1.5" style={{ background: '#7c5cff' }} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="font-pixel text-[11px] tracking-wider text-black">SPACE-PLAZA</div>
+            <div className="text-[10px] text-black/60 leading-snug mt-0.5">空间 agent 广场（前瞻）：装免费 / 付费 agent，开发者按五要素发布</div>
+          </div>
+          <span className="shrink-0 font-pixel text-[6px] uppercase tracking-wider border border-black bg-black text-[#7c5cff] px-1.5 py-1">▶ OPEN</span>
         </button>
 
         {/* 已造的自建 agent（造物主产出，直接可跑） */}
