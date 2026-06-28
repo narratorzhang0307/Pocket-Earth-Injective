@@ -134,10 +134,10 @@ export default function PublicPlazaPage({ onBack }: Props) {
     return { neighbors, myTags: top.slice(0, 5).map((t) => t.tag) };
   }, []);
 
-  // 拉 Injective 链上真实 agent，映射成广场邻居；testnet 上暂无 / 网络失败则保持空、回落示意（不白屏）。
+  // 拉 Injective 链上的 Pocket Earth agent fleet，映射成广场邻居；网络失败则保持空、回落示意（不白屏）。
   useEffect(() => {
     let alive = true;
-    fetch('/api/injective?tool=list-agents&limit=8')
+    fetch('/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47')
       .then((r) => r.json())
       .then((d) => {
         if (!alive || !Array.isArray(d?.agents) || !d.agents.length) return;

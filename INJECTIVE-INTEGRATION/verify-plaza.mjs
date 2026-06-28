@@ -15,6 +15,7 @@ const page = await browser.newPage()
 const errors = []
 const ignoredErrors = []
 const listAgentResponses = []
+const listAgentUrls = []
 const recordError = (message) => {
   const text = String(message || '').slice(0, 220)
   // Headless Chrome can fail WebGL before the script opens AGENTS; it is not a plaza/API regression.
@@ -26,6 +27,7 @@ page.on('pageerror', (e) => recordError('PAGEERROR: ' + e.message))
 page.on('response', async (res) => {
   const url = res.url()
   if (!url.includes('/api/injective') || !url.includes('tool=list-agents')) return
+  listAgentUrls.push(url)
   try {
     listAgentResponses.push({ status: res.status(), body: await res.json() })
   } catch (e) {
@@ -74,21 +76,24 @@ try {
 
   const plazaText = await page.evaluate(() => document.body.innerText.replace(/\n{2,}/g, '\n').slice(0, 1800))
   const chainPayload = listAgentResponses.at(-1)
+  const chainUrl = listAgentUrls.at(-1) || ''
   expect(chainPayload, 'list-agents API was not requested')
+  expect(chainUrl.includes('builderCode=pocket-earth'), `list-agents did not use builderCode filter: ${chainUrl}`)
   expect(chainPayload.status === 200, `list-agents HTTP ${chainPayload.status}`)
   expect(!chainPayload.error, `list-agents JSON parse failed: ${chainPayload.error}`)
+  expect(chainPayload.body?.builderCode === 'pocket-earth', `list-agents builderCode response mismatch: ${chainPayload.body?.builderCode}`)
   const agents = Array.isArray(chainPayload.body?.agents) ? chainPayload.body.agents : []
   const ids = agents.map((a) => String(a?.agentId ?? ''))
   expect(agents.length > 0, 'list-agents returned no on-chain agents')
   expect(ids.includes('43'), `agentId 43 missing from list-agents response: [${ids.join(', ')}]`)
-  expect(agents.some((a) => String(a?.builderCode || '').toLowerCase() === 'pocket-earth'), 'builderCode pocket-earth missing from list-agents response')
+  expect(agents.every((a) => String(a?.builderCode || '').toLowerCase() === 'pocket-earth'), 'non-pocket-earth agent returned from filtered list-agents response')
   expect(plazaText.includes('PUBLIC-PLAZA'), 'PUBLIC-PLAZA header missing')
   expect(plazaText.includes('INJECTIVE 链上'), 'Injective on-chain stat strip missing')
   expect(/Injective #4[3-7]/.test(plazaText), 'on-chain agent badge missing from plaza UI')
   expect(errors.length === 0, 'console/page errors:\n' + errors.join('\n'))
   console.log('\n=== 广场可见文本 ===\n' + plazaText)
   console.log('\n=== list-agents 摘要 ===')
-  console.log(JSON.stringify({ count: agents.length, ids, pocketEarth: agents.filter((a) => a?.builderCode === 'pocket-earth').length }, null, 2))
+  console.log(JSON.stringify({ count: agents.length, ids, builderCode: chainPayload.body?.builderCode, pocketEarth: agents.filter((a) => a?.builderCode === 'pocket-earth').length }, null, 2))
   console.log('\n=== console 报错 ===\n' + (errors.length ? errors.join('\n') : '✅ 无'))
   if (ignoredErrors.length) console.log('\n=== 已忽略的 headless WebGL 噪声 ===\n' + ignoredErrors.join('\n'))
 } catch (e) {
