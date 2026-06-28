@@ -8,6 +8,17 @@
 >
 > 内核是 **frost-agent**——一套「把地球作为方法」的多智能体编排框架（Harness），是我自己对 agent harness 工程的一套实践与思考。
 
+## Injective 参赛版 · Frost Passport
+
+这个仓库是 Pocket Earth 的 Injective 参赛版本：Frost 已经在 **Injective testnet** 上拥有 ERC-8004 链上身份，并把脱敏的 Taste Passport 带到公共广场，读取链上 agent、完成社交握手，再把见闻钉回地球。
+
+- **Frost 主身份**：`agentId 43`，可在 Blockscout 单页核验：[`instance/43`](https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43)。
+- **钱包证据链**：注册、绑定、部署和握手交易都在同一个测试网钱包下：[`0x6D5A...C934`](https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934)。
+- **握手合约**：`SocialHandshake` 只记录 agentId、名片哈希、相似度和时间戳，不上链私人原文：[`0xe533...e3aee`](https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee)。
+- **产品闭环**：`/api/injective` 读取链上 agent，`public-plaza` 展示相似 agent，地球出现蓝紫色链上标记，Nightly Chain Dispatch 把链上见闻翻译成人话。
+
+完整集成说明见 [`INJECTIVE-INTEGRATION/README.md`](INJECTIVE-INTEGRATION/README.md)，录屏脚本见 [`INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`](INJECTIVE-INTEGRATION/DEMO-SCRIPT.md)。
+
 ---
 
 ## 一、它是什么
