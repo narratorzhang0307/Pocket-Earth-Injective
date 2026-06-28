@@ -15,6 +15,10 @@ const checks = [
     moduleUrl: new URL('./verify-api-list-agents.mjs', import.meta.url),
   },
   {
+    label: 'App /api/injective ping, get-status, get-reputation read tools',
+    moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
+  },
+  {
     label: 'ERC-8004 registry mint events: agentId 43-47',
     moduleUrl: new URL('./verify-registry-events.mjs', import.meta.url),
   },
