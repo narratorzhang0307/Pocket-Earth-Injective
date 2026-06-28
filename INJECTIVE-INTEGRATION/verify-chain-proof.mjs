@@ -11,6 +11,10 @@ const checks = [
     moduleUrl: new URL('./verify-fleet.mjs', import.meta.url),
   },
   {
+    label: 'App /api/injective list-agents route returns agentId 43-47',
+    moduleUrl: new URL('./verify-api-list-agents.mjs', import.meta.url),
+  },
+  {
     label: 'ERC-8004 registry mint events: agentId 43-47',
     moduleUrl: new URL('./verify-registry-events.mjs', import.meta.url),
   },
