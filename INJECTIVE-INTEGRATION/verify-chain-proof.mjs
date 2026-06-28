@@ -39,7 +39,7 @@ const checks = [
     moduleUrl: new URL('./verify-handshake.mjs', import.meta.url),
   },
   {
-    label: 'README and demo Blockscout links are reachable',
+    label: 'README, evidence pack, and demo Blockscout links are reachable',
     moduleUrl: new URL('./verify-demo-links.mjs', import.meta.url),
   },
 ]
@@ -58,6 +58,10 @@ console.log('- agentId 43: https://testnet.blockscout.injective.network/token/0x
 console.log('- agent fleet 43-47: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e')
 console.log('- wallet: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934')
 console.log('- registration tx: https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554')
-console.log('- fleet registration txs: 0x02a0590c...a38f44, 0xc161f0df...33fffe, 0x1bbd3df1...aea4e, 0xada3e082...e1a50')
+console.log('- fleet registration txs:')
+console.log('  - agent 44: https://testnet.blockscout.injective.network/tx/0x02a0590c2f1bc1e475d7cdfb2fa4c3eb5e0b9f7de4ac1f97e66663e0f5a38f44')
+console.log('  - agent 45: https://testnet.blockscout.injective.network/tx/0xc161f0df707b1c9b1e29311e944b7c1b40f3d525c9d1cbd2d71c67713333fffe')
+console.log('  - agent 46: https://testnet.blockscout.injective.network/tx/0x1bbd3df139b2558ff315d2029f00c01dc881a45542d5854176bbc49e6dfaea4e')
+console.log('  - agent 47: https://testnet.blockscout.injective.network/tx/0xada3e082b8e8988e414bcf201739f2a2a3b5fe9c947db71ebe1e7467f3de1a50')
 console.log('- SocialHandshake deploy tx: https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722')
 console.log('- handshake tx: https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6')

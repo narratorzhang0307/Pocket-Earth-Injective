@@ -1,10 +1,11 @@
-// Verify the public Blockscout links shown in README and the demo script.
+// Verify the public Blockscout links shown in README, evidence pack, and the demo script.
 // Usage: node INJECTIVE-INTEGRATION/verify-demo-links.mjs
 import { readFile } from 'node:fs/promises'
 
 const FILES = [
   'README.md',
   'INJECTIVE-INTEGRATION/README.md',
+  'INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md',
   'INJECTIVE-INTEGRATION/DEMO-SCRIPT.md',
 ]
 
@@ -16,6 +17,18 @@ const REQUIRED_DEMO_LINKS = [
   'https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722',
   'https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6',
   'https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e',
+]
+
+const REQUIRED_EVIDENCE_LINKS = [
+  ...REQUIRED_DEMO_LINKS,
+  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/44',
+  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/45',
+  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/46',
+  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/47',
+  'https://testnet.blockscout.injective.network/tx/0x02a0590c2f1bc1e475d7cdfb2fa4c3eb5e0b9f7de4ac1f97e66663e0f5a38f44',
+  'https://testnet.blockscout.injective.network/tx/0xc161f0df707b1c9b1e29311e944b7c1b40f3d525c9d1cbd2d71c67713333fffe',
+  'https://testnet.blockscout.injective.network/tx/0x1bbd3df139b2558ff315d2029f00c01dc881a45542d5854176bbc49e6dfaea4e',
+  'https://testnet.blockscout.injective.network/tx/0xada3e082b8e8988e414bcf201739f2a2a3b5fe9c947db71ebe1e7467f3de1a50',
 ]
 
 function assertTrue(label, condition) {
@@ -53,6 +66,11 @@ assertTrue('demo docs contain Blockscout links', blockscoutLinks.length >= REQUI
 const demoScript = docs.get('INJECTIVE-INTEGRATION/DEMO-SCRIPT.md') || ''
 for (const link of REQUIRED_DEMO_LINKS) {
   assertTrue(`DEMO-SCRIPT contains ${link}`, demoScript.includes(link))
+}
+
+const evidencePack = docs.get('INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md') || ''
+for (const link of REQUIRED_EVIDENCE_LINKS) {
+  assertTrue(`CHAIN-EVIDENCE contains ${link}`, evidencePack.includes(link))
 }
 
 for (const [index, link] of blockscoutLinks.entries()) {

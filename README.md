@@ -19,6 +19,7 @@
 - **一键验链**：本地运行 `npm run verify:injective`，会只读核验 `agentId 43–47`、公开 data URI 名片结构、`builderCode: pocket-earth`、`/api/injective` 读链路（ping/status/reputation/list）、写链 dry-run 边界、ERC-8004 registry mint 事件、钱包证据链、SocialHandshake 部署交易/源码字节码、Demo/README 的 Blockscout 链接，以及带非零名片哈希的真实握手 hash derivation + calldata + event。
 
 完整集成说明见 [`INJECTIVE-INTEGRATION/README.md`](INJECTIVE-INTEGRATION/README.md)，录屏脚本见 [`INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`](INJECTIVE-INTEGRATION/DEMO-SCRIPT.md)。
+评审复验证据包见 [`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`](INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md)。
 
 ---
 
