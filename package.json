@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs"
+    "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
+    "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza.mjs && node INJECTIVE-INTEGRATION/verify-space-plaza.mjs && node INJECTIVE-INTEGRATION/verify-plaza-install.mjs"
   },
   "dependencies": {
     "@injective/agent-sdk": "file:INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk",

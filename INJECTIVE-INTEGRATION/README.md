@@ -80,6 +80,9 @@ curl 'localhost:5173/api/injective?tool=ping'   # → {reachable:true,sdk:true,n
 # 4. 一键验证 Injective 链上证据（只读，不需要私钥）
 npm run verify:injective
 
+# 5. 录屏前验证 public-plaza / agent-plaza 前端闭环（需先开 npm run dev）
+npm run verify:plaza
+
 # 也可以单独验证具体证据
 node INJECTIVE-INTEGRATION/verify-agent43.mjs
 node INJECTIVE-INTEGRATION/verify-fleet.mjs

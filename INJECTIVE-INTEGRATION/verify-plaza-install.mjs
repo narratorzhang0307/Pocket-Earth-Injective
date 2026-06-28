@@ -1,6 +1,7 @@
 // 验证「添加 agent」闭环：进 agent-plaza → 点咖啡地图 INSTALL → 真进 customAgents → 切回 AGENTS tab 可见。
 import puppeteer from 'puppeteer-core'
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const BASE_URL = process.env.PLAZA_BASE_URL || 'http://localhost:5173/?demo'
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: 'new',
@@ -28,7 +29,7 @@ const clickText = (t) => page.evaluate((t) => {
 }, t)
 try {
   await page.evaluateOnNewDocument(() => localStorage.removeItem('pe.customAgents.v1'))
-  await page.goto('http://localhost:5173/?demo', { waitUntil: 'domcontentloaded', timeout: 30000 })
+  await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 30000 })
   await page.evaluate(() => localStorage.removeItem('pe.customAgents.v1'))
   await sleep(1800)
   const clickedAgents = await clickText('Agents')

@@ -1,7 +1,8 @@
 // 无人值守验证 Agent Plaza 前端：用系统 Chrome（puppeteer-core）导航广场、截图、抓 console 报错。
 // 用法：副本 dev 跑在 5173 → node INJECTIVE-INTEGRATION/verify-plaza.mjs
 import puppeteer from 'puppeteer-core'
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const BASE_URL = process.env.PLAZA_BASE_URL || 'http://localhost:5173/?demo'
 const OUT = '/tmp'
 
 const browser = await puppeteer.launch({
@@ -45,7 +46,7 @@ const expect = (condition, message) => {
 
 try {
   // ?demo：demoReset 清零后自动注入示例画像（验证「预置画像」功能，不再手动注入）
-  await page.goto('http://localhost:5173/?demo', { waitUntil: 'domcontentloaded', timeout: 30000 })
+  await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 30000 })
   await sleep(1800)
   await page.screenshot({ path: OUT + '/inj_1_earth.png' })
 
