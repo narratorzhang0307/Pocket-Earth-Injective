@@ -43,6 +43,14 @@ function decodeDataCard(uri) {
   try { return JSON.parse(Buffer.from(uri.slice(P.length), 'base64').toString('utf8')) } catch { return null }
 }
 
+const ZERO_BYTES32 = '0x' + '0'.repeat(64)
+function normalizeBytes32(value) {
+  return typeof value === 'string' ? value.toLowerCase() : ZERO_BYTES32
+}
+function isBytes32(value) {
+  return /^0x[0-9a-f]{64}$/i.test(String(value || ''))
+}
+
 // list-agents 结果缓存（id → {agent, at}），抹平 testnet RPC 抖动：本次 getStatus 没返回的、但 60s 内查到过的 agent 仍带上，避免广场在场数忽多忽少。
 const _agentCache = new Map()
 function mergeAgentCache(fresh, maxAgeMs = 60000) {
@@ -182,16 +190,21 @@ export async function handleInjective(req, res, url, cfg = {}) {
     if (tool === 'handshake' && req.method === 'POST') {
       const body = await readBody(req)
       const { agentA, agentB, score = 0, confirm } = body
-      const profileHashA = body.profileHashA || '0x' + '0'.repeat(64)
-      const profileHashB = body.profileHashB || '0x' + '0'.repeat(64)
+      const profileHashA = normalizeBytes32(body.profileHashA)
+      const profileHashB = normalizeBytes32(body.profileHashB)
+      const numericScore = Number(score)
       if (agentA == null || agentB == null) return json(res, { error: 'need_agentA_agentB' })
+      if (!Number.isInteger(numericScore) || numericScore < 0 || numericScore > 100) return json(res, { error: 'invalid_score', hint: 'score must be an integer from 0 to 100' })
       const pk = cfg.privateKey || ''
       const contract = cfg.handshakeContract || ''
-      const willEmit = { agentA: String(agentA), agentB: String(agentB), profileHashA, profileHashB, score: Number(score), timestamp: Math.floor(Date.now() / 1000) }
+      const willEmit = { agentA: String(agentA), agentB: String(agentB), profileHashA, profileHashB, score: numericScore, timestamp: Math.floor(Date.now() / 1000) }
       // Boundary：无私钥 / 未部署合约 / 未显式 confirm → 一律 dryRun，只回「将要写什么」
       if (!(pk && contract && confirm === true)) {
         return json(res, { ok: true, dryRun: true, willEmit, hint: !pk ? '需配 INJ_PRIVATE_KEY' : !contract ? '需先部署 SocialHandshake 合约并配 INJ_HANDSHAKE_CONTRACT' : '加 confirm:true 真上链' })
       }
+      // 真写链必须带有效、非零的名片哈希，避免把缺省值当成可证明的 Taste Passport 存证。
+      if (!isBytes32(profileHashA) || !isBytes32(profileHashB)) return json(res, { error: 'invalid_profile_hash', hint: 'profileHashA/profileHashB must be 0x-prefixed bytes32 values' })
+      if (profileHashA === ZERO_BYTES32 || profileHashB === ZERO_BYTES32) return json(res, { error: 'empty_profile_hash', hint: 'confirm:true handshakes must include non-zero Taste Passport hashes' })
       try {
         const { createWalletClient, http, defineChain } = await import('viem')
         const { privateKeyToAccount } = await import('viem/accounts')
@@ -199,7 +212,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         const account = privateKeyToAccount(pk.startsWith('0x') ? pk : '0x' + pk)
         const wallet = createWalletClient({ account, chain, transport: http() })
         const abi = [{ type: 'function', name: 'recordHandshake', stateMutability: 'nonpayable', inputs: [{ name: 'agentA', type: 'uint256' }, { name: 'agentB', type: 'uint256' }, { name: 'profileHashA', type: 'bytes32' }, { name: 'profileHashB', type: 'bytes32' }, { name: 'score', type: 'uint16' }], outputs: [] }]
-        const txHash = await wallet.writeContract({ address: contract, abi, functionName: 'recordHandshake', args: [BigInt(agentA), BigInt(agentB), profileHashA, profileHashB, Number(score)] })
+        const txHash = await wallet.writeContract({ address: contract, abi, functionName: 'recordHandshake', args: [BigInt(agentA), BigInt(agentB), profileHashA, profileHashB, numericScore] })
         return json(res, { ok: true, dryRun: false, txHash, scanUrl: `https://testnet.blockscout.injective.network/tx/${txHash}` })
       } catch (e) {
         return json(res, { error: String(e?.message || e) })

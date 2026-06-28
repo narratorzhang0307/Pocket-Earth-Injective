@@ -31,7 +31,7 @@ const checks = [
     moduleUrl: new URL('./verify-wallet-flow.mjs', import.meta.url),
   },
   {
-    label: 'SocialHandshake event: agentA 43, agentB 44, score 88',
+    label: 'SocialHandshake event: agentA 43, agentB 44, score 88, hashes, timestamp',
     moduleUrl: new URL('./verify-handshake.mjs', import.meta.url),
   },
   {
