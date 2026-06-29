@@ -124,6 +124,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'recordingOrder',
   'registry',
   'registryMintEvents',
+  'registryMintSummary',
   'registryScanUrl',
   'reviewBrief',
   'reviewChecklist',
@@ -180,6 +181,17 @@ for (const event of REGISTRY_MINT_EVENTS) {
   assertEqual(`registry mint agent ${event.agentId} block`, actual.blockNumber, event.blockNumber)
   assertEqual(`registry mint agent ${event.agentId} scanUrl`, actual.scanUrl, scanUrlForTx(event.transactionHash))
 }
+assertTrue('registry mint summary object', !!evidence.registryMintSummary && typeof evidence.registryMintSummary === 'object')
+assertEqual('registry mint summary owner', evidence.registryMintSummary.owner, PROOF_OWNER)
+assertEqual('registry mint summary owner scanUrl', evidence.registryMintSummary.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('registry mint summary registry', evidence.registryMintSummary.registry, IDENTITY_REGISTRY)
+assertEqual('registry mint summary event count', evidence.registryMintSummary.eventCount, REGISTRY_MINT_EVENTS.length)
+assertEqual('registry mint summary agent ids', evidence.registryMintSummary.agentIds.join(','), REGISTRY_MINT_EVENTS.map((event) => event.agentId).join(','))
+assertEqual('registry mint summary all mint from zero', evidence.registryMintSummary.allMintFromZero, true)
+assertEqual('registry mint summary all to owner', evidence.registryMintSummary.allToOwner, true)
+assertEqual('registry mint summary first block', evidence.registryMintSummary.firstBlock, REGISTRY_MINT_EVENTS[0].blockNumber)
+assertEqual('registry mint summary last block', evidence.registryMintSummary.lastBlock, REGISTRY_MINT_EVENTS.at(-1).blockNumber)
+assertEqual('registry mint summary local verification', evidence.registryMintSummary.localVerification, evidence.verification?.registryEvents)
 assertEqual('registry mint checklist command', evidence.reviewChecklist.find((item) => item.key === 'registry-mint-events')?.machineCheck, 'npm run verify:registry')
 assertEqual('timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)
 for (const event of TIMELINE_EVENTS) {

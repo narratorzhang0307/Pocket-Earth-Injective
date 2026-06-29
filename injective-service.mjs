@@ -10,7 +10,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -192,6 +192,9 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
       const firstTimelineEvent = TIMELINE_EVENTS[0]
       const lastTimelineEvent = TIMELINE_EVENTS.at(-1)
+      const registryAgentIds = REGISTRY_MINT_EVENTS.map((event) => event.agentId)
+      const firstRegistryMint = REGISTRY_MINT_EVENTS[0]
+      const lastRegistryMint = REGISTRY_MINT_EVENTS.at(-1)
       const timeline = TIMELINE_EVENTS.map((event) => ({
         label: event.label,
         role: event.role,
@@ -234,6 +237,21 @@ export async function handleInjective(req, res, url, cfg = {}) {
           scanUrl: scanUrlForAgent(agent.id),
         })),
         registryMintEvents: REGISTRY_MINT_EVENTS,
+        registryMintSummary: {
+          owner: PROOF_OWNER,
+          ownerScanUrl: scanUrlForAddress(PROOF_OWNER),
+          registry: IDENTITY_REGISTRY,
+          registryScanUrl: scanUrlForRegistry(),
+          eventCount: REGISTRY_MINT_EVENTS.length,
+          agentIds: registryAgentIds,
+          firstAgentId: registryAgentIds[0] ?? null,
+          lastAgentId: registryAgentIds.at(-1) ?? null,
+          allMintFromZero: REGISTRY_MINT_EVENTS.every((event) => sameAddress(event.from, REGISTRY_MINT_ZERO_ADDRESS)),
+          allToOwner: REGISTRY_MINT_EVENTS.every((event) => sameAddress(event.to, PROOF_OWNER)),
+          firstBlock: firstRegistryMint?.blockNumber ?? null,
+          lastBlock: lastRegistryMint?.blockNumber ?? null,
+          localVerification: 'npm run verify:registry',
+        },
         timeline,
         timelineSummary: {
           owner: PROOF_OWNER,

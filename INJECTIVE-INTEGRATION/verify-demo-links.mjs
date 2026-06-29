@@ -35,6 +35,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`,
   '/api/injective?tool=get-wallet-timeline',
   'registryMintEvents',
+  'registryMintSummary',
   'registry-mint-events',
   'expectedStatus',
   'timelineSummary',

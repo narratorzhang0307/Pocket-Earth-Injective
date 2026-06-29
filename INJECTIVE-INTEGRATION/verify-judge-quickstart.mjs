@@ -8,11 +8,13 @@ import {
   IDENTITY_REGISTRY,
   LIVE_DEMO_URL,
   PROOF_OWNER,
+  REGISTRY_MINT_EVENTS,
   SOCIAL_HANDSHAKE,
   SUBMISSION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
   scanUrlForAgent,
+  scanUrlForRegistry,
   scanUrlForTx,
 } from './chain-proof-data.mjs'
 
@@ -85,6 +87,7 @@ for (const snippet of [
   'ERC-8004',
   'agentId 43-47',
   'registryMintEvents',
+  'registryMintSummary',
   'registry-mint-events',
   'expectedStatus',
   'timelineSummary',
@@ -130,6 +133,19 @@ assertTrue('evidence still public-only', evidence.readOnly === true && evidence.
 assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)
 assertEqual('evidence timeline summary event count', evidence.timelineSummary?.eventCount, TIMELINE_EVENTS.length)
 assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary?.rpcVerification, '/api/injective?tool=get-wallet-timeline')
+assertEqual('evidence registry mint summary owner', evidence.registryMintSummary?.owner, PROOF_OWNER)
+assertEqual('evidence registry mint summary owner scan URL', evidence.registryMintSummary?.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('evidence registry mint summary registry', evidence.registryMintSummary?.registry, IDENTITY_REGISTRY)
+assertEqual('evidence registry mint summary registry scan URL', evidence.registryMintSummary?.registryScanUrl, scanUrlForRegistry())
+assertEqual('evidence registry mint summary event count', evidence.registryMintSummary?.eventCount, REGISTRY_MINT_EVENTS.length)
+assertEqual('evidence registry mint summary first agent', evidence.registryMintSummary?.firstAgentId, REGISTRY_MINT_EVENTS[0].agentId)
+assertEqual('evidence registry mint summary last agent', evidence.registryMintSummary?.lastAgentId, REGISTRY_MINT_EVENTS.at(-1).agentId)
+assertTrue('evidence registry mint summary has agent ids', evidence.registryMintSummary?.agentIds?.join(',') === REGISTRY_MINT_EVENTS.map((event) => event.agentId).join(','))
+assertTrue('evidence registry mint summary all mints from zero', evidence.registryMintSummary?.allMintFromZero === true)
+assertTrue('evidence registry mint summary all mints to owner', evidence.registryMintSummary?.allToOwner === true)
+assertEqual('evidence registry mint summary first block', evidence.registryMintSummary?.firstBlock, REGISTRY_MINT_EVENTS[0].blockNumber)
+assertEqual('evidence registry mint summary last block', evidence.registryMintSummary?.lastBlock, REGISTRY_MINT_EVENTS.at(-1).blockNumber)
+assertEqual('evidence registry mint summary local verification', evidence.registryMintSummary?.localVerification, evidence.verification?.registryEvents)
 
 console.log('\nDocs link the one-page path')
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))

@@ -75,6 +75,7 @@ assertTrue('physical-world alignment mentions chain dispatch', physicalWorld.evi
 const publicProof = expectedByKey.get('privacy-first-public-proof')
 assertTrue('public proof alignment mentions publicOnly evidence', publicProof.evidence.includes('publicOnly'))
 assertTrue('public proof alignment mentions registry mint events', publicProof.evidence.includes('registryMintEvents'))
+assertTrue('public proof alignment mentions registry mint summary', publicProof.evidence.includes('registryMintSummary'))
 assertTrue('public proof alignment mentions reviewBrief', publicProof.evidence.includes('reviewBrief'))
 assertTrue('public proof alignment mentions privacyBoundary', publicProof.evidence.includes('privacyBoundary'))
 

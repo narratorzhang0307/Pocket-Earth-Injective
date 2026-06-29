@@ -183,6 +183,18 @@ for (const expected of REGISTRY_MINT_EVENTS) {
   assertEqual(`evidence registry mint agent ${expected.agentId} scanUrl`, actual.scanUrl, scanUrlForTx(expected.transactionHash))
   assertEqual(`evidence registry mint agent ${expected.agentId} agentScanUrl`, actual.agentScanUrl, scanUrlForAgent(expected.agentId))
 }
+assertTrue('evidence registry mint summary object', !!evidence.registryMintSummary && typeof evidence.registryMintSummary === 'object')
+assertEqual('evidence registry mint summary owner', evidence.registryMintSummary.owner, PROOF_OWNER)
+assertEqual('evidence registry mint summary owner scanUrl', evidence.registryMintSummary.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('evidence registry mint summary registry', evidence.registryMintSummary.registry, IDENTITY_REGISTRY)
+assertEqual('evidence registry mint summary registry scanUrl', evidence.registryMintSummary.registryScanUrl, scanUrlForRegistry())
+assertEqual('evidence registry mint summary event count', evidence.registryMintSummary.eventCount, REGISTRY_MINT_EVENTS.length)
+assertEqual('evidence registry mint summary agent ids', evidence.registryMintSummary.agentIds.join(','), REGISTRY_MINT_EVENTS.map((event) => event.agentId).join(','))
+assertEqual('evidence registry mint summary all mint from zero', evidence.registryMintSummary.allMintFromZero, true)
+assertEqual('evidence registry mint summary all to owner', evidence.registryMintSummary.allToOwner, true)
+assertEqual('evidence registry mint summary first block', evidence.registryMintSummary.firstBlock, REGISTRY_MINT_EVENTS[0].blockNumber)
+assertEqual('evidence registry mint summary last block', evidence.registryMintSummary.lastBlock, REGISTRY_MINT_EVENTS.at(-1).blockNumber)
+assertEqual('evidence registry mint summary local verification', evidence.registryMintSummary.localVerification, evidence.verification?.registryEvents)
 assertTrue('evidence timeline array', Array.isArray(evidence.timeline))
 assertEqual('evidence timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)
 for (const expected of TIMELINE_EVENTS) {
