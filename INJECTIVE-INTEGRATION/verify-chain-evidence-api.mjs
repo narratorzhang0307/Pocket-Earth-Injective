@@ -237,6 +237,7 @@ assertFocusIncludes('recording step 3', evidence.recordingOrder[2], 'sourceContr
 assertFocusIncludes('recording step 4', evidence.recordingOrder[3], 'builderCode=pocket-earth')
 assertFocusIncludes('recording step 4', evidence.recordingOrder[3], 'agentId 43-47')
 assertFocusIncludes('recording step 5', evidence.recordingOrder[4], 'allSucceeded')
+assertFocusIncludes('recording step 5', evidence.recordingOrder[4], `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`)
 assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'public-plaza')
 assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'agent-plaza')
 

@@ -2,7 +2,7 @@
 // Usage: npm run verify:recording-order
 import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
-import { FLEET_AGENTS, PROOF_OWNER, REVIEW_LINKS, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
+import { FLEET_AGENTS, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, REVIEW_LINKS, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -124,10 +124,12 @@ for (const expected of FLEET_AGENTS) {
 assertEqual('recording step 5 type', timelineApi.type, 'api')
 assertEqual('recording step 5 path', timelineApi.path, evidence.verification?.walletTimelineApi)
 assertFocusIncludes('recording step 5', timelineApi, 'summary')
+assertFocusIncludes('recording step 5', timelineApi, `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`)
 assertFocusIncludes('recording step 5', timelineApi, 'allSucceeded')
 assertFocusIncludes('recording step 5', timelineApi, 'handshake')
 const timelinePayload = await callInjectiveApi(timelineApi.path)
 assertEqual('recording step 5 timeline ok', timelinePayload.ok, true)
+assertEqual('recording step 5 timeline chainId', timelinePayload.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertTrue('recording step 5 timeline summary object', !!timelinePayload.summary && typeof timelinePayload.summary === 'object')
 assertEqual('recording step 5 timeline summary owner', timelinePayload.summary.owner, PROOF_OWNER)
 assertEqual('recording step 5 timeline summary event count', timelinePayload.summary.eventCount, TIMELINE_EVENTS.length)

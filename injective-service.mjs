@@ -319,6 +319,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             path: walletTimelineApi,
             evidenceFocus: [
               'summary shows owner, eventCount, allSucceeded, and first/last blocks',
+              `chainId ${INJECTIVE_TESTNET_CHAIN_ID} confirms Injective testnet timeline`,
               'events replay registration, deployment, fleet, and handshake RPC facts',
               'final event is the real SocialHandshake transaction',
             ],
