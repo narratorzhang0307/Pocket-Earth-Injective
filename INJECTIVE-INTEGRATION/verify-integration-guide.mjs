@@ -36,6 +36,7 @@ function getRunbookBlock() {
 console.log('Integration guide story spine')
 for (const phrase of [
   '## 叙事骨架',
+  '## 最终整合版内容映射',
   '把地球作为方法',
   'Frost 起源',
   '一条线走完',
@@ -47,6 +48,11 @@ for (const phrase of [
   'public-plaza',
   'agent-plaza',
   'Profile Chain',
+  'AI 社交与 Profile Chain',
+  '链上身份与隐私边界',
+  'Agent Plaza 与物理节点',
+  '商业判断、差异化、路线图',
+  '不过度承诺',
   'hardware/frost-buddy/',
 ]) {
   assertTrue(`story spine includes ${phrase}`, guide.includes(phrase))

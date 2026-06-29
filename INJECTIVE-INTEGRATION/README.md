@@ -19,6 +19,24 @@
 
 ---
 
+## 最终整合版内容映射
+
+最终整合版的 41 页不是平铺材料，而是一条从产品方法到链上证明的路径。集成文档按同一结构收束，方便快速核对“PPT 讲到的东西，仓库里是否有证据”。
+
+| 最终整合版页段 | 核心主张 | 本仓库对应 |
+|---|---|---|
+| 1-7 · 产品方法 | Pocket Earth 是基于空间的知识库：用真实坐标替代时间线/数据库，把书、影、乐、照片、行程、心情收束到同一颗地球 | `README.md` 第 1-3 节，`mapMarkers.ts`，`userMarks` / `planets` store |
+| 8-13 · 体验表面 | PHOTOS、MY MAP、AGENTS、JOT、music/travel、council、端侧照片整理共同证明它不是单页概念图，而是可运行产品 | `README.md` 第 4-8 节，`npm run verify:plaza` |
+| 14-18 · frost-agent 内核 | CEO 委派、端云双脑、混合路由、长期画像、skill 沉淀、trace 可观测，是 agent harness 的工程底座 | `frost-agent/`、`ARCHITECTURE.md`、`docs/技术难点与解决方案.md` |
+| 19-24 · AI 社交与 Profile Chain | Injective 承担 AI 分身的公共见证层：身份可查、画像版本可追溯、长期伪造成本更高 | `Profile Chain 路线`、`verify:nova-alignment`、`verify:public-proof` |
+| 25-29 · 链上身份与隐私边界 | `agentId 43-47`、ERC-8004 IdentityRegistry、SocialHandshake、公开 API 与隐私不上链边界 | `链上事实`、`API 分层`、`privacyBoundary`、`verify:agent-proof`、`verify:wallet` |
+| 30-33 · Agent Plaza 与物理节点 | `public-plaza` 是链上社交发现，`agent-plaza` 是安装/市场闭环；Frost Buddy 是 Raspberry Pi / BLE / TTS 的轻量实体节点 | `plazaFlow`、`hardware/frost-buddy/`、`verify:plaza-flow`、`verify:hardware` |
+| 34-41 · 商业判断、差异化、路线图 | 不走泛发币社交；以空间 Agent 广场、端侧隐私、真实坐标知识库、链上身份和 Profile Chain 路线构成长期飞轮 | `PITCH-NOTES.md`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist` |
+
+这张映射表只列公开证据和工程入口；外部材料中的个人背书、市场判断和硬件远景，进入仓库时都按“可验证、不过度承诺、不泄露隐私”的边界重写。
+
+---
+
 ## 1. 架构主线
 
 | 层 | Pocket Earth 中的角色 | Injective 中的角色 |
