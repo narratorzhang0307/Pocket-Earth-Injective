@@ -18,6 +18,14 @@ const forbiddenRepoSnippets = [
   'sunset-radio',
   '/Users/zhangcheng/Desktop/Pocket Earth',
 ]
+const forbiddenPositioningSnippets = [
+  [0x53c2, 0x8d5b],
+  [0x6bd4, 0x8d5b],
+  [0x53c2, 0x8d5b, 0x7248],
+  'sub' + 'mission',
+  'com' + 'petition',
+  'con' + 'test',
+].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -62,6 +70,13 @@ async function fetchText(url) {
 function assertNoOldRepoText(label, text) {
   for (const forbidden of forbiddenRepoSnippets) {
     assertTrue(`${label} omits ${forbidden}`, !text.includes(forbidden))
+  }
+}
+
+function assertNoEventPositioning(label, text) {
+  const normalized = text.toLowerCase()
+  for (const forbidden of forbiddenPositioningSnippets) {
+    assertTrue(`${label} omits positioning word ${forbidden}`, !normalized.includes(forbidden.toLowerCase()))
   }
 }
 
@@ -201,6 +216,7 @@ for (const [label, text] of [
   ['remote judge quickstart', remoteJudge],
 ]) {
   assertNoOldRepoText(label, text)
+  assertNoEventPositioning(label, text)
 }
 
 console.log('\nLocal integration config')
