@@ -15,6 +15,25 @@ export const FLEET_AGENTS = [
 ]
 export const FLEET_AGENT_IDS = FLEET_AGENTS.map((agent) => Number(agent.id))
 
+export const EVIDENCE_PRIVACY_BOUNDARY = {
+  onChain: [
+    'ERC-8004 agent identity',
+    'public data URI agent card fields',
+    'wallet address',
+    'SocialHandshake agent ids',
+    'profile hash commitment',
+    'similarity score',
+    'block timestamp',
+  ],
+  offChain: [
+    'raw books, films, music, photos, and mood text',
+    'precise location payloads',
+    'long-term profile counts',
+    'private keys and secret env values',
+  ],
+  writeBoundary: 'testnet-only writes require a server-side private key and explicit confirm:true; otherwise register/handshake stay dry-run',
+}
+
 export const TIMELINE_EVENTS = [
   { label: 'Frost main identity registration', role: 'agentId 43', hash: '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554', to: IDENTITY_REGISTRY, blockNumber: 131678496n, timestamp: '2026-06-27T01:46:30.000Z' },
   { label: 'SocialHandshake deployment', role: 'contract deployment', hash: '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722', to: null, contractAddress: SOCIAL_HANDSHAKE, blockNumber: 131678987n, timestamp: '2026-06-27T01:53:16.000Z' },

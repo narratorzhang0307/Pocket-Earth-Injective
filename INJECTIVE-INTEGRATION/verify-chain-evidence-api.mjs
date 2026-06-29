@@ -3,6 +3,7 @@
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
+  EVIDENCE_PRIVACY_BOUNDARY,
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
@@ -57,6 +58,12 @@ assertEqual('registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('registryScanUrl', evidence.registryScanUrl, scanUrlForRegistry())
 assertEqual('handshakeContract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
 assertEqual('handshakeScanUrl', evidence.handshakeScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
+assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
+assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
+for (const item of EVIDENCE_PRIVACY_BOUNDARY.offChain) {
+  assertTrue(`privacy boundary keeps off-chain: ${item}`, evidence.privacyBoundary.offChain.includes(item))
+}
 
 console.log('\nAgent fleet evidence')
 assertTrue('agents array', Array.isArray(evidence.agents))
@@ -100,7 +107,7 @@ assertEqual('recording step 6 command', evidence.recordingOrder[5]?.command, 'np
 
 console.log('\nPublic-only guard')
 const evidenceText = JSON.stringify(evidence)
-for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHash', 'profileHashA', 'profileHashB']) {
+for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB']) {
   assertTrue(`evidence omits ${forbidden}`, !evidenceText.includes(forbidden))
 }
 

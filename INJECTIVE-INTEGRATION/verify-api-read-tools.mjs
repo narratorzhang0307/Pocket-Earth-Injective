@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -86,6 +86,11 @@ assertEqual('evidence registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('evidence registry scanUrl', evidence.registryScanUrl, scanUrlForRegistry())
 assertEqual('evidence handshake contract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
 assertEqual('evidence handshake scanUrl', evidence.handshakeScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertTrue('evidence privacy on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
+assertTrue('evidence privacy off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
+assertTrue('evidence privacy mentions ERC-8004 identity', evidence.privacyBoundary.onChain.includes('ERC-8004 agent identity'))
+assertTrue('evidence privacy keeps precise locations off-chain', evidence.privacyBoundary.offChain.includes('precise location payloads'))
+assertEqual('evidence privacy write boundary', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
 assertEqual('evidence demo readiness command', evidence.verification?.demoReadiness, 'npm run verify:demo')
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
 assertEqual('evidence proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
