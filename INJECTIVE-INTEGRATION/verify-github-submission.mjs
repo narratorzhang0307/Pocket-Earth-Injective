@@ -1,4 +1,4 @@
-// Verify the public GitHub submission repo, README, and origin boundary.
+// Verify the public GitHub submission repo, review files, and origin boundary.
 // Usage: npm run verify:github
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
@@ -96,6 +96,7 @@ const remoteReadme = await fetchText(`${rawBase}/README.md`)
 const remoteIntegration = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/README.md`)
 const remoteEvidence = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`)
 const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`)
+const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
 assertTrue('remote README names Injective submission', remoteReadme.includes('Injective 参赛版本'))
 assertTrue('remote README names agentId 43', remoteReadme.includes('agentId 43'))
 assertTrue('remote README points at chain evidence API', remoteReadme.includes('/api/injective?tool=get-chain-evidence'))
@@ -130,11 +131,23 @@ assertTrue('remote demo script names wallet timeline status field', remoteDemo.i
 assertTrue('remote demo script names wallet timeline summary', remoteDemo.includes('timelineSummary'))
 assertTrue('remote demo script names direct wallet summary', remoteDemo.includes('get-wallet-timeline` 的 `summary`'))
 assertTrue('remote demo script keeps 3-minute limit', remoteDemo.includes('≤ 3 分钟') && remoteDemo.includes('180s'))
+assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.includes('Judge Quickstart'))
+assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))
+assertTrue('remote judge quickstart points at chain evidence API', remoteJudge.includes('/api/injective?tool=get-chain-evidence'))
+assertTrue('remote judge quickstart points at builderCode fleet API', remoteJudge.includes('/api/injective?tool=list-agents&builderCode=pocket-earth'))
+assertTrue('remote judge quickstart names recording focus', remoteJudge.includes('recordingOrder[].evidenceFocus'))
+assertTrue('remote judge quickstart names registry mint summary', remoteJudge.includes('registryMintSummary'))
+assertTrue('remote judge quickstart names wallet timeline summary', remoteJudge.includes('timelineSummary'))
+assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
+assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
+assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
+assertTrue('remote judge quickstart names plaza split', remoteJudge.includes('public-plaza') && remoteJudge.includes('agent-plaza'))
 for (const [label, text] of [
   ['remote README', remoteReadme],
   ['remote integration guide', remoteIntegration],
   ['remote evidence pack', remoteEvidence],
   ['remote demo script', remoteDemo],
+  ['remote judge quickstart', remoteJudge],
 ]) {
   assertNoOldRepoText(label, text)
 }
