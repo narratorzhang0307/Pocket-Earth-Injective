@@ -35,6 +35,10 @@ const checks = [
     moduleUrl: new URL('./verify-pitch-notes.mjs', import.meta.url),
   },
   {
+    label: 'Judge quickstart gives a public one-page review path',
+    moduleUrl: new URL('./verify-judge-quickstart.mjs', import.meta.url),
+  },
+  {
     label: 'App /api/injective ping, get-status, get-reputation read tools',
     moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
   },

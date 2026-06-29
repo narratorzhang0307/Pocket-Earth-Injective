@@ -133,6 +133,7 @@ assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm
 assertEqual('evidence public proof command', evidence.verification?.publicProof, 'npm run verify:public-proof')
 assertEqual('evidence github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
 assertEqual('evidence pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
+assertEqual('evidence judge quickstart command', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
 assertEqual('evidence review brief command', evidence.verification?.reviewBrief, 'npm run verify:brief')
 assertEqual('evidence review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('evidence review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')

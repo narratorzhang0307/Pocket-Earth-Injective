@@ -19,6 +19,10 @@ const checks = [
     moduleUrl: new URL('./verify-pitch-notes.mjs', import.meta.url),
   },
   {
+    label: 'judge quickstart is public and followable',
+    moduleUrl: new URL('./verify-judge-quickstart.mjs', import.meta.url),
+  },
+  {
     label: 'review brief explains the Injective proof path',
     moduleUrl: new URL('./verify-review-brief.mjs', import.meta.url),
   },

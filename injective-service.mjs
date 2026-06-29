@@ -229,6 +229,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicProof: 'npm run verify:public-proof',
           githubRepo: 'npm run verify:github',
           pitchNotes: 'npm run verify:pitch',
+          judgeQuickstart: 'npm run verify:judge',
           reviewBrief: 'npm run verify:brief',
           reviewChecklist: 'npm run verify:review',
           reviewLinks: 'npm run verify:review-links',

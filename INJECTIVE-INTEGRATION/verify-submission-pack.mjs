@@ -58,6 +58,8 @@ assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run v
 assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
 assertEqual('pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 assertEqual('pitch notes script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')
+assertEqual('judge quickstart command', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
+assertEqual('judge quickstart script', packageJson.scripts?.['verify:judge'], 'node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs')
 assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
 assertEqual('demo duration script', packageJson.scripts?.['verify:duration'], 'node INJECTIVE-INTEGRATION/verify-demo-duration.mjs')
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
@@ -114,9 +116,12 @@ assertTrue('checklist mentions no private keys', checklistByKey.get('public-revi
 
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
 assertTrue('README names Injective repository evidence package', readme.includes('Injective 参赛版本'))
+assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))
 assertTrue('CHAIN-EVIDENCE mentions submission links', chainEvidence.includes('submissionLinks'))
 assertTrue('CHAIN-EVIDENCE mentions submission checklist', chainEvidence.includes('submissionChecklist'))
+assertTrue('CHAIN-EVIDENCE mentions judge quickstart', chainEvidence.includes('JUDGE-QUICKSTART.md'))
 assertTrue('DEMO-SCRIPT mentions submission check', demoScript.includes('npm run verify:submission'))
+assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
 
 const publicText = JSON.stringify({ links, checklist })
