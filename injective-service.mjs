@@ -397,6 +397,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
       return json(res, {
         ok: true,
         network,
+        chainId: INJECTIVE_TESTNET_CHAIN_ID,
         owner: PROOF_OWNER,
         registry: IDENTITY_REGISTRY,
         handshakeContract: SOCIAL_HANDSHAKE,

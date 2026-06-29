@@ -236,6 +236,8 @@ assertEqual('evidence timeline summary RPC verification', evidence.timelineSumma
 
 console.log('\n/api get-wallet-timeline')
 assertEqual('timeline ok', timeline.ok, true)
+assertEqual('timeline network', timeline.network, 'testnet')
+assertEqual('timeline chainId', timeline.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('timeline owner', timeline.owner, PROOF_OWNER)
 assertEqual('timeline registry', timeline.registry, IDENTITY_REGISTRY)
 assertEqual('timeline handshake contract', timeline.handshakeContract, SOCIAL_HANDSHAKE)
