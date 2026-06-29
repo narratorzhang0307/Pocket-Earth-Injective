@@ -4,6 +4,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   FLEET_AGENTS,
+  HARDWARE_BRIDGE_PROOF,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
   PROOF_OWNER,
@@ -102,7 +103,7 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge'],
     judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
@@ -151,6 +152,14 @@ assertTrue('chain evidence carries judgeRunbook', Array.isArray(chainEvidence.ju
 assertEqual('chain evidence judgeRunbook step count', chainEvidence.judgeRunbook.steps.length, 5)
 assertEqual('chain evidence judgeRunbook starts with identity URL', chainEvidence.judgeRunbook.steps[0]?.url, scanUrlForAgent(43))
 assertTrue('chain evidence carries publicReadApis', Array.isArray(chainEvidence.publicReadApis))
+assertTrue('chain evidence carries hardwareBridge', !!chainEvidence.hardwareBridge && typeof chainEvidence.hardwareBridge === 'object')
+assertEqual('chain evidence hardwareBridge key', chainEvidence.hardwareBridge.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('chain evidence hardwareBridge moduleUrl', chainEvidence.hardwareBridge.moduleUrl, HARDWARE_BRIDGE_PROOF.moduleUrl)
+assertListIncludes('chain evidence hardwareBridge eventKinds', chainEvidence.hardwareBridge.eventKinds, ['music_now_playing', 'chain_dispatch'])
+assertEqual('chain evidence hardwareBridge builderCode', chainEvidence.hardwareBridge.chainDispatch?.builderCode, BUILDER_CODE)
+assertEqual('chain evidence hardwareBridge scanUrl', chainEvidence.hardwareBridge.chainDispatch?.scanUrl, scanUrlForRegistry())
+assertEqual('chain evidence hardwareBridge local verification', chainEvidence.hardwareBridge.localVerification, 'npm run verify:hardware')
+assertListIncludes('chain evidence hardwareBridge privacy boundary', chainEvidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertTrue('chain evidence carries agent proof rows', Array.isArray(chainEvidence.agents))
 assertEqual('chain evidence agent proof row count', chainEvidence.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {

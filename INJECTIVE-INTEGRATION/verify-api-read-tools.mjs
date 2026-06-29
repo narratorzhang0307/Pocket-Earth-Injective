@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, JUDGE_RUNBOOK, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, JUDGE_RUNBOOK, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -109,7 +109,7 @@ assertEqual('evidence public read evidence verification', publicReadApiByKey.get
 assertEqual('evidence public read agent proof verification', publicReadApiByKey.get('agent-proof-api')?.verification, 'npm run verify:agent-proof')
 assertEqual('evidence public read fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('evidence public read wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
-assertListIncludes('evidence public read chain expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof'])
+assertListIncludes('evidence public read chain expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge'])
 assertListIncludes('evidence public read chain judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof'])
 assertListIncludes('evidence public read agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'])
 assertListIncludes('evidence public read agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'single-card sourceControl anchor'])
@@ -144,6 +144,20 @@ assertEqual('evidence handshake proof agentB', evidence.handshakeProof.agentB, 4
 assertEqual('evidence handshake proof score', evidence.handshakeProof.score, 88)
 assertTrue('evidence handshake proof keeps raw profile off-chain', String(evidence.handshakeProof.profileCommitmentPolicy || '').includes('raw profile fields stay off-chain'))
 assertEqual('evidence handshake proof local verification', evidence.handshakeProof.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
+assertTrue('evidence hardware bridge object', !!evidence.hardwareBridge && typeof evidence.hardwareBridge === 'object')
+assertEqual('evidence hardware bridge key', evidence.hardwareBridge.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('evidence hardware bridge module path', evidence.hardwareBridge.modulePath, HARDWARE_BRIDGE_PROOF.modulePath)
+assertEqual('evidence hardware bridge module url', evidence.hardwareBridge.moduleUrl, HARDWARE_BRIDGE_PROOF.moduleUrl)
+assertListIncludes('evidence hardware bridge event kinds', evidence.hardwareBridge.eventKinds, HARDWARE_BRIDGE_PROOF.eventKinds)
+assertEqual('evidence hardware bridge chain source', evidence.hardwareBridge.chainDispatch?.source, HARDWARE_BRIDGE_PROOF.chainDispatch.source)
+assertEqual('evidence hardware bridge builderCode', evidence.hardwareBridge.chainDispatch?.builderCode, BUILDER_CODE)
+assertEqual('evidence hardware bridge agent ids', evidence.hardwareBridge.chainDispatch?.agentIds?.join(','), FLEET_AGENTS.map((agent) => Number(agent.id)).join(','))
+assertEqual('evidence hardware bridge chain read', evidence.hardwareBridge.chainDispatch?.chainRead, HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead)
+assertEqual('evidence hardware bridge scan url', evidence.hardwareBridge.chainDispatch?.scanUrl, scanUrlForRegistry())
+assertListIncludes('evidence hardware bridge Pi skills', evidence.hardwareBridge.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertEqual('evidence hardware bridge Pi smoke', evidence.hardwareBridge.piRouter?.smoke, HARDWARE_BRIDGE_PROOF.piRouter.smoke)
+assertListIncludes('evidence hardware bridge privacy boundary', evidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'no precise location payloads', 'public JSONL events only'])
+assertEqual('evidence hardware bridge local verification', evidence.hardwareBridge.localVerification, 'npm run verify:hardware')
 assertTrue('evidence review links array', Array.isArray(evidence.reviewLinks))
 assertEqual('evidence review links count', evidence.reviewLinks.length, REVIEW_LINKS.length)
 assertEqual('evidence review links first key', evidence.reviewLinks[0]?.key, 'frost-agent-43')

@@ -8,7 +8,7 @@
 - **ERC-8004 身份**：Frost 主身份 `agentId 43` 已在 Injective testnet 注册，`builderCode = pocket-earth`，Owner 为 `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`。
 - **Agent 身份簇**：`agentId 43-47` 均可通过 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47` 读回。
 - **SocialHandshake**：合约 `0xe5338a162a44a685201e1f6120b1a851949e3aee` 已部署；真实握手交易记录 `agentId 43 <-> 44`、score `88` 与非零公开承诺哈希。
-- **公开证据 API**：`/api/injective?tool=get-chain-evidence` 返回 `chainId 1439`、`readOnly: true`、`publicOnly: true`，并包含身份、mint、钱包、握手、Frost Edge Node 硬件入口、隐私边界、源码锚点和复验入口。
+- **公开证据 API**：`/api/injective?tool=get-chain-evidence` 返回 `chainId 1439`、`readOnly: true`、`publicOnly: true`，并包含身份、mint、钱包、握手、`hardwareBridge` 结构化硬件桥、隐私边界、源码锚点和复验入口。
 - **钱包时间线**：`/api/injective?tool=get-wallet-timeline` 从 RPC 读回注册、合约部署、fleet 注册和真实握手的交易顺序，`summary` 汇总 owner、事件数、成功状态、首尾区块/时间。
 - **plaza 产品闭环**：`public-plaza` 负责链上社交发现，`agent-plaza` 负责 agent 市集与安装闭环；`verify:plaza-flow` 固定两者边界。
 - **Frost Buddy 硬件延展**：`hardware/frost-buddy/` 已整理为 Frost Edge Node 模块说明，覆盖 Raspberry Pi / BLE / TTS 公开事件桥、Pi 侧技能路由、music-agent 实体化、`chain_dispatch` 链上见闻播报、市场边界与隐私边界。
@@ -31,7 +31,7 @@
 - `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层；`5.1 最终整合版对照与技术深挖` 把 PPT 页段映射到技术落点和复验入口。
 - `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口一颗地球 / 端云双脑 / Frost Buddy”，再用 `final-ppt-index` 逐页覆盖 41 页主线；后半部分展开 `recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence、FrostBus / RunTrace、SSE `x-accel-buffering:no`、`reviewManifest`、`toManifest`、`agentGeo` / FNV-1a、Frost Edge Node 硬件原理、树莓派市场边界和外部来源边界。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
-- `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径，包含 `reviewEntrypoints.hardware-bridge`、`deliveryChecklist.frost-edge-node`、`recordingOrder[].evidenceFocus` 的 Frost Edge Node `chain_dispatch` handoff 和 `npm run verify:hardware`，让硬件入口也在最快复验页里可见。
+- `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径，包含 `hardwareBridge`、`reviewEntrypoints.hardware-bridge`、`deliveryChecklist.frost-edge-node`、`recordingOrder[].evidenceFocus` 的 Frost Edge Node `chain_dispatch` handoff 和 `npm run verify:hardware`，让硬件入口也在最快复验页里可见。
 - `INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`：3 分钟以内录制脚本，镜头优先级是 `agentId 43`、钱包页、public-plaza、地球 agent 标记、Nightly Chain Dispatch、隐私边界。
 
 ## 自动化检查

@@ -66,7 +66,7 @@ export const INTEGRATION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     integrationSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, reviewBrief, reviewLinks, reviewChecklist, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, handshakeProof, hardwareBridge, reviewBrief, reviewLinks, reviewChecklist, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
     machineCheck: 'npm run verify:public-proof',
   },
 ]
@@ -148,6 +148,35 @@ export const PLAZA_DEMO_FLOW = [
     smoke: 'INJECTIVE-INTEGRATION/verify-space-plaza.mjs + INJECTIVE-INTEGRATION/verify-plaza-install.mjs',
   },
 ]
+
+export const HARDWARE_BRIDGE_PROOF = {
+  key: 'frost-edge-node',
+  label: 'Frost Edge Node public-event bridge',
+  modulePath: 'hardware/frost-buddy/',
+  moduleUrl: HARDWARE_BRIDGE_URL,
+  role: 'Raspberry Pi / BLE / TTS bridge for music-agent events and Injective public chain dispatches',
+  eventKinds: ['music_now_playing', 'chain_dispatch'],
+  chainDispatch: {
+    source: 'injective-public-plaza',
+    agentIds: FLEET_AGENT_IDS,
+    builderCode: BUILDER_CODE,
+    scanUrl: scanUrlForRegistry(),
+    chainRead: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENT_IDS)}`,
+  },
+  piRouter: {
+    modulePath: 'hardware/frost-buddy/raspi/',
+    skills: ['next_track', 'prev_track', 'pause', 'replay', 'volume_up', 'volume_down', 'music_now_playing', 'chain_dispatch', 'help'],
+    smoke: 'python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py',
+  },
+  privacyBoundary: [
+    'no private keys',
+    'no wallet signing',
+    'no raw profile text',
+    'no precise location payloads',
+    'public JSONL events only',
+  ],
+  localVerification: 'npm run verify:hardware',
+}
 
 export const REVIEW_ENTRYPOINTS = [
   { key: 'judge-quickstart', label: '60-second judge quickstart', type: 'guide', url: JUDGE_QUICKSTART_URL },

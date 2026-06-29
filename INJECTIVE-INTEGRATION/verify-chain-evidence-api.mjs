@@ -7,6 +7,7 @@ import {
   DEMO_VIDEO_LIMIT_SECONDS,
   EVIDENCE_PRIVACY_BOUNDARY,
   FLEET_AGENTS,
+  HARDWARE_BRIDGE_PROOF,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
   JUDGE_RUNBOOK,
@@ -91,7 +92,7 @@ assertEqual('public read evidence API path', publicReadApiByKey.get('chain-evide
 assertEqual('public read agent proof API path', publicReadApiByKey.get('agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('public read fleet API path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
 assertEqual('public read wallet API path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
-assertListIncludes('public read chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('public read chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'recordingOrder[].evidenceFocus'])
 assertListIncludes('public read chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof'])
 assertListIncludes('public read agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'])
 assertListIncludes('public read agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'single-card sourceControl anchor'])
@@ -128,6 +129,20 @@ assertEqual('handshake proof timestamp', evidence.handshakeProof.timestamp, TIME
 assertTrue('handshake proof commitment policy', evidence.handshakeProof.profileCommitmentPolicy?.includes('non-zero bytes32'))
 assertTrue('handshake proof public fields', evidence.handshakeProof.publicFields?.includes('profile commitment hashes'))
 assertEqual('handshake proof local verification', evidence.handshakeProof.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
+assertTrue('hardware bridge object', !!evidence.hardwareBridge && typeof evidence.hardwareBridge === 'object')
+assertEqual('hardware bridge key', evidence.hardwareBridge.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('hardware bridge module path', evidence.hardwareBridge.modulePath, HARDWARE_BRIDGE_PROOF.modulePath)
+assertEqual('hardware bridge module url', evidence.hardwareBridge.moduleUrl, HARDWARE_BRIDGE_PROOF.moduleUrl)
+assertTrue('hardware bridge role mentions Raspberry Pi', evidence.hardwareBridge.role.includes('Raspberry Pi'))
+assertListIncludes('hardware bridge event kinds', evidence.hardwareBridge.eventKinds, HARDWARE_BRIDGE_PROOF.eventKinds)
+assertEqual('hardware bridge chain source', evidence.hardwareBridge.chainDispatch?.source, 'injective-public-plaza')
+assertEqual('hardware bridge chain builderCode', evidence.hardwareBridge.chainDispatch?.builderCode, BUILDER_CODE)
+assertEqual('hardware bridge chain read', evidence.hardwareBridge.chainDispatch?.chainRead, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
+assertEqual('hardware bridge chain scanUrl', evidence.hardwareBridge.chainDispatch?.scanUrl, scanUrlForRegistry())
+assertEqual('hardware bridge agent ids', evidence.hardwareBridge.chainDispatch?.agentIds?.join(','), FLEET_AGENTS.map((agent) => Number(agent.id)).join(','))
+assertTrue('hardware bridge Pi skills include chain dispatch', evidence.hardwareBridge.piRouter?.skills?.includes('chain_dispatch'))
+assertEqual('hardware bridge local verification', evidence.hardwareBridge.localVerification, 'npm run verify:hardware')
+assertListIncludes('hardware bridge privacy boundary', evidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertTrue('review links array', Array.isArray(evidence.reviewLinks))
 assertEqual('review links count', evidence.reviewLinks.length, REVIEW_LINKS.length)
 assertEqual('review link first url', evidence.reviewLinks[0]?.url, scanUrlForAgent(43))
