@@ -20,6 +20,7 @@ import {
   TIMELINE_EVENTS,
   scanUrlForAddress,
   scanUrlForAgent,
+  scanUrlForRegistry,
   scanUrlForTx,
 } from './chain-proof-data.mjs'
 
@@ -211,7 +212,17 @@ console.log('\nFleet and timeline are review-ready')
 assertEqual('fleet agent count', evidence.agents.length, FLEET_AGENTS.length)
 for (const agent of FLEET_AGENTS) {
   const actual = evidence.agents.find((item) => Number(item.agentId) === Number(agent.id))
+  const mintEvent = REGISTRY_MINT_EVENTS.find((event) => Number(event.agentId) === Number(agent.id))
   assertTrue(`agent ${agent.id} exists`, !!actual)
+  assertTrue(`agent ${agent.id} mint event exists`, !!mintEvent)
+  assertEqual(`agent ${agent.id} owner`, actual.owner, PROOF_OWNER)
+  assertEqual(`agent ${agent.id} builderCode`, actual.builderCode, BUILDER_CODE)
+  assertEqual(`agent ${agent.id} registry`, actual.registry, IDENTITY_REGISTRY)
+  assertEqual(`agent ${agent.id} registryScanUrl`, actual.registryScanUrl, scanUrlForRegistry())
+  assertEqual(`agent ${agent.id} mintedFromZero`, actual.mintedFromZero, true)
+  assertEqual(`agent ${agent.id} mintTransactionHash`, actual.mintTransactionHash, mintEvent.transactionHash)
+  assertEqual(`agent ${agent.id} mintBlockNumber`, actual.mintBlockNumber, mintEvent.blockNumber)
+  assertEqual(`agent ${agent.id} mintScanUrl`, actual.mintScanUrl, mintEvent.scanUrl)
   assertEqual(`agent ${agent.id} scanUrl`, actual.scanUrl, scanUrlForAgent(agent.id))
 }
 assertEqual('registry mint event count', evidence.registryMintEvents.length, REGISTRY_MINT_EVENTS.length)

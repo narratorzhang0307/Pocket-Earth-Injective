@@ -266,12 +266,23 @@ export async function handleInjective(req, res, url, cfg = {}) {
         submissionChecklist: SUBMISSION_CHECKLIST,
         privacyBoundary: EVIDENCE_PRIVACY_BOUNDARY,
         plazaFlow: PLAZA_DEMO_FLOW,
-        agents: FLEET_AGENTS.map((agent) => ({
-          agentId: Number(agent.id),
-          label: agent.label,
-          ...(agent.requiredTag ? { requiredTag: agent.requiredTag } : {}),
-          scanUrl: scanUrlForAgent(agent.id),
-        })),
+        agents: FLEET_AGENTS.map((agent) => {
+          const mintEvent = REGISTRY_MINT_EVENTS.find((event) => Number(event.agentId) === Number(agent.id))
+          return {
+            agentId: Number(agent.id),
+            label: agent.label,
+            owner: PROOF_OWNER,
+            builderCode: BUILDER_CODE,
+            registry: IDENTITY_REGISTRY,
+            registryScanUrl: scanUrlForRegistry(),
+            mintedFromZero: mintEvent ? sameAddress(mintEvent.from, REGISTRY_MINT_ZERO_ADDRESS) : false,
+            mintTransactionHash: mintEvent?.transactionHash ?? null,
+            mintBlockNumber: mintEvent?.blockNumber ?? null,
+            mintScanUrl: mintEvent?.scanUrl ?? null,
+            ...(agent.requiredTag ? { requiredTag: agent.requiredTag } : {}),
+            scanUrl: scanUrlForAgent(agent.id),
+          }
+        }),
         registryMintEvents: REGISTRY_MINT_EVENTS,
         registryMintSummary: {
           owner: PROOF_OWNER,

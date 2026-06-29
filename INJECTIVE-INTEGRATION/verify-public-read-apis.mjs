@@ -4,10 +4,14 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   FLEET_AGENTS,
+  IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
   PROOF_OWNER,
+  REGISTRY_MINT_EVENTS,
   SUBMISSION_REPOSITORY_URL,
   TIMELINE_EVENTS,
+  scanUrlForAgent,
+  scanUrlForRegistry,
 } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
@@ -118,6 +122,23 @@ assertEqual('chain evidence readOnly', chainEvidence.readOnly, true)
 assertEqual('chain evidence publicOnly', chainEvidence.publicOnly, true)
 assertEqual('chain evidence source repository', chainEvidence.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
 assertTrue('chain evidence carries publicReadApis', Array.isArray(chainEvidence.publicReadApis))
+assertTrue('chain evidence carries agent proof rows', Array.isArray(chainEvidence.agents))
+assertEqual('chain evidence agent proof row count', chainEvidence.agents.length, FLEET_AGENTS.length)
+for (const expected of FLEET_AGENTS) {
+  const actual = chainEvidence.agents.find((agent) => Number(agent.agentId) === Number(expected.id))
+  const mintEvent = REGISTRY_MINT_EVENTS.find((event) => Number(event.agentId) === Number(expected.id))
+  assertTrue(`chain evidence agent ${expected.id} row`, Boolean(actual))
+  assertTrue(`chain evidence agent ${expected.id} mint event`, Boolean(mintEvent))
+  assertEqual(`chain evidence agent ${expected.id} owner`, actual.owner, PROOF_OWNER)
+  assertEqual(`chain evidence agent ${expected.id} builderCode`, actual.builderCode, BUILDER_CODE)
+  assertEqual(`chain evidence agent ${expected.id} registry`, actual.registry, IDENTITY_REGISTRY)
+  assertEqual(`chain evidence agent ${expected.id} registryScanUrl`, actual.registryScanUrl, scanUrlForRegistry())
+  assertEqual(`chain evidence agent ${expected.id} mintedFromZero`, actual.mintedFromZero, true)
+  assertEqual(`chain evidence agent ${expected.id} mintTransactionHash`, actual.mintTransactionHash, mintEvent.transactionHash)
+  assertEqual(`chain evidence agent ${expected.id} mintBlockNumber`, actual.mintBlockNumber, mintEvent.blockNumber)
+  assertEqual(`chain evidence agent ${expected.id} mintScanUrl`, actual.mintScanUrl, mintEvent.scanUrl)
+  assertEqual(`chain evidence agent ${expected.id} scanUrl`, actual.scanUrl, scanUrlForAgent(expected.id))
+}
 
 console.log('\nagent fleet endpoint')
 const fleet = await suppressCardFetchWarnings(() => callApi(byKey.get('agent-fleet-api').path))
