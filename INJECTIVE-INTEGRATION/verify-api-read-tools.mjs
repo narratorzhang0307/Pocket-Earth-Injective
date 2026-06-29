@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -79,6 +79,7 @@ assertEqual('evidence network', evidence.network, 'testnet')
 assertEqual('evidence chainId', evidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('evidence readOnly', evidence.readOnly, true)
 assertEqual('evidence publicOnly', evidence.publicOnly, true)
+assertEqual('evidence demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertEqual('evidence owner', evidence.owner, PROOF_OWNER)
 assertEqual('evidence owner scanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
@@ -115,6 +116,7 @@ assertTrue('evidence submission checklist array', Array.isArray(evidence.submiss
 assertEqual('evidence submission checklist count', evidence.submissionChecklist.length, SUBMISSION_CHECKLIST.length)
 assertTrue('evidence submission checklist includes public GitHub', evidence.submissionChecklist.some((item) => item.key === 'public-github-readme'))
 assertTrue('evidence submission checklist includes demo script', evidence.submissionChecklist.some((item) => item.key === 'demo-video-script'))
+assertEqual('evidence demo script local check', evidence.submissionChecklist.find((item) => item.key === 'demo-video-script')?.localCheck, 'npm run verify:duration')
 assertTrue('evidence privacy on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('evidence privacy off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertTrue('evidence privacy mentions ERC-8004 identity', evidence.privacyBoundary.onChain.includes('ERC-8004 agent identity'))
@@ -126,6 +128,7 @@ assertEqual('evidence public-plaza smoke', evidence.plazaFlow[0]?.smoke, 'INJECT
 assertEqual('evidence agent-plaza key', evidence.plazaFlow[1]?.key, 'agent-plaza')
 assertTrue('evidence agent-plaza verifies install loop', String(evidence.plazaFlow[1]?.verifies || '').includes('installs cafe-map'))
 assertEqual('evidence demo readiness command', evidence.verification?.demoReadiness, 'npm run verify:demo')
+assertEqual('evidence demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
 assertEqual('evidence review brief command', evidence.verification?.reviewBrief, 'npm run verify:brief')
 assertEqual('evidence review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')

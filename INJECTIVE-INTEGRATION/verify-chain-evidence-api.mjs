@@ -4,6 +4,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   COMPETITION_ALIGNMENT,
+  DEMO_VIDEO_LIMIT_SECONDS,
   EVIDENCE_PRIVACY_BOUNDARY,
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
@@ -58,6 +59,7 @@ assertEqual('network', evidence.network, 'testnet')
 assertEqual('chainId', evidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('readOnly', evidence.readOnly, true)
 assertEqual('publicOnly', evidence.publicOnly, true)
+assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('builderCode', evidence.builderCode, BUILDER_CODE)
 assertEqual('owner', evidence.owner, PROOF_OWNER)
 assertEqual('ownerScanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
@@ -98,6 +100,7 @@ assertTrue('submission checklist includes GitHub README', evidence.submissionChe
 assertTrue('submission checklist includes Injective integration', evidence.submissionChecklist.some((item) => item.key === 'injective-integration'))
 assertTrue('submission checklist includes demo script', evidence.submissionChecklist.some((item) => item.key === 'demo-video-script'))
 assertTrue('submission checklist includes pitch notes', evidence.submissionChecklist.some((item) => item.key === 'pitch-deck-notes'))
+assertEqual('submission checklist demo local check', evidence.submissionChecklist.find((item) => item.key === 'demo-video-script')?.localCheck, 'npm run verify:duration')
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
@@ -135,6 +138,7 @@ for (const expected of TIMELINE_EVENTS) {
 
 console.log('\nReviewer follow-up paths')
 assertEqual('demo readiness command', evidence.verification?.demoReadiness, 'npm run verify:demo')
+assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
 assertEqual('review brief command', evidence.verification?.reviewBrief, 'npm run verify:brief')
 assertEqual('review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')

@@ -4,6 +4,7 @@ export const INJECTIVE_TESTNET_CHAIN_ID = 1439
 export const BUILDER_CODE = 'pocket-earth'
 export const SUBMISSION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
 export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
+export const DEMO_VIDEO_LIMIT_SECONDS = 180
 export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 export const SOCIAL_HANDSHAKE = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
@@ -121,7 +122,7 @@ export const REVIEW_BRIEF = {
     { step: 1, label: 'Open agentId 43', linkKey: 'frost-agent-43', verifies: 'Frost has a public ERC-8004 identity on Injective testnet.' },
     { step: 2, label: 'Open owner wallet', linkKey: 'owner-wallet', verifies: 'Registration, fleet, contract deployment, and handshake belong to the same wallet.' },
     { step: 3, label: 'Read public evidence API', submissionKey: 'chain-evidence-api', verifies: 'The product exposes the same public facts through /api/injective.' },
-    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, Blockscout links, plaza split, alignment, submission entries, and submission checklist still pass.' },
+    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, three-minute script, Blockscout links, plaza split, alignment, submission entries, and submission checklist still pass.' },
   ],
   privacyLine: 'Only public proofs go on-chain: identities, card fields, wallet/contract addresses, profile commitments, similarity score, and timestamps. Raw media, mood text, precise locations, profile counts, and secret env values stay off-chain.',
 }
@@ -174,8 +175,8 @@ export const SUBMISSION_CHECKLIST = [
     key: 'demo-video-script',
     requirement: 'Demo video under 3 minutes that shows core features',
     status: 'ready-for-recording',
-    evidence: 'DEMO-SCRIPT.md is structured as a 175-second recording path: agentId 43, wallet, public-plaza, globe markers, nightly dispatch, and privacy proof.',
-    localCheck: 'npm run verify:demo',
+    evidence: 'DEMO-SCRIPT.md is structured as a <=180-second recording path: agentId 43, wallet, public-plaza, globe markers, nightly dispatch, and privacy proof.',
+    localCheck: 'npm run verify:duration',
     linkKey: 'live-demo',
   },
   {

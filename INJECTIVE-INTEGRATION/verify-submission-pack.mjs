@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
+  DEMO_VIDEO_LIMIT_SECONDS,
   LIVE_DEMO_URL,
   SUBMISSION_CHECKLIST,
   SUBMISSION_LINKS,
@@ -53,6 +54,9 @@ assertEqual('submissionLinks count', links.length, SUBMISSION_LINKS.length)
 assertEqual('submissionLinks unique key count', new Set(links.map((item) => item.key)).size, links.length)
 assertEqual('submission command', evidence.verification?.submissionPack, 'npm run verify:submission')
 assertEqual('submission script', packageJson.scripts?.['verify:submission'], 'node INJECTIVE-INTEGRATION/verify-submission-pack.mjs')
+assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
+assertEqual('demo duration script', packageJson.scripts?.['verify:duration'], 'node INJECTIVE-INTEGRATION/verify-demo-duration.mjs')
+assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 
 for (const expected of SUBMISSION_LINKS) {
   const actual = links.find((item) => item.key === expected.key)
@@ -97,6 +101,7 @@ for (const expected of SUBMISSION_CHECKLIST) {
 assertEqual('GitHub checklist status', checklistByKey.get('public-github-readme').status, 'ready')
 assertEqual('Injective checklist status', checklistByKey.get('injective-integration').status, 'ready')
 assertEqual('Demo checklist status', checklistByKey.get('demo-video-script').status, 'ready-for-recording')
+assertEqual('Demo checklist local check', checklistByKey.get('demo-video-script').localCheck, 'npm run verify:duration')
 assertEqual('Pitch checklist status', checklistByKey.get('pitch-deck-notes').status, 'ready-for-deck')
 assertTrue('checklist mentions no private keys', checklistByKey.get('public-review-apis').evidence.includes('without private keys') || checklistByKey.get('public-review-apis').evidence.includes('read-only'))
 
@@ -105,6 +110,7 @@ assertTrue('README names Injective repository evidence package', readme.includes
 assertTrue('CHAIN-EVIDENCE mentions submission links', chainEvidence.includes('submissionLinks'))
 assertTrue('CHAIN-EVIDENCE mentions submission checklist', chainEvidence.includes('submissionChecklist'))
 assertTrue('DEMO-SCRIPT mentions submission check', demoScript.includes('npm run verify:submission'))
+assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
 
 const publicText = JSON.stringify({ links, checklist })
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']) {

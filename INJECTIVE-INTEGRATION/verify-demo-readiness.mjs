@@ -11,6 +11,10 @@ const checks = [
     moduleUrl: new URL('./verify-review-brief.mjs', import.meta.url),
   },
   {
+    label: 'demo script stays under 3 minutes',
+    moduleUrl: new URL('./verify-demo-duration.mjs', import.meta.url),
+  },
+  {
     label: 'builderCode API reads agentId 43-47',
     moduleUrl: new URL('./verify-api-list-agents.mjs', import.meta.url),
   },

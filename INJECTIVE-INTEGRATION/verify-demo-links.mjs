@@ -45,6 +45,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'agent-plaza',
   'verify-plaza-install.mjs',
   'npm run verify:demo',
+  'npm run verify:duration',
   'npm run verify:evidence',
   'npm run verify:brief',
   'npm run verify:review',

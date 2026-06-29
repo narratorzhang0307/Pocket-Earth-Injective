@@ -7,7 +7,7 @@
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
 // ════════════════════════════════════════════════════════════════════════════
 
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -152,6 +152,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         chainId: INJECTIVE_TESTNET_CHAIN_ID,
         readOnly: true,
         publicOnly: true,
+        demoVideoLimitSeconds: DEMO_VIDEO_LIMIT_SECONDS,
         builderCode: BUILDER_CODE,
         owner: PROOF_OWNER,
         ownerScanUrl: scanUrlForAddress(PROOF_OWNER),
@@ -223,6 +224,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         ],
         verification: {
           demoReadiness: 'npm run verify:demo',
+          demoDuration: 'npm run verify:duration',
           evidenceSmoke: 'npm run verify:evidence',
           reviewBrief: 'npm run verify:brief',
           reviewChecklist: 'npm run verify:review',
