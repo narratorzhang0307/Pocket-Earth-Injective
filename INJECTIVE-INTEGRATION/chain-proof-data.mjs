@@ -183,8 +183,8 @@ export const SUBMISSION_CHECKLIST = [
     key: 'pitch-deck-notes',
     requirement: 'Pitch deck covers vision, technical approach, and future plan',
     status: 'ready-for-deck',
-    evidence: 'INJECTIVE-INTEGRATION/PITCH-NOTES.md gives the hardware/Frost Buddy positioning and boundaries; CHAIN-EVIDENCE.md supplies the on-chain proof slides.',
-    localCheck: 'npm run verify:brief',
+    evidence: 'INJECTIVE-INTEGRATION/PITCH-NOTES.md gives the slide outline, Injective proof anchors, hardware/Frost Buddy positioning, boundaries, and cited Raspberry Pi source; CHAIN-EVIDENCE.md supplies the on-chain proof slides.',
+    localCheck: 'npm run verify:pitch',
     linkKey: 'github-repo',
   },
   {

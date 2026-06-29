@@ -142,6 +142,7 @@ assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm r
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
 assertEqual('public proof command', evidence.verification?.publicProof, 'npm run verify:public-proof')
 assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
+assertEqual('pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 assertEqual('review brief command', evidence.verification?.reviewBrief, 'npm run verify:brief')
 assertEqual('review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')

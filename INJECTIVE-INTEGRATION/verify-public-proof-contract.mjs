@@ -169,6 +169,7 @@ for (const event of TIMELINE_EVENTS) {
 console.log('\nVerification commands remain runnable')
 assertEqual('public proof command is advertised', evidence.verification?.publicProof, 'npm run verify:public-proof')
 assertEqual('github repo command is advertised', evidence.verification?.githubRepo, 'npm run verify:github')
+assertEqual('pitch notes command is advertised', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 for (const [label, command] of collectCommands(evidence)) assertKnownCommand(label, command)
 
 console.log('\nPublic-only leak guard')

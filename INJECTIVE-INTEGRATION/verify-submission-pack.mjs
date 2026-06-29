@@ -56,6 +56,8 @@ assertEqual('submission command', evidence.verification?.submissionPack, 'npm ru
 assertEqual('submission script', packageJson.scripts?.['verify:submission'], 'node INJECTIVE-INTEGRATION/verify-submission-pack.mjs')
 assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
 assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
+assertEqual('pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
+assertEqual('pitch notes script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')
 assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
 assertEqual('demo duration script', packageJson.scripts?.['verify:duration'], 'node INJECTIVE-INTEGRATION/verify-demo-duration.mjs')
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
@@ -106,6 +108,7 @@ assertEqual('Injective checklist status', checklistByKey.get('injective-integrat
 assertEqual('Demo checklist status', checklistByKey.get('demo-video-script').status, 'ready-for-recording')
 assertEqual('Demo checklist local check', checklistByKey.get('demo-video-script').localCheck, 'npm run verify:duration')
 assertEqual('Pitch checklist status', checklistByKey.get('pitch-deck-notes').status, 'ready-for-deck')
+assertEqual('Pitch checklist local check', checklistByKey.get('pitch-deck-notes').localCheck, 'npm run verify:pitch')
 assertEqual('Public API checklist local check', checklistByKey.get('public-review-apis').localCheck, 'npm run verify:public-proof')
 assertTrue('checklist mentions no private keys', checklistByKey.get('public-review-apis').evidence.includes('without private keys') || checklistByKey.get('public-review-apis').evidence.includes('read-only'))
 

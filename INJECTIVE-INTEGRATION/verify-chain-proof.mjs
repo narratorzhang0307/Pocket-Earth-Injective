@@ -31,6 +31,10 @@ const checks = [
     moduleUrl: new URL('./verify-review-links.mjs', import.meta.url),
   },
   {
+    label: 'Pitch notes cover the deck story, source, and hardware boundary',
+    moduleUrl: new URL('./verify-pitch-notes.mjs', import.meta.url),
+  },
+  {
     label: 'App /api/injective ping, get-status, get-reputation read tools',
     moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
   },
