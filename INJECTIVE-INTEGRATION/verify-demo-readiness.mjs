@@ -11,6 +11,10 @@ const checks = [
     moduleUrl: new URL('./verify-public-proof-contract.mjs', import.meta.url),
   },
   {
+    label: 'public read API manifest opens judge endpoints',
+    moduleUrl: new URL('./verify-public-read-apis.mjs', import.meta.url),
+  },
+  {
     label: 'GitHub submission repo is public and aligned',
     moduleUrl: new URL('./verify-github-submission.mjs', import.meta.url),
   },

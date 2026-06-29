@@ -69,6 +69,8 @@ assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm r
 assertEqual('demo duration script', packageJson.scripts?.['verify:duration'], 'node INJECTIVE-INTEGRATION/verify-demo-duration.mjs')
 assertEqual('wallet timeline command', evidence.verification?.walletTimeline, 'npm run verify:wallet')
 assertEqual('wallet timeline script', packageJson.scripts?.['verify:wallet'], 'node INJECTIVE-INTEGRATION/verify-wallet-timeline-api.mjs')
+assertEqual('public read APIs command', evidence.verification?.publicReadApis, 'npm run verify:public-apis')
+assertEqual('public read APIs script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 
 for (const expected of SUBMISSION_LINKS) {

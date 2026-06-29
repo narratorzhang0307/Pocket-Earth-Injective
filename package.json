@@ -11,6 +11,7 @@
     "verify:duration": "node INJECTIVE-INTEGRATION/verify-demo-duration.mjs",
     "verify:evidence": "node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs",
     "verify:public-proof": "node INJECTIVE-INTEGRATION/verify-public-proof-contract.mjs",
+    "verify:public-apis": "node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs",
     "verify:github": "node INJECTIVE-INTEGRATION/verify-github-submission.mjs",
     "verify:pitch": "node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs",
     "verify:judge": "node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs",
