@@ -34,6 +34,25 @@ export const EVIDENCE_PRIVACY_BOUNDARY = {
   writeBoundary: 'testnet-only writes require a server-side private key and explicit confirm:true; otherwise register/handshake stay dry-run',
 }
 
+export const PLAZA_DEMO_FLOW = [
+  {
+    key: 'public-plaza',
+    purpose: 'chain social discovery',
+    entry: 'AGENTS > PLAZA > public-plaza > RUN',
+    chainRead: '/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47',
+    verifies: 'reads agentId 43-47 from Injective testnet, ranks taste overlap, pins agent markers, and creates Nightly Chain Dispatch',
+    smoke: 'INJECTIVE-INTEGRATION/verify-plaza.mjs',
+  },
+  {
+    key: 'agent-plaza',
+    purpose: 'agent marketplace and install loop',
+    entry: 'AGENTS > PLAZA > agent-plaza',
+    chainRead: 'shows Injective chain identity badge for on-chain capable agents',
+    verifies: 'opens the agent catalog, keeps the boundary strip visible, installs cafe-map through the manifest review gate, and shows it in My Agents',
+    smoke: 'INJECTIVE-INTEGRATION/verify-space-plaza.mjs + INJECTIVE-INTEGRATION/verify-plaza-install.mjs',
+  },
+]
+
 export const TIMELINE_EVENTS = [
   { label: 'Frost main identity registration', role: 'agentId 43', hash: '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554', to: IDENTITY_REGISTRY, blockNumber: 131678496n, timestamp: '2026-06-27T01:46:30.000Z' },
   { label: 'SocialHandshake deployment', role: 'contract deployment', hash: '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722', to: null, contractAddress: SOCIAL_HANDSHAKE, blockNumber: 131678987n, timestamp: '2026-06-27T01:53:16.000Z' },

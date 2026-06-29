@@ -7,6 +7,7 @@ import {
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  PLAZA_DEMO_FLOW,
   PROOF_OWNER,
   SOCIAL_HANDSHAKE,
   TIMELINE_EVENTS,
@@ -64,6 +65,12 @@ assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBounda
 for (const item of EVIDENCE_PRIVACY_BOUNDARY.offChain) {
   assertTrue(`privacy boundary keeps off-chain: ${item}`, evidence.privacyBoundary.offChain.includes(item))
 }
+assertTrue('plaza flow array', Array.isArray(evidence.plazaFlow))
+assertEqual('plaza flow count', evidence.plazaFlow.length, PLAZA_DEMO_FLOW.length)
+assertEqual('plaza flow first key', evidence.plazaFlow[0]?.key, 'public-plaza')
+assertEqual('plaza flow first chain read', evidence.plazaFlow[0]?.chainRead, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
+assertEqual('plaza flow second key', evidence.plazaFlow[1]?.key, 'agent-plaza')
+assertTrue('plaza flow second smoke mentions install', String(evidence.plazaFlow[1]?.smoke || '').includes('verify-plaza-install.mjs'))
 
 console.log('\nAgent fleet evidence')
 assertTrue('agents array', Array.isArray(evidence.agents))
