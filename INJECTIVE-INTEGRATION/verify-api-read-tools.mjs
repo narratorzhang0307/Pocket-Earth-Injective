@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -116,6 +116,15 @@ assertEqual('evidence registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('evidence registry scanUrl', evidence.registryScanUrl, scanUrlForRegistry())
 assertEqual('evidence handshake contract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
 assertEqual('evidence handshake scanUrl', evidence.handshakeScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertTrue('evidence handshake proof object', !!evidence.handshakeProof && typeof evidence.handshakeProof === 'object')
+assertEqual('evidence handshake proof key', evidence.handshakeProof.key, SOCIAL_HANDSHAKE_PROOF.key)
+assertEqual('evidence handshake proof contract', evidence.handshakeProof.contract, SOCIAL_HANDSHAKE)
+assertEqual('evidence handshake proof transactionHash', evidence.handshakeProof.transactionHash, TIMELINE_EVENTS.at(-1).hash)
+assertEqual('evidence handshake proof agentA', evidence.handshakeProof.agentA, 43)
+assertEqual('evidence handshake proof agentB', evidence.handshakeProof.agentB, 44)
+assertEqual('evidence handshake proof score', evidence.handshakeProof.score, 88)
+assertTrue('evidence handshake proof keeps raw profile off-chain', String(evidence.handshakeProof.profileCommitmentPolicy || '').includes('raw profile fields stay off-chain'))
+assertEqual('evidence handshake proof local verification', evidence.handshakeProof.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
 assertTrue('evidence review links array', Array.isArray(evidence.reviewLinks))
 assertEqual('evidence review links count', evidence.reviewLinks.length, REVIEW_LINKS.length)
 assertEqual('evidence review links first key', evidence.reviewLinks[0]?.key, 'frost-agent-43')

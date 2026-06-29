@@ -16,6 +16,7 @@ import {
   REGISTRY_MINT_ZERO_ADDRESS,
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
+  SOCIAL_HANDSHAKE_PROOF,
   SUBMISSION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
@@ -102,6 +103,7 @@ function collectCommands(evidence) {
   for (const item of evidence.competitionAlignment || []) commands.push(['competitionAlignment', item.machineCheck])
   for (const item of evidence.reviewChecklist || []) commands.push(['reviewChecklist', item.machineCheck])
   for (const item of evidence.submissionChecklist || []) commands.push(['submissionChecklist', item.localCheck])
+  if (evidence.handshakeProof?.localVerification) commands.push(['handshakeProof', evidence.handshakeProof.localVerification])
   for (const [key, value] of Object.entries(evidence.verification || {})) {
     if (typeof value === 'string' && (value.startsWith('npm run ') || value.startsWith('node '))) commands.push([`verification.${key}`, value])
   }
@@ -121,6 +123,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'competitionAlignment',
   'demoVideoLimitSeconds',
   'handshakeContract',
+  'handshakeProof',
   'handshakeScanUrl',
   'network',
   'ok',
@@ -156,6 +159,20 @@ assertEqual('builderCode', evidence.builderCode, BUILDER_CODE)
 assertEqual('owner', evidence.owner, PROOF_OWNER)
 assertEqual('registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('handshake contract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
+assertTrue('handshake proof object', !!evidence.handshakeProof && typeof evidence.handshakeProof === 'object')
+assertEqual('handshake proof key', evidence.handshakeProof.key, SOCIAL_HANDSHAKE_PROOF.key)
+assertEqual('handshake proof contract', evidence.handshakeProof.contract, SOCIAL_HANDSHAKE)
+assertEqual('handshake proof contract scanUrl', evidence.handshakeProof.contractScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertEqual('handshake proof transactionHash', evidence.handshakeProof.transactionHash, TIMELINE_EVENTS.at(-1).hash)
+assertEqual('handshake proof transactionScanUrl', evidence.handshakeProof.transactionScanUrl, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
+assertEqual('handshake proof agentA', evidence.handshakeProof.agentA, 43)
+assertEqual('handshake proof agentB', evidence.handshakeProof.agentB, 44)
+assertEqual('handshake proof score', evidence.handshakeProof.score, 88)
+assertEqual('handshake proof block', evidence.handshakeProof.blockNumber, TIMELINE_EVENTS.at(-1).blockNumber)
+assertEqual('handshake proof timestamp', evidence.handshakeProof.timestamp, TIMELINE_EVENTS.at(-1).timestamp)
+assertTrue('handshake proof only exposes commitment policy', String(evidence.handshakeProof.profileCommitmentPolicy || '').includes('raw profile fields stay off-chain'))
+assertTrue('handshake proof public fields include commitments', evidence.handshakeProof.publicFields?.includes('profile commitment hashes'))
+assertEqual('handshake proof local verification', evidence.handshakeProof.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
 assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
 assertEqual('sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')

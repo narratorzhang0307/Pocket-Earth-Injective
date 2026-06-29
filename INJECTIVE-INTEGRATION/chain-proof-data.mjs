@@ -211,6 +211,22 @@ export const TIMELINE_EVENTS = [
   { label: 'Real SocialHandshake', role: 'agentId 43 <-> 44', hash: '0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6', to: SOCIAL_HANDSHAKE, blockNumber: 131869118n, timestamp: '2026-06-28T21:34:21.000Z' },
 ]
 
+export const SOCIAL_HANDSHAKE_PROOF = {
+  key: 'social-handshake-43-44',
+  contract: SOCIAL_HANDSHAKE,
+  contractScanUrl: scanUrlForAddress(SOCIAL_HANDSHAKE),
+  transactionHash: TIMELINE_EVENTS.at(-1).hash,
+  transactionScanUrl: scanUrlForTx(TIMELINE_EVENTS.at(-1).hash),
+  agentA: 43,
+  agentB: 44,
+  score: 88,
+  blockNumber: TIMELINE_EVENTS.at(-1).blockNumber,
+  timestamp: TIMELINE_EVENTS.at(-1).timestamp,
+  profileCommitmentPolicy: 'two non-zero bytes32 Taste Passport commitments are stored; raw profile fields stay off-chain',
+  publicFields: ['agentA', 'agentB', 'score', 'timestamp', 'profile commitment hashes'],
+  localVerification: 'node INJECTIVE-INTEGRATION/verify-handshake.mjs && node INJECTIVE-INTEGRATION/verify-handshake-contract.mjs',
+}
+
 export function sameAddress(a, b) {
   return String(a ?? '').toLowerCase() === String(b ?? '').toLowerCase()
 }

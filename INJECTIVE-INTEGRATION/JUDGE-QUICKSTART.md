@@ -6,7 +6,7 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `publicReadApis`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `publicReadApis`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
 4. Open the single-agent proof card: `/api/injective?tool=get-agent-proof&agentId=43`
 5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
@@ -21,6 +21,7 @@
 - The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events, and `registryMintSummary` condenses the agentId range, same-owner check, zero-address mint check, first/last block, and `npm run verify:registry` command.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
 - The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns `chainId 1439` plus its own `summary` so reviewers can confirm the Injective testnet, event count, all-succeeded status, and first/last block/time before reading every event row.
+- `handshakeProof` summarizes the real `agentId 43 <-> 44` SocialHandshake transaction with score `88`, contract/transaction Blockscout links, timestamp, block number, public commitment policy, and the local verifier command.
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, single-agent proof/source anchor, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, and plaza grouping.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.

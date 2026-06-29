@@ -18,6 +18,7 @@ import {
   REVIEW_CHECKLIST,
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
+  SOCIAL_HANDSHAKE_PROOF,
   SUBMISSION_CHECKLIST,
   SUBMISSION_LINKS,
   SUBMISSION_REPOSITORY_URL,
@@ -97,6 +98,20 @@ assertEqual('registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('registryScanUrl', evidence.registryScanUrl, scanUrlForRegistry())
 assertEqual('handshakeContract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
 assertEqual('handshakeScanUrl', evidence.handshakeScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertTrue('handshake proof object', !!evidence.handshakeProof && typeof evidence.handshakeProof === 'object')
+assertEqual('handshake proof key', evidence.handshakeProof.key, SOCIAL_HANDSHAKE_PROOF.key)
+assertEqual('handshake proof contract', evidence.handshakeProof.contract, SOCIAL_HANDSHAKE)
+assertEqual('handshake proof contract scanUrl', evidence.handshakeProof.contractScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertEqual('handshake proof transaction hash', evidence.handshakeProof.transactionHash, TIMELINE_EVENTS.at(-1).hash)
+assertEqual('handshake proof transaction scanUrl', evidence.handshakeProof.transactionScanUrl, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
+assertEqual('handshake proof agentA', evidence.handshakeProof.agentA, 43)
+assertEqual('handshake proof agentB', evidence.handshakeProof.agentB, 44)
+assertEqual('handshake proof score', evidence.handshakeProof.score, 88)
+assertEqual('handshake proof block', evidence.handshakeProof.blockNumber, TIMELINE_EVENTS.at(-1).blockNumber)
+assertEqual('handshake proof timestamp', evidence.handshakeProof.timestamp, TIMELINE_EVENTS.at(-1).timestamp)
+assertTrue('handshake proof commitment policy', evidence.handshakeProof.profileCommitmentPolicy?.includes('non-zero bytes32'))
+assertTrue('handshake proof public fields', evidence.handshakeProof.publicFields?.includes('profile commitment hashes'))
+assertEqual('handshake proof local verification', evidence.handshakeProof.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
 assertTrue('review links array', Array.isArray(evidence.reviewLinks))
 assertEqual('review links count', evidence.reviewLinks.length, REVIEW_LINKS.length)
 assertEqual('review link first url', evidence.reviewLinks[0]?.url, scanUrlForAgent(43))

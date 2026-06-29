@@ -11,6 +11,7 @@ import {
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
   SOCIAL_HANDSHAKE,
+  SOCIAL_HANDSHAKE_PROOF,
   SUBMISSION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
@@ -101,11 +102,13 @@ for (const snippet of [
   'get-agent-proof',
   'expectedStatus',
   'timelineSummary',
+  'handshakeProof',
   'recordingOrder[].evidenceFocus',
   'starting from its `summary`',
   `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`,
   'builderCode=pocket-earth',
   'SocialHandshake',
+  'score `88`',
   'public-plaza',
   'agent-plaza',
   'readOnly',
@@ -161,6 +164,14 @@ assertEqual('evidence public read wallet path', evidence.publicReadApis.find((it
 assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)
 assertEqual('evidence timeline summary event count', evidence.timelineSummary?.eventCount, TIMELINE_EVENTS.length)
 assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary?.rpcVerification, '/api/injective?tool=get-wallet-timeline')
+assertEqual('evidence handshake proof key', evidence.handshakeProof?.key, SOCIAL_HANDSHAKE_PROOF.key)
+assertEqual('evidence handshake proof contract', evidence.handshakeProof?.contract, SOCIAL_HANDSHAKE)
+assertEqual('evidence handshake proof transactionHash', evidence.handshakeProof?.transactionHash, TIMELINE_EVENTS.at(-1).hash)
+assertEqual('evidence handshake proof agentA', evidence.handshakeProof?.agentA, 43)
+assertEqual('evidence handshake proof agentB', evidence.handshakeProof?.agentB, 44)
+assertEqual('evidence handshake proof score', evidence.handshakeProof?.score, 88)
+assertTrue('evidence handshake proof protects raw profile fields', String(evidence.handshakeProof?.profileCommitmentPolicy || '').includes('raw profile fields stay off-chain'))
+assertEqual('evidence handshake proof local verification', evidence.handshakeProof?.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
 assertEqual('evidence registry mint summary owner', evidence.registryMintSummary?.owner, PROOF_OWNER)
 assertEqual('evidence registry mint summary owner scan URL', evidence.registryMintSummary?.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
 assertEqual('evidence registry mint summary registry', evidence.registryMintSummary?.registry, IDENTITY_REGISTRY)
