@@ -42,6 +42,7 @@ npm run verify:public-proof
 npm run verify:public-apis
 npm run verify:integration-guide
 npm run verify:github
+npm run verify:positioning
 npm run verify:source
 npm run verify:registry
 npm run verify:wallet

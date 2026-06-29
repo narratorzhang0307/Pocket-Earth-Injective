@@ -226,5 +226,6 @@ assertTrue('local package includes verify:delivery', Boolean(packageJson.scripts
 assertTrue('local package includes verify:injective', Boolean(packageJson.scripts?.['verify:injective']))
 assertEqual('local verify:public-apis script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
 assertEqual('local verify:integration-guide script', packageJson.scripts?.['verify:integration-guide'], 'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs')
+assertEqual('local verify:positioning script', packageJson.scripts?.['verify:positioning'], 'node INJECTIVE-INTEGRATION/verify-doc-positioning.mjs')
 
 console.log('\nOK GitHub integration repo is public, current, and bounded to Pocket-Earth-Injective.')
