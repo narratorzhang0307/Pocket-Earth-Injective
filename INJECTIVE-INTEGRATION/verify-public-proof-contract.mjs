@@ -54,6 +54,11 @@ function assertFocusIncludes(label, item, expected) {
   assertTrue(`${label} evidenceFocus includes ${expected}`, text.includes(expected))
 }
 
+function assertListIncludes(label, actual, expectedItems) {
+  assertTrue(`${label} array`, Array.isArray(actual))
+  for (const expected of expectedItems) assertTrue(`${label} includes ${expected}`, actual.includes(expected))
+}
+
 async function callEvidenceApi() {
   let statusCode = 0
   let body = ''
@@ -192,12 +197,22 @@ assertEqual('publicReadApis chain evidence verification', publicReadApiByKey.get
 assertEqual('publicReadApis agent proof verification', publicReadApiByKey.get('agent-proof-api')?.verification, 'npm run verify:agent-proof')
 assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
+assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof'])
+assertListIncludes('publicReadApis agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'reviewPath', 'sourceControl'])
+assertListIncludes('publicReadApis agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry'])
+assertListIncludes('publicReadApis fleet expected fields', publicReadApiByKey.get('agent-fleet-api')?.expectedFields, ['agents[].agentId', 'agents[].builderCode', 'agents[].card', 'total'])
+assertListIncludes('publicReadApis fleet judge focus', publicReadApiByKey.get('agent-fleet-api')?.judgeFocus, [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'public data URI card fields only'])
+assertListIncludes('publicReadApis wallet expected fields', publicReadApiByKey.get('wallet-timeline-api')?.expectedFields, ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'])
+assertListIncludes('publicReadApis wallet judge focus', publicReadApiByKey.get('wallet-timeline-api')?.judgeFocus, ['same owner wallet', 'all receipts succeeded', 'registration to real handshake sequence'])
 for (const [key, item] of publicReadApiByKey) {
   assertEqual(`publicReadApis ${key} method`, item.method, 'GET')
   assertEqual(`publicReadApis ${key} chainId`, item.chainId, INJECTIVE_TESTNET_CHAIN_ID)
   assertEqual(`publicReadApis ${key} readOnly`, item.readOnly, true)
   assertEqual(`publicReadApis ${key} publicOnly`, item.publicOnly, true)
   assertTrue(`publicReadApis ${key} purpose`, String(item.purpose || '').length > 20)
+  assertTrue(`publicReadApis ${key} expectedFields count`, item.expectedFields.length >= 4)
+  assertTrue(`publicReadApis ${key} judgeFocus count`, item.judgeFocus.length >= 4)
 }
 
 console.log('\nReview entry points')

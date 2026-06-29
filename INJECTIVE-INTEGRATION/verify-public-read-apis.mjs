@@ -26,6 +26,11 @@ function assertEqual(label, actual, expected) {
   console.log(`OK ${label}: ${actual}`)
 }
 
+function assertListIncludes(label, actual, expectedItems) {
+  assertTrue(`${label} array`, Array.isArray(actual))
+  for (const expected of expectedItems) assertTrue(`${label} includes ${expected}`, actual.includes(expected))
+}
+
 async function callApi(path) {
   let statusCode = 0
   let body = ''
@@ -95,6 +100,24 @@ const expectedPaths = new Map([
   ['agent-fleet-api', `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`],
   ['wallet-timeline-api', '/api/injective?tool=get-wallet-timeline'],
 ])
+const expectedGuidance = new Map([
+  ['chain-evidence-api', {
+    expectedFields: ['sourceControl', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof'],
+    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'current GitHub commit anchor'],
+  }],
+  ['agent-proof-api', {
+    expectedFields: ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'],
+    judgeFocus: ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry', 'single-card sourceControl anchor'],
+  }],
+  ['agent-fleet-api', {
+    expectedFields: ['agents[].agentId', 'agents[].builderCode', 'agents[].card', 'total'],
+    judgeFocus: [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'public data URI card fields only', 'public-plaza chain discovery input'],
+  }],
+  ['wallet-timeline-api', {
+    expectedFields: ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'],
+    judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
+  }],
+])
 
 const evidence = await callApi('/api/injective?tool=get-chain-evidence')
 
@@ -112,6 +135,8 @@ for (const [key, path] of expectedPaths) {
   assertEqual(`${key} publicOnly`, item.publicOnly, true)
   assertTrue(`${key} purpose`, String(item.purpose || '').length > 20)
   assertTrue(`${key} verification command`, String(item.verification || '').length > 0)
+  assertListIncludes(`${key} expectedFields`, item.expectedFields, expectedGuidance.get(key).expectedFields)
+  assertListIncludes(`${key} judgeFocus`, item.judgeFocus, expectedGuidance.get(key).judgeFocus)
 }
 assertEqual('advertised publicReadApis command', evidence.verification?.publicReadApis, 'npm run verify:public-apis')
 

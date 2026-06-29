@@ -262,6 +262,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:public-proof',
           purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, and privacy boundary.',
+          expectedFields: ['sourceControl', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
+          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'current GitHub commit anchor'],
         },
         {
           key: 'agent-proof-api',
@@ -273,6 +275,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:agent-proof',
           purpose: 'Returns a focused proof card for agentId 43 with identity, mint transaction, owner wallet, and sourceControl anchors.',
+          expectedFields: ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'reviewPath', 'sourceControl'],
+          judgeFocus: ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry', 'single-card sourceControl anchor'],
         },
         {
           key: 'agent-fleet-api',
@@ -284,6 +288,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs',
           purpose: `Reads agentId 43-47 from Injective testnet with builderCode=${BUILDER_CODE}.`,
+          expectedFields: ['agents[].agentId', 'agents[].builderCode', 'agents[].card', 'total'],
+          judgeFocus: [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'public data URI card fields only', 'public-plaza chain discovery input'],
         },
         {
           key: 'wallet-timeline-api',
@@ -295,6 +301,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:wallet',
           purpose: 'Replays registration, SocialHandshake deployment, fleet registration, and the real handshake from Injective RPC.',
+          expectedFields: ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'],
+          judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
         },
       ]
       const firstTimelineEvent = TIMELINE_EVENTS[0]
