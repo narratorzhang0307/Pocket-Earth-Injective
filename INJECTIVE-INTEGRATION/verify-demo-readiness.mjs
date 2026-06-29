@@ -43,6 +43,10 @@ const checks = [
     moduleUrl: new URL('./verify-registry-events.mjs', import.meta.url),
   },
   {
+    label: 'wallet timeline API matches Injective RPC facts',
+    moduleUrl: new URL('./verify-wallet-timeline-api.mjs', import.meta.url),
+  },
+  {
     label: 'demo Blockscout links and evidence snippets',
     moduleUrl: new URL('./verify-demo-links.mjs', import.meta.url),
   },
