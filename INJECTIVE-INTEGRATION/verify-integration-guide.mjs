@@ -33,7 +33,26 @@ function getRunbookBlock() {
   return guide.slice(fenceStart, fenceEnd)
 }
 
-console.log('Integration guide API manifest')
+console.log('Integration guide story spine')
+for (const phrase of [
+  '## 叙事骨架',
+  '把地球作为方法',
+  'Frost 起源',
+  '一条线走完',
+  '三个入口一颗地球',
+  '端云双脑和长期画像',
+  'Frost Buddy',
+  'agentId 43',
+  'builderCode',
+  'public-plaza',
+  'agent-plaza',
+  'Profile Chain',
+  'hardware/frost-buddy/',
+]) {
+  assertTrue(`story spine includes ${phrase}`, guide.includes(phrase))
+}
+
+console.log('\nIntegration guide API manifest')
 const serviceRow = guide.split('\n').find((line) => line.includes('| `/api/injective` 服务'))
 assertTrue('implemented capability row exists', Boolean(serviceRow))
 for (const tool of [

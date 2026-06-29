@@ -6,6 +6,19 @@
 
 ---
 
+## 叙事骨架
+
+| 演示稿主线 | 产品含义 | Injective 证据 |
+|---|---|---|
+| 把地球作为方法 | 书、影、乐、照片、行程和心情都先落到真实坐标，地球成为统一索引 | 链上不保存原始坐标和私人内容，只证明公开 agent 身份与时间顺序 |
+| Frost 起源 | Frost 不是聊天框，而是会委派子 agent、沉淀画像、替用户出门的数字分身 | `agentId 43` 是 Frost 主身份，`agentId 44-47` 是同一 builderCode 下的公开身份簇 |
+| 一条线走完 | 票根/截图/书影乐 -> 端侧脱敏 -> 钉回地球 -> Frost 带公开名片去社交 | `get-chain-evidence` 串起身份、mint、钱包时间线、握手和 plaza 复验入口 |
+| 三个入口一颗地球 | PHOTOS 看回忆，MY MAP 看全局，AGENTS 负责运行，产出最终都回到地球 | `public-plaza` 读取链上 agent 并钉回地球；`agent-plaza` 保留安装闭环 |
+| 端云双脑和长期画像 | 端侧负责挑/找/脱敏，云端负责表达；画像越用越懂你 | Profile Chain 只规划 checkpoint 和回执，不把原始画像、照片、心情或精确坐标上链 |
+| Frost Buddy | music-agent 和链上见闻可以被实体 Frost 播报 | `hardware/frost-buddy/` 只消费公开 JSONL 事件，不接触私钥或画像原文 |
+
+---
+
 ## 1. 架构主线
 
 | 层 | Pocket Earth 中的角色 | Injective 中的角色 |

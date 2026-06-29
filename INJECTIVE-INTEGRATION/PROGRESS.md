@@ -28,7 +28,7 @@
 ## 当前文档结构
 
 - `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层。
-- `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，讲架构、链上事实、API、复验路径和隐私边界。
+- `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口一颗地球 / 端云双脑 / Frost Buddy”，再讲架构、链上事实、API、复验路径和隐私边界。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
 - `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径。
 - `INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`：3 分钟以内录制脚本，镜头优先级是 `agentId 43`、钱包页、public-plaza、地球 agent 标记、Nightly Chain Dispatch、隐私边界。
