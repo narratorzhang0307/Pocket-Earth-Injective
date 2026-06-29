@@ -2,7 +2,7 @@
 // Usage: npm run verify:recording-order
 import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, REGISTRY_MINT_EVENTS, REVIEW_LINKS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, REGISTRY_MINT_EVENTS, REVIEW_LINKS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -77,7 +77,7 @@ const order = evidence.recordingOrder
 const reviewLinkByKey = new Map(REVIEW_LINKS.map((link) => [link.key, link]))
 
 assertTrue('recordingOrder array', Array.isArray(order))
-assertEqual('recordingOrder count', order.length, 7)
+assertEqual('recordingOrder count', order.length, 8)
 
 for (const [index, item] of order.entries()) {
   assertEqual(`recording step ${index + 1} number`, item.step, index + 1)
@@ -85,7 +85,7 @@ for (const [index, item] of order.entries()) {
   assertTrue(`recording step ${index + 1} evidenceFocus has items`, Array.isArray(item.evidenceFocus) && item.evidenceFocus.length >= 2)
 }
 
-const [agentPage, walletPage, evidenceApi, agentProofApi, listAgentsApi, timelineApi, plazaSmoke] = order
+const [agentPage, walletPage, evidenceApi, agentProofApi, listAgentsApi, timelineApi, hardwareProofApi, plazaSmoke] = order
 assertEqual('recording step 1 type', agentPage.type, 'blockscout')
 assertEqual('recording step 1 url', agentPage.url, scanUrlForAgent(43))
 assertEqual('recording step 1 review link', agentPage.url, reviewLinkByKey.get('frost-agent-43')?.url)
@@ -170,13 +170,28 @@ for (const expected of TIMELINE_EVENTS) {
 assertEqual('recording step 6 first event', timelinePayload.events[0]?.hash, TIMELINE_EVENTS[0].hash)
 assertEqual('recording step 6 final event', timelinePayload.events.at(-1)?.hash, TIMELINE_EVENTS.at(-1).hash)
 
-assertEqual('recording step 7 type', plazaSmoke.type, 'command')
-assertEqual('recording step 7 command', plazaSmoke.command, 'npm run verify:plaza')
-assertFocusIncludes('recording step 7', plazaSmoke, 'public-plaza')
-assertFocusIncludes('recording step 7', plazaSmoke, 'agent-plaza')
-assertFocusIncludes('recording step 7', plazaSmoke, 'Frost Edge Node')
-assertFocusIncludes('recording step 7', plazaSmoke, 'chain_dispatch')
-assertTrue('recording step 7 npm script exists', Boolean(packageJson.scripts?.['verify:plaza']))
+assertEqual('recording step 7 type', hardwareProofApi.type, 'api')
+assertEqual('recording step 7 path', hardwareProofApi.path, evidence.verification?.hardwareBridgeApi)
+assertFocusIncludes('recording step 7', hardwareProofApi, 'Frost Edge Node')
+assertFocusIncludes('recording step 7', hardwareProofApi, 'chain_dispatch')
+assertFocusIncludes('recording step 7', hardwareProofApi, 'music_now_playing')
+assertFocusIncludes('recording step 7', hardwareProofApi, 'privacyBoundary.hardware')
+const hardwarePayload = await callInjectiveApi(hardwareProofApi.path)
+assertEqual('recording step 7 hardware proof ok', hardwarePayload.ok, true)
+assertEqual('recording step 7 hardware proof chainId', hardwarePayload.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('recording step 7 hardware proof readOnly', hardwarePayload.readOnly, true)
+assertEqual('recording step 7 hardware proof publicOnly', hardwarePayload.publicOnly, true)
+assertEqual('recording step 7 hardware proof key', hardwarePayload.hardwareBridge?.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('recording step 7 hardware proof chain read', hardwarePayload.hardwareBridge?.chainDispatch?.chainRead, HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead)
+assertTrue('recording step 7 hardware proof Pi skills', hardwarePayload.hardwareBridge?.piRouter?.skills?.includes('chain_dispatch'))
+assertTrue('recording step 7 hardware proof privacy boundary', hardwarePayload.privacyBoundary?.hardware?.includes('no wallet signing'))
+
+assertEqual('recording step 8 type', plazaSmoke.type, 'command')
+assertEqual('recording step 8 command', plazaSmoke.command, 'npm run verify:plaza')
+assertFocusIncludes('recording step 8', plazaSmoke, 'public-plaza')
+assertFocusIncludes('recording step 8', plazaSmoke, 'agent-plaza')
+assertFocusIncludes('recording step 8', plazaSmoke, 'hardware proof API')
+assertTrue('recording step 8 npm script exists', Boolean(packageJson.scripts?.['verify:plaza']))
 
 const publicText = JSON.stringify(order)
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB']) {

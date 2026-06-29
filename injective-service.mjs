@@ -493,13 +493,25 @@ export async function handleInjective(req, res, url, cfg = {}) {
           },
           {
             step: 7,
+            label: 'Open the Frost Edge Node hardware proof API',
+            type: 'api',
+            path: hardwareBridgeApi,
+            evidenceFocus: [
+              'Frost Edge Node proof card shows Raspberry Pi / BLE / TTS public-event bridge',
+              'chain_dispatch reads the builderCode=pocket-earth fleet without wallet signing',
+              'Pi skill router is limited to music_now_playing and chain_dispatch',
+              'privacyBoundary.hardware keeps private keys, raw profile text, and precise locations off device',
+            ],
+          },
+          {
+            step: 8,
             label: 'Run the plaza UI smoke after chain evidence is ready',
             type: 'command',
             command: 'npm run verify:plaza',
             evidenceFocus: [
               'public-plaza shows chain social discovery',
               'agent-plaza shows marketplace and install loop',
-              'Frost Edge Node can speak the same chain_dispatch public event',
+              'Frost Edge Node handoff has already been checked by the hardware proof API',
               'smoke test keeps the UI proof path executable',
             ],
           },
