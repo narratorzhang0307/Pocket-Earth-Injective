@@ -20,7 +20,7 @@
 | Frost Buddy 硬件事件桥（music-agent + Injective 链上见闻 → JSONL，供 Raspberry Pi / BLE / TTS 适配） | `hardware/frost-buddy/` | ✅ 事件契约 + Pi 技能路由已就绪 |
 | `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 已部署 |
 | register / handshake 真写逻辑（confirm 闸门，testnet-only） | `injective-service.mjs` | ✅ 已上链验证 |
-| 录屏证据焦点（`recordingOrder[].evidenceFocus` 标出每一步该看 owner / builderCode / mint 摘要 / 钱包时间线 / plaza 分组） | `injective-service.mjs` / `verify-recording-order.mjs` | ✅ |
+| 录屏证据焦点（`recordingOrder[].evidenceFocus` 标出每一步该看 owner / builderCode / mint 摘要 / 钱包时间线 / plaza 分组，并由公开证据契约校验守住） | `injective-service.mjs` / `verify-recording-order.mjs` / `verify-public-proof-contract.mjs` | ✅ |
 | 一键链上证明套件（agentId 43–47 + 公开 data URI 名片结构 + `/api/injective` 读链路 + 写链 dry-run 边界 + registry mint 事件 + 钱包证据链 + RPC 区块时间线 + 合约部署交易/源码字节码 + Demo/README 链接 + 握手 hash/calldata/event + 硬件桥安全事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
 
 ---
@@ -59,7 +59,7 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{agents, total}`，可直接复验 Pocket Earth agent fleet | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
-| GET | `?tool=get-chain-evidence` | 公开证据包：testnet chainId 1439、agentId 43–47、ERC-8004 `registryMintEvents`、汇总 agentId 范围 / 同一 owner / mint from `0x0` 的 `registryMintSummary`、带 `from` / `expectedStatus` 的钱包 `timeline`、汇总 owner/首尾区块/RPC 复验入口的 `timelineSummary`、钱包、合约、时间线交易、Blockscout 链接、`reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、`submissionLinks`、`submissionChecklist`、`recordingOrder`、`privacyBoundary`、`plazaFlow` 与录屏/复验命令 | 否 |
+| GET | `?tool=get-chain-evidence` | 公开证据包：testnet chainId 1439、agentId 43–47、ERC-8004 `registryMintEvents`、汇总 agentId 范围 / 同一 owner / mint from `0x0` 的 `registryMintSummary`、带 `from` / `expectedStatus` 的钱包 `timeline`、汇总 owner/首尾区块/RPC 复验入口的 `timelineSummary`、钱包、合约、时间线交易、Blockscout 链接、`reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、`submissionLinks`、`submissionChecklist`、带 `evidenceFocus` 的 `recordingOrder`、`privacyBoundary`、`plazaFlow` 与录屏/复验命令 | 否 |
 | GET | `?tool=get-wallet-timeline` | `{summary, events}`，直接从 Injective RPC 复验钱包交易时间线，并汇总 owner、事件数、成功状态、首尾区块/时间 | 否 |
 | POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
 | POST | `?tool=handshake` `{agentA, agentB, profileHashA, profileHashB, score, confirm}` | `{txHash}`（无私钥/合约 → dryRun + willEmit；真写必须带非零 `bytes32` 名片哈希） | 真写需 |

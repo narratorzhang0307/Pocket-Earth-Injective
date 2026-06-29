@@ -45,6 +45,12 @@ function assertSetEqual(label, actual, expected) {
   for (const item of e) assertTrue(`${label} includes ${item}`, a.includes(item))
 }
 
+function assertFocusIncludes(label, item, expected) {
+  assertTrue(`${label} evidenceFocus array`, Array.isArray(item.evidenceFocus))
+  const text = item.evidenceFocus.join(' | ')
+  assertTrue(`${label} evidenceFocus includes ${expected}`, text.includes(expected))
+}
+
 async function callEvidenceApi() {
   let statusCode = 0
   let body = ''
@@ -159,10 +165,24 @@ assertEqual('agentId 43 link', evidence.reviewLinks.find((item) => item.key === 
 assertEqual('owner wallet link', evidence.reviewLinks.find((item) => item.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('real handshake link', evidence.reviewLinks.find((item) => item.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
 assertEqual('review link count', evidence.reviewLinks.length, REVIEW_LINKS.length)
+assertTrue('recording order array', Array.isArray(evidence.recordingOrder))
+assertEqual('recording order count', evidence.recordingOrder.length, 6)
 assertTrue('recording order starts from #43', evidence.recordingOrder?.[0]?.url === scanUrlForAgent(43))
 assertTrue('recording order includes public evidence API', evidence.recordingOrder?.some((item) => item.path === '/api/injective?tool=get-chain-evidence'))
 assertTrue('recording order includes fleet API', evidence.recordingOrder?.some((item) => item.path === evidence.verification?.listAgentsApi))
 assertTrue('recording order includes wallet timeline API', evidence.recordingOrder?.some((item) => item.path === evidence.verification?.walletTimelineApi))
+assertFocusIncludes('recording step 1', evidence.recordingOrder[0], 'agentId 43')
+assertFocusIncludes('recording step 1', evidence.recordingOrder[0], 'owner')
+assertFocusIncludes('recording step 2', evidence.recordingOrder[1], 'same wallet')
+assertFocusIncludes('recording step 3', evidence.recordingOrder[2], 'registryMintSummary')
+assertFocusIncludes('recording step 3', evidence.recordingOrder[2], 'timelineSummary')
+assertFocusIncludes('recording step 3', evidence.recordingOrder[2], 'sourceControl')
+assertFocusIncludes('recording step 4', evidence.recordingOrder[3], `builderCode=${BUILDER_CODE}`)
+assertFocusIncludes('recording step 4', evidence.recordingOrder[3], 'agentId 43-47')
+assertFocusIncludes('recording step 5', evidence.recordingOrder[4], 'allSucceeded')
+assertFocusIncludes('recording step 5', evidence.recordingOrder[4], 'handshake')
+assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'public-plaza')
+assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'agent-plaza')
 
 console.log('\nFleet and timeline are review-ready')
 assertEqual('fleet agent count', evidence.agents.length, FLEET_AGENTS.length)
