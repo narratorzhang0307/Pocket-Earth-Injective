@@ -136,6 +136,7 @@ for (const command of [
   'npm run verify:injective',
   'npm run verify:plaza',
   'npm run verify:pitch',
+  'npm run verify:positioning',
 ]) {
   assertTrue(`quickstart contains ${command}`, quickstart.includes(command))
   const scriptName = command.replace('npm run ', '')
@@ -152,6 +153,7 @@ assertEqual('recording order command advertised', evidence.verification?.recordi
 assertEqual('judge npm script', packageJson.scripts?.['verify:judge'], 'node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs')
 assertEqual('public read APIs npm script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
 assertEqual('integration guide npm script', packageJson.scripts?.['verify:integration-guide'], 'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs')
+assertEqual('positioning npm script', packageJson.scripts?.['verify:positioning'], 'node INJECTIVE-INTEGRATION/verify-doc-positioning.mjs')
 assertEqual('source control npm script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
 assertEqual('registry npm script', packageJson.scripts?.['verify:registry'], 'node INJECTIVE-INTEGRATION/verify-registry-events.mjs')
 assertEqual('demo limit still 180 seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
