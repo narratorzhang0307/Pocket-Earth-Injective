@@ -143,6 +143,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
 
     // —— 只读：公开链上证据包（供评审/录屏直接从产品 API 拉同一份公开事实表）——
     if (tool === 'get-chain-evidence') {
+      const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
       return json(res, {
         ok: true,
         network: 'testnet',
@@ -172,6 +173,12 @@ export async function handleInjective(req, res, url, cfg = {}) {
           scanUrl: scanUrlForTx(event.hash),
           ...(event.contractAddress ? { contractAddress: event.contractAddress } : {}),
         })),
+        verification: {
+          proofSuite: 'npm run verify:injective',
+          apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
+          listAgentsApi: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`,
+          walletTimelineApi: '/api/injective?tool=get-wallet-timeline',
+        },
       })
     }
 
