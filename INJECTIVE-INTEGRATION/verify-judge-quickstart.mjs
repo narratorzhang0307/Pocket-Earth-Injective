@@ -123,6 +123,7 @@ for (const command of [
   'npm run verify:demo',
   'npm run verify:wallet',
   'npm run verify:public-apis',
+  'npm run verify:integration-guide',
   'npm run verify:source',
   'npm run verify:registry',
   'npm run verify:agent-proof',
@@ -139,11 +140,13 @@ for (const command of [
 console.log('\nEvidence API wiring')
 assertEqual('judge command advertised', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
 assertEqual('public read APIs command advertised', evidence.verification?.publicReadApis, 'npm run verify:public-apis')
+assertEqual('integration guide command advertised', evidence.verification?.integrationGuide, 'npm run verify:integration-guide')
 assertEqual('source control command advertised', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('registry events command advertised', evidence.verification?.registryEvents, 'npm run verify:registry')
 assertEqual('recording order command advertised', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('judge npm script', packageJson.scripts?.['verify:judge'], 'node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs')
 assertEqual('public read APIs npm script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
+assertEqual('integration guide npm script', packageJson.scripts?.['verify:integration-guide'], 'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs')
 assertEqual('source control npm script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
 assertEqual('registry npm script', packageJson.scripts?.['verify:registry'], 'node INJECTIVE-INTEGRATION/verify-registry-events.mjs')
 assertEqual('demo limit still 180 seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)

@@ -12,7 +12,7 @@
 6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
 7. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
 8. Check the ERC-8004 mint events locally: `npm run verify:registry`
-9. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:demo`
+9. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:integration-guide && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:demo`
 
 ## What This Proves
 
@@ -24,6 +24,7 @@
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, single-agent proof/source anchor, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, and plaza grouping.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
+- `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, and npm script mappings still match the product API.
 - The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the four judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, and local verification commands. `npm run verify:public-apis` opens all four endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
 
 ## Submission Package
@@ -34,6 +35,7 @@
 - Source-control guard: `npm run verify:source`
 - Registry mint-event guard: `npm run verify:registry`
 - Single-agent proof guard: `npm run verify:agent-proof`
+- Integration-guide guard: `npm run verify:integration-guide`
 - Pitch notes guard: `npm run verify:pitch`
 - Judge quickstart guard: `npm run verify:judge`
 
@@ -58,6 +60,7 @@ npm run verify:judge
 npm run verify:demo
 npm run verify:wallet
 npm run verify:public-apis
+npm run verify:integration-guide
 npm run verify:source
 npm run verify:registry
 npm run verify:agent-proof

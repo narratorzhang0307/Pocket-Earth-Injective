@@ -277,6 +277,7 @@ assertEqual('timeline summary RPC verification', evidence.timelineSummary.rpcVer
 console.log('\nVerification commands remain runnable')
 assertEqual('public proof command is advertised', evidence.verification?.publicProof, 'npm run verify:public-proof')
 assertEqual('public read APIs command is advertised', evidence.verification?.publicReadApis, 'npm run verify:public-apis')
+assertEqual('integration guide command is advertised', evidence.verification?.integrationGuide, 'npm run verify:integration-guide')
 assertEqual('github repo command is advertised', evidence.verification?.githubRepo, 'npm run verify:github')
 assertEqual('source control command is advertised', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('registry events command is advertised', evidence.verification?.registryEvents, 'npm run verify:registry')

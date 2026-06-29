@@ -456,6 +456,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           evidenceSmoke: 'npm run verify:evidence',
           publicProof: 'npm run verify:public-proof',
           publicReadApis: 'npm run verify:public-apis',
+          integrationGuide: 'npm run verify:integration-guide',
           githubRepo: 'npm run verify:github',
           pitchNotes: 'npm run verify:pitch',
           judgeQuickstart: 'npm run verify:judge',

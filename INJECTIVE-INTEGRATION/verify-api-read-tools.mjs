@@ -162,6 +162,7 @@ assertEqual('evidence demo duration command', evidence.verification?.demoDuratio
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
 assertEqual('evidence public proof command', evidence.verification?.publicProof, 'npm run verify:public-proof')
 assertEqual('evidence public read APIs command', evidence.verification?.publicReadApis, 'npm run verify:public-apis')
+assertEqual('evidence integration guide command', evidence.verification?.integrationGuide, 'npm run verify:integration-guide')
 assertEqual('evidence github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
 assertEqual('evidence pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 assertEqual('evidence judge quickstart command', evidence.verification?.judgeQuickstart, 'npm run verify:judge')

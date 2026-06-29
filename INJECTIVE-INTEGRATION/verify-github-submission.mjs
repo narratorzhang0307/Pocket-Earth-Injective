@@ -157,6 +157,7 @@ assertTrue('remote judge quickstart names wallet timeline summary', remoteJudge.
 assertTrue('remote judge quickstart names wallet timeline chainId', remoteJudge.includes(`chainId ${INJECTIVE_TESTNET_CHAIN_ID}`))
 assertTrue('remote judge quickstart names public read API manifest', remoteJudge.includes('publicReadApis'))
 assertTrue('remote judge quickstart names public API guard', remoteJudge.includes('npm run verify:public-apis'))
+assertTrue('remote judge quickstart names integration guide guard', remoteJudge.includes('npm run verify:integration-guide'))
 assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
 assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
 assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
