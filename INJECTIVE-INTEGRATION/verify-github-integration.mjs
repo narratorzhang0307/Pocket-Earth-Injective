@@ -26,6 +26,8 @@ const forbiddenPositioningSnippets = [
   'com' + 'petition',
   'con' + 'test',
 ].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
+const vagueRecordPlace = '它们' + '在地球上的那个地点'
+const vaguePositioningSnippets = ['它们' + '在地球', '钉回' + '它们']
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -78,6 +80,9 @@ function assertNoEventPositioning(label, text) {
   for (const forbidden of forbiddenPositioningSnippets) {
     assertTrue(`${label} omits positioning word ${forbidden}`, !normalized.includes(forbidden.toLowerCase()))
   }
+  for (const forbidden of vaguePositioningSnippets) {
+    assertTrue(`${label} omits vague positioning ${forbidden}`, !normalized.includes(forbidden.toLowerCase()))
+  }
 }
 
 console.log('Git origin boundary')
@@ -114,6 +119,7 @@ const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT
 const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
 const remoteHardware = await fetchText(`${rawBase}/hardware/frost-buddy/README.md`)
 const remotePublicPlaza = await fetchText(`${rawBase}/src/app/components/PublicPlazaPage.tsx`)
+const remoteIndexHtml = await fetchText(`${rawBase}/index.html`)
 const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanifest`)
 const remoteManifest = JSON.parse(remoteManifestText)
 assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
@@ -265,7 +271,9 @@ assertTrue('remote hardware README names market subject explicitly', remoteHardw
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
 assertTrue('remote hardware README omits vague market subject', !remoteHardware.includes('这个判断在 Markdown'))
 assertTrue('remote PWA manifest description names each record explicitly', remoteManifest.description?.includes('每条记录各自对应的真实地点'))
-assertTrue('remote PWA manifest description omits vague pronoun', !remoteManifest.description?.includes('它们在地球上的那个地点'))
+assertTrue('remote PWA manifest description omits vague pronoun', !remoteManifest.description?.includes(vagueRecordPlace))
+assertTrue('remote index description names explicit destinations', remoteIndexHtml.includes('钉回各自对应的真实地点'))
+assertTrue('remote index description omits vague pronoun', !remoteIndexHtml.includes(vagueRecordPlace))
 assertTrue('remote public-plaza source names Frost as the actor', remotePublicPlaza.includes('Frost 替你去广场') && remotePublicPlaza.includes('Frost 带出的名片'))
 assertTrue('remote public-plaza source omits vague agent actor', !remotePublicPlaza.includes('它替你去广场') && !remotePublicPlaza.includes('它带出的名片'))
 for (const [label, text] of [
@@ -275,6 +283,7 @@ for (const [label, text] of [
   ['remote demo script', remoteDemo],
   ['remote judge quickstart', remoteJudge],
   ['remote hardware README', remoteHardware],
+  ['remote index HTML', remoteIndexHtml],
   ['remote PWA manifest', remoteManifestText],
   ['remote public-plaza source', remotePublicPlaza],
 ]) {
