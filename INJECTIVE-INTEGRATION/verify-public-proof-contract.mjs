@@ -61,6 +61,11 @@ function assertListIncludes(label, actual, expectedItems) {
   for (const expected of expectedItems) assertTrue(`${label} includes ${expected}`, actual.includes(expected))
 }
 
+function assertTextIncludes(label, actual, expectedItems) {
+  const text = String(actual || '')
+  for (const expected of expectedItems) assertTrue(`${label} includes ${expected}`, text.includes(expected))
+}
+
 async function callEvidenceApi() {
   let statusCode = 0
   let body = ''
@@ -240,6 +245,25 @@ for (const [key, item] of publicReadApiByKey) {
   assertTrue(`publicReadApis ${key} judgeFocus count`, item.judgeFocus.length >= 4)
 }
 
+const publicProofAlignment = evidence.integrationAlignment?.find((item) => item.key === 'privacy-first-public-proof')
+assertTrue('integrationAlignment public proof item', !!publicProofAlignment)
+assertEqual('integrationAlignment public proof machine check', publicProofAlignment.machineCheck, 'npm run verify:public-proof')
+assertTextIncludes('integrationAlignment public proof evidence', publicProofAlignment.evidence, [
+  'sourceControl',
+  'publicReadApis',
+  'judgeRunbook',
+  'registryMintEvents',
+  'registryMintSummary',
+  'timelineSummary',
+  'handshakeProof',
+  'hardwareBridge',
+  'reviewEntrypoints',
+  'recordingOrder',
+  'privacyBoundary',
+  'plazaFlow',
+  'get-hardware-bridge-proof',
+])
+
 console.log('\nReview entry points')
 assertEqual('judge quickstart link stays on Injective integration repo', evidence.reviewEntrypoints.find((item) => item.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
 assertEqual('repo link stays on Injective integration repo', evidence.reviewEntrypoints.find((item) => item.key === 'github-repo')?.url, INTEGRATION_REPOSITORY_URL)
@@ -300,6 +324,8 @@ for (const [index, step] of evidence.judgeRunbook.steps.entries()) {
   assertTrue(`judgeRunbook step ${index + 1} focus`, Array.isArray(step.focus) && step.focus.length >= 3)
   assertTrue(`judgeRunbook step ${index + 1} localCheck`, String(step.localCheck || '').startsWith('npm run verify:'))
 }
+assertTextIncludes('judgeRunbook public evidence step', evidence.judgeRunbook.steps[2]?.verifies, ['sourceControl', 'publicReadApis', 'hardwareBridge', 'reviewEntrypoints'])
+assertListIncludes('judgeRunbook public evidence focus', evidence.judgeRunbook.steps[2]?.focus, ['sourceControl', 'publicReadApis', 'hardwareBridge', 'reviewEntrypoints'])
 
 console.log('\nFleet and timeline are review-ready')
 assertEqual('fleet agent count', evidence.agents.length, FLEET_AGENTS.length)

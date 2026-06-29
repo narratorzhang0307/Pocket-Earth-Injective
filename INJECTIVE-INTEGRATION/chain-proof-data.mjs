@@ -66,7 +66,7 @@ export const INTEGRATION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     integrationSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, handshakeProof, hardwareBridge, reviewBrief, reviewLinks, reviewChecklist, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow; /api/injective?tool=get-hardware-bridge-proof opens the Frost Edge Node proof card directly.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with sourceControl, publicReadApis, judgeRunbook, registryMintEvents, registryMintSummary, timelineSummary, handshakeProof, hardwareBridge, reviewBrief, reviewLinks, reviewChecklist, integrationAlignment, reviewEntrypoints, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow; /api/injective?tool=get-hardware-bridge-proof opens the Frost Edge Node proof card directly.',
     machineCheck: 'npm run verify:public-proof',
   },
 ]
@@ -222,8 +222,8 @@ export const JUDGE_RUNBOOK = {
       action: 'Read public evidence API',
       type: 'api',
       path: '/api/injective?tool=get-chain-evidence',
-      verifies: 'The product API exposes sourceControl, registry mint summary, wallet timeline summary, handshake proof, and privacy boundary.',
-      focus: ['sourceControl', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'privacyBoundary'],
+      verifies: 'The product API exposes sourceControl, publicReadApis, registry mint summary, wallet timeline summary, handshake proof, hardwareBridge, reviewEntrypoints, and privacy boundary.',
+      focus: ['sourceControl', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'reviewEntrypoints', 'privacyBoundary'],
       localCheck: 'npm run verify:public-proof',
     },
     {

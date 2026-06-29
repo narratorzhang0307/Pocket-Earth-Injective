@@ -192,6 +192,11 @@ assertEqual('integration alignment count', evidence.integrationAlignment.length,
 assertEqual('integration alignment first key', evidence.integrationAlignment[0]?.key, 'ai-social')
 assertTrue('integration alignment mentions Injective execution', evidence.integrationAlignment.some((item) => item.key === 'injective-execution-layer'))
 assertTrue('integration alignment mentions hardware bridge', evidence.integrationAlignment.some((item) => item.key === 'agent-physical-world'))
+const publicProofAlignment = evidence.integrationAlignment.find((item) => item.key === 'privacy-first-public-proof')
+assertTrue('integration alignment public proof item', !!publicProofAlignment)
+for (const expected of ['sourceControl', 'publicReadApis', 'judgeRunbook', 'hardwareBridge', 'reviewEntrypoints', 'get-hardware-bridge-proof']) {
+  assertTrue(`integration alignment public proof evidence includes ${expected}`, String(publicProofAlignment.evidence || '').includes(expected))
+}
 assertTrue('review entrypoints array', Array.isArray(evidence.reviewEntrypoints))
 assertEqual('review entrypoints count', evidence.reviewEntrypoints.length, REVIEW_ENTRYPOINTS.length)
 assertEqual('review link judge quickstart url', evidence.reviewEntrypoints.find((link) => link.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
