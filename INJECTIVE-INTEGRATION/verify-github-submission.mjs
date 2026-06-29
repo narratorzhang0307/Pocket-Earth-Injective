@@ -91,7 +91,7 @@ if (repo) {
 }
 
 console.log('\nGitHub raw review files')
-const rawBase = `https://raw.githubusercontent.com/${expectedSlug}/main`
+const rawBase = `https://raw.githubusercontent.com/${expectedSlug}/${head}`
 const remoteReadme = await fetchText(`${rawBase}/README.md`)
 const remoteIntegration = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/README.md`)
 const remoteEvidence = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`)
