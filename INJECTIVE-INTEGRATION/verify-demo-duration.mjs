@@ -59,6 +59,9 @@ assertTrue('public-plaza is in the main product segment', scriptText.includes('p
 assertTrue('globe marker segment is present', scriptText.includes('蓝紫色 agent 标记') || scriptText.includes('钉到地球'))
 assertTrue('nightly chain dispatch segment is present', scriptText.includes('夜间') && scriptText.includes('链上见闻'))
 assertTrue('privacy proof segment is present', scriptText.includes('隐私') && (demoScript.includes('永不上链') || scriptText.includes('证明物')))
+assertTrue('fleet API proof names pagination fields', demoScript.includes('`sdk`') && demoScript.includes('`total`') && demoScript.includes('`offset`') && demoScript.includes('`limit`'))
+assertTrue('fleet API proof names identity fields', demoScript.includes('`owner`') && demoScript.includes('`wallet`') && demoScript.includes('`identityTuple`') && demoScript.includes('`builderCode`'))
+assertTrue('fleet API proof names public card fields', demoScript.includes('`card.tags`') && demoScript.includes('`card.metadata.builderCode`') && demoScript.includes('data URI 公开名片'))
 
 const forbidden = ['INJ_PRIVATE_KEY', 'privateKey', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']
 for (const item of forbidden) {
