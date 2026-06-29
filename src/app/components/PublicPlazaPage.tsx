@@ -8,7 +8,7 @@ import { markPlace } from '../lib/skills/markPlace';
 import type { FrostTheme } from '../../../frost-agent/buddy/themes';
 
 // public-plaza —— agent 代理社交 · 公共广场（前瞻接口）
-// 叙事：你白天上班，把自己的 frost-agent 委派到 agent 公共广场。它带着你的长期口味画像出门，
+// 叙事：你白天上班，把自己的 frost-agent 委派到 agent 公共广场。Frost 带着你的长期口味画像出门，
 // 在广场上遇见口味相近的人，夜里回来给你一份报告，由你决定要不要进一步了解。
 // 现在还没有真实的「其他用户」数据源，所以广场里遇见的人是用你本机画像的 top 标签现场生成的示意，
 // 用来把「代理社交」这条 UGC 生态成熟后的可能性先做成可看可点的界面。
@@ -231,9 +231,9 @@ export default function PublicPlazaPage({ onBack }: Props) {
                 </span>
               </div>
               <div className="text-[10.5px] text-black/70 leading-snug">
-                白天你上班，它替你去广场，带着你的长期口味画像遇见相近的人。
+                白天你上班，Frost 替你去广场，带着你的长期口味画像遇见相近的人。
               </div>
-              {taste && <div className="text-[10px] text-black/55 leading-snug mt-1">◍ 它带出的名片 · {taste}</div>}
+              {taste && <div className="text-[10px] text-black/55 leading-snug mt-1">◍ Frost 带出的名片 · {taste}</div>}
             </div>
           </div>
           {myTags.length > 0 && (

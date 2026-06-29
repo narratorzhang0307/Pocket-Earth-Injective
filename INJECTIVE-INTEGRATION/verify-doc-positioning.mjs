@@ -58,14 +58,20 @@ const files = scanRoots.flatMap((root) => collectFiles(resolve(projectRoot, root
 console.log('Positioning text guard')
 assertTrue('scan has files', files.length > 0)
 const rootReadme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
+const hardwareReadme = readFileSync(resolve(projectRoot, 'hardware/frost-buddy/README.md'), 'utf8')
+const publicPlaza = readFileSync(resolve(projectRoot, 'src/app/components/PublicPlazaPage.tsx'), 'utf8')
 assertTrue('README uses explicit Pocket Earth definition heading', rootReadme.includes('## 一、Pocket Earth 是什么'))
 assertTrue('README omits ambiguous product heading', !rootReadme.includes('## 一、它是什么'))
 assertTrue('README uses product-first three-entry heading', rootReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('README omits UI-jargon three-tab heading', !rootReadme.includes('## 二、三个 Tab'))
+assertTrue('README names Frost Edge Node hardware direction explicitly', rootReadme.includes('Frost Edge Node 硬件方向的商业判断'))
+assertTrue('hardware README names module subject explicitly', hardwareReadme.includes('Frost Edge Node 模块先承担三个角色'))
+assertTrue('public-plaza UI names Frost as the actor', publicPlaza.includes('Frost 替你去广场') && publicPlaza.includes('Frost 带出的名片'))
 const explicitPublicDocSnippets = [
   ['README.md', '它立刻被钉回真实坐标'],
   ['README.md', 'Injective 在这里不是装饰徽章'],
   ['README.md', '这个集成是否扎实'],
+  ['README.md', '这个硬件方向'],
   ['README.md', '落在这里'],
   ['README.md', '它由下面这些部件组成'],
   ['README.md', '它不亲自吞下所有原始数据'],
@@ -78,6 +84,11 @@ const explicitPublicDocSnippets = [
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '它带着你的长期口味画像'],
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '跳到它的链上身份页'],
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '它直接读 Injective RPC'],
+  ['hardware/frost-buddy/README.md', '这个模块先承担'],
+  ['hardware/frost-buddy/README.md', '这个判断在 Markdown'],
+  ['src/app/components/PublicPlazaPage.tsx', '它带着你的长期口味画像'],
+  ['src/app/components/PublicPlazaPage.tsx', '它替你去广场'],
+  ['src/app/components/PublicPlazaPage.tsx', '它带出的名片'],
 ]
 for (const [relativePath, ambiguous] of explicitPublicDocSnippets) {
   const text = readFileSync(resolve(projectRoot, relativePath), 'utf8')

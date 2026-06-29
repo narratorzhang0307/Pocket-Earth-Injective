@@ -53,7 +53,7 @@ npm run verify:delivery
 npm run verify:demo
 ```
 
-`verify:integration-guide` 现在会固定 `final-ppt-index`、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、`reviewManifest`、FNV-1a、`willEmit` 和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。`verify:positioning` / `verify:github` 会固定 README 的明确标题：`Pocket Earth 是什么` 和 `三入口，一颗地球`，避免再次退回指代不明或 UI 术语化标题。
+`verify:integration-guide` 现在会固定 `final-ppt-index`、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、`reviewManifest`、FNV-1a、`willEmit` 和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。`verify:positioning` / `verify:github` 会固定 README 的明确标题：`Pocket Earth 是什么` 和 `三入口，一颗地球`，并要求 Frost Edge Node 与 public-plaza UI 明确写出主语，避免再次退回指代不明或 UI 术语化标题。
 
 完整链上复验：
 
