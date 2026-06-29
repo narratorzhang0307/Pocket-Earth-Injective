@@ -12,6 +12,7 @@
 - **钱包时间线**：`/api/injective?tool=get-wallet-timeline` 从 RPC 读回注册、合约部署、fleet 注册和真实握手的交易顺序，`summary` 汇总 owner、事件数、成功状态、首尾区块/时间。
 - **plaza 产品闭环**：`public-plaza` 负责链上社交发现，`agent-plaza` 负责 agent 市集与安装闭环；`verify:plaza-flow` 固定两者边界。
 - **Frost Buddy 硬件延展**：`hardware/frost-buddy/` 预留 Raspberry Pi / BLE / TTS 公开事件桥，Pi 侧技能路由可处理 music-agent 与 `chain_dispatch`。
+- **最终整合版覆盖**：根 `README.md` 已新增 `5.1 最终整合版对照与技术深挖`；`INJECTIVE-INTEGRATION/README.md#final-ppt-index` 已按最终 PPT 41 页建立逐页覆盖索引，并展开 Profile Chain / Proof of Memory、frost-agent harness、Agent Plaza / Frost Buddy 与外部来源边界。
 
 ## 核心证据层
 
@@ -21,14 +22,14 @@
 | 钱包层 | 同一 owner 钱包串起注册、部署、fleet、握手 | `npm run verify:wallet` |
 | 合约层 | SocialHandshake 只记录 agentId、承诺哈希、score、timestamp | `npm run verify:injective` |
 | API 层 | `get-chain-evidence`、`get-agent-proof`、`list-agents`、`get-wallet-timeline` | `npm run verify:public-apis` |
-| 文档层 | README、集成说明、证据包、录制脚本、60 秒复验入口 | `npm run verify:github` / `npm run verify:integration-guide` |
+| 文档层 | README、集成说明、证据包、录制脚本、60 秒复验入口，以及最终 PPT 逐页覆盖索引 | `npm run verify:github` / `npm run verify:integration-guide` |
 | 产品层 | public-plaza 读链上 agent；agent-plaza 保留安装闭环 | `npm run verify:plaza-flow` / `npm run verify:plaza` |
 | 硬件层 | JSONL 公开事件桥 + Pi 技能路由 | `npm run verify:hardware` |
 
 ## 当前文档结构
 
-- `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层。
-- `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口一颗地球 / 端云双脑 / Frost Buddy”，再用最终整合版内容映射把 41 页主线归并到产品方法、体验表面、frost-agent 内核、Profile Chain、链上身份、Agent Plaza、硬件节点和商业路线，最后讲架构、链上事实、API、复验路径和隐私边界。
+- `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层；`5.1 最终整合版对照与技术深挖` 把 PPT 页段映射到技术落点和复验入口。
+- `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口一颗地球 / 端云双脑 / Frost Buddy”，再用 `final-ppt-index` 逐页覆盖 41 页主线；后半部分展开 `recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence、FrostBus / RunTrace、SSE `x-accel-buffering:no`、`reviewManifest`、`toManifest`、`agentGeo` / FNV-1a、Frost Buddy 和外部来源边界。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
 - `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径。
 - `INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`：3 分钟以内录制脚本，镜头优先级是 `agentId 43`、钱包页、public-plaza、地球 agent 标记、Nightly Chain Dispatch、隐私边界。
@@ -50,6 +51,8 @@ npm run verify:plaza-flow
 npm run verify:delivery
 npm run verify:demo
 ```
+
+`verify:integration-guide` 现在会固定 `final-ppt-index`、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、`reviewManifest`、FNV-1a、`willEmit` 和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。
 
 完整链上复验：
 
