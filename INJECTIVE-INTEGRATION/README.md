@@ -26,7 +26,7 @@
 | 最终整合版页段 | 核心主张 | 本仓库对应 |
 |---|---|---|
 | 1-7 · 产品方法 | Pocket Earth 是基于空间的知识库：用真实坐标替代时间线/数据库，把书、影、乐、照片、行程、心情收束到同一颗地球 | `README.md` 第 1-3 节，`mapMarkers.ts`，`userMarks` / `planets` store |
-| 8-13 · 体验表面 | PHOTOS、MY MAP、AGENTS、JOT、music/travel、council、端侧照片整理共同证明它不是单页概念图，而是可运行产品 | `README.md` 第 4-8 节，`npm run verify:plaza` |
+| 8-13 · 体验表面 | PHOTOS、MY MAP、AGENTS、JOT、music/travel、council、端侧照片整理共同证明 Pocket Earth 不是单页概念图，而是可运行产品 | `README.md` 第 4-8 节，`npm run verify:plaza` |
 | 14-18 · frost-agent 内核 | CEO 委派、端云双脑、混合路由、长期画像、skill 沉淀、trace 可观测，是 agent harness 的工程底座 | `frost-agent/`、`ARCHITECTURE.md`、`docs/技术难点与解决方案.md` |
 | 19-24 · AI 社交与 Profile Chain | Injective 承担 AI 分身的公共见证层：身份可查、画像版本可追溯、长期伪造成本更高 | `Profile Chain 路线`、`verify:nova-alignment`、`verify:public-proof` |
 | 25-29 · 链上身份与隐私边界 | `agentId 43-47`、ERC-8004 IdentityRegistry、SocialHandshake、公开 API 与隐私不上链边界 | `链上事实`、`API 分层`、`privacyBoundary`、`verify:agent-proof`、`verify:wallet` |
@@ -156,7 +156,7 @@ npm run verify:plaza
 npm run verify:hardware
 ```
 
-其中 `npm run verify:demo` 是录制前总检查：它会串起公开证据包、钱包时间线 API/RPC 事实表、文档定位快检、`sourceControl`、`reviewBrief`、`judgeRunbook`、`builderCode=pocket-earth` fleet 读回、Registry mint 事件、Blockscout 链接、`recordingOrder`、`plazaFlow`、`integrationAlignment`、`reviewEntrypoints` 和 `deliveryChecklist`。
+其中 `npm run verify:demo` 是录制前总检查：`verify:demo` 会串起公开证据包、钱包时间线 API/RPC 事实表、文档定位快检、`sourceControl`、`reviewBrief`、`judgeRunbook`、`builderCode=pocket-earth` fleet 读回、Registry mint 事件、Blockscout 链接、`recordingOrder`、`plazaFlow`、`integrationAlignment`、`reviewEntrypoints` 和 `deliveryChecklist`。
 
 `npm run verify:delivery` 固定 GitHub 仓库、线上 `?demo`、四条公开 API、`JUDGE-QUICKSTART.md` 和交付清单；`npm run verify:github` 确认远端 README、集成说明、证据包、录制脚本和 60 秒复验入口都仍指向 `Pocket-Earth-Injective`。
 

@@ -9,10 +9,10 @@
 
 | # | 时长 | 画面 / 操作 | 口播 |
 |---|---|---|---|
-| 0 开场 | 0:00–0:15 | App 首屏地球缓缓转，Frost 像素形象浮现 | 「这是 Pocket Earth——一个把地球作为方法的 AI agent 框架。你的书、影、音乐、足迹被钉在真实坐标上，由一个叫 Frost 的分身打理。今天它有了新身份——在 Injective 链上。」 |
+| 0 开场 | 0:00–0:15 | App 首屏地球缓缓转，Frost 像素形象浮现 | 「这是 Pocket Earth——一个把地球作为方法的 AI agent 框架。你的书、影、音乐、足迹被钉在真实坐标上，由一个叫 Frost 的分身打理。今天 Frost 有了新身份——在 Injective 链上。」 |
 | 1 链上身份 | 0:15–0:45 | 先切到 `agentId 43` 单个身份页，确认 #43 + Owner；再切钱包页串起注册、绑定、部署、握手 | 「Frost 通过 ERC-8004 身份标准，在 Injective testnet 上注册了一个 soulbound 的链上身份。这个 #43 就是我的 Frost，Owner 是我的钱包；再看钱包页，每一步都是真实交易，区块浏览器可查。」 |
-| 2 广场遇见 | 0:45–1:30 | 回 App：底部 Agents → public-plaza。展示「在场 5」、名片一行、口味相近的 agent 列表（拉美文学旅人 79% / 黑色电影迷 73% / 爵士夜行者 67%） | 「白天你上班，Frost 替你出门。它带着你的长期口味画像——注意，只带脱敏的标签，比如『拉美文学』『黑色电影』，绝不带你读过的具体书名、看过的电影原文。在广场上，它读取 Injective 链上其他真实 agent 的名片，按口味交集算出谁和你最像。」 |
-| 3 钉地球 | 1:30–1:55 | 切地球 tab，蓝紫色 agent 标记点散落球面，点开一个看详情卡 + scanUrl 外链 | 「遇见的每个链上 agent，都被钉到地球上。点开就能跳到它的链上身份页。社交关系第一次有了地理坐标。」 |
+| 2 广场遇见 | 0:45–1:30 | 回 App：底部 Agents → public-plaza。展示「在场 5」、名片一行、口味相近的 agent 列表（拉美文学旅人 79% / 黑色电影迷 73% / 爵士夜行者 67%） | 「白天你上班，Frost 替你出门。Frost 带着你的长期口味画像——注意，只带脱敏的标签，比如『拉美文学』『黑色电影』，绝不带你读过的具体书名、看过的电影原文。在广场上，Frost 读取 Injective 链上其他真实 agent 的名片，按口味交集算出谁和你最像。」 |
+| 3 钉地球 | 1:30–1:55 | 切地球 tab，蓝紫色 agent 标记点散落球面，点开一个看详情卡 + scanUrl 外链 | 「遇见的每个链上 agent，都被钉到地球上。点开就能跳到该 agent 的链上身份页。社交关系第一次有了地理坐标。」 |
 | 4 夜间报告 | 1:55–2:20 | 广场切「夜间 · 回来报告」，展示一段叙事 + 每个 agent 捎回的一句推荐 | 「夜里 Frost 回来，用人话给你讲今天的链上见闻：遇见了谁、聊了什么、谁替你捎回一句推荐。这段叙事由通义 Qwen 端云协同生成；同一条公开事件也可以交给桌面的 Frost Buddy 原型播报。」 |
 | 5 链上验证 + 隐私 | 2:20–2:50 | 切 blockscout，依次点开：注册 tx、SocialHandshake 合约、一笔真实握手 tx（含 agentA/agentB/score/profileHash） | 「两个 Frost 聊得来，会在链上留一笔可验证的握手——只存身份、名片哈希、相似度、时间戳。隐私铁律：上链的永远只是证明物，你的书影音原文、精确坐标、画像明细，全留在端侧和你自己的服务器。」 |
 | 6 收尾 | 2:50–3:00 | 回地球全景，打出标题 + Injective logo | 「Pocket Earth × Injective——把 AI 社交，长在真实的地球和真实的链上。」 |
@@ -47,7 +47,7 @@
 ### 录屏推荐顺序
 1. 先打开 `agentId 43` 单页：画面直接显示 Frost 主身份，审核者不用在合约总览里自己找。
 2. 再打开钱包页：串起注册、绑定、部署和握手交易，证明这不是单张截图，而是一整条真实链上操作链。
-3. 若需要机器复验，可先展示 `npm run verify:duration` 证明视频脚本仍卡在 3 分钟内，再展示 `npm run verify:judge` 对应的一页复验入口，然后展示 `npm run verify:wallet` 证明钱包时间线 API 直接读链上交易，再展示 `npm run verify:public-apis` 证明 `publicReadApis` 四条 API 都能打开，再展示 `npm run verify:integration-guide` 证明集成说明里的 API 清单和命令序号没有漂移，再展示 `npm run verify:positioning` 证明 README / app / hardware / docs 保持 Injective 核心集成主线，再展示 `npm run verify:source` 证明 API 证据锚到当前 GitHub 版本，再展示 `npm run verify:registry` 证明 `agentId 43–47` 来自 ERC-8004 Registry mint 事件，再展示 `npm run verify:demo` 快速证明录屏证据路径可用；如果只想证明“这条录屏顺序每一步都能打开”，展示 `npm run verify:recording-order`；如果要区分 public-plaza 和 agent-plaza，展示 `npm run verify:plaza-flow`；如果要说明 Injective 价值映射，展示 `npm run verify:nova-alignment`；如果要看交付入口，展示 `npm run verify:delivery`；需要完整复验时再展示 `npm run verify:injective` 里的 `Wallet transaction timeline` 小节：它直接读 Injective RPC 的 transaction / receipt / block timestamp。
+3. 若需要机器复验，可先展示 `npm run verify:duration` 证明视频脚本仍卡在 3 分钟内，再展示 `npm run verify:judge` 对应的一页复验入口，然后展示 `npm run verify:wallet` 证明钱包时间线 API 直接读链上交易，再展示 `npm run verify:public-apis` 证明 `publicReadApis` 四条 API 都能打开，再展示 `npm run verify:integration-guide` 证明集成说明里的 API 清单和命令序号没有漂移，再展示 `npm run verify:positioning` 证明 README / app / hardware / docs 保持 Injective 核心集成主线，再展示 `npm run verify:source` 证明 API 证据锚到当前 GitHub 版本，再展示 `npm run verify:registry` 证明 `agentId 43–47` 来自 ERC-8004 Registry mint 事件，再展示 `npm run verify:demo` 快速证明录屏证据路径可用；如果只想证明“这条录屏顺序每一步都能打开”，展示 `npm run verify:recording-order`；如果要区分 public-plaza 和 agent-plaza，展示 `npm run verify:plaza-flow`；如果要说明 Injective 价值映射，展示 `npm run verify:nova-alignment`；如果要看交付入口，展示 `npm run verify:delivery`；需要完整复验时再展示 `npm run verify:injective` 里的 `Wallet transaction timeline` 小节：`verify:injective` 直接读 Injective RPC 的 transaction / receipt / block timestamp。
 4. 最后回到 App：展示 public-plaza 读取链上 agent、地球标记和夜间报告，把“链上证据”接回“产品体验”。
 
 ---
