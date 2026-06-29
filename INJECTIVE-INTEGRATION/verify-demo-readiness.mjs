@@ -22,6 +22,10 @@ const checks = [
     label: 'plaza flow manifest separates chain discovery and install loop',
     moduleUrl: new URL('./verify-plaza-flow.mjs', import.meta.url),
   },
+  {
+    label: 'competition alignment maps Injective Nova story to public proof',
+    moduleUrl: new URL('./verify-nova-alignment.mjs', import.meta.url),
+  },
 ]
 
 console.log('Pocket Earth x Injective demo readiness')

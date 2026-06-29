@@ -14,7 +14,7 @@
 
 ## Reviewer Checklist
 
-`/api/injective?tool=get-chain-evidence` also returns `reviewChecklist`: a compact reviewer path that explains what each public proof is meant to verify.
+`/api/injective?tool=get-chain-evidence` also returns `reviewChecklist`: a compact reviewer path that explains what each public proof is meant to verify. It also includes `competitionAlignment`, which maps the same public proofs to AI social agents, Injective execution, the physical Frost Buddy extension, and the privacy-first evidence boundary.
 
 | Check | Public evidence | Pass criteria |
 |---|---|---|
@@ -83,10 +83,11 @@ npm run verify:review
 npm run verify:review-links
 npm run verify:recording-order
 npm run verify:plaza-flow
+npm run verify:nova-alignment
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:review`, `npm run verify:review-links`, `npm run verify:recording-order`, `npm run verify:plaza-flow`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, Blockscout links, recording order, and plaza-flow grouping; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package; `npm run verify:review` checks that the reviewer checklist still points at existing public links and local proof commands; `npm run verify:review-links` checks that the API-returned reviewer links are still complete, public-only, and reachable on Injective Blockscout; `npm run verify:recording-order` checks the exact recording order from Blockscout pages through product API calls to the plaza smoke; `npm run verify:plaza-flow` checks that `public-plaza` remains the chain-discovery flow and `agent-plaza` remains the marketplace/install flow.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:review`, `npm run verify:review-links`, `npm run verify:recording-order`, `npm run verify:plaza-flow`, `npm run verify:nova-alignment`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, `competitionAlignment` for mapping the public proof to the Injective Nova story, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, Blockscout links, recording order, plaza-flow grouping, and competition alignment; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package; `npm run verify:review` checks that the reviewer checklist still points at existing public links and local proof commands; `npm run verify:review-links` checks that the API-returned reviewer links are still complete, public-only, and reachable on Injective Blockscout; `npm run verify:recording-order` checks the exact recording order from Blockscout pages through product API calls to the plaza smoke; `npm run verify:plaza-flow` checks that `public-plaza` remains the chain-discovery flow and `agent-plaza` remains the marketplace/install flow; `npm run verify:nova-alignment` checks that the evidence package still maps Pocket Earth to AI social agents, Injective execution, the physical hardware extension, and privacy-first public proof without leaking local paths or secrets.
 
 Handshake calldata and event both decode to:
 
@@ -105,6 +106,7 @@ npm run verify:review
 npm run verify:review-links
 npm run verify:recording-order
 npm run verify:plaza-flow
+npm run verify:nova-alignment
 npm run verify:injective
 ```
 
@@ -114,7 +116,7 @@ This read-only proof suite verifies:
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
 - `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, and `get-wallet-timeline`
-- reviewer checklist wiring for public links, local proof commands, API-returned Blockscout link reachability, followable recording order, and plaza flow grouping
+- reviewer checklist and competition alignment wiring for public links, local proof commands, API-returned Blockscout link reachability, followable recording order, plaza flow grouping, and Nova story mapping
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
 - wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links

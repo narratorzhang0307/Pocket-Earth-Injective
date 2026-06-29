@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -96,6 +96,11 @@ assertEqual('evidence review checklist count', evidence.reviewChecklist.length, 
 assertEqual('evidence review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')
 assertEqual('evidence review checklist wallet link', evidence.reviewChecklist.find((item) => item.key === 'wallet-timeline')?.primaryLinkKey, 'owner-wallet')
 assertEqual('evidence review checklist product command', evidence.reviewChecklist.at(-1)?.machineCheck, 'npm run verify:plaza')
+assertTrue('evidence competition alignment array', Array.isArray(evidence.competitionAlignment))
+assertEqual('evidence competition alignment count', evidence.competitionAlignment.length, COMPETITION_ALIGNMENT.length)
+assertTrue('evidence competition alignment includes ai-social', evidence.competitionAlignment.some((item) => item.key === 'ai-social'))
+assertTrue('evidence competition alignment includes injective execution layer', evidence.competitionAlignment.some((item) => item.key === 'injective-execution-layer'))
+assertTrue('evidence competition alignment includes physical hardware', evidence.competitionAlignment.some((item) => item.key === 'agent-physical-world'))
 assertTrue('evidence privacy on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('evidence privacy off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertTrue('evidence privacy mentions ERC-8004 identity', evidence.privacyBoundary.onChain.includes('ERC-8004 agent identity'))
@@ -112,6 +117,7 @@ assertEqual('evidence review checklist command', evidence.verification?.reviewCh
 assertEqual('evidence review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('evidence recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('evidence plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
+assertEqual('evidence nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('evidence proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('evidence api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
 assertEqual('evidence list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)

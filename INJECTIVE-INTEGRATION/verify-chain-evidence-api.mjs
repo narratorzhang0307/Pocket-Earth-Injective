@@ -3,6 +3,7 @@
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
+  COMPETITION_ALIGNMENT,
   EVIDENCE_PRIVACY_BOUNDARY,
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
@@ -71,6 +72,11 @@ assertEqual('review checklist count', evidence.reviewChecklist.length, REVIEW_CH
 assertEqual('review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')
 assertTrue('review checklist first owner criterion', evidence.reviewChecklist[0]?.passCriteria?.some((item) => item.includes(PROOF_OWNER)))
 assertEqual('review checklist product loop command', evidence.reviewChecklist.at(-1)?.machineCheck, 'npm run verify:plaza')
+assertTrue('competition alignment array', Array.isArray(evidence.competitionAlignment))
+assertEqual('competition alignment count', evidence.competitionAlignment.length, COMPETITION_ALIGNMENT.length)
+assertEqual('competition alignment first key', evidence.competitionAlignment[0]?.key, 'ai-social')
+assertTrue('competition alignment mentions Injective execution', evidence.competitionAlignment.some((item) => item.key === 'injective-execution-layer'))
+assertTrue('competition alignment mentions hardware bridge', evidence.competitionAlignment.some((item) => item.key === 'agent-physical-world'))
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
@@ -113,6 +119,7 @@ assertEqual('review checklist command', evidence.verification?.reviewChecklist, 
 assertEqual('review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
+assertEqual('nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
 assertEqual('list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)

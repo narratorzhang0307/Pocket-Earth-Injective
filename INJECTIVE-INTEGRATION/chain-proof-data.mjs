@@ -34,6 +34,37 @@ export const EVIDENCE_PRIVACY_BOUNDARY = {
   writeBoundary: 'testnet-only writes require a server-side private key and explicit confirm:true; otherwise register/handshake stay dry-run',
 }
 
+export const COMPETITION_ALIGNMENT = [
+  {
+    key: 'ai-social',
+    contestSignal: 'AI social agent experience',
+    projectSignal: 'Frost carries a public Taste Passport into public-plaza, reads on-chain agents, ranks taste overlap, pins agent markers, and returns a Nightly Chain Dispatch.',
+    evidence: `public-plaza reads /api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47 and verifies agentId 43-47.`,
+    machineCheck: 'npm run verify:plaza-flow',
+  },
+  {
+    key: 'injective-execution-layer',
+    contestSignal: 'Injective as the on-chain execution layer for agents',
+    projectSignal: 'Pocket Earth uses Injective testnet ERC-8004 identity, builderCode pocket-earth, RPC transaction timelines, and a real SocialHandshake contract event.',
+    evidence: `agentId 43-47 are registered in IdentityRegistry ${IDENTITY_REGISTRY}; SocialHandshake is deployed at ${SOCIAL_HANDSHAKE}.`,
+    machineCheck: 'npm run verify:injective',
+  },
+  {
+    key: 'agent-physical-world',
+    contestSignal: 'Agent x physical-world product surface',
+    projectSignal: 'Frost Buddy keeps a Raspberry Pi / BLE / TTS event bridge so music-agent events and Injective chain dispatches can be spoken by a physical Frost device.',
+    evidence: 'hardware/frost-buddy emits safe JSONL events and the Pi skill router maps chain_dispatch and music requests without private keys.',
+    machineCheck: 'npm run verify:hardware',
+  },
+  {
+    key: 'privacy-first-public-proof',
+    contestSignal: 'Demo-ready product with verifiable public evidence',
+    projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewLinks, reviewChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    machineCheck: 'npm run verify:evidence',
+  },
+]
+
 export const PLAZA_DEMO_FLOW = [
   {
     key: 'public-plaza',
