@@ -111,6 +111,22 @@ assertTrue('remote README names wallet timeline API', remoteReadme.includes('get
 assertTrue('remote README names judge quickstart', remoteReadme.includes('60 秒核验路径') || remoteReadme.includes('JUDGE-QUICKSTART.md'))
 assertTrue('remote README names judge runbook', remoteReadme.includes('judgeRunbook'))
 assertTrue('remote README names public read API manifest', remoteReadme.includes('publicReadApis'))
+for (const phrase of [
+  '本地空间知识库',
+  '把地球作为方法',
+  'AI 分身的公共见证层',
+  '空间留在 Pocket Earth，时间由 Injective 见证',
+  '### 1. 架构主线',
+  'Frost Passport',
+  'Profile Chain',
+  'Agent Plaza',
+  'Frost Edge Node',
+  'public-plaza',
+  'agent-plaza',
+  'hardware/frost-buddy/',
+]) {
+  assertTrue(`remote README keeps architecture spine ${phrase}`, remoteReadme.includes(phrase))
+}
 assertTrue('remote integration guide names ERC-8004', remoteIntegration.includes('ERC-8004'))
 assertTrue('remote integration guide names wallet timeline', remoteIntegration.includes('get-wallet-timeline'))
 assertTrue('remote integration guide names registryMintEvents', remoteIntegration.includes('registryMintEvents'))
