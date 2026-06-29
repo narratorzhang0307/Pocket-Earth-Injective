@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -76,6 +76,9 @@ assertTrue('reputation clients array', Array.isArray(reputation.clients))
 console.log('\n/api get-chain-evidence')
 assertEqual('evidence ok', evidence.ok, true)
 assertEqual('evidence network', evidence.network, 'testnet')
+assertEqual('evidence chainId', evidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('evidence readOnly', evidence.readOnly, true)
+assertEqual('evidence publicOnly', evidence.publicOnly, true)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertEqual('evidence owner', evidence.owner, PROOF_OWNER)
 assertEqual('evidence owner scanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))

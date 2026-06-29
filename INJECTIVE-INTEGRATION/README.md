@@ -58,7 +58,7 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{agents, total}`，可直接复验 Pocket Earth agent fleet | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
-| GET | `?tool=get-chain-evidence` | 公开证据包：agentId 43–47、钱包、合约、时间线交易与 Blockscout 链接 | 否 |
+| GET | `?tool=get-chain-evidence` | 公开证据包：testnet chainId 1439、agentId 43–47、钱包、合约、时间线交易与 Blockscout 链接 | 否 |
 | GET | `?tool=get-wallet-timeline` | `{events}`，直接从 Injective RPC 复验钱包交易时间线 | 否 |
 | POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
 | POST | `?tool=handshake` `{agentA, agentB, profileHashA, profileHashB, score, confirm}` | `{txHash}`（无私钥/合约 → dryRun + willEmit；真写必须带非零 `bytes32` 名片哈希） | 真写需 |

@@ -7,7 +7,7 @@
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
 // ════════════════════════════════════════════════════════════════════════════
 
-import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_RPC, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -145,7 +145,10 @@ export async function handleInjective(req, res, url, cfg = {}) {
     if (tool === 'get-chain-evidence') {
       return json(res, {
         ok: true,
-        network,
+        network: 'testnet',
+        chainId: INJECTIVE_TESTNET_CHAIN_ID,
+        readOnly: true,
+        publicOnly: true,
         builderCode: BUILDER_CODE,
         owner: PROOF_OWNER,
         ownerScanUrl: scanUrlForAddress(PROOF_OWNER),
