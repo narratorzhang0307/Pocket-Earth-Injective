@@ -15,6 +15,10 @@ const checks = [
     moduleUrl: new URL('./verify-github-submission.mjs', import.meta.url),
   },
   {
+    label: 'public evidence API is tied to the current source commit',
+    moduleUrl: new URL('./verify-source-control.mjs', import.meta.url),
+  },
+  {
     label: 'pitch notes cover deck story and hardware boundaries',
     moduleUrl: new URL('./verify-pitch-notes.mjs', import.meta.url),
   },

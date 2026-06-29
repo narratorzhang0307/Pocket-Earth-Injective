@@ -125,6 +125,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'reviewBrief',
   'reviewChecklist',
   'reviewLinks',
+  'sourceControl',
   'submissionChecklist',
   'submissionLinks',
   'timeline',
@@ -140,6 +141,12 @@ assertEqual('builderCode', evidence.builderCode, BUILDER_CODE)
 assertEqual('owner', evidence.owner, PROOF_OWNER)
 assertEqual('registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('handshake contract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
+assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
+assertEqual('sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
+assertTrue('sourceControl commit is sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
+if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
+assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 
 console.log('\nReview entry points')
 assertEqual('repo link stays on Injective submission repo', evidence.submissionLinks.find((item) => item.key === 'github-repo')?.url, SUBMISSION_REPOSITORY_URL)
@@ -169,6 +176,7 @@ for (const event of TIMELINE_EVENTS) {
 console.log('\nVerification commands remain runnable')
 assertEqual('public proof command is advertised', evidence.verification?.publicProof, 'npm run verify:public-proof')
 assertEqual('github repo command is advertised', evidence.verification?.githubRepo, 'npm run verify:github')
+assertEqual('source control command is advertised', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('pitch notes command is advertised', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 assertEqual('judge quickstart command is advertised', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
 for (const [label, command] of collectCommands(evidence)) assertKnownCommand(label, command)

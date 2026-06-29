@@ -7,7 +7,10 @@
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
 // ════════════════════════════════════════════════════════════════════════════
 
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { existsSync, readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -51,6 +54,47 @@ function normalizeBytes32(value) {
 }
 function isBytes32(value) {
   return /^0x[0-9a-f]{64}$/i.test(String(value || ''))
+}
+
+const PROJECT_ROOT = dirname(fileURLToPath(import.meta.url))
+function cleanGitSha(value) {
+  const text = String(value || '').trim().toLowerCase()
+  return /^[0-9a-f]{40}$/.test(text) ? text : ''
+}
+function cleanBranch(value) {
+  return String(value || '').trim().replace(/^refs\/heads\//, '')
+}
+function readGitMetadata() {
+  let commit = cleanGitSha(process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || process.env.COMMIT_SHA)
+  let branch = cleanBranch(process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || process.env.BRANCH_NAME)
+  let gitDir = resolve(PROJECT_ROOT, '.git')
+  try {
+    const dotGit = readFileSync(gitDir, 'utf8').trim()
+    if (dotGit.startsWith('gitdir:')) gitDir = resolve(PROJECT_ROOT, dotGit.slice('gitdir:'.length).trim())
+  } catch { /* .git is usually a directory in local review; env commit is enough on hosted builds. */ }
+  if (existsSync(resolve(gitDir, 'HEAD'))) {
+    try {
+      const head = readFileSync(resolve(gitDir, 'HEAD'), 'utf8').trim()
+      if (head.startsWith('ref: ')) {
+        const ref = head.slice('ref: '.length).trim()
+        if (!branch && ref.startsWith('refs/heads/')) branch = ref.slice('refs/heads/'.length)
+        if (!commit) commit = cleanGitSha(readFileSync(resolve(gitDir, ref), 'utf8'))
+      } else if (!commit) {
+        commit = cleanGitSha(head)
+      }
+    } catch { /* sourceControl remains public even if the hosted build omits .git. */ }
+  }
+  return { branch: branch || 'main', commit: commit || null }
+}
+function getSourceControlEvidence() {
+  const { branch, commit } = readGitMetadata()
+  return {
+    repository: SUBMISSION_REPOSITORY_URL,
+    branch,
+    commit,
+    commitUrl: commit ? `${SUBMISSION_REPOSITORY_URL}/commit/${commit}` : null,
+    evidenceApi: '/api/injective?tool=get-chain-evidence',
+  }
 }
 
 // list-agents 结果缓存（id → {agent, at}），抹平 testnet RPC 抖动：本次 getStatus 没返回的、但 60s 内查到过的 agent 仍带上，避免广场在场数忽多忽少。
@@ -154,6 +198,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         publicOnly: true,
         demoVideoLimitSeconds: DEMO_VIDEO_LIMIT_SECONDS,
         builderCode: BUILDER_CODE,
+        sourceControl: getSourceControlEvidence(),
         owner: PROOF_OWNER,
         ownerScanUrl: scanUrlForAddress(PROOF_OWNER),
         registry: IDENTITY_REGISTRY,
@@ -235,6 +280,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           reviewLinks: 'npm run verify:review-links',
           recordingOrder: 'npm run verify:recording-order',
           walletTimeline: 'npm run verify:wallet',
+          sourceControl: 'npm run verify:source',
           plazaFlow: 'npm run verify:plaza-flow',
           novaAlignment: 'npm run verify:nova-alignment',
           submissionPack: 'npm run verify:submission',

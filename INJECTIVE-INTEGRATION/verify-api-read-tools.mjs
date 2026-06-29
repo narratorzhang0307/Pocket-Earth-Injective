@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -81,6 +81,11 @@ assertEqual('evidence readOnly', evidence.readOnly, true)
 assertEqual('evidence publicOnly', evidence.publicOnly, true)
 assertEqual('evidence demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
+assertTrue('evidence sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
+assertEqual('evidence sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('evidence sourceControl branch', evidence.sourceControl.branch, 'main')
+assertTrue('evidence sourceControl commit is sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
+assertEqual('evidence sourceControl evidence API', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 assertEqual('evidence owner', evidence.owner, PROOF_OWNER)
 assertEqual('evidence owner scanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
 assertEqual('evidence registry', evidence.registry, IDENTITY_REGISTRY)
@@ -139,6 +144,7 @@ assertEqual('evidence review checklist command', evidence.verification?.reviewCh
 assertEqual('evidence review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('evidence recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('evidence wallet timeline command', evidence.verification?.walletTimeline, 'npm run verify:wallet')
+assertEqual('evidence source control command', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('evidence plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
 assertEqual('evidence nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('evidence submission pack command', evidence.verification?.submissionPack, 'npm run verify:submission')

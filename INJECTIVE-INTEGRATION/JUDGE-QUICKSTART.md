@@ -9,7 +9,8 @@
 3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`
-6. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:demo`
+6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
+7. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:source && npm run verify:demo`
 
 ## What This Proves
 
@@ -24,6 +25,7 @@
 - GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective
 - Live demo: https://pocketearth.throughtheglass.art/?demo
 - Demo limit: `180s`, guarded by `npm run verify:duration`
+- Source-control guard: `npm run verify:source`
 - Pitch notes guard: `npm run verify:pitch`
 - Judge quickstart guard: `npm run verify:judge`
 
@@ -47,6 +49,7 @@ npm run verify:duration
 npm run verify:judge
 npm run verify:demo
 npm run verify:wallet
+npm run verify:source
 npm run verify:injective
 npm run verify:plaza
 npm run verify:pitch

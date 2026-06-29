@@ -17,6 +17,7 @@ import {
   SOCIAL_HANDSHAKE,
   SUBMISSION_CHECKLIST,
   SUBMISSION_LINKS,
+  SUBMISSION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
   scanUrlForAgent,
@@ -61,6 +62,12 @@ assertEqual('readOnly', evidence.readOnly, true)
 assertEqual('publicOnly', evidence.publicOnly, true)
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('builderCode', evidence.builderCode, BUILDER_CODE)
+assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
+assertEqual('sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
+assertTrue('sourceControl commit is a sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
+if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
+assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 assertEqual('owner', evidence.owner, PROOF_OWNER)
 assertEqual('ownerScanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
 assertEqual('registry', evidence.registry, IDENTITY_REGISTRY)
@@ -149,6 +156,7 @@ assertEqual('review checklist command', evidence.verification?.reviewChecklist, 
 assertEqual('review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('wallet timeline command', evidence.verification?.walletTimeline, 'npm run verify:wallet')
+assertEqual('source control command', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
 assertEqual('nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('submission pack command', evidence.verification?.submissionPack, 'npm run verify:submission')

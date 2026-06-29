@@ -39,6 +39,10 @@ const checks = [
     moduleUrl: new URL('./verify-judge-quickstart.mjs', import.meta.url),
   },
   {
+    label: 'Evidence API sourceControl matches the Injective submission commit',
+    moduleUrl: new URL('./verify-source-control.mjs', import.meta.url),
+  },
+  {
     label: 'App /api/injective ping, get-status, get-reputation read tools',
     moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
   },

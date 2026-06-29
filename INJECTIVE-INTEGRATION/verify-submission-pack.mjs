@@ -56,6 +56,8 @@ assertEqual('submission command', evidence.verification?.submissionPack, 'npm ru
 assertEqual('submission script', packageJson.scripts?.['verify:submission'], 'node INJECTIVE-INTEGRATION/verify-submission-pack.mjs')
 assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
 assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
+assertEqual('source control command', evidence.verification?.sourceControl, 'npm run verify:source')
+assertEqual('source control script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
 assertEqual('pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 assertEqual('pitch notes script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')
 assertEqual('judge quickstart command', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
@@ -79,6 +81,9 @@ assertEqual('repository url', expectedByKey.get('github-repo').url, SUBMISSION_R
 assertTrue('repository url points at Injective repo', SUBMISSION_REPOSITORY_URL.endsWith('/Pocket-Earth-Injective'))
 assertTrue('repository url is not the old plus repo', !SUBMISSION_REPOSITORY_URL.includes('Pocket-Earth-Plus'))
 assertTrue('repository url is not the sunset repo', !SUBMISSION_REPOSITORY_URL.includes('Sunset-Radio'))
+assertEqual('sourceControl repository', evidence.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('sourceControl branch', evidence.sourceControl?.branch, 'main')
+assertTrue('sourceControl commit is sha or null', evidence.sourceControl?.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl?.commit))
 
 assertEqual('live demo url', expectedByKey.get('live-demo').url, LIVE_DEMO_URL)
 assertTrue('live demo url includes demo seed', LIVE_DEMO_URL.endsWith('/?demo'))
