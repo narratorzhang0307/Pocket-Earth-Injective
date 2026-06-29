@@ -30,6 +30,12 @@ function assertEqual(label, actual, expected) {
   console.log(`OK ${label}: ${actual}`)
 }
 
+function assertFocusIncludes(label, item, expected) {
+  assertTrue(`${label} evidenceFocus array`, Array.isArray(item.evidenceFocus))
+  const text = item.evidenceFocus.join(' | ')
+  assertTrue(`${label} evidenceFocus includes ${expected}`, text.includes(expected))
+}
+
 async function callEvidenceApi() {
   let statusCode = 0
   let body = ''
@@ -91,7 +97,9 @@ for (const snippet of [
   'registry-mint-events',
   'expectedStatus',
   'timelineSummary',
+  'recordingOrder[].evidenceFocus',
   'starting from its `summary`',
+  'builderCode=pocket-earth',
   'SocialHandshake',
   'public-plaza',
   'agent-plaza',
@@ -111,6 +119,7 @@ for (const command of [
   'npm run verify:wallet',
   'npm run verify:source',
   'npm run verify:registry',
+  'npm run verify:recording-order',
   'npm run verify:injective',
   'npm run verify:plaza',
   'npm run verify:pitch',
@@ -124,6 +133,7 @@ console.log('\nEvidence API wiring')
 assertEqual('judge command advertised', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
 assertEqual('source control command advertised', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('registry events command advertised', evidence.verification?.registryEvents, 'npm run verify:registry')
+assertEqual('recording order command advertised', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('judge npm script', packageJson.scripts?.['verify:judge'], 'node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs')
 assertEqual('source control npm script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
 assertEqual('registry npm script', packageJson.scripts?.['verify:registry'], 'node INJECTIVE-INTEGRATION/verify-registry-events.mjs')
@@ -146,6 +156,14 @@ assertTrue('evidence registry mint summary all mints to owner', evidence.registr
 assertEqual('evidence registry mint summary first block', evidence.registryMintSummary?.firstBlock, REGISTRY_MINT_EVENTS[0].blockNumber)
 assertEqual('evidence registry mint summary last block', evidence.registryMintSummary?.lastBlock, REGISTRY_MINT_EVENTS.at(-1).blockNumber)
 assertEqual('evidence registry mint summary local verification', evidence.registryMintSummary?.localVerification, evidence.verification?.registryEvents)
+assertTrue('evidence recording order array', Array.isArray(evidence.recordingOrder))
+assertEqual('evidence recording order count', evidence.recordingOrder.length, 6)
+assertFocusIncludes('judge step 1', evidence.recordingOrder[0], 'agentId 43')
+assertFocusIncludes('judge step 1', evidence.recordingOrder[0], 'owner')
+assertFocusIncludes('judge step 3', evidence.recordingOrder[2], 'registryMintSummary')
+assertFocusIncludes('judge step 4', evidence.recordingOrder[3], `builderCode=${BUILDER_CODE}`)
+assertFocusIncludes('judge step 5', evidence.recordingOrder[4], 'allSucceeded')
+assertFocusIncludes('judge step 6', evidence.recordingOrder[5], 'agent-plaza')
 
 console.log('\nDocs link the one-page path')
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))

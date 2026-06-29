@@ -6,7 +6,7 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, and the `registry-mint-events` checklist item
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary`
 6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
@@ -19,6 +19,7 @@
 - The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events, and `registryMintSummary` condenses the agentId range, same-owner check, zero-address mint check, first/last block, and `npm run verify:registry` command.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
 - The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns its own `summary` so reviewers can confirm event count, all-succeeded status, and first/last block/time before reading every event row.
+- `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, and plaza grouping.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
 - The evidence API is `readOnly` and `publicOnly`; raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
@@ -55,6 +56,7 @@ npm run verify:demo
 npm run verify:wallet
 npm run verify:source
 npm run verify:registry
+npm run verify:recording-order
 npm run verify:injective
 npm run verify:plaza
 npm run verify:pitch
