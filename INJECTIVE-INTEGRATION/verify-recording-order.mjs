@@ -2,7 +2,7 @@
 // Usage: npm run verify:recording-order
 import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
-import { FLEET_AGENTS, PROOF_OWNER, REVIEW_LINKS, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent } from './chain-proof-data.mjs'
+import { FLEET_AGENTS, PROOF_OWNER, REVIEW_LINKS, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -11,6 +11,13 @@ function assertTrue(label, condition) {
 
 function assertEqual(label, actual, expected) {
   if (String(actual) !== String(expected)) {
+    throw new Error(`${label} mismatch: expected ${expected}, got ${actual}`)
+  }
+  console.log(`OK ${label}: ${actual}`)
+}
+
+function assertEqualLower(label, actual, expected) {
+  if (String(actual).toLowerCase() !== String(expected).toLowerCase()) {
     throw new Error(`${label} mismatch: expected ${expected}, got ${actual}`)
   }
   console.log(`OK ${label}: ${actual}`)
@@ -124,10 +131,24 @@ assertEqual('recording step 5 timeline ok', timelinePayload.ok, true)
 assertTrue('recording step 5 timeline summary object', !!timelinePayload.summary && typeof timelinePayload.summary === 'object')
 assertEqual('recording step 5 timeline summary owner', timelinePayload.summary.owner, PROOF_OWNER)
 assertEqual('recording step 5 timeline summary event count', timelinePayload.summary.eventCount, TIMELINE_EVENTS.length)
+assertEqual('recording step 5 timeline summary all from owner', timelinePayload.summary.allFromOwner, true)
 assertEqual('recording step 5 timeline summary all succeeded', timelinePayload.summary.allSucceeded, true)
+assertEqual('recording step 5 timeline summary first block', timelinePayload.summary.firstBlock, TIMELINE_EVENTS[0].blockNumber)
+assertEqual('recording step 5 timeline summary last block', timelinePayload.summary.lastBlock, TIMELINE_EVENTS.at(-1).blockNumber)
+assertEqual('recording step 5 timeline summary first timestamp', timelinePayload.summary.firstTimestamp, TIMELINE_EVENTS[0].timestamp)
+assertEqual('recording step 5 timeline summary last timestamp', timelinePayload.summary.lastTimestamp, TIMELINE_EVENTS.at(-1).timestamp)
 assertEqual('recording step 5 timeline summary last role', timelinePayload.summary.lastRole, TIMELINE_EVENTS.at(-1).role)
 assertTrue('recording step 5 timeline events array', Array.isArray(timelinePayload.events))
 assertEqual('recording step 5 timeline event count', timelinePayload.events.length, TIMELINE_EVENTS.length)
+for (const expected of TIMELINE_EVENTS) {
+  const actual = timelinePayload.events.find((event) => String(event.hash).toLowerCase() === String(expected.hash).toLowerCase())
+  assertTrue(`recording step 5 ${expected.role} event exists`, Boolean(actual))
+  assertEqualLower(`recording step 5 ${expected.role} from`, actual.from, PROOF_OWNER)
+  assertEqual(`recording step 5 ${expected.role} status`, actual.status, 'success')
+  assertEqual(`recording step 5 ${expected.role} blockNumber`, actual.blockNumber, expected.blockNumber)
+  assertEqual(`recording step 5 ${expected.role} timestamp`, actual.timestamp, expected.timestamp)
+  assertEqual(`recording step 5 ${expected.role} scanUrl`, actual.scanUrl, scanUrlForTx(expected.hash))
+}
 assertEqual('recording step 5 first event', timelinePayload.events[0]?.hash, TIMELINE_EVENTS[0].hash)
 assertEqual('recording step 5 final event', timelinePayload.events.at(-1)?.hash, TIMELINE_EVENTS.at(-1).hash)
 
