@@ -317,8 +317,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs',
           purpose: `Reads agentId 43-47 from Injective testnet with builderCode=${BUILDER_CODE}.`,
-          expectedFields: ['agents[].agentId', 'agents[].builderCode', 'agents[].card', 'total'],
-          judgeFocus: [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'public data URI card fields only', 'public-plaza chain discovery input'],
+          expectedFields: ['agents[].agentId', 'agents[].owner', 'agents[].wallet', 'agents[].builderCode', 'agents[].identityTuple', 'agents[].card', 'agents[44-47].card.tags', 'agents[44-47].card.metadata.builderCode', 'total', 'offset', 'limit', 'sdk'],
+          judgeFocus: [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'limit/offset return the full scoped fleet', 'public data URI card fields only', 'public-plaza chain discovery input'],
         },
         {
           key: 'wallet-timeline-api',

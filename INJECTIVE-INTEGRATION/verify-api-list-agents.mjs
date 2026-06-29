@@ -55,8 +55,11 @@ try {
 
 assertEqual('api sdk flag', payload.sdk, true)
 assertEqual('api builderCode filter', payload.builderCode, BUILDER_CODE)
+assertEqual('api total', payload.total, FLEET_AGENTS.length)
+assertEqual('api offset', payload.offset, 0)
+assertEqual('api limit', payload.limit, FLEET_AGENTS.length)
 assertTrue('api agents array', Array.isArray(payload.agents))
-assertTrue('api returned full Pocket Earth fleet', payload.agents.length >= FLEET_AGENTS.length)
+assertEqual('api returned full Pocket Earth fleet', payload.agents.length, FLEET_AGENTS.length)
 
 const byId = new Map(payload.agents.map((agent) => [String(agent.agentId), agent]))
 for (const agent of FLEET_AGENTS) {
@@ -70,8 +73,12 @@ for (const agent of FLEET_AGENTS) {
   assertEqual(`agent ${id} identity registry`, String(status.identityTuple || '').split(':')[2], IDENTITY_REGISTRY)
   if (agent.requiredTag) {
     assertEqual(`agent ${id} decoded card builderCode`, status.card?.metadata?.builderCode, BUILDER_CODE)
+    assertEqual(`agent ${id} decoded card chain`, status.card?.metadata?.chain, 'injective')
     assertEqual(`agent ${id} decoded card name`, status.card?.name, agent.label)
+    assertTrue(`agent ${id} decoded card description`, String(status.card?.description || '').length > 10)
     assertTrue(`agent ${id} decoded card tag ${agent.requiredTag}`, Array.isArray(status.card?.tags) && status.card.tags.includes(agent.requiredTag))
+    const allowedCardKeys = ['type', 'name', 'description', 'tags', 'metadata']
+    assertTrue(`agent ${id} decoded card public keys only`, Object.keys(status.card || {}).every((key) => allowedCardKeys.includes(key)))
   }
 }
 

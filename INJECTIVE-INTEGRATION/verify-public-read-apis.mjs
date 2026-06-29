@@ -112,8 +112,8 @@ const expectedGuidance = new Map([
     judgeFocus: ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry', 'single-card sourceControl anchor'],
   }],
   ['agent-fleet-api', {
-    expectedFields: ['agents[].agentId', 'agents[].builderCode', 'agents[].card', 'total'],
-    judgeFocus: [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'public data URI card fields only', 'public-plaza chain discovery input'],
+    expectedFields: ['agents[].agentId', 'agents[].owner', 'agents[].wallet', 'agents[].builderCode', 'agents[].identityTuple', 'agents[].card', 'agents[44-47].card.tags', 'agents[44-47].card.metadata.builderCode', 'total', 'offset', 'limit', 'sdk'],
+    judgeFocus: [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'limit/offset return the full scoped fleet', 'public data URI card fields only', 'public-plaza chain discovery input'],
   }],
   ['wallet-timeline-api', {
     expectedFields: ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'],
@@ -202,13 +202,31 @@ assertEqual('agent proof verification command', agentProof.verification?.agentPr
 
 console.log('\nagent fleet endpoint')
 const fleet = await suppressCardFetchWarnings(() => callApi(byKey.get('agent-fleet-api').path))
+assertEqual('fleet sdk flag', fleet.sdk, true)
 assertEqual('fleet builderCode', fleet.builderCode, BUILDER_CODE)
+assertEqual('fleet total', fleet.total, FLEET_AGENTS.length)
+assertEqual('fleet offset', fleet.offset, 0)
+assertEqual('fleet limit', fleet.limit, FLEET_AGENTS.length)
 assertTrue('fleet agents array', Array.isArray(fleet.agents))
-assertTrue('fleet returned full Pocket Earth fleet', fleet.agents.length >= FLEET_AGENTS.length)
+assertEqual('fleet returned full Pocket Earth fleet', fleet.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {
   const agent = fleet.agents.find((item) => Number(item.agentId) === Number(expected.id))
   assertTrue(`fleet includes agent ${expected.id}`, Boolean(agent))
+  assertEqual(`fleet agent ${expected.id} owner`, agent.owner, PROOF_OWNER)
+  assertEqual(`fleet agent ${expected.id} wallet`, agent.wallet, PROOF_OWNER)
   assertEqual(`fleet agent ${expected.id} builderCode`, agent.builderCode, BUILDER_CODE)
+  assertEqual(`fleet agent ${expected.id} registry`, String(agent.identityTuple || '').split(':')[2], IDENTITY_REGISTRY)
+  if (expected.requiredTag) {
+    assertTrue(`fleet agent ${expected.id} decoded card object`, !!agent.card && typeof agent.card === 'object')
+    assertEqual(`fleet agent ${expected.id} card name`, agent.card.name, expected.label)
+    assertTrue(`fleet agent ${expected.id} card description`, String(agent.card.description || '').length > 10)
+    assertTrue(`fleet agent ${expected.id} card tags array`, Array.isArray(agent.card.tags))
+    assertTrue(`fleet agent ${expected.id} card tag ${expected.requiredTag}`, agent.card.tags.includes(expected.requiredTag))
+    assertEqual(`fleet agent ${expected.id} card chain`, agent.card.metadata?.chain, 'injective')
+    assertEqual(`fleet agent ${expected.id} card metadata builderCode`, agent.card.metadata?.builderCode, BUILDER_CODE)
+    const allowedCardKeys = ['type', 'name', 'description', 'tags', 'metadata']
+    assertTrue(`fleet agent ${expected.id} card public keys only`, Object.keys(agent.card).every((key) => allowedCardKeys.includes(key)))
+  }
 }
 
 console.log('\nwallet timeline endpoint')
