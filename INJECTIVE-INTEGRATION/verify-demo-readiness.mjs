@@ -26,6 +26,10 @@ const checks = [
     label: 'competition alignment maps Injective Nova story to public proof',
     moduleUrl: new URL('./verify-nova-alignment.mjs', import.meta.url),
   },
+  {
+    label: 'submission links point to the Injective review entry points',
+    moduleUrl: new URL('./verify-submission-pack.mjs', import.meta.url),
+  },
 ]
 
 console.log('Pocket Earth x Injective demo readiness')

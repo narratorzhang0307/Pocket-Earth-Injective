@@ -71,6 +71,10 @@ const checks = [
     moduleUrl: new URL('./verify-nova-alignment.mjs', import.meta.url),
   },
   {
+    label: 'Submission links point to the Injective review entry points',
+    moduleUrl: new URL('./verify-submission-pack.mjs', import.meta.url),
+  },
+  {
     label: 'Frost Buddy hardware bridge: music + Injective chain dispatch events',
     moduleUrl: new URL('./verify-hardware-bridge.mjs', import.meta.url),
   },

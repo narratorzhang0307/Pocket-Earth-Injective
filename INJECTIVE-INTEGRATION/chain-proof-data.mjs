@@ -2,6 +2,8 @@ export const INJECTIVE_TESTNET_RPC = 'https://testnet.sentry.chain.json-rpc.inje
 export const INJECTIVE_TESTNET_CHAIN_ID = 1439
 
 export const BUILDER_CODE = 'pocket-earth'
+export const SUBMISSION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
+export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
 export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 export const SOCIAL_HANDSHAKE = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
@@ -82,6 +84,14 @@ export const PLAZA_DEMO_FLOW = [
     verifies: 'opens the agent catalog, keeps the boundary strip visible, installs cafe-map through the manifest review gate, and shows it in My Agents',
     smoke: 'INJECTIVE-INTEGRATION/verify-space-plaza.mjs + INJECTIVE-INTEGRATION/verify-plaza-install.mjs',
   },
+]
+
+export const SUBMISSION_LINKS = [
+  { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: SUBMISSION_REPOSITORY_URL },
+  { key: 'live-demo', label: 'Live demo with demo profile seed', type: 'demo', url: LIVE_DEMO_URL },
+  { key: 'chain-evidence-api', label: 'Public chain evidence API', type: 'api', path: '/api/injective?tool=get-chain-evidence' },
+  { key: 'agent-fleet-api', label: 'Read agentId 43-47 by builderCode', type: 'api', path: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47` },
+  { key: 'wallet-timeline-api', label: 'Read wallet transaction timeline from RPC', type: 'api', path: '/api/injective?tool=get-wallet-timeline' },
 ]
 
 export const TIMELINE_EVENTS = [

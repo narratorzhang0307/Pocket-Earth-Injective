@@ -49,6 +49,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:recording-order',
   'npm run verify:plaza-flow',
   'npm run verify:nova-alignment',
+  'npm run verify:submission',
   'npm run verify:injective',
   'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
 ]
