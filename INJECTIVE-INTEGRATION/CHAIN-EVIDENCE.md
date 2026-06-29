@@ -1,6 +1,6 @@
 # Chain Evidence · Pocket Earth on Injective
 
-> 评审复验入口：本页只列公开链上证据。所有链接指向 Injective testnet Blockscout；私人画像原文、书影音原文、精确坐标和私钥不在本页、也不在链上。
+> 公开复验入口：本页只列公开链上证据。所有链接指向 Injective testnet Blockscout；私人画像原文、书影音原文、精确坐标和私钥不在本页、也不在链上。
 
 ## 一眼结论
 

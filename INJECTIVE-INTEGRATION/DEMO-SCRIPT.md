@@ -45,9 +45,9 @@
 > 注：8004scan.io 第三方聚合站不索引 Injective testnet（会 404），链上验证一律用上面 Injective 官方 blockscout。
 
 ### 录屏推荐顺序
-1. 先打开 `agentId 43` 单页：画面直接显示 Frost 主身份，评委不用在合约总览里自己找。
+1. 先打开 `agentId 43` 单页：画面直接显示 Frost 主身份，审核者不用在合约总览里自己找。
 2. 再打开钱包页：串起注册、绑定、部署和握手交易，证明这不是单张截图，而是一整条真实链上操作链。
-3. 若需要机器复验，可先展示 `npm run verify:duration` 证明视频脚本仍卡在 3 分钟内，再展示 `npm run verify:judge` 对应的一页评审入口，然后展示 `npm run verify:wallet` 证明钱包时间线 API 直接读链上交易，再展示 `npm run verify:public-apis` 证明 `publicReadApis` 四条 API 都能打开，再展示 `npm run verify:integration-guide` 证明集成说明里的 API 清单和命令序号没有漂移，再展示 `npm run verify:source` 证明 API 证据锚到当前 GitHub 版本，再展示 `npm run verify:registry` 证明 `agentId 43–47` 来自 ERC-8004 Registry mint 事件，再展示 `npm run verify:demo` 快速证明录屏证据路径可用；如果只想证明“这条录屏顺序每一步都能打开”，展示 `npm run verify:recording-order`；如果要区分 public-plaza 和 agent-plaza，展示 `npm run verify:plaza-flow`；如果要说明 Injective 价值映射，展示 `npm run verify:nova-alignment`；如果要看交付入口，展示 `npm run verify:delivery`；需要完整复验时再展示 `npm run verify:injective` 里的 `Wallet transaction timeline` 小节：它直接读 Injective RPC 的 transaction / receipt / block timestamp。
+3. 若需要机器复验，可先展示 `npm run verify:duration` 证明视频脚本仍卡在 3 分钟内，再展示 `npm run verify:judge` 对应的一页复验入口，然后展示 `npm run verify:wallet` 证明钱包时间线 API 直接读链上交易，再展示 `npm run verify:public-apis` 证明 `publicReadApis` 四条 API 都能打开，再展示 `npm run verify:integration-guide` 证明集成说明里的 API 清单和命令序号没有漂移，再展示 `npm run verify:source` 证明 API 证据锚到当前 GitHub 版本，再展示 `npm run verify:registry` 证明 `agentId 43–47` 来自 ERC-8004 Registry mint 事件，再展示 `npm run verify:demo` 快速证明录屏证据路径可用；如果只想证明“这条录屏顺序每一步都能打开”，展示 `npm run verify:recording-order`；如果要区分 public-plaza 和 agent-plaza，展示 `npm run verify:plaza-flow`；如果要说明 Injective 价值映射，展示 `npm run verify:nova-alignment`；如果要看交付入口，展示 `npm run verify:delivery`；需要完整复验时再展示 `npm run verify:injective` 里的 `Wallet transaction timeline` 小节：它直接读 Injective RPC 的 transaction / receipt / block timestamp。
 4. 最后回到 App：展示 public-plaza 读取链上 agent、地球标记和夜间报告，把“链上证据”接回“产品体验”。
 
 ---
