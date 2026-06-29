@@ -132,9 +132,31 @@ assertEqual('recording step 5 path', listAgentsApi.path, evidence.verification?.
 assertFocusIncludes('recording step 5', listAgentsApi, 'builderCode=pocket-earth')
 assertFocusIncludes('recording step 5', listAgentsApi, 'agentId 43-47')
 const fleetPayload = await callInjectiveApi(listAgentsApi.path)
+assertEqual('recording step 5 fleet sdk flag', fleetPayload.sdk, true)
+assertEqual('recording step 5 fleet builderCode', fleetPayload.builderCode, BUILDER_CODE)
+assertEqual('recording step 5 fleet total', fleetPayload.total, FLEET_AGENTS.length)
+assertEqual('recording step 5 fleet offset', fleetPayload.offset, 0)
+assertEqual('recording step 5 fleet limit', fleetPayload.limit, FLEET_AGENTS.length)
 assertTrue('recording step 5 agents array', Array.isArray(fleetPayload.agents))
+assertEqual('recording step 5 returns full Pocket Earth fleet', fleetPayload.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {
-  assertTrue(`recording step 5 includes agent ${expected.id}`, fleetPayload.agents.some((agent) => Number(agent.agentId) === Number(expected.id)))
+  const actual = fleetPayload.agents.find((agent) => Number(agent.agentId) === Number(expected.id))
+  assertTrue(`recording step 5 includes agent ${expected.id}`, Boolean(actual))
+  assertEqualLower(`recording step 5 agent ${expected.id} owner`, actual.owner, PROOF_OWNER)
+  assertEqualLower(`recording step 5 agent ${expected.id} wallet`, actual.wallet, PROOF_OWNER)
+  assertEqual(`recording step 5 agent ${expected.id} builderCode`, actual.builderCode, BUILDER_CODE)
+  assertEqualLower(`recording step 5 agent ${expected.id} registry`, String(actual.identityTuple || '').split(':')[2], IDENTITY_REGISTRY)
+  if (expected.requiredTag) {
+    assertTrue(`recording step 5 agent ${expected.id} decoded card object`, !!actual.card && typeof actual.card === 'object')
+    assertEqual(`recording step 5 agent ${expected.id} card name`, actual.card.name, expected.label)
+    assertTrue(`recording step 5 agent ${expected.id} card description`, String(actual.card.description || '').length > 10)
+    assertTrue(`recording step 5 agent ${expected.id} card tags array`, Array.isArray(actual.card.tags))
+    assertTrue(`recording step 5 agent ${expected.id} card tag ${expected.requiredTag}`, actual.card.tags.includes(expected.requiredTag))
+    assertEqual(`recording step 5 agent ${expected.id} card chain`, actual.card.metadata?.chain, 'injective')
+    assertEqual(`recording step 5 agent ${expected.id} card metadata builderCode`, actual.card.metadata?.builderCode, BUILDER_CODE)
+    const allowedCardKeys = ['type', 'name', 'description', 'tags', 'metadata']
+    assertTrue(`recording step 5 agent ${expected.id} card public keys only`, Object.keys(actual.card).every((key) => allowedCardKeys.includes(key)))
+  }
 }
 
 assertEqual('recording step 6 type', timelineApi.type, 'api')
