@@ -59,6 +59,7 @@ console.log('Positioning text guard')
 assertTrue('scan has files', files.length > 0)
 const rootReadme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
 const hardwareReadme = readFileSync(resolve(projectRoot, 'hardware/frost-buddy/README.md'), 'utf8')
+const webManifest = JSON.parse(readFileSync(resolve(projectRoot, 'public/manifest.webmanifest'), 'utf8'))
 const publicPlaza = readFileSync(resolve(projectRoot, 'src/app/components/PublicPlazaPage.tsx'), 'utf8')
 assertTrue('README uses explicit Pocket Earth definition heading', rootReadme.includes('## 一、Pocket Earth 是什么'))
 assertTrue('README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(rootReadme))
@@ -66,6 +67,8 @@ assertTrue('README uses product-first three-entry heading', rootReadme.includes(
 assertTrue('README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.test(rootReadme))
 assertTrue('README names Frost Edge Node hardware direction explicitly', rootReadme.includes('Frost Edge Node 硬件方向的商业判断'))
 assertTrue('hardware README names module subject explicitly', hardwareReadme.includes('Frost Edge Node 模块先承担三个角色'))
+assertTrue('PWA manifest description names each record explicitly', webManifest.description.includes('每条记录各自对应的真实地点'))
+assertTrue('PWA manifest description omits vague pronoun', !webManifest.description.includes('它们在地球上的那个地点'))
 assertTrue('public-plaza UI names Frost as the actor', publicPlaza.includes('Frost 替你去广场') && publicPlaza.includes('Frost 带出的名片'))
 const explicitPublicDocSnippets = [
   ['README.md', '它立刻被钉回真实坐标'],
