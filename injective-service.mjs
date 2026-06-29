@@ -144,6 +144,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
     // —— 只读：公开链上证据包（供评审/录屏直接从产品 API 拉同一份公开事实表）——
     if (tool === 'get-chain-evidence') {
       const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
+      const listAgentsApi = `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`
+      const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
       return json(res, {
         ok: true,
         network: 'testnet',
@@ -173,13 +175,51 @@ export async function handleInjective(req, res, url, cfg = {}) {
           scanUrl: scanUrlForTx(event.hash),
           ...(event.contractAddress ? { contractAddress: event.contractAddress } : {}),
         })),
+        recordingOrder: [
+          {
+            step: 1,
+            label: 'Open Frost agentId 43 identity page',
+            type: 'blockscout',
+            url: scanUrlForAgent(43),
+          },
+          {
+            step: 2,
+            label: 'Open the owner wallet page',
+            type: 'blockscout',
+            url: scanUrlForAddress(PROOF_OWNER),
+          },
+          {
+            step: 3,
+            label: 'Show the public evidence API package',
+            type: 'api',
+            path: '/api/injective?tool=get-chain-evidence',
+          },
+          {
+            step: 4,
+            label: 'Read agentId 43-47 by builderCode',
+            type: 'api',
+            path: listAgentsApi,
+          },
+          {
+            step: 5,
+            label: 'Read the wallet transaction timeline from RPC',
+            type: 'api',
+            path: walletTimelineApi,
+          },
+          {
+            step: 6,
+            label: 'Run the plaza UI smoke after chain evidence is ready',
+            type: 'command',
+            command: 'npm run verify:plaza',
+          },
+        ],
         verification: {
           demoReadiness: 'npm run verify:demo',
           evidenceSmoke: 'npm run verify:evidence',
           proofSuite: 'npm run verify:injective',
           apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
-          listAgentsApi: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`,
-          walletTimelineApi: '/api/injective?tool=get-wallet-timeline',
+          listAgentsApi,
+          walletTimelineApi,
         },
       })
     }

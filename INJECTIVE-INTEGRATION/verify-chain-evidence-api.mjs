@@ -88,6 +88,16 @@ assertEqual('api read tools command', evidence.verification?.apiReadTools, 'node
 assertEqual('list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)
 assertEqual('wallet timeline api', evidence.verification?.walletTimelineApi, '/api/injective?tool=get-wallet-timeline')
 
+console.log('\nRecording order')
+assertTrue('recording order array', Array.isArray(evidence.recordingOrder))
+assertEqual('recording order count', evidence.recordingOrder.length, 6)
+assertEqual('recording step 1 url', evidence.recordingOrder[0]?.url, scanUrlForAgent(43))
+assertEqual('recording step 2 url', evidence.recordingOrder[1]?.url, scanUrlForAddress(PROOF_OWNER))
+assertEqual('recording step 3 path', evidence.recordingOrder[2]?.path, '/api/injective?tool=get-chain-evidence')
+assertEqual('recording step 4 path', evidence.recordingOrder[3]?.path, evidence.verification?.listAgentsApi)
+assertEqual('recording step 5 path', evidence.recordingOrder[4]?.path, evidence.verification?.walletTimelineApi)
+assertEqual('recording step 6 command', evidence.recordingOrder[5]?.command, 'npm run verify:plaza')
+
 console.log('\nPublic-only guard')
 const evidenceText = JSON.stringify(evidence)
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHash', 'profileHashA', 'profileHashB']) {
