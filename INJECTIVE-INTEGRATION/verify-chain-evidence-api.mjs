@@ -148,6 +148,7 @@ assertEqual('review brief command', evidence.verification?.reviewBrief, 'npm run
 assertEqual('review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
+assertEqual('wallet timeline command', evidence.verification?.walletTimeline, 'npm run verify:wallet')
 assertEqual('plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
 assertEqual('nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('submission pack command', evidence.verification?.submissionPack, 'npm run verify:submission')

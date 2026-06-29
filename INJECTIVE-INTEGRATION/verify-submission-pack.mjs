@@ -62,6 +62,8 @@ assertEqual('judge quickstart command', evidence.verification?.judgeQuickstart, 
 assertEqual('judge quickstart script', packageJson.scripts?.['verify:judge'], 'node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs')
 assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
 assertEqual('demo duration script', packageJson.scripts?.['verify:duration'], 'node INJECTIVE-INTEGRATION/verify-demo-duration.mjs')
+assertEqual('wallet timeline command', evidence.verification?.walletTimeline, 'npm run verify:wallet')
+assertEqual('wallet timeline script', packageJson.scripts?.['verify:wallet'], 'node INJECTIVE-INTEGRATION/verify-wallet-timeline-api.mjs')
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 
 for (const expected of SUBMISSION_LINKS) {

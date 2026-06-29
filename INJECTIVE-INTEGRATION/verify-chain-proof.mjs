@@ -59,6 +59,10 @@ const checks = [
     moduleUrl: new URL('./verify-chain-timeline.mjs', import.meta.url),
   },
   {
+    label: 'Wallet timeline API: product evidence matches Injective transactions',
+    moduleUrl: new URL('./verify-wallet-timeline-api.mjs', import.meta.url),
+  },
+  {
     label: 'SocialHandshake deployer, timing, and source bytecode',
     moduleUrl: new URL('./verify-handshake-contract.mjs', import.meta.url),
   },

@@ -9,7 +9,7 @@
 3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`
-6. Run the local smoke: `npm run verify:judge && npm run verify:demo`
+6. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:demo`
 
 ## What This Proves
 
@@ -46,6 +46,7 @@ npm run verify:github
 npm run verify:duration
 npm run verify:judge
 npm run verify:demo
+npm run verify:wallet
 npm run verify:injective
 npm run verify:plaza
 npm run verify:pitch

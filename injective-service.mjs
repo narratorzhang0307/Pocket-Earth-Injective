@@ -234,6 +234,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           reviewChecklist: 'npm run verify:review',
           reviewLinks: 'npm run verify:review-links',
           recordingOrder: 'npm run verify:recording-order',
+          walletTimeline: 'npm run verify:wallet',
           plazaFlow: 'npm run verify:plaza-flow',
           novaAlignment: 'npm run verify:nova-alignment',
           submissionPack: 'npm run verify:submission',

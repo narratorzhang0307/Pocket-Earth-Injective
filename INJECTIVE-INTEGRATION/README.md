@@ -115,22 +115,25 @@ npm run verify:review-links
 # 14. 验证证据包里的录屏顺序可从 Blockscout 一路走到产品 API
 npm run verify:recording-order
 
-# 15. 验证 public-plaza / agent-plaza 演示分组未漂移
+# 15. 单独验证钱包时间线 API 与 Injective RPC 交易事实一致
+npm run verify:wallet
+
+# 16. 验证 public-plaza / agent-plaza 演示分组未漂移
 npm run verify:plaza-flow
 
-# 16. 验证公开证据包和 Injective 新星计划叙事对齐
+# 17. 验证公开证据包和 Injective 新星计划叙事对齐
 npm run verify:nova-alignment
 
-# 17. 验证提交入口不误指旧仓库，并固定 demo/API 路径
+# 18. 验证提交入口不误指旧仓库，并固定 demo/API 路径
 npm run verify:submission
 
-# 18. 一键验证 Injective 链上证据（只读，不需要私钥）
+# 19. 一键验证 Injective 链上证据（只读，不需要私钥）
 npm run verify:injective
 
-# 19. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
+# 20. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
 npm run verify:plaza
 
-# 20. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
+# 21. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
 npm run verify:hardware
 
 # 也可以单独验证具体证据
@@ -147,6 +150,7 @@ node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs
 node INJECTIVE-INTEGRATION/verify-review-brief.mjs
 node INJECTIVE-INTEGRATION/verify-review-checklist.mjs
 node INJECTIVE-INTEGRATION/verify-recording-order.mjs
+node INJECTIVE-INTEGRATION/verify-wallet-timeline-api.mjs
 node INJECTIVE-INTEGRATION/verify-plaza-flow.mjs
 node INJECTIVE-INTEGRATION/verify-nova-alignment.mjs
 node INJECTIVE-INTEGRATION/verify-submission-pack.mjs
@@ -192,6 +196,6 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 - 真实握手交易：`0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6`，`verify-handshake.mjs` 会用公开脱敏 demo seed 重算两个 profileHash，并核验 calldata 与事件参数均为 `agentA 43`、`agentB 44`、`score 88`，以及两个非零 `bytes32` 名片哈希字段与事件时间戳。
 - Frost Buddy 硬件桥：`hardware/frost-buddy/` 把 `music-agent` 播放事件和 `public-plaza` 链上见闻转成 JSONL，供 Raspberry Pi / BLE / TTS 适配器消费；`raspi/frost_pi_skill_agent.py` 则把树莓派侧的松散语音请求路由到音乐命令或 `chain_dispatch` 公开事件；`verify-hardware-bridge.mjs` 会核验事件只包含公开字段，不包含私钥、密钥名、画像原文或 `bytes32` 名片哈希。
 
-评审 60 秒快速入口见 `JUDGE-QUICKSTART.md`，完整复验证据包见 `CHAIN-EVIDENCE.md`。这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents&builderCode=pocket-earth` 处理器，确认产品后端能从 Injective testnet 按 builderCode 读回并解码这组链上 agent；`verify-demo-duration.mjs` 会解析 `DEMO-SCRIPT.md` 分镜时间轴，确认脚本仍在 180s / 3 分钟提交限制内；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation`、`get-chain-evidence`、`get-wallet-timeline` 五个只读工具，并确认产品 API 输出的公开证据包与 `chain-proof-data.mjs` 的事实表一致，且内含 `reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、`submissionLinks`、`submissionChecklist`、`recordingOrder`、`privacyBoundary`、`plazaFlow`、`npm run verify:demo` / `npm run verify:duration` / `npm run verify:evidence` / `npm run verify:public-proof` / `npm run verify:github` / `npm run verify:pitch` / `npm run verify:judge` / `npm run verify:brief` / `npm run verify:review` / `npm run verify:review-links` / `npm run verify:recording-order` / `npm run verify:plaza-flow` / `npm run verify:nova-alignment` / `npm run verify:submission` / `npm run verify:injective` 复验入口；`verify-public-proof-contract.mjs` 会把公开证据包当成评审可展示契约，集中检查字段白名单、公开 URL、复验命令、旧仓库误指和私钥/本地路径泄露；`verify-github-submission.mjs` 会确认 `origin/main`、GitHub 公开仓库状态、远端 README、集成说明、证据包和录屏脚本都仍指向本 Injective 参赛仓库；`verify-pitch-notes.mjs` 会确认 pitch 备注以 Injective 链上证据为主、硬件 Frost Buddy 只作为边界清楚的延展，并核验 Raspberry Pi 来源可打开；`verify-judge-quickstart.mjs` 会确认 `JUDGE-QUICKSTART.md` 中的一页评审路径、Blockscout 链接、三个只读产品 API 和本地命令仍公开可跟走；`verify-review-brief.mjs` 会确认评审简报用一句话、4 张 Injective 核心证明卡、3 条比赛主题映射和 4 步评审路径讲清项目，不误指旧仓库也不泄露私钥；`verify-review-checklist.mjs` 会确认评审清单里的每条证据都指向存在的公开链接 key 和本地复验命令；`verify-review-links.mjs` 会从产品 API 读取 `reviewLinks`，逐项比对事实表并实际打开 Injective Blockscout 页面；`verify-recording-order.mjs` 会按证据包里的 `recordingOrder` 依次打开 #43、钱包页、公开证据 API、builderCode fleet API、钱包时间线 API，并确认最后的 plaza smoke 命令存在；`verify-plaza-flow.mjs` 会确认 `public-plaza` 只负责链上社交发现，`agent-plaza` 只负责 agent 市集和安装闭环，且三段 UI smoke 脚本都存在；`verify-nova-alignment.mjs` 会确认公开证据包把 AI 社交、Injective 链上执行层、Agent × 物理世界硬件延展和隐私公开证明映射到已有复验命令；`verify-submission-pack.mjs` 会确认 GitHub 参赛仓库、线上 `?demo` 入口、三个公开 API 复验路径和提交要求清单没有误指旧仓库；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-chain-timeline.mjs` 会读取 RPC 交易/区块时间线；`verify-demo-links.mjs` 会确认 README、证据包与录屏脚本里的公开 Blockscout 证据页仍可打开；`verify-hardware-bridge.mjs` 会确认硬件播报桥只接收公开事件。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
+评审 60 秒快速入口见 `JUDGE-QUICKSTART.md`，完整复验证据包见 `CHAIN-EVIDENCE.md`。这些证据可用 `npm run verify:injective` 复验；其中 `verify-api-list-agents.mjs` 会直接调用项目自己的 `/api/injective?tool=list-agents&builderCode=pocket-earth` 处理器，确认产品后端能从 Injective testnet 按 builderCode 读回并解码这组链上 agent；`verify-demo-duration.mjs` 会解析 `DEMO-SCRIPT.md` 分镜时间轴，确认脚本仍在 180s / 3 分钟提交限制内；`verify-api-read-tools.mjs` 会验证 `ping`、`get-status`、`get-reputation`、`get-chain-evidence`、`get-wallet-timeline` 五个只读工具，并确认产品 API 输出的公开证据包与 `chain-proof-data.mjs` 的事实表一致，且内含 `reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、`submissionLinks`、`submissionChecklist`、`recordingOrder`、`privacyBoundary`、`plazaFlow`、`npm run verify:demo` / `npm run verify:duration` / `npm run verify:evidence` / `npm run verify:public-proof` / `npm run verify:github` / `npm run verify:pitch` / `npm run verify:judge` / `npm run verify:brief` / `npm run verify:review` / `npm run verify:review-links` / `npm run verify:recording-order` / `npm run verify:wallet` / `npm run verify:plaza-flow` / `npm run verify:nova-alignment` / `npm run verify:submission` / `npm run verify:injective` 复验入口；`verify-public-proof-contract.mjs` 会把公开证据包当成评审可展示契约，集中检查字段白名单、公开 URL、复验命令、旧仓库误指和私钥/本地路径泄露；`verify-github-submission.mjs` 会确认 `origin/main`、GitHub 公开仓库状态、远端 README、集成说明、证据包和录屏脚本都仍指向本 Injective 参赛仓库；`verify-pitch-notes.mjs` 会确认 pitch 备注以 Injective 链上证据为主、硬件 Frost Buddy 只作为边界清楚的延展，并核验 Raspberry Pi 来源可打开；`verify-judge-quickstart.mjs` 会确认 `JUDGE-QUICKSTART.md` 中的一页评审路径、Blockscout 链接、三个只读产品 API 和本地命令仍公开可跟走；`verify-review-brief.mjs` 会确认评审简报用一句话、4 张 Injective 核心证明卡、3 条比赛主题映射和 4 步评审路径讲清项目，不误指旧仓库也不泄露私钥；`verify-review-checklist.mjs` 会确认评审清单里的每条证据都指向存在的公开链接 key 和本地复验命令；`verify-review-links.mjs` 会从产品 API 读取 `reviewLinks`，逐项比对事实表并实际打开 Injective Blockscout 页面；`verify-recording-order.mjs` 会按证据包里的 `recordingOrder` 依次打开 #43、钱包页、公开证据 API、builderCode fleet API、钱包时间线 API，并确认最后的 plaza smoke 命令存在；`verify-wallet-timeline-api.mjs` 会单独核验产品 API 返回的钱包交易时间线与注册、部署、fleet 和真实握手的 RPC 事实表一致；`verify-plaza-flow.mjs` 会确认 `public-plaza` 只负责链上社交发现，`agent-plaza` 只负责 agent 市集和安装闭环，且三段 UI smoke 脚本都存在；`verify-nova-alignment.mjs` 会确认公开证据包把 AI 社交、Injective 链上执行层、Agent × 物理世界硬件延展和隐私公开证明映射到已有复验命令；`verify-submission-pack.mjs` 会确认 GitHub 参赛仓库、线上 `?demo` 入口、三个公开 API 复验路径和提交要求清单没有误指旧仓库；`verify-api-write-boundaries.mjs` 会验证注册和握手在无私钥 / 未确认时只返回 dry-run 预览、不产生交易；`verify-chain-timeline.mjs` 会读取 RPC 交易/区块时间线；`verify-demo-links.mjs` 会确认 README、证据包与录屏脚本里的公开 Blockscout 证据页仍可打开；`verify-hardware-bridge.mjs` 会确认硬件播报桥只接收公开事件。写链能力仍只在 testnet、server 端私钥、显式 confirm 的边界内启用。
 
 详见 `PLAN.md`（完整方案 + Demo 5 幕 + Pitch 要点）、`RESEARCH.md`（agent-sdk API 精读）、`PROGRESS.md`（断点续作清单）。

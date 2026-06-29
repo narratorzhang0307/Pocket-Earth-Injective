@@ -100,6 +100,7 @@ for (const command of [
   'npm run verify:duration',
   'npm run verify:judge',
   'npm run verify:demo',
+  'npm run verify:wallet',
   'npm run verify:injective',
   'npm run verify:plaza',
   'npm run verify:pitch',

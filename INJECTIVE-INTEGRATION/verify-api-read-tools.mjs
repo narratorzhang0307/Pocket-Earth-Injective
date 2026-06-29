@@ -138,6 +138,7 @@ assertEqual('evidence review brief command', evidence.verification?.reviewBrief,
 assertEqual('evidence review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('evidence review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('evidence recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
+assertEqual('evidence wallet timeline command', evidence.verification?.walletTimeline, 'npm run verify:wallet')
 assertEqual('evidence plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
 assertEqual('evidence nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('evidence submission pack command', evidence.verification?.submissionPack, 'npm run verify:submission')
