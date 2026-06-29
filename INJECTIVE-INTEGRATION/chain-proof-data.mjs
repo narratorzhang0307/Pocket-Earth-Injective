@@ -64,7 +64,7 @@ export const COMPETITION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     contestSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, timelineSummary, reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
     machineCheck: 'npm run verify:public-proof',
   },
 ]

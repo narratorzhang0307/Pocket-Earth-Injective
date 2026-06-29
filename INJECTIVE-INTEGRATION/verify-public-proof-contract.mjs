@@ -132,6 +132,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'submissionChecklist',
   'submissionLinks',
   'timeline',
+  'timelineSummary',
   'verification',
 ])
 assertEqual('ok flag', evidence.ok, true)
@@ -189,6 +190,17 @@ for (const event of TIMELINE_EVENTS) {
   assertEqual(`timeline ${event.role} expectedStatus`, actual.expectedStatus, 'success')
   assertEqual(`timeline ${event.role} scanUrl`, actual.scanUrl, scanUrlForTx(event.hash))
 }
+assertTrue('timeline summary object', !!evidence.timelineSummary && typeof evidence.timelineSummary === 'object')
+assertEqual('timeline summary owner', evidence.timelineSummary.owner, PROOF_OWNER)
+assertEqual('timeline summary wallet scanUrl', evidence.timelineSummary.walletScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('timeline summary event count', evidence.timelineSummary.eventCount, TIMELINE_EVENTS.length)
+assertEqual('timeline summary all from owner', evidence.timelineSummary.allFromOwner, true)
+assertEqual('timeline summary expectedStatus', evidence.timelineSummary.expectedStatus, 'success')
+assertEqual('timeline summary first block', evidence.timelineSummary.firstBlock, TIMELINE_EVENTS[0].blockNumber)
+assertEqual('timeline summary last block', evidence.timelineSummary.lastBlock, TIMELINE_EVENTS.at(-1).blockNumber)
+assertEqual('timeline summary first role', evidence.timelineSummary.firstRole, TIMELINE_EVENTS[0].role)
+assertEqual('timeline summary last role', evidence.timelineSummary.lastRole, TIMELINE_EVENTS.at(-1).role)
+assertEqual('timeline summary RPC verification', evidence.timelineSummary.rpcVerification, evidence.verification?.walletTimelineApi)
 
 console.log('\nVerification commands remain runnable')
 assertEqual('public proof command is advertised', evidence.verification?.publicProof, 'npm run verify:public-proof')

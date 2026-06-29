@@ -195,6 +195,17 @@ for (const expected of TIMELINE_EVENTS) {
   assertEqual(`evidence timeline ${expected.role} timestamp`, actual.timestamp, expected.timestamp)
   assertEqual(`evidence timeline ${expected.role} scanUrl`, actual.scanUrl, scanUrlForTx(expected.hash))
 }
+assertTrue('evidence timeline summary object', !!evidence.timelineSummary && typeof evidence.timelineSummary === 'object')
+assertEqual('evidence timeline summary owner', evidence.timelineSummary.owner, PROOF_OWNER)
+assertEqual('evidence timeline summary wallet scanUrl', evidence.timelineSummary.walletScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('evidence timeline summary event count', evidence.timelineSummary.eventCount, TIMELINE_EVENTS.length)
+assertEqual('evidence timeline summary all from owner', evidence.timelineSummary.allFromOwner, true)
+assertEqual('evidence timeline summary expectedStatus', evidence.timelineSummary.expectedStatus, 'success')
+assertEqual('evidence timeline summary first block', evidence.timelineSummary.firstBlock, TIMELINE_EVENTS[0].blockNumber)
+assertEqual('evidence timeline summary last block', evidence.timelineSummary.lastBlock, TIMELINE_EVENTS.at(-1).blockNumber)
+assertEqual('evidence timeline summary first role', evidence.timelineSummary.firstRole, TIMELINE_EVENTS[0].role)
+assertEqual('evidence timeline summary last role', evidence.timelineSummary.lastRole, TIMELINE_EVENTS.at(-1).role)
+assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary.rpcVerification, evidence.verification?.walletTimelineApi)
 
 console.log('\n/api get-wallet-timeline')
 assertEqual('timeline ok', timeline.ok, true)

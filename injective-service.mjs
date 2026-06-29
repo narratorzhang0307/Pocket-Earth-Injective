@@ -190,6 +190,20 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
       const listAgentsApi = `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`
       const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
+      const firstTimelineEvent = TIMELINE_EVENTS[0]
+      const lastTimelineEvent = TIMELINE_EVENTS.at(-1)
+      const timeline = TIMELINE_EVENTS.map((event) => ({
+        label: event.label,
+        role: event.role,
+        hash: event.hash,
+        from: PROOF_OWNER,
+        to: event.to,
+        expectedStatus: 'success',
+        blockNumber: event.blockNumber,
+        timestamp: event.timestamp,
+        scanUrl: scanUrlForTx(event.hash),
+        ...(event.contractAddress ? { contractAddress: event.contractAddress } : {}),
+      }))
       return json(res, {
         ok: true,
         network: 'testnet',
@@ -220,18 +234,21 @@ export async function handleInjective(req, res, url, cfg = {}) {
           scanUrl: scanUrlForAgent(agent.id),
         })),
         registryMintEvents: REGISTRY_MINT_EVENTS,
-        timeline: TIMELINE_EVENTS.map((event) => ({
-          label: event.label,
-          role: event.role,
-          hash: event.hash,
-          from: PROOF_OWNER,
-          to: event.to,
+        timeline,
+        timelineSummary: {
+          owner: PROOF_OWNER,
+          walletScanUrl: scanUrlForAddress(PROOF_OWNER),
+          eventCount: timeline.length,
+          allFromOwner: timeline.every((event) => sameAddress(event.from, PROOF_OWNER)),
           expectedStatus: 'success',
-          blockNumber: event.blockNumber,
-          timestamp: event.timestamp,
-          scanUrl: scanUrlForTx(event.hash),
-          ...(event.contractAddress ? { contractAddress: event.contractAddress } : {}),
-        })),
+          firstBlock: firstTimelineEvent.blockNumber,
+          lastBlock: lastTimelineEvent.blockNumber,
+          firstTimestamp: firstTimelineEvent.timestamp,
+          lastTimestamp: lastTimelineEvent.timestamp,
+          firstRole: firstTimelineEvent.role,
+          lastRole: lastTimelineEvent.role,
+          rpcVerification: walletTimelineApi,
+        },
         recordingOrder: [
           {
             step: 1,

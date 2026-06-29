@@ -37,6 +37,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'registryMintEvents',
   'registry-mint-events',
   'expectedStatus',
+  'timelineSummary',
   'reviewBrief',
   'reviewLinks',
   'reviewChecklist',

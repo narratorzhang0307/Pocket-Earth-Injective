@@ -86,6 +86,8 @@ for (const snippet of [
   'agentId 43-47',
   'registryMintEvents',
   'registry-mint-events',
+  'expectedStatus',
+  'timelineSummary',
   'SocialHandshake',
   'public-plaza',
   'agent-plaza',
@@ -124,6 +126,9 @@ assertEqual('registry npm script', packageJson.scripts?.['verify:registry'], 'no
 assertEqual('demo limit still 180 seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertTrue('evidence still public-only', evidence.readOnly === true && evidence.publicOnly === true)
+assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)
+assertEqual('evidence timeline summary event count', evidence.timelineSummary?.eventCount, TIMELINE_EVENTS.length)
+assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary?.rpcVerification, '/api/injective?tool=get-wallet-timeline')
 
 console.log('\nDocs link the one-page path')
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))
