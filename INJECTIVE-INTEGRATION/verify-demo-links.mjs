@@ -1,6 +1,7 @@
 // Verify the public Blockscout links shown in README, evidence pack, and the demo script.
 // Usage: node INJECTIVE-INTEGRATION/verify-demo-links.mjs
 import { readFile } from 'node:fs/promises'
+import { BUILDER_CODE, IDENTITY_REGISTRY, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForTx } from './chain-proof-data.mjs'
 
 const FILES = [
   'README.md',
@@ -9,30 +10,32 @@ const FILES = [
   'INJECTIVE-INTEGRATION/DEMO-SCRIPT.md',
 ]
 
+const BLOCKSCOUT_BASE = 'https://testnet.blockscout.injective.network'
+const FLEET_AGENT_IDS = [43, 44, 45, 46, 47]
+const addressUrl = (address) => `${BLOCKSCOUT_BASE}/address/${address}`
+const agentUrl = (agentId) => `${BLOCKSCOUT_BASE}/token/${IDENTITY_REGISTRY}/instance/${agentId}`
+const mainRegistration = TIMELINE_EVENTS[0]
+const handshakeDeployment = TIMELINE_EVENTS[1]
+const realHandshake = TIMELINE_EVENTS.at(-1)
+
 const REQUIRED_DEMO_LINKS = [
-  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43',
-  'https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934',
-  'https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554',
-  'https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee',
-  'https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722',
-  'https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6',
-  'https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e',
+  agentUrl(43),
+  addressUrl(PROOF_OWNER),
+  scanUrlForTx(mainRegistration.hash),
+  addressUrl(SOCIAL_HANDSHAKE),
+  scanUrlForTx(handshakeDeployment.hash),
+  scanUrlForTx(realHandshake.hash),
+  addressUrl(IDENTITY_REGISTRY),
 ]
 
 const REQUIRED_EVIDENCE_LINKS = [
   ...REQUIRED_DEMO_LINKS,
-  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/44',
-  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/45',
-  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/46',
-  'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/47',
-  'https://testnet.blockscout.injective.network/tx/0x02a0590c2f1bc1e475d7cdfb2fa4c3eb5e0b9f7de4ac1f97e66663e0f5a38f44',
-  'https://testnet.blockscout.injective.network/tx/0xc161f0df707b1c9b1e29311e944b7c1b40f3d525c9d1cbd2d71c67713333fffe',
-  'https://testnet.blockscout.injective.network/tx/0x1bbd3df139b2558ff315d2029f00c01dc881a45542d5854176bbc49e6dfaea4e',
-  'https://testnet.blockscout.injective.network/tx/0xada3e082b8e8988e414bcf201739f2a2a3b5fe9c947db71ebe1e7467f3de1a50',
+  ...FLEET_AGENT_IDS.slice(1).map(agentUrl),
+  ...TIMELINE_EVENTS.slice(2, 6).map((event) => scanUrlForTx(event.hash)),
 ]
 
 const REQUIRED_EVIDENCE_SNIPPETS = [
-  '/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47',
+  `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`,
   '/api/injective?tool=get-wallet-timeline',
   'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
 ]

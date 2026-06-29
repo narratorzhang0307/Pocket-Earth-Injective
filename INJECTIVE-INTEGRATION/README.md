@@ -131,7 +131,7 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 - Registry 事件级证据：`verify-registry-events.mjs` 会读取 ERC-8004 `Transfer(0x0 → wallet, tokenId)` mint 事件，核验 `agentId 43–47` 的注册交易哈希。
 - 钱包证据链：注册交易 `0xd2b574...0554` 与握手交易 `0x0e597f...f2d6` 都由同一个测试网钱包发起；`verify-wallet-flow.mjs` 会核验交易 from/to、注册事件、合约代码、recordHandshake calldata、非零名片哈希和公开页面。
 - 交易时间线：`verify-chain-timeline.mjs` 会通过 Injective testnet JSON-RPC 直接读取注册、合约部署、fleet 注册和真实握手的 transaction / receipt / block，核验区块号、UTC 时间戳、from/to 与成功状态，作为钱包页录屏的机器可复验证据。
-- 防漂移数据源：`chain-proof-data.mjs` 集中维护公开钱包、IdentityRegistry、SocialHandshake 和 7 笔时间线交易；产品 API 与验证脚本共用同一份公开事实表，避免演示接口和证据脚本各写一份导致不一致。
+- 防漂移数据源：`chain-proof-data.mjs` 集中维护公开钱包、IdentityRegistry、SocialHandshake 和 7 笔时间线交易；产品 API、RPC 时间线验证和文档链接检查共用同一份公开事实表，避免演示接口、证据脚本和评审文档各写一份导致不一致。
 - SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署交易 `0x6048425a...fa722` 由比赛钱包 nonce 2 创建。`verify-handshake-contract.mjs` 会核验这笔部署交易、合约地址推导、交易 input 与本地 creation bytecode 一致、代码在 Frost 注册后且握手前出现，并重新编译本仓库的 `SocialHandshake.sol` 比对 Injective testnet runtime bytecode。
 - 真实握手交易：`0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6`，`verify-handshake.mjs` 会用公开脱敏 demo seed 重算两个 profileHash，并核验 calldata 与事件参数均为 `agentA 43`、`agentB 44`、`score 88`，以及两个非零 `bytes32` 名片哈希字段与事件时间戳。
 - Frost Buddy 硬件桥：`hardware/frost-buddy/` 把 `music-agent` 播放事件和 `public-plaza` 链上见闻转成 JSONL，供 Raspberry Pi / BLE / TTS 适配器消费；`raspi/frost_pi_skill_agent.py` 则把树莓派侧的松散语音请求路由到音乐命令或 `chain_dispatch` 公开事件；`verify-hardware-bridge.mjs` 会核验事件只包含公开字段，不包含私钥、密钥名、画像原文或 `bytes32` 名片哈希。
