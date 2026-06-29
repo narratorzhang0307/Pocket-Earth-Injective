@@ -220,6 +220,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         verification: {
           demoReadiness: 'npm run verify:demo',
           evidenceSmoke: 'npm run verify:evidence',
+          reviewChecklist: 'npm run verify:review',
           proofSuite: 'npm run verify:injective',
           apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
           listAgentsApi,

@@ -108,6 +108,7 @@ assertEqual('evidence agent-plaza key', evidence.plazaFlow[1]?.key, 'agent-plaza
 assertTrue('evidence agent-plaza verifies install loop', String(evidence.plazaFlow[1]?.verifies || '').includes('installs cafe-map'))
 assertEqual('evidence demo readiness command', evidence.verification?.demoReadiness, 'npm run verify:demo')
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
+assertEqual('evidence review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('evidence proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('evidence api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
 assertEqual('evidence list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)

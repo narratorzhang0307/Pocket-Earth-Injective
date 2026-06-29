@@ -79,10 +79,11 @@ curl 'http://localhost:5173/api/injective?tool=list-agents&builderCode=pocket-ea
 curl 'http://localhost:5173/api/injective?tool=get-wallet-timeline'
 npm run verify:demo
 npm run verify:evidence
+npm run verify:review
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, and Blockscout links; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:review`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, and Blockscout links; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package; `npm run verify:review` checks that the reviewer checklist still points at existing public links and local proof commands.
 
 Handshake calldata and event both decode to:
 
@@ -97,6 +98,7 @@ Handshake calldata and event both decode to:
 ```bash
 npm run verify:demo
 npm run verify:evidence
+npm run verify:review
 npm run verify:injective
 ```
 
@@ -106,6 +108,7 @@ This read-only proof suite verifies:
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
 - `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, and `get-wallet-timeline`
+- reviewer checklist wiring for public links and local proof commands
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
 - wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links
