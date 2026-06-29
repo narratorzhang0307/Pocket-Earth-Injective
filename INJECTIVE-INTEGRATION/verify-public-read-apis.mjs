@@ -104,7 +104,7 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.marketBoundary'],
     judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
@@ -120,8 +120,8 @@ const expectedGuidance = new Map([
     judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
   }],
   ['hardware-bridge-api', {
-    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'privacyBoundary.hardware', 'sourceControl'],
-    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'no wallet signing or raw profile text'],
+    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'],
+    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'prototype and developer-kit market boundary', 'no wallet signing or raw profile text'],
   }],
 ])
 
@@ -165,6 +165,8 @@ assertEqual('chain evidence hardwareBridge builderCode', chainEvidence.hardwareB
 assertEqual('chain evidence hardwareBridge scanUrl', chainEvidence.hardwareBridge.chainDispatch?.scanUrl, scanUrlForRegistry())
 assertEqual('chain evidence hardwareBridge local verification', chainEvidence.hardwareBridge.localVerification, 'npm run verify:hardware')
 assertListIncludes('chain evidence hardwareBridge privacy boundary', chainEvidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
+assertEqual('chain evidence hardwareBridge market role', chainEvidence.hardwareBridge.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
+assertEqual('chain evidence hardwareBridge market source', chainEvidence.hardwareBridge.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertTrue('chain evidence carries agent proof rows', Array.isArray(chainEvidence.agents))
 assertEqual('chain evidence agent proof row count', chainEvidence.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {
@@ -252,6 +254,8 @@ assertListIncludes('hardware proof eventKinds', hardwareProof.hardwareBridge?.ev
 assertEqual('hardware proof chain source', hardwareProof.hardwareBridge?.chainDispatch?.source, 'injective-public-plaza')
 assertEqual('hardware proof chainRead', hardwareProof.hardwareBridge?.chainDispatch?.chainRead, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`)
 assertListIncludes('hardware proof skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
+assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertEqual('hardware proof source repository', hardwareProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('hardware proof verification command', hardwareProof.verification?.hardwareBridge, 'npm run verify:hardware')

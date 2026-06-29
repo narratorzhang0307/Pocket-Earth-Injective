@@ -291,7 +291,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:public-proof',
           purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, and privacy boundary.',
-          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
+          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.marketBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
           judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'current GitHub commit anchor'],
         },
         {
@@ -343,8 +343,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:hardware',
           purpose: 'Returns a focused proof card for the Raspberry Pi / BLE / TTS public-event bridge without private keys or raw profile payloads.',
-          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'privacyBoundary.hardware', 'sourceControl'],
-          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'no wallet signing or raw profile text'],
+          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'],
+          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'prototype and developer-kit market boundary', 'no wallet signing or raw profile text'],
         },
       ]
       const firstTimelineEvent = TIMELINE_EVENTS[0]
@@ -500,6 +500,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
               'Frost Edge Node proof card shows Raspberry Pi / BLE / TTS public-event bridge',
               'chain_dispatch reads the builderCode=pocket-earth fleet without wallet signing',
               'Pi skill router is limited to music_now_playing and chain_dispatch',
+              'hardwareBridge.marketBoundary keeps Frost Edge Node framed as prototype and developer-kit endpoint',
               'privacyBoundary.hardware keeps private keys, raw profile text, and precise locations off device',
             ],
           },

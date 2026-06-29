@@ -175,6 +175,13 @@ export const HARDWARE_BRIDGE_PROOF = {
     'no precise location payloads',
     'public JSONL events only',
   ],
+  marketBoundary: {
+    role: 'prototype and developer-kit endpoint, not the current revenue pillar',
+    platformRationale: 'Raspberry Pi is treated as a mature prototype platform; shipment figures are cited only as platform maturity evidence.',
+    sourceUrl: 'https://investors.raspberrypi.com/',
+    businessPath: 'Pocket Earth revenue path stays with trusted profiles and Agent Plaza installs, calls, reviews, and optional payment receipts.',
+    riskLine: 'No mass-production, wallet-signing, or hardware revenue projection is claimed by this proof.',
+  },
   localVerification: 'npm run verify:hardware',
 }
 

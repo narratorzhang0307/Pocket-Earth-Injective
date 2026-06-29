@@ -104,6 +104,7 @@ for (const snippet of [
   'publicReadApis',
   'reviewEntrypoints.hardware-bridge',
   'deliveryChecklist.frost-edge-node',
+  'hardwareBridge.marketBoundary',
   'Frost Edge Node',
   'hardware/frost-buddy/',
   HARDWARE_BRIDGE_URL,
@@ -132,6 +133,7 @@ for (const snippet of [
   'app source, hardware bridge, docs, and frost-agent files',
   'music_now_playing',
   'chain_dispatch',
+  'prototype and developer-kit endpoint',
   'no-private-key/no-raw-profile boundary',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))

@@ -203,6 +203,10 @@ assertTrue('hardwareBridge Pi router skills include music', evidence.hardwareBri
 assertTrue('hardwareBridge Pi router skills include chain', evidence.hardwareBridge.piRouter?.skills?.includes('chain_dispatch'))
 assertEqual('hardwareBridge Pi smoke', evidence.hardwareBridge.piRouter?.smoke, 'python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py')
 assertListIncludes('hardwareBridge privacy boundary', evidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'no precise location payloads', 'public JSONL events only'])
+assertEqual('hardwareBridge market role', evidence.hardwareBridge.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
+assertEqual('hardwareBridge market source', evidence.hardwareBridge.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
+assertTrue('hardwareBridge market business path', String(evidence.hardwareBridge.marketBoundary?.businessPath || '').includes('Agent Plaza'))
+assertTrue('hardwareBridge market risk line', String(evidence.hardwareBridge.marketBoundary?.riskLine || '').includes('No mass-production'))
 assertEqual('hardwareBridge local verification', evidence.hardwareBridge.localVerification, 'npm run verify:hardware')
 assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
 assertEqual('sourceControl repository', evidence.sourceControl.repository, INTEGRATION_REPOSITORY_URL)
@@ -225,7 +229,7 @@ assertEqual('publicReadApis agent proof verification', publicReadApiByKey.get('a
 assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
 assertEqual('publicReadApis hardware verification', publicReadApiByKey.get('hardware-bridge-api')?.verification, 'npm run verify:hardware')
-assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.marketBoundary', 'recordingOrder[].evidenceFocus'])
 assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof'])
 assertListIncludes('publicReadApis agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'reviewPath', 'sourceControl'])
 assertListIncludes('publicReadApis agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry'])
@@ -233,7 +237,7 @@ assertListIncludes('publicReadApis fleet expected fields', publicReadApiByKey.ge
 assertListIncludes('publicReadApis fleet judge focus', publicReadApiByKey.get('agent-fleet-api')?.judgeFocus, [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'limit/offset return the full scoped fleet', 'public data URI card fields only', 'public-plaza chain discovery input'])
 assertListIncludes('publicReadApis wallet expected fields', publicReadApiByKey.get('wallet-timeline-api')?.expectedFields, ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'])
 assertListIncludes('publicReadApis wallet judge focus', publicReadApiByKey.get('wallet-timeline-api')?.judgeFocus, ['same owner wallet', 'all receipts succeeded', 'registration to real handshake sequence'])
-assertListIncludes('publicReadApis hardware expected fields', publicReadApiByKey.get('hardware-bridge-api')?.expectedFields, ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'privacyBoundary.hardware', 'sourceControl'])
+assertListIncludes('publicReadApis hardware expected fields', publicReadApiByKey.get('hardware-bridge-api')?.expectedFields, ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'])
 assertListIncludes('publicReadApis hardware judge focus', publicReadApiByKey.get('hardware-bridge-api')?.judgeFocus, ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'no wallet signing or raw profile text'])
 for (const [key, item] of publicReadApiByKey) {
   assertEqual(`publicReadApis ${key} method`, item.method, 'GET')
@@ -422,6 +426,7 @@ for (const forbidden of [
 console.log('\nPublic URL guard')
 const allowedHosts = new Set([
   'github.com',
+  'investors.raspberrypi.com',
   'pocketearth.throughtheglass.art',
   'testnet.blockscout.injective.network',
 ])
@@ -429,7 +434,7 @@ for (const { path, value } of flattenStrings(evidence)) {
   if (!value.startsWith('http')) continue
   const url = new URL(value)
   assertEqual(`${path} uses https`, url.protocol, 'https:')
-  assertTrue(`${path} host is public review host`, allowedHosts.has(url.host))
+  assertTrue(`${path} host is allowed public host`, allowedHosts.has(url.host))
 }
 
 console.log('\nOK public evidence package is a stable, public-only review contract.')

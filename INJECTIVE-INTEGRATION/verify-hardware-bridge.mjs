@@ -104,6 +104,10 @@ assertEqual('hardware proof chain read', hardwareProof.hardwareBridge?.chainDisp
 assertEqual('hardware proof scanUrl', hardwareProof.hardwareBridge?.chainDispatch?.scanUrl, scanUrlForRegistry())
 assertEqual('hardware proof agent ids', hardwareProof.hardwareBridge?.chainDispatch?.agentIds?.join(','), FLEET_AGENT_IDS.join(','))
 assertListIncludes('hardware proof Pi skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
+assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
+assertTrue('hardware proof market business path', String(hardwareProof.hardwareBridge?.marketBoundary?.businessPath || '').includes('Agent Plaza'))
+assertTrue('hardware proof market risk line', String(hardwareProof.hardwareBridge?.marketBoundary?.riskLine || '').includes('No mass-production'))
 assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertEqual('hardware proof source repository', hardwareProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('hardware proof local verification', hardwareProof.verification?.hardwareBridge, 'npm run verify:hardware')
@@ -132,6 +136,7 @@ for (const snippet of [
   '开发套件',
   '体验差异化',
   '市场边界',
+  'Raspberry Pi',
   '隐私与安全边界',
   'https://investors.raspberrypi.com/',
 ]) {
