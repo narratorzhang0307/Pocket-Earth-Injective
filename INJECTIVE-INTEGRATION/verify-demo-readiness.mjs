@@ -15,6 +15,10 @@ const checks = [
     moduleUrl: new URL('./verify-public-read-apis.mjs', import.meta.url),
   },
   {
+    label: 'integration guide matches the current API and command manifest',
+    moduleUrl: new URL('./verify-integration-guide.mjs', import.meta.url),
+  },
+  {
     label: 'GitHub submission repo is public and aligned',
     moduleUrl: new URL('./verify-github-submission.mjs', import.meta.url),
   },

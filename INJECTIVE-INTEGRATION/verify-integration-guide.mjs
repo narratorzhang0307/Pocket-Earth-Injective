@@ -1,0 +1,101 @@
+// Guard the integration guide against API and command-manifest drift.
+// Usage: npm run verify:integration-guide
+import { existsSync, readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const integrationDir = dirname(fileURLToPath(import.meta.url))
+const projectRoot = resolve(integrationDir, '..')
+const guide = readFileSync(resolve(integrationDir, 'README.md'), 'utf8')
+const packageJson = JSON.parse(readFileSync(resolve(projectRoot, 'package.json'), 'utf8'))
+
+function assertTrue(label, condition) {
+  if (!condition) throw new Error(`${label} failed`)
+  console.log(`OK ${label}`)
+}
+
+function assertEqual(label, actual, expected) {
+  if (String(actual) !== String(expected)) {
+    throw new Error(`${label} mismatch: expected ${expected}, got ${actual}`)
+  }
+  console.log(`OK ${label}: ${actual}`)
+}
+
+function getRunbookBlock() {
+  const sectionStart = guide.indexOf('## 怎么跑')
+  assertTrue('guide has runbook section', sectionStart !== -1)
+  const fenceStart = guide.indexOf('```bash', sectionStart)
+  const fenceEnd = guide.indexOf('```', fenceStart + '```bash'.length)
+  assertTrue('guide has bash runbook fence', fenceStart !== -1 && fenceEnd !== -1)
+  return guide.slice(fenceStart, fenceEnd)
+}
+
+console.log('Integration guide API manifest')
+const serviceRow = guide.split('\n').find((line) => line.includes('| `/api/injective` 服务'))
+assertTrue('implemented capability row exists', Boolean(serviceRow))
+for (const tool of [
+  'ping',
+  'list-agents',
+  'get-status',
+  'get-reputation',
+  'get-chain-evidence',
+  'get-agent-proof',
+  'get-wallet-timeline',
+  'register',
+  'handshake',
+]) {
+  assertTrue(`implemented capability row names ${tool}`, serviceRow.includes(tool))
+}
+
+for (const endpoint of [
+  '/api/injective?tool=ping',
+  'tool=list-agents&builderCode=pocket-earth',
+  'tool=get-status&agentId=N',
+  'tool=get-reputation&agentId=N',
+  'tool=get-agent-proof&agentId=43',
+  'tool=get-chain-evidence',
+  'tool=get-wallet-timeline',
+  'tool=register',
+  'tool=handshake',
+]) {
+  assertTrue(`API table contains ${endpoint}`, guide.includes(endpoint))
+}
+
+console.log('\nIntegration guide runbook')
+const runbook = getRunbookBlock()
+const numberedSteps = [...runbook.matchAll(/^#\s+(\d+)\.\s+(.+)$/gm)]
+assertTrue('runbook has numbered steps', numberedSteps.length >= 20)
+for (const [index, match] of numberedSteps.entries()) {
+  assertEqual(`runbook step ${index + 1}`, Number(match[1]), index + 1)
+}
+
+const documentedScripts = [...new Set(
+  [...runbook.matchAll(/npm run (verify:[a-z0-9:-]+)/g)].map((match) => match[1]),
+)]
+assertTrue('runbook includes verify:integration-guide', documentedScripts.includes('verify:integration-guide'))
+assertEqual(
+  'package script verify:integration-guide',
+  packageJson.scripts?.['verify:integration-guide'],
+  'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs',
+)
+for (const scriptName of documentedScripts) {
+  assertTrue(`package script exists for ${scriptName}`, Boolean(packageJson.scripts?.[scriptName]))
+}
+
+const standaloneFiles = [...new Set(
+  [...runbook.matchAll(/node (INJECTIVE-INTEGRATION\/[a-z0-9-]+\.mjs)/g)].map((match) => match[1]),
+)]
+for (const file of standaloneFiles) {
+  assertTrue(`standalone verification file exists ${file}`, existsSync(resolve(projectRoot, file)))
+}
+
+for (const forbidden of [
+  'Pocket-Earth-Plus',
+  'Sunset-Radio',
+  'sunset-radio',
+  '/Users/zhangcheng/Desktop/Pocket Earth',
+]) {
+  assertTrue(`integration guide omits ${forbidden}`, !guide.includes(forbidden))
+}
+
+console.log('\nOK integration guide matches the current Injective API and verification manifest.')

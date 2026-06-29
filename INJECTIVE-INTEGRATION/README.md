@@ -11,7 +11,7 @@
 | 能力 | 文件 | 状态 |
 |---|---|---|
 | Taste Passport 脱敏名片（只导标签字符串、不含原文 / 热度） | `src/app/lib/injective/passport.ts` | ✅ |
-| `/api/injective` 服务（ping / list-agents / get-status / get-wallet-timeline / register / handshake） | `injective-service.mjs` | ✅ |
+| `/api/injective` 服务（ping / list-agents / get-status / get-reputation / get-chain-evidence / get-agent-proof / get-wallet-timeline / register / handshake） | `injective-service.mjs` | ✅ |
 | server + dev 双挂路由 | `server.mjs` / `vite.config.ts` | ✅ |
 | **真连 Injective testnet**（ping `reachable:true`） | — | ✅ |
 | Agent Plaza 读链上真实 agent（空 / 失败回落示意不白屏） | `PublicPlazaPage.tsx` | ✅ |
@@ -99,55 +99,58 @@ npm run verify:public-proof
 # 8. 验证 publicReadApis 四条评审只读 API 都能打开且不泄露私有数据
 npm run verify:public-apis
 
-# 9. 验证公开 GitHub 仓库、origin/main 和远端 README/证据包/评审入口仍指向本参赛仓库
+# 9. 验证集成说明的 API 清单、命令序号和脚本映射没有漂移
+npm run verify:integration-guide
+
+# 10. 验证公开 GitHub 仓库、origin/main 和远端 README/证据包/评审入口仍指向本参赛仓库
 npm run verify:github
 
-# 10. 验证 PPT 备注仍以 Injective 链上证明为主，且硬件边界/来源可核验
+# 11. 验证 PPT 备注仍以 Injective 链上证明为主，且硬件边界/来源可核验
 npm run verify:pitch
 
-# 11. 验证评审 60 秒快速入口仍公开、只读、可跟走
+# 12. 验证评审 60 秒快速入口仍公开、只读、可跟走
 npm run verify:judge
 
-# 12. 验证评审简报仍能一页讲清 Injective 价值和复验路径
+# 13. 验证评审简报仍能一页讲清 Injective 价值和复验路径
 npm run verify:brief
 
-# 13. 验证评审清单仍指向公开链接和本地复验命令
+# 14. 验证评审清单仍指向公开链接和本地复验命令
 npm run verify:review
 
-# 14. 验证产品 API 返回给评审的 Blockscout 主链接仍可打开
+# 15. 验证产品 API 返回给评审的 Blockscout 主链接仍可打开
 npm run verify:review-links
 
-# 14. 验证证据包里的录屏顺序可从 Blockscout 一路走到单 agent 证明和产品 API
+# 16. 验证证据包里的录屏顺序可从 Blockscout 一路走到单 agent 证明和产品 API
 npm run verify:recording-order
 
-# 15. 单独验证钱包时间线 API 与 Injective RPC 交易事实一致
+# 17. 单独验证钱包时间线 API 与 Injective RPC 交易事实一致
 npm run verify:wallet
 
-# 16. 验证公开证据 API 的 sourceControl 锚到当前 GitHub 提交
+# 18. 验证公开证据 API 的 sourceControl 锚到当前 GitHub 提交
 npm run verify:source
 
-# 17. 单独验证 ERC-8004 registry mint 事件和 agentId 43-47 注册交易
+# 19. 单独验证 ERC-8004 registry mint 事件和 agentId 43-47 注册交易
 npm run verify:registry
 
-# 18. 验证单 agent 证明卡可直接打开 agentId 43-47 的身份/mint/钱包/source 证据
+# 20. 验证单 agent 证明卡可直接打开 agentId 43-47 的身份/mint/钱包/source 证据
 npm run verify:agent-proof
 
-# 19. 验证 public-plaza / agent-plaza 演示分组未漂移
+# 21. 验证 public-plaza / agent-plaza 演示分组未漂移
 npm run verify:plaza-flow
 
-# 20. 验证公开证据包和 Injective 新星计划叙事对齐
+# 22. 验证公开证据包和 Injective 新星计划叙事对齐
 npm run verify:nova-alignment
 
-# 21. 验证提交入口不误指旧仓库，并固定 demo/API 路径
+# 23. 验证提交入口不误指旧仓库，并固定 demo/API 路径
 npm run verify:submission
 
-# 22. 一键验证 Injective 链上证据（只读，不需要私钥）
+# 24. 一键验证 Injective 链上证据（只读，不需要私钥）
 npm run verify:injective
 
-# 23. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
+# 25. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
 npm run verify:plaza
 
-# 24. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
+# 26. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
 npm run verify:hardware
 
 # 也可以单独验证具体证据
@@ -158,6 +161,7 @@ node INJECTIVE-INTEGRATION/verify-fleet.mjs
 node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs
 node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs
 node INJECTIVE-INTEGRATION/verify-public-proof-contract.mjs
+node INJECTIVE-INTEGRATION/verify-integration-guide.mjs
 node INJECTIVE-INTEGRATION/verify-github-submission.mjs
 node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs
 node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs
