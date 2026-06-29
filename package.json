@@ -10,6 +10,7 @@
     "verify:demo": "node INJECTIVE-INTEGRATION/verify-demo-readiness.mjs",
     "verify:evidence": "node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs",
     "verify:review": "node INJECTIVE-INTEGRATION/verify-review-checklist.mjs",
+    "verify:review-links": "node INJECTIVE-INTEGRATION/verify-review-links.mjs",
     "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
     "verify:hardware": "node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs",
     "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs"

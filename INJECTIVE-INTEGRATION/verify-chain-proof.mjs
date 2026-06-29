@@ -23,6 +23,10 @@ const checks = [
     moduleUrl: new URL('./verify-review-checklist.mjs', import.meta.url),
   },
   {
+    label: 'Reviewer API links are complete and reachable on Blockscout',
+    moduleUrl: new URL('./verify-review-links.mjs', import.meta.url),
+  },
+  {
     label: 'App /api/injective ping, get-status, get-reputation read tools',
     moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
   },
