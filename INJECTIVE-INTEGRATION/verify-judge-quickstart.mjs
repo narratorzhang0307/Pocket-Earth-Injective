@@ -118,6 +118,7 @@ for (const snippet of [
   '180s',
   'secret keys stay off-chain',
   'README first-minute evidence guide',
+  'app source, hardware bridge, docs, and frost-agent files',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))
 }

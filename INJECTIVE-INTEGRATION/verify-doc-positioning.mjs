@@ -9,14 +9,19 @@ const projectRoot = resolve(integrationDir, '..')
 const scanExtensions = new Set(['.md', '.mjs', '.js', '.ts', '.tsx', '.json'])
 const scanRoots = [
   'README.md',
+  'ARCHITECTURE.md',
   'package.json',
   'injective-service.mjs',
   'INJECTIVE-INTEGRATION',
+  'docs',
   'frost-agent',
+  'hardware',
+  'src',
 ]
 const ignoredPathParts = [
   'INJECTIVE-INTEGRATION/_research',
   'INJECTIVE-INTEGRATION/test-cors.mjs',
+  'src/app/data',
 ]
 const forbiddenPositioningSnippets = [
   [0x53c2, 0x8d5b],

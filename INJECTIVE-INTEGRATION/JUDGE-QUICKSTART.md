@@ -27,7 +27,7 @@
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
 - `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, npm script mappings, and README first-minute evidence guide still match the product API.
-- `npm run verify:positioning` checks that README, integration docs, key service code, and frost-agent files keep the Injective core-integration framing.
+- `npm run verify:positioning` checks that README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent files keep the Injective core-integration framing.
 - The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the four judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, `judgeFocus`, `expectedFields`, and local verification commands. `npm run verify:public-apis` opens all four endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, reviewer guidance, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
 
 ## Review Package
