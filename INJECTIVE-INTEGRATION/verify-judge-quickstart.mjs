@@ -5,6 +5,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   DEMO_VIDEO_LIMIT_SECONDS,
+  HARDWARE_BRIDGE_URL,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
   JUDGE_RUNBOOK,
@@ -101,6 +102,11 @@ for (const snippet of [
   'registry-mint-events',
   'judgeRunbook',
   'publicReadApis',
+  'reviewEntrypoints.hardware-bridge',
+  'deliveryChecklist.frost-edge-node',
+  'Frost Edge Node',
+  'hardware/frost-buddy/',
+  HARDWARE_BRIDGE_URL,
   'get-agent-proof',
   'expectedStatus',
   'timelineSummary',
@@ -119,6 +125,9 @@ for (const snippet of [
   'secret keys stay off-chain',
   'README first-minute evidence guide',
   'app source, hardware bridge, docs, and frost-agent files',
+  'music_now_playing',
+  'chain_dispatch',
+  'no-private-key/no-raw-profile boundary',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))
 }
@@ -134,6 +143,7 @@ for (const command of [
   'npm run verify:source',
   'npm run verify:registry',
   'npm run verify:agent-proof',
+  'npm run verify:hardware',
   'npm run verify:recording-order',
   'npm run verify:injective',
   'npm run verify:plaza',
@@ -167,6 +177,11 @@ assertEqual('evidence public read API count', evidence.publicReadApis.length, 4)
 assertEqual('evidence public read agent proof path', evidence.publicReadApis.find((item) => item.key === 'agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('evidence public read fleet path', evidence.publicReadApis.find((item) => item.key === 'agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
+assertTrue('evidence review entrypoints array', Array.isArray(evidence.reviewEntrypoints))
+assertEqual('evidence hardware bridge entrypoint', evidence.reviewEntrypoints.find((item) => item.key === 'hardware-bridge')?.url, HARDWARE_BRIDGE_URL)
+assertTrue('evidence delivery checklist array', Array.isArray(evidence.deliveryChecklist))
+assertEqual('evidence Frost Edge Node check', evidence.deliveryChecklist.find((item) => item.key === 'frost-edge-node')?.localCheck, 'npm run verify:hardware')
+assertTrue('evidence Frost Edge Node evidence mentions JSONL', String(evidence.deliveryChecklist.find((item) => item.key === 'frost-edge-node')?.evidence || '').includes('JSONL'))
 assertTrue('evidence judgeRunbook object', !!evidence.judgeRunbook && typeof evidence.judgeRunbook === 'object')
 assertEqual('evidence judgeRunbook title', evidence.judgeRunbook.title, JUDGE_RUNBOOK.title)
 assertEqual('evidence judgeRunbook estimated seconds', evidence.judgeRunbook.estimatedSeconds, JUDGE_RUNBOOK.estimatedSeconds)

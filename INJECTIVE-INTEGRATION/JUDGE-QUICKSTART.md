@@ -6,13 +6,13 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `judgeRunbook`, `publicReadApis[].judgeFocus`, `publicReadApis[].expectedFields`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `judgeRunbook`, `publicReadApis[].judgeFocus`, `publicReadApis[].expectedFields`, `reviewEntrypoints.hardware-bridge`, `deliveryChecklist.frost-edge-node`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
 4. Open the single-agent proof card: `/api/injective?tool=get-agent-proof&agentId=43`
 5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
 7. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
 8. Check the ERC-8004 mint events locally: `npm run verify:registry`
-9. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:integration-guide && npm run verify:positioning && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:demo`
+9. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:integration-guide && npm run verify:positioning && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:hardware && npm run verify:demo`
 
 ## What This Proves
 
@@ -26,6 +26,7 @@
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, single-agent proof/source anchor, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, and plaza grouping.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
+- `reviewEntrypoints.hardware-bridge` points to `hardware/frost-buddy/`, and `deliveryChecklist.frost-edge-node` keeps the Raspberry Pi / BLE / TTS bridge reviewable as a privacy-bounded prototype. `npm run verify:hardware` checks `music_now_playing`, Injective `chain_dispatch`, the Pi skill router, and the no-private-key/no-raw-profile boundary.
 - `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, npm script mappings, and README first-minute evidence guide still match the product API.
 - `npm run verify:positioning` checks that README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent files keep the Injective core-integration framing.
 - The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the four judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, `judgeFocus`, `expectedFields`, and local verification commands. `npm run verify:public-apis` opens all four endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, reviewer guidance, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
@@ -38,6 +39,7 @@
 - Source-control guard: `npm run verify:source`
 - Registry mint-event guard: `npm run verify:registry`
 - Single-agent proof guard: `npm run verify:agent-proof`
+- Frost Edge Node hardware guard: `npm run verify:hardware`
 - Integration-guide guard: `npm run verify:integration-guide`
 - Positioning guard: `npm run verify:positioning`
 - Pitch notes guard: `npm run verify:pitch`
@@ -54,6 +56,7 @@
 | Frost registration tx | https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554 |
 | SocialHandshake deploy tx | https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722 |
 | Real handshake tx | https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6 |
+| Frost Edge Node hardware bridge | https://github.com/narratorzhang0307/Pocket-Earth-Injective/tree/main/hardware/frost-buddy |
 
 ## Local Commands
 
@@ -69,6 +72,7 @@ npm run verify:positioning
 npm run verify:source
 npm run verify:registry
 npm run verify:agent-proof
+npm run verify:hardware
 npm run verify:recording-order
 npm run verify:injective
 npm run verify:plaza

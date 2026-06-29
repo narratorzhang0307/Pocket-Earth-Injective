@@ -248,6 +248,8 @@ assertTrue('remote judge quickstart names integration guide guard', remoteJudge.
 assertTrue('remote judge quickstart names positioning guard', remoteJudge.includes('npm run verify:positioning'))
 assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
 assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
+assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJudge.includes('reviewEntrypoints.hardware-bridge') && remoteJudge.includes('hardware/frost-buddy'))
+assertTrue('remote judge quickstart names Frost Edge Node checklist', remoteJudge.includes('deliveryChecklist.frost-edge-node') && remoteJudge.includes('npm run verify:hardware'))
 assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
 assertTrue('remote judge quickstart names plaza split', remoteJudge.includes('public-plaza') && remoteJudge.includes('agent-plaza'))
 for (const [label, text] of [
