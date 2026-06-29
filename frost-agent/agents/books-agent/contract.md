@@ -68,7 +68,7 @@ AgentResult<{
 // actions: [mark_place(...)] —— 见下；动作只是建议，必须经 Boundary 校验
 ```
 
-## 它建议的动作（统一动作词表 · mark_place）
+## books-agent 建议的动作（统一动作词表 · mark_place）
 ```ts
 mark_place({
   entity: { kind: 'book', title, author, originalTitle, cover, year },

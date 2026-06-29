@@ -55,7 +55,7 @@ AgentResult<{
 // actions: pins 逐个映射为 mark_place 建议（见下）
 ```
 
-## 它建议的动作：mark_place（music pin）
+## music-agent 建议的动作：mark_place（music pin）
 ```ts
 // 仅「建议」，必须经 Boundary 校验（经纬度合法 / 去重 / 价值阈值）才落到地球
 {
