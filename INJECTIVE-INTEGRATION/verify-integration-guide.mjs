@@ -8,6 +8,8 @@ const integrationDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(integrationDir, '..')
 const guide = readFileSync(resolve(integrationDir, 'README.md'), 'utf8')
 const readme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
+const demoScript = readFileSync(resolve(integrationDir, 'DEMO-SCRIPT.md'), 'utf8')
+const progress = readFileSync(resolve(integrationDir, 'PROGRESS.md'), 'utf8')
 const packageJson = JSON.parse(readFileSync(resolve(projectRoot, 'package.json'), 'utf8'))
 
 function assertTrue(label, condition) {
@@ -133,6 +135,22 @@ for (const phrase of [
   'FNV-1a',
 ]) {
   assertTrue(`README evidence guide includes ${phrase}`, readme.includes(phrase))
+}
+
+console.log('\nHardware proof recording guard')
+for (const phrase of [
+  '/api/injective?tool=get-hardware-bridge-proof',
+  '独立 Frost Edge Node 硬件证明 API',
+  'public-plaza / agent-plaza smoke',
+]) {
+  assertTrue(`PROGRESS names standalone hardware proof: ${phrase}`, progress.includes(phrase))
+}
+for (const phrase of [
+  '硬件证明要当作独立镜头',
+  '放在钱包时间线之后、plaza smoke 之前',
+  'privacyBoundary.hardware',
+]) {
+  assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
 }
 
 console.log('\nIntegration guide runbook')

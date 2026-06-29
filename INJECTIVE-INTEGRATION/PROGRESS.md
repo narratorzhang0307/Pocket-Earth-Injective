@@ -31,7 +31,7 @@
 - `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层；`5.1 最终整合版对照与技术深挖` 把 PPT 页段映射到技术落点和复验入口。
 - `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口一颗地球 / 端云双脑 / Frost Buddy”，再用 `final-ppt-index` 逐页覆盖 41 页主线；后半部分展开 `recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence、FrostBus / RunTrace、SSE `x-accel-buffering:no`、`reviewManifest`、`toManifest`、`agentGeo` / FNV-1a、Frost Edge Node 硬件原理、树莓派市场边界和外部来源边界。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
-- `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径，包含 `hardwareBridge`、`reviewEntrypoints.hardware-bridge`、`deliveryChecklist.frost-edge-node`、`recordingOrder[].evidenceFocus` 的 Frost Edge Node `chain_dispatch` handoff 和 `npm run verify:hardware`，让硬件入口也在最快复验页里可见。
+- `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径，包含 `hardwareBridge`、`reviewEntrypoints.hardware-bridge-api`、`reviewEntrypoints.hardware-bridge`、`deliveryChecklist.frost-edge-node`、`recordingOrder[].evidenceFocus` 的独立 Frost Edge Node 硬件证明 API，以及后续 public-plaza / agent-plaza smoke，让硬件入口不再藏在 plaza 描述里。
 - `INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`：3 分钟以内录制脚本，镜头优先级是 `agentId 43`、钱包页、public-plaza、地球 agent 标记、Nightly Chain Dispatch、隐私边界。
 
 ## 自动化检查
