@@ -58,6 +58,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:public-proof',
   'npm run verify:github',
   'npm run verify:positioning',
+  'app source, hardware bridge, docs, and frost-agent wording guard',
   'npm run verify:pitch',
   'npm run verify:judge',
   'npm run verify:brief',

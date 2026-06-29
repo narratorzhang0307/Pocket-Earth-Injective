@@ -124,7 +124,7 @@ The verification suite keeps the evidence readable and reproducible:
 | `npm run verify:public-apis` | four `publicReadApis` entries and their `judgeFocus` / `expectedFields` |
 | `npm run verify:integration-guide` | API table, runbook order, and script mappings |
 | `npm run verify:github` | public repository, remote README, integration guide, evidence pack, and demo script |
-| `npm run verify:positioning` | README, integration docs, key service code, and frost-agent wording guard |
+| `npm run verify:positioning` | README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent wording guard |
 | `npm run verify:source` | `sourceControl` repository, branch, commit, and evidence API anchor |
 | `npm run verify:registry` | ERC-8004 `Transfer(0x0 -> owner, tokenId)` mint events for `agentId 43-47` |
 | `npm run verify:agent-proof` | single-agent proof cards for identity, mint, wallet, and source anchors |
