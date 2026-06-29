@@ -133,6 +133,7 @@ assertTrue('remote demo script names registry mint checklist', remoteDemo.includ
 assertTrue('remote demo script names wallet timeline status field', remoteDemo.includes('expectedStatus'))
 assertTrue('remote demo script names wallet timeline summary', remoteDemo.includes('timelineSummary'))
 assertTrue('remote demo script names direct wallet summary', remoteDemo.includes('get-wallet-timeline` 的 `summary`'))
+assertTrue('remote demo script names judge quickstart submission link', remoteDemo.includes('submissionLinks') && remoteDemo.includes('固定评审 60 秒入口'))
 assertTrue('remote demo script keeps 3-minute limit', remoteDemo.includes('≤ 3 分钟') && remoteDemo.includes('180s'))
 assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.includes('Judge Quickstart'))
 assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))
