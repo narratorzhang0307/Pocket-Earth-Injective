@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_LINKS, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -111,6 +111,10 @@ assertEqual('evidence submission links count', evidence.submissionLinks.length, 
 assertEqual('evidence submission repo url', evidence.submissionLinks.find((item) => item.key === 'github-repo')?.url, SUBMISSION_LINKS.find((item) => item.key === 'github-repo')?.url)
 assertEqual('evidence submission live demo url', evidence.submissionLinks.find((item) => item.key === 'live-demo')?.url, SUBMISSION_LINKS.find((item) => item.key === 'live-demo')?.url)
 assertEqual('evidence submission fleet api', evidence.submissionLinks.find((item) => item.key === 'agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
+assertTrue('evidence submission checklist array', Array.isArray(evidence.submissionChecklist))
+assertEqual('evidence submission checklist count', evidence.submissionChecklist.length, SUBMISSION_CHECKLIST.length)
+assertTrue('evidence submission checklist includes public GitHub', evidence.submissionChecklist.some((item) => item.key === 'public-github-readme'))
+assertTrue('evidence submission checklist includes demo script', evidence.submissionChecklist.some((item) => item.key === 'demo-video-script'))
 assertTrue('evidence privacy on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('evidence privacy off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertTrue('evidence privacy mentions ERC-8004 identity', evidence.privacyBoundary.onChain.includes('ERC-8004 agent identity'))

@@ -5,6 +5,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   LIVE_DEMO_URL,
+  SUBMISSION_CHECKLIST,
   SUBMISSION_LINKS,
   SUBMISSION_REPOSITORY_URL,
 } from './chain-proof-data.mjs'
@@ -42,7 +43,10 @@ const chainEvidence = await readFile('INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md', 
 const demoScript = await readFile('INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', 'utf8')
 const evidence = await callEvidenceApi()
 const links = evidence.submissionLinks
+const checklist = evidence.submissionChecklist
 const expectedByKey = new Map(SUBMISSION_LINKS.map((item) => [item.key, item]))
+const checklistByKey = new Map(SUBMISSION_CHECKLIST.map((item) => [item.key, item]))
+const linkKeys = new Set(SUBMISSION_LINKS.map((item) => item.key))
 
 assertTrue('submissionLinks array', Array.isArray(links))
 assertEqual('submissionLinks count', links.length, SUBMISSION_LINKS.length)
@@ -72,14 +76,39 @@ assertEqual('chain evidence API path', expectedByKey.get('chain-evidence-api').p
 assertEqual('agent fleet API path', expectedByKey.get('agent-fleet-api').path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('wallet timeline API path', expectedByKey.get('wallet-timeline-api').path, '/api/injective?tool=get-wallet-timeline')
 
+console.log('\nSubmission checklist')
+assertTrue('submissionChecklist array', Array.isArray(checklist))
+assertEqual('submissionChecklist count', checklist.length, SUBMISSION_CHECKLIST.length)
+assertEqual('submissionChecklist unique key count', new Set(checklist.map((item) => item.key)).size, checklist.length)
+for (const expected of SUBMISSION_CHECKLIST) {
+  const actual = checklist.find((item) => item.key === expected.key)
+  assertTrue(`submissionChecklist includes ${expected.key}`, Boolean(actual))
+  assertEqual(`${expected.key} requirement`, actual.requirement, expected.requirement)
+  assertEqual(`${expected.key} status`, actual.status, expected.status)
+  assertEqual(`${expected.key} evidence`, actual.evidence, expected.evidence)
+  assertEqual(`${expected.key} localCheck`, actual.localCheck, expected.localCheck)
+  assertEqual(`${expected.key} linkKey`, actual.linkKey, expected.linkKey)
+  assertTrue(`${expected.key} linkKey points to submissionLinks`, linkKeys.has(actual.linkKey))
+  if (actual.localCheck.startsWith('npm run ')) {
+    const scriptName = actual.localCheck.replace('npm run ', '')
+    assertTrue(`${expected.key} npm script exists`, Boolean(packageJson.scripts?.[scriptName]))
+  }
+}
+assertEqual('GitHub checklist status', checklistByKey.get('public-github-readme').status, 'ready')
+assertEqual('Injective checklist status', checklistByKey.get('injective-integration').status, 'ready')
+assertEqual('Demo checklist status', checklistByKey.get('demo-video-script').status, 'ready-for-recording')
+assertEqual('Pitch checklist status', checklistByKey.get('pitch-deck-notes').status, 'ready-for-deck')
+assertTrue('checklist mentions no private keys', checklistByKey.get('public-review-apis').evidence.includes('without private keys') || checklistByKey.get('public-review-apis').evidence.includes('read-only'))
+
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
 assertTrue('README names Injective repository evidence package', readme.includes('Injective 参赛版本'))
 assertTrue('CHAIN-EVIDENCE mentions submission links', chainEvidence.includes('submissionLinks'))
+assertTrue('CHAIN-EVIDENCE mentions submission checklist', chainEvidence.includes('submissionChecklist'))
 assertTrue('DEMO-SCRIPT mentions submission check', demoScript.includes('npm run verify:submission'))
 
-const publicText = JSON.stringify(links)
+const publicText = JSON.stringify({ links, checklist })
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']) {
-  assertTrue(`submissionLinks omits ${forbidden}`, !publicText.includes(forbidden))
+  assertTrue(`submission pack omits ${forbidden}`, !publicText.includes(forbidden))
 }
 
-console.log('\nOK submissionLinks point to the correct Injective review entry points.')
+console.log('\nOK submissionLinks and submissionChecklist point to the correct Injective review package.')

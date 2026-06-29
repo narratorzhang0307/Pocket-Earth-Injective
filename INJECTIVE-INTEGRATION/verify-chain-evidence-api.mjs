@@ -14,6 +14,7 @@ import {
   REVIEW_CHECKLIST,
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
+  SUBMISSION_CHECKLIST,
   SUBMISSION_LINKS,
   TIMELINE_EVENTS,
   scanUrlForAddress,
@@ -91,6 +92,12 @@ assertEqual('submission links count', evidence.submissionLinks.length, SUBMISSIO
 assertEqual('submission link repo url', evidence.submissionLinks.find((link) => link.key === 'github-repo')?.url, SUBMISSION_LINKS.find((link) => link.key === 'github-repo')?.url)
 assertEqual('submission link live demo url', evidence.submissionLinks.find((link) => link.key === 'live-demo')?.url, SUBMISSION_LINKS.find((link) => link.key === 'live-demo')?.url)
 assertEqual('submission link chain evidence path', evidence.submissionLinks.find((link) => link.key === 'chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
+assertTrue('submission checklist array', Array.isArray(evidence.submissionChecklist))
+assertEqual('submission checklist count', evidence.submissionChecklist.length, SUBMISSION_CHECKLIST.length)
+assertTrue('submission checklist includes GitHub README', evidence.submissionChecklist.some((item) => item.key === 'public-github-readme'))
+assertTrue('submission checklist includes Injective integration', evidence.submissionChecklist.some((item) => item.key === 'injective-integration'))
+assertTrue('submission checklist includes demo script', evidence.submissionChecklist.some((item) => item.key === 'demo-video-script'))
+assertTrue('submission checklist includes pitch notes', evidence.submissionChecklist.some((item) => item.key === 'pitch-deck-notes'))
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)

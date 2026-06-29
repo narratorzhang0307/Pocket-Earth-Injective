@@ -62,7 +62,7 @@ export const COMPETITION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     contestSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewBrief, reviewLinks, reviewChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
     machineCheck: 'npm run verify:evidence',
   },
 ]
@@ -121,7 +121,7 @@ export const REVIEW_BRIEF = {
     { step: 1, label: 'Open agentId 43', linkKey: 'frost-agent-43', verifies: 'Frost has a public ERC-8004 identity on Injective testnet.' },
     { step: 2, label: 'Open owner wallet', linkKey: 'owner-wallet', verifies: 'Registration, fleet, contract deployment, and handshake belong to the same wallet.' },
     { step: 3, label: 'Read public evidence API', submissionKey: 'chain-evidence-api', verifies: 'The product exposes the same public facts through /api/injective.' },
-    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, Blockscout links, plaza split, alignment, and submission entries still pass.' },
+    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, Blockscout links, plaza split, alignment, submission entries, and submission checklist still pass.' },
   ],
   privacyLine: 'Only public proofs go on-chain: identities, card fields, wallet/contract addresses, profile commitments, similarity score, and timestamps. Raw media, mood text, precise locations, profile counts, and secret env values stay off-chain.',
 }
@@ -151,6 +151,49 @@ export const SUBMISSION_LINKS = [
   { key: 'chain-evidence-api', label: 'Public chain evidence API', type: 'api', path: '/api/injective?tool=get-chain-evidence' },
   { key: 'agent-fleet-api', label: 'Read agentId 43-47 by builderCode', type: 'api', path: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47` },
   { key: 'wallet-timeline-api', label: 'Read wallet transaction timeline from RPC', type: 'api', path: '/api/injective?tool=get-wallet-timeline' },
+]
+
+export const SUBMISSION_CHECKLIST = [
+  {
+    key: 'public-github-readme',
+    requirement: 'Public GitHub repository with a complete README',
+    status: 'ready',
+    evidence: 'README.md opens with the Injective submission story and links to the evidence pack, demo script, and integration guide.',
+    localCheck: 'npm run verify:submission',
+    linkKey: 'github-repo',
+  },
+  {
+    key: 'injective-integration',
+    requirement: 'Project is deployed/integrated with Injective',
+    status: 'ready',
+    evidence: 'agentId 43-47, SocialHandshake, wallet timeline, and public API read paths are verifiable on Injective testnet.',
+    localCheck: 'npm run verify:injective',
+    linkKey: 'chain-evidence-api',
+  },
+  {
+    key: 'demo-video-script',
+    requirement: 'Demo video under 3 minutes that shows core features',
+    status: 'ready-for-recording',
+    evidence: 'DEMO-SCRIPT.md is structured as a 175-second recording path: agentId 43, wallet, public-plaza, globe markers, nightly dispatch, and privacy proof.',
+    localCheck: 'npm run verify:demo',
+    linkKey: 'live-demo',
+  },
+  {
+    key: 'pitch-deck-notes',
+    requirement: 'Pitch deck covers vision, technical approach, and future plan',
+    status: 'ready-for-deck',
+    evidence: 'INJECTIVE-INTEGRATION/PITCH-NOTES.md gives the hardware/Frost Buddy positioning and boundaries; CHAIN-EVIDENCE.md supplies the on-chain proof slides.',
+    localCheck: 'npm run verify:brief',
+    linkKey: 'github-repo',
+  },
+  {
+    key: 'public-review-apis',
+    requirement: 'Judges can reproduce public evidence without private keys',
+    status: 'ready',
+    evidence: 'get-chain-evidence, list-agents by builderCode, and get-wallet-timeline are read-only and publicOnly/testnet-scoped.',
+    localCheck: 'npm run verify:evidence',
+    linkKey: 'chain-evidence-api',
+  },
 ]
 
 export const TIMELINE_EVENTS = [

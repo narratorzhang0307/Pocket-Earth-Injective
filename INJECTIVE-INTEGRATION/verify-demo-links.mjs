@@ -37,6 +37,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'reviewBrief',
   'reviewLinks',
   'reviewChecklist',
+  'submissionChecklist',
   'recordingOrder',
   'privacyBoundary',
   'plazaFlow',
