@@ -190,6 +190,41 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
       const listAgentsApi = `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`
       const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
+      const publicReadApis = [
+        {
+          key: 'chain-evidence-api',
+          label: 'Public chain evidence package',
+          method: 'GET',
+          path: '/api/injective?tool=get-chain-evidence',
+          chainId: INJECTIVE_TESTNET_CHAIN_ID,
+          readOnly: true,
+          publicOnly: true,
+          verification: 'npm run verify:public-proof',
+          purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, and privacy boundary.',
+        },
+        {
+          key: 'agent-fleet-api',
+          label: 'Read Pocket Earth agent fleet by builderCode',
+          method: 'GET',
+          path: listAgentsApi,
+          chainId: INJECTIVE_TESTNET_CHAIN_ID,
+          readOnly: true,
+          publicOnly: true,
+          verification: 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs',
+          purpose: `Reads agentId 43-47 from Injective testnet with builderCode=${BUILDER_CODE}.`,
+        },
+        {
+          key: 'wallet-timeline-api',
+          label: 'Read wallet transaction timeline from RPC',
+          method: 'GET',
+          path: walletTimelineApi,
+          chainId: INJECTIVE_TESTNET_CHAIN_ID,
+          readOnly: true,
+          publicOnly: true,
+          verification: 'npm run verify:wallet',
+          purpose: 'Replays registration, SocialHandshake deployment, fleet registration, and the real handshake from Injective RPC.',
+        },
+      ]
       const firstTimelineEvent = TIMELINE_EVENTS[0]
       const lastTimelineEvent = TIMELINE_EVENTS.at(-1)
       const registryAgentIds = REGISTRY_MINT_EVENTS.map((event) => event.agentId)
@@ -216,6 +251,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         demoVideoLimitSeconds: DEMO_VIDEO_LIMIT_SECONDS,
         builderCode: BUILDER_CODE,
         sourceControl: getSourceControlEvidence(),
+        publicReadApis,
         owner: PROOF_OWNER,
         ownerScanUrl: scanUrlForAddress(PROOF_OWNER),
         registry: IDENTITY_REGISTRY,

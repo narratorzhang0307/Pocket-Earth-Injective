@@ -96,6 +96,7 @@ function assertKnownCommand(label, command) {
 
 function collectCommands(evidence) {
   const commands = []
+  for (const item of evidence.publicReadApis || []) commands.push(['publicReadApis', item.verification])
   for (const item of evidence.reviewBrief?.injectiveCore || []) commands.push(['reviewBrief.injectiveCore', item.machineCheck])
   for (const item of evidence.competitionAlignment || []) commands.push(['competitionAlignment', item.machineCheck])
   for (const item of evidence.reviewChecklist || []) commands.push(['reviewChecklist', item.machineCheck])
@@ -127,6 +128,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'plazaFlow',
   'privacyBoundary',
   'publicOnly',
+  'publicReadApis',
   'readOnly',
   'recordingOrder',
   'registry',
@@ -159,6 +161,24 @@ assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
 assertTrue('sourceControl commit is sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
 if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
 assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
+
+console.log('\nPublic read API manifest')
+assertTrue('publicReadApis array', Array.isArray(evidence.publicReadApis))
+assertEqual('publicReadApis count', evidence.publicReadApis.length, 3)
+const publicReadApiByKey = new Map(evidence.publicReadApis.map((item) => [item.key, item]))
+assertEqual('publicReadApis chain evidence path', publicReadApiByKey.get('chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
+assertEqual('publicReadApis fleet path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
+assertEqual('publicReadApis wallet path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
+assertEqual('publicReadApis chain evidence verification', publicReadApiByKey.get('chain-evidence-api')?.verification, 'npm run verify:public-proof')
+assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
+assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
+for (const [key, item] of publicReadApiByKey) {
+  assertEqual(`publicReadApis ${key} method`, item.method, 'GET')
+  assertEqual(`publicReadApis ${key} chainId`, item.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+  assertEqual(`publicReadApis ${key} readOnly`, item.readOnly, true)
+  assertEqual(`publicReadApis ${key} publicOnly`, item.publicOnly, true)
+  assertTrue(`publicReadApis ${key} purpose`, String(item.purpose || '').length > 20)
+}
 
 console.log('\nReview entry points')
 assertEqual('judge quickstart link stays on Injective submission repo', evidence.submissionLinks.find((item) => item.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)

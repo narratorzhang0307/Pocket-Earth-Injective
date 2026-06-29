@@ -6,7 +6,7 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `publicReadApis`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
 6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
@@ -22,7 +22,7 @@
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, and plaza grouping.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
-- The evidence API is `readOnly` and `publicOnly`; raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
+- The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the three judge-safe GET endpoints (`get-chain-evidence`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, and local verification commands. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
 
 ## Submission Package
 

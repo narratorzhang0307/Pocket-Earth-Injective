@@ -96,6 +96,7 @@ for (const snippet of [
   'registryMintEvents',
   'registryMintSummary',
   'registry-mint-events',
+  'publicReadApis',
   'expectedStatus',
   'timelineSummary',
   'recordingOrder[].evidenceFocus',
@@ -143,6 +144,10 @@ assertEqual('demo limit still 180 seconds', evidence.demoVideoLimitSeconds, DEMO
 assertEqual('evidence chainId', evidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertTrue('evidence still public-only', evidence.readOnly === true && evidence.publicOnly === true)
+assertTrue('evidence public read APIs array', Array.isArray(evidence.publicReadApis))
+assertEqual('evidence public read API count', evidence.publicReadApis.length, 3)
+assertEqual('evidence public read fleet path', evidence.publicReadApis.find((item) => item.key === 'agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
+assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)
 assertEqual('evidence timeline summary event count', evidence.timelineSummary?.eventCount, TIMELINE_EVENTS.length)
 assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary?.rpcVerification, '/api/injective?tool=get-wallet-timeline')
