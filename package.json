@@ -10,6 +10,7 @@
     "verify:demo": "node INJECTIVE-INTEGRATION/verify-demo-readiness.mjs",
     "verify:duration": "node INJECTIVE-INTEGRATION/verify-demo-duration.mjs",
     "verify:evidence": "node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs",
+    "verify:public-proof": "node INJECTIVE-INTEGRATION/verify-public-proof-contract.mjs",
     "verify:brief": "node INJECTIVE-INTEGRATION/verify-review-brief.mjs",
     "verify:review": "node INJECTIVE-INTEGRATION/verify-review-checklist.mjs",
     "verify:review-links": "node INJECTIVE-INTEGRATION/verify-review-links.mjs",

@@ -7,6 +7,10 @@ const checks = [
     moduleUrl: new URL('./verify-chain-evidence-api.mjs', import.meta.url),
   },
   {
+    label: 'public evidence contract stays review-safe',
+    moduleUrl: new URL('./verify-public-proof-contract.mjs', import.meta.url),
+  },
+  {
     label: 'review brief explains the Injective proof path',
     moduleUrl: new URL('./verify-review-brief.mjs', import.meta.url),
   },

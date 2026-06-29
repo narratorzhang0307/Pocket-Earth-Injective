@@ -64,7 +64,7 @@ export const COMPETITION_ALIGNMENT = [
     contestSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
     evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
-    machineCheck: 'npm run verify:evidence',
+    machineCheck: 'npm run verify:public-proof',
   },
 ]
 
@@ -296,7 +296,7 @@ export const REVIEW_CHECKLIST = [
       'raw books, films, music, photos, mood text, precise locations, and private keys stay off-chain',
       'write tools stay dry-run without server key plus explicit confirm:true',
     ],
-    machineCheck: 'node INJECTIVE-INTEGRATION/verify-api-write-boundaries.mjs',
+    machineCheck: 'npm run verify:public-proof && node INJECTIVE-INTEGRATION/verify-api-write-boundaries.mjs',
   },
   {
     key: 'product-demo-loop',
