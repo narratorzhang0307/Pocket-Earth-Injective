@@ -114,6 +114,8 @@ const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT
 const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
 const remoteHardware = await fetchText(`${rawBase}/hardware/frost-buddy/README.md`)
 const remotePublicPlaza = await fetchText(`${rawBase}/src/app/components/PublicPlazaPage.tsx`)
+const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanifest`)
+const remoteManifest = JSON.parse(remoteManifestText)
 assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
 assertTrue('remote README names explicit Pocket Earth definition heading', remoteReadme.includes('## 一、Pocket Earth 是什么'))
 assertTrue('remote README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(remoteReadme))
@@ -262,6 +264,8 @@ assertTrue('remote hardware README names module subject explicitly', remoteHardw
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
 assertTrue('remote hardware README omits vague market subject', !remoteHardware.includes('这个判断在 Markdown'))
+assertTrue('remote PWA manifest description names each record explicitly', remoteManifest.description?.includes('每条记录各自对应的真实地点'))
+assertTrue('remote PWA manifest description omits vague pronoun', !remoteManifest.description?.includes('它们在地球上的那个地点'))
 assertTrue('remote public-plaza source names Frost as the actor', remotePublicPlaza.includes('Frost 替你去广场') && remotePublicPlaza.includes('Frost 带出的名片'))
 assertTrue('remote public-plaza source omits vague agent actor', !remotePublicPlaza.includes('它替你去广场') && !remotePublicPlaza.includes('它带出的名片'))
 for (const [label, text] of [
@@ -271,6 +275,7 @@ for (const [label, text] of [
   ['remote demo script', remoteDemo],
   ['remote judge quickstart', remoteJudge],
   ['remote hardware README', remoteHardware],
+  ['remote PWA manifest', remoteManifestText],
   ['remote public-plaza source', remotePublicPlaza],
 ]) {
   assertNoOldRepoText(label, text)
