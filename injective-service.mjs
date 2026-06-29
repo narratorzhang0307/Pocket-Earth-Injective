@@ -174,6 +174,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           ...(event.contractAddress ? { contractAddress: event.contractAddress } : {}),
         })),
         verification: {
+          demoReadiness: 'npm run verify:demo',
+          evidenceSmoke: 'npm run verify:evidence',
           proofSuite: 'npm run verify:injective',
           apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
           listAgentsApi: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`,

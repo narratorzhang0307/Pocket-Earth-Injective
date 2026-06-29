@@ -34,6 +34,9 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   '/api/injective?tool=get-chain-evidence',
   `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`,
   '/api/injective?tool=get-wallet-timeline',
+  'npm run verify:demo',
+  'npm run verify:evidence',
+  'npm run verify:injective',
   'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
 ]
 
