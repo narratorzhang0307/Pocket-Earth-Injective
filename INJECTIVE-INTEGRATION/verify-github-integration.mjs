@@ -118,6 +118,7 @@ assertTrue('remote README points at chain evidence API', remoteReadme.includes('
 assertTrue('remote README names proof suite', remoteReadme.includes('npm run verify:injective'))
 assertTrue('remote README names public proof guard', remoteReadme.includes('npm run verify:public-proof'))
 assertTrue('remote README names public API guard', remoteReadme.includes('npm run verify:public-apis'))
+assertTrue('remote README names expanded positioning guard', remoteReadme.includes('README / app / hardware / docs 保持 Injective 核心集成主线'))
 assertTrue('remote README links integration guide', remoteReadme.includes('INJECTIVE-INTEGRATION/README.md'))
 assertTrue('remote README names registry mint events', remoteReadme.includes('registryMintEvents'))
 assertTrue('remote README names registry mint summary', remoteReadme.includes('registryMintSummary'))
