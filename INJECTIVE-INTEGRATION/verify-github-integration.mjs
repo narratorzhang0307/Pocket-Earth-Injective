@@ -202,6 +202,7 @@ assertTrue('remote demo script names judge quickstart entrypoint', remoteDemo.in
 assertTrue('remote demo script names judge runbook', remoteDemo.includes('judgeRunbook'))
 assertTrue('remote demo script names public API guard', remoteDemo.includes('npm run verify:public-apis'))
 assertTrue('remote demo script names integration guide guard', remoteDemo.includes('npm run verify:integration-guide'))
+assertTrue('remote demo script names expanded positioning guard', remoteDemo.includes('README / app / hardware / docs 保持 Injective 核心集成主线'))
 assertTrue('remote demo script keeps 3-minute limit', remoteDemo.includes('≤ 3 分钟') && remoteDemo.includes('180s'))
 assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.includes('Judge Quickstart'))
 assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))

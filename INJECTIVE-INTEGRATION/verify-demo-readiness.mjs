@@ -19,7 +19,7 @@ const checks = [
     moduleUrl: new URL('./verify-integration-guide.mjs', import.meta.url),
   },
   {
-    label: 'public docs keep Injective core-integration positioning',
+    label: 'README, app, hardware, docs keep Injective core-integration positioning',
     moduleUrl: new URL('./verify-doc-positioning.mjs', import.meta.url),
   },
   {
