@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { SUBMISSION_REPOSITORY_URL } from './chain-proof-data.mjs'
+import { INJECTIVE_TESTNET_CHAIN_ID, SUBMISSION_REPOSITORY_URL } from './chain-proof-data.mjs'
 
 const integrationDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(integrationDir, '..')
@@ -144,6 +144,7 @@ assertTrue('remote judge quickstart points at builderCode fleet API', remoteJudg
 assertTrue('remote judge quickstart names recording focus', remoteJudge.includes('recordingOrder[].evidenceFocus'))
 assertTrue('remote judge quickstart names registry mint summary', remoteJudge.includes('registryMintSummary'))
 assertTrue('remote judge quickstart names wallet timeline summary', remoteJudge.includes('timelineSummary'))
+assertTrue('remote judge quickstart names wallet timeline chainId', remoteJudge.includes(`chainId ${INJECTIVE_TESTNET_CHAIN_ID}`))
 assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
 assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
 assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))

@@ -6,6 +6,7 @@ import {
   BUILDER_CODE,
   DEMO_VIDEO_LIMIT_SECONDS,
   IDENTITY_REGISTRY,
+  INJECTIVE_TESTNET_CHAIN_ID,
   LIVE_DEMO_URL,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
@@ -99,6 +100,7 @@ for (const snippet of [
   'timelineSummary',
   'recordingOrder[].evidenceFocus',
   'starting from its `summary`',
+  `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`,
   'builderCode=pocket-earth',
   'SocialHandshake',
   'public-plaza',
@@ -138,6 +140,7 @@ assertEqual('judge npm script', packageJson.scripts?.['verify:judge'], 'node INJ
 assertEqual('source control npm script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
 assertEqual('registry npm script', packageJson.scripts?.['verify:registry'], 'node INJECTIVE-INTEGRATION/verify-registry-events.mjs')
 assertEqual('demo limit still 180 seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
+assertEqual('evidence chainId', evidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertTrue('evidence still public-only', evidence.readOnly === true && evidence.publicOnly === true)
 assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)
@@ -163,6 +166,7 @@ assertFocusIncludes('judge step 1', evidence.recordingOrder[0], 'owner')
 assertFocusIncludes('judge step 3', evidence.recordingOrder[2], 'registryMintSummary')
 assertFocusIncludes('judge step 4', evidence.recordingOrder[3], `builderCode=${BUILDER_CODE}`)
 assertFocusIncludes('judge step 5', evidence.recordingOrder[4], 'allSucceeded')
+assertFocusIncludes('judge step 5', evidence.recordingOrder[4], `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`)
 assertFocusIncludes('judge step 6', evidence.recordingOrder[5], 'agent-plaza')
 
 console.log('\nDocs link the one-page path')
