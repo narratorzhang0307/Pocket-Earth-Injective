@@ -39,7 +39,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 
 ### 1.4 钱包绑定硬限制（当前版本只支持自签）
 仅当 `opts.wallet.toLowerCase() === client.address` 时才做 EIP-712 `setAgentWallet` 绑定（`client.ts:254-285`）；不等时 register 仅 `onWarning` 跳过、update 直接抛 `ValidationError`（`client.ts:473-484`）。
-→ **本项目最省事方案 = 后端用同一个 Injective 私钥既当 operator 又当 agent wallet。**
+→ **Frost Passport 最省事方案 = 后端用同一个 Injective 私钥既当 operator 又当 agent wallet。**
 
 ### 1.5 只读 AgentReadClient（无需私钥，发现/列表/声誉/事件）
 `new AgentReadClient({network?,rpcUrl?})`（`read-client.ts:18-344` 全实现）：
@@ -65,7 +65,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 ### 1.8 Storage（上传 card 到 IPFS，可插拔）
 `StorageProvider`：`{ uploadJSON(data,name?):Promise<uri>, uploadFile?(content,filename,mimeType):Promise<uri> }`。内置两个：
 - `PinataStorage({jwt})` — 走 `api.pinata.cloud`，返回 `ipfs://{cid}`（`storage/pinata.ts:34-71`）。
-- `CustomUrlStorage(uri)` — **构造入参是裸字符串不是对象**（`storage/custom-url.ts:3-13`），`uploadJSON` 永远返回该固定 URI（不真上传，适合自托管 card.json，比如挂本项目自己的服务器）。
+- `CustomUrlStorage(uri)` — **构造入参是裸字符串不是对象**（`storage/custom-url.ts:3-13`），`uploadJSON` 永远返回该固定 URI（不真上传，适合自托管 card.json，比如挂 Pocket Earth 自己的服务器）。
 - 无 storage 且没传 `uri` 时 register 抛 `StorageError`。
 
 ### 1.9 env / 工厂 / 错误 / 声誉写入
@@ -81,7 +81,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 ## 2. Injective 链上能力（非交易向：身份 + 握手事件）
 
 ### 2.1 EVM(Solidity) 完胜 CosmWasm，且「最省事」是连合约都不自写
-两条路都能发事件，但对 JS/TS 后端：EVM 工具链(Solidity+hardhat/foundry+viem)是你熟的，CosmWasm 要 Rust+wasm 额外学习成本；且已 clone 的 `injective-agent-sdk` 是纯 EVM、只依赖 viem，直接复用。CosmWasm 唯一优势 Token Factory 原生发币——**本项目不发币，用不上**。
+两条路都能发事件，但对 JS/TS 后端：EVM 工具链(Solidity+hardhat/foundry+viem)是你熟的，CosmWasm 要 Rust+wasm 额外学习成本；且已 clone 的 `injective-agent-sdk` 是纯 EVM、只依赖 viem，直接复用。CosmWasm 唯一优势 Token Factory 原生发币——**Pocket Earth 不发币，用不上**。
 
 握手事件两档：
 - **档1·零合约**：直接调 testnet 上已部署的 `IdentityRegistry.register()`，它本身 emit `Registered(uint256 agentId,string,address)`（`client.ts:39` topic = keccak256）；握手关系靠两个 agent 在 card 里互相引用表达。
@@ -96,7 +96,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 - 读链上 agent 列表 = `AgentReadClient.discoverAgentIds()/listAgents()/getAgentsByOwner()`，底层 viem `getLogs` 扫 Transfer + `readContract`，实时用 `watchRegistrations`。
 
 ### 2.3 明确不引入
-- **iagent**（`_research/repos/iagent`，Python+Quart）：是「让 AI 下单交易」的，强绑 **OpenAI** function-calling，与本项目目标正交、且违反 **Qwen-only 硬约束**（记忆 `qwen-only-no-deepseek`）。`factory.py` 的 8 类模块（account/auction/authz/bank/exchange/trader/staking/token_factory）仅作 Boundary 校验器命名空间的**蓝本参考**（如 `inj_bank_send`），不引入代码。
+- **iagent**（`_research/repos/iagent`，Python+Quart）：是「让 AI 下单交易」的，强绑 **OpenAI** function-calling，与 Pocket Earth 的空间记忆和 Frost Passport 目标正交、且违反 **Qwen-only 硬约束**（记忆 `qwen-only-no-deepseek`）。`factory.py` 的 8 类模块（account/auction/authz/bank/exchange/trader/staking/token_factory）仅作 Boundary 校验器命名空间的**蓝本参考**（如 `inj_bank_send`），不引入代码。
 - **Token Factory**：不发币，用不上。
 - **CosmWasm/Rust**：EVM 路线已够。
 

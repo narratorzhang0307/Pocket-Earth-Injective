@@ -36,6 +36,7 @@ const forbiddenPositioningSnippets = [
   'con' + 'test',
 ].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
 const vaguePositioningSnippets = [
+  String.fromCodePoint(0x672c, 0x9879, 0x76ee),
   '它们' + '在地球',
   '钉回' + '它们',
   '各自' + '在地球上的那个地点',
