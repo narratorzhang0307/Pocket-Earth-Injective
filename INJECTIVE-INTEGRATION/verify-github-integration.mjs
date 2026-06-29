@@ -123,6 +123,21 @@ assertTrue('remote integration guide names judge runbook', remoteIntegration.inc
 assertTrue('remote integration guide names public read API manifest', remoteIntegration.includes('publicReadApis'))
 assertTrue('remote integration guide names public API guard', remoteIntegration.includes('npm run verify:public-apis'))
 assertTrue('remote integration guide names integration guide guard', remoteIntegration.includes('npm run verify:integration-guide'))
+for (const phrase of [
+  '## 叙事骨架',
+  '把地球作为方法',
+  'Frost 起源',
+  '一条线走完',
+  '三个入口一颗地球',
+  '端云双脑和长期画像',
+  'Frost Buddy',
+  'Profile Chain',
+  'hardware/frost-buddy/',
+  'public-plaza',
+  'agent-plaza',
+]) {
+  assertTrue(`remote integration guide keeps story spine ${phrase}`, remoteIntegration.includes(phrase))
+}
 assertTrue('remote evidence pack names reviewBrief', remoteEvidence.includes('reviewBrief'))
 assertTrue('remote evidence pack names registryMintEvents', remoteEvidence.includes('registryMintEvents'))
 assertTrue('remote evidence pack names registryMintSummary', remoteEvidence.includes('registryMintSummary'))
