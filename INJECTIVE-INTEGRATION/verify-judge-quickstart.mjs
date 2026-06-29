@@ -102,6 +102,7 @@ for (const command of [
   'npm run verify:demo',
   'npm run verify:wallet',
   'npm run verify:source',
+  'npm run verify:registry',
   'npm run verify:injective',
   'npm run verify:plaza',
   'npm run verify:pitch',
@@ -114,8 +115,10 @@ for (const command of [
 console.log('\nEvidence API wiring')
 assertEqual('judge command advertised', evidence.verification?.judgeQuickstart, 'npm run verify:judge')
 assertEqual('source control command advertised', evidence.verification?.sourceControl, 'npm run verify:source')
+assertEqual('registry events command advertised', evidence.verification?.registryEvents, 'npm run verify:registry')
 assertEqual('judge npm script', packageJson.scripts?.['verify:judge'], 'node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs')
 assertEqual('source control npm script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
+assertEqual('registry npm script', packageJson.scripts?.['verify:registry'], 'node INJECTIVE-INTEGRATION/verify-registry-events.mjs')
 assertEqual('demo limit still 180 seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertTrue('evidence still public-only', evidence.readOnly === true && evidence.publicOnly === true)

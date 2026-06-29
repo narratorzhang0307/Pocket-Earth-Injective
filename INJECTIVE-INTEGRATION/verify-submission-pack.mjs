@@ -58,6 +58,8 @@ assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run v
 assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
 assertEqual('source control command', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('source control script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
+assertEqual('registry events command', evidence.verification?.registryEvents, 'npm run verify:registry')
+assertEqual('registry events script', packageJson.scripts?.['verify:registry'], 'node INJECTIVE-INTEGRATION/verify-registry-events.mjs')
 assertEqual('pitch notes command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
 assertEqual('pitch notes script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')
 assertEqual('judge quickstart command', evidence.verification?.judgeQuickstart, 'npm run verify:judge')

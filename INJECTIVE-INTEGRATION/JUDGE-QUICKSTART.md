@@ -10,11 +10,13 @@
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`
 6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
-7. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:source && npm run verify:demo`
+7. Check the ERC-8004 mint events locally: `npm run verify:registry`
+8. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:source && npm run verify:registry && npm run verify:demo`
 
 ## What This Proves
 
 - `agentId 43-47` are Pocket Earth Frost identities on Injective testnet with `builderCode = pocket-earth`.
+- The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
@@ -26,6 +28,7 @@
 - Live demo: https://pocketearth.throughtheglass.art/?demo
 - Demo limit: `180s`, guarded by `npm run verify:duration`
 - Source-control guard: `npm run verify:source`
+- Registry mint-event guard: `npm run verify:registry`
 - Pitch notes guard: `npm run verify:pitch`
 - Judge quickstart guard: `npm run verify:judge`
 
@@ -50,6 +53,7 @@ npm run verify:judge
 npm run verify:demo
 npm run verify:wallet
 npm run verify:source
+npm run verify:registry
 npm run verify:injective
 npm run verify:plaza
 npm run verify:pitch

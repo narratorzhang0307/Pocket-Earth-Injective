@@ -59,6 +59,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:recording-order',
   'npm run verify:wallet',
   'npm run verify:source',
+  'npm run verify:registry',
   'npm run verify:plaza-flow',
   'npm run verify:nova-alignment',
   'npm run verify:submission',

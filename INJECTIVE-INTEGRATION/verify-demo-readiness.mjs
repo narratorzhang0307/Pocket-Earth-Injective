@@ -39,6 +39,10 @@ const checks = [
     moduleUrl: new URL('./verify-api-list-agents.mjs', import.meta.url),
   },
   {
+    label: 'ERC-8004 registry mint events prove agentId 43-47',
+    moduleUrl: new URL('./verify-registry-events.mjs', import.meta.url),
+  },
+  {
     label: 'demo Blockscout links and evidence snippets',
     moduleUrl: new URL('./verify-demo-links.mjs', import.meta.url),
   },

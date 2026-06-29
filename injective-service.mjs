@@ -281,6 +281,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           recordingOrder: 'npm run verify:recording-order',
           walletTimeline: 'npm run verify:wallet',
           sourceControl: 'npm run verify:source',
+          registryEvents: 'npm run verify:registry',
           plazaFlow: 'npm run verify:plaza-flow',
           novaAlignment: 'npm run verify:nova-alignment',
           submissionPack: 'npm run verify:submission',
