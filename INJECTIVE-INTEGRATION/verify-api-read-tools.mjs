@@ -110,6 +110,7 @@ assertEqual('evidence demo readiness command', evidence.verification?.demoReadin
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
 assertEqual('evidence review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('evidence review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
+assertEqual('evidence recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')
 assertEqual('evidence proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('evidence api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
 assertEqual('evidence list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)

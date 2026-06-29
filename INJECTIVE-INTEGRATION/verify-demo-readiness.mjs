@@ -14,6 +14,10 @@ const checks = [
     label: 'demo Blockscout links and evidence snippets',
     moduleUrl: new URL('./verify-demo-links.mjs', import.meta.url),
   },
+  {
+    label: 'recording order Blockscout/API path is followable',
+    moduleUrl: new URL('./verify-recording-order.mjs', import.meta.url),
+  },
 ]
 
 console.log('Pocket Earth x Injective demo readiness')
