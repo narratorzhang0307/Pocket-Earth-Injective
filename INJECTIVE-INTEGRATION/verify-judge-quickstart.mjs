@@ -179,6 +179,15 @@ assertEqual('evidence public read fleet path', evidence.publicReadApis.find((ite
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('evidence public read hardware path', evidence.publicReadApis.find((item) => item.key === 'hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
 assertTrue('quickstart names hardware proof API', quickstart.includes('/api/injective?tool=get-hardware-bridge-proof'))
+const readingOrder = quickstart.match(/Use this order in the recording[^\n]+/)?.[0] || ''
+assertTrue('quickstart reading order mentions wallet timeline API', readingOrder.includes('wallet timeline API'))
+assertTrue('quickstart reading order mentions Frost Edge Node hardware proof API', readingOrder.includes('Frost Edge Node hardware proof API'))
+assertTrue('quickstart reading order mentions public-plaza after hardware proof', readingOrder.includes('`public-plaza` chain discovery'))
+assertTrue(
+  'quickstart reading order places hardware proof before public-plaza',
+  readingOrder.indexOf('wallet timeline API') < readingOrder.indexOf('Frost Edge Node hardware proof API')
+    && readingOrder.indexOf('Frost Edge Node hardware proof API') < readingOrder.indexOf('`public-plaza` chain discovery'),
+)
 assertTrue('evidence review entrypoints array', Array.isArray(evidence.reviewEntrypoints))
 assertEqual('evidence hardware bridge entrypoint', evidence.reviewEntrypoints.find((item) => item.key === 'hardware-bridge')?.url, HARDWARE_BRIDGE_URL)
 assertTrue('evidence delivery checklist array', Array.isArray(evidence.deliveryChecklist))

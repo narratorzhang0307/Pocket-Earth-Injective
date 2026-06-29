@@ -82,4 +82,4 @@ npm run verify:pitch
 
 ## Demo Reading Order
 
-Use this order in the recording or in a live judge walkthrough: `agentId 43` page -> owner wallet -> public evidence API -> single-agent proof API -> builderCode fleet API -> wallet timeline API -> `public-plaza` chain discovery -> `agent-plaza` install loop.
+Use this order in the recording or in a live judge walkthrough: `agentId 43` page -> owner wallet -> public evidence API -> single-agent proof API -> builderCode fleet API -> wallet timeline API -> Frost Edge Node hardware proof API -> `public-plaza` chain discovery -> `agent-plaza` install loop.
