@@ -3,13 +3,21 @@
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
+import { handleInjective } from '../injective-service.mjs'
 import {
   EVENT_KIND,
   createChainDispatchEvent,
   createMusicNowPlayingEvent,
   toJsonLine,
 } from '../hardware/frost-buddy/frost-hardware-bridge.mjs'
-import { BUILDER_CODE, FLEET_AGENT_IDS, scanUrlForRegistry } from './chain-proof-data.mjs'
+import {
+  BUILDER_CODE,
+  FLEET_AGENT_IDS,
+  HARDWARE_BRIDGE_PROOF,
+  INJECTIVE_TESTNET_CHAIN_ID,
+  INTEGRATION_REPOSITORY_URL,
+  scanUrlForRegistry,
+} from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -25,6 +33,26 @@ function assertNoSecrets(label, value) {
   const text = JSON.stringify(value)
   assertTrue(`${label} has no private key`, !/0x[0-9a-f]{64}/i.test(text))
   assertTrue(`${label} has no secret env names`, !/INJ_PRIVATE_KEY|PRIVATE_KEY|DASHSCOPE_API_KEY|PINATA_JWT/i.test(text))
+}
+
+function assertListIncludes(label, actual, expectedItems) {
+  assertTrue(`${label} array`, Array.isArray(actual))
+  for (const expected of expectedItems) assertTrue(`${label} includes ${expected}`, actual.includes(expected))
+}
+
+async function callInjectiveApi(path) {
+  let statusCode = 0
+  let body = ''
+  const req = { method: 'GET' }
+  const res = {
+    writeHead(code) { statusCode = code },
+    end(chunk) { body += chunk || '' },
+  }
+  await handleInjective(req, res, new URL(`http://localhost${path}`), { network: 'testnet' })
+  assertEqual(`${path} HTTP status`, statusCode, 200)
+  const payload = JSON.parse(body)
+  assertTrue(`${path} has no api error`, !payload.error)
+  return payload
 }
 
 const music = createMusicNowPlayingEvent({
@@ -59,6 +87,27 @@ assertNoSecrets('chain hardware event', chain)
 const jsonLine = toJsonLine(chain)
 assertTrue('hardware bridge emits JSONL', jsonLine.endsWith('\n'))
 assertEqual('hardware JSONL round-trip kind', JSON.parse(jsonLine).kind, EVENT_KIND.CHAIN_DISPATCH)
+
+console.log('\nHardware proof API')
+const hardwareProof = await callInjectiveApi('/api/injective?tool=get-hardware-bridge-proof')
+assertEqual('hardware proof ok', hardwareProof.ok, true)
+assertEqual('hardware proof network', hardwareProof.network, 'testnet')
+assertEqual('hardware proof chainId', hardwareProof.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('hardware proof readOnly', hardwareProof.readOnly, true)
+assertEqual('hardware proof publicOnly', hardwareProof.publicOnly, true)
+assertEqual('hardware proof key', hardwareProof.hardwareBridge?.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('hardware proof module URL', hardwareProof.hardwareBridge?.moduleUrl, HARDWARE_BRIDGE_PROOF.moduleUrl)
+assertListIncludes('hardware proof event kinds', hardwareProof.hardwareBridge?.eventKinds, HARDWARE_BRIDGE_PROOF.eventKinds)
+assertEqual('hardware proof chain source', hardwareProof.hardwareBridge?.chainDispatch?.source, HARDWARE_BRIDGE_PROOF.chainDispatch.source)
+assertEqual('hardware proof builderCode', hardwareProof.hardwareBridge?.chainDispatch?.builderCode, BUILDER_CODE)
+assertEqual('hardware proof chain read', hardwareProof.hardwareBridge?.chainDispatch?.chainRead, HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead)
+assertEqual('hardware proof scanUrl', hardwareProof.hardwareBridge?.chainDispatch?.scanUrl, scanUrlForRegistry())
+assertEqual('hardware proof agent ids', hardwareProof.hardwareBridge?.chainDispatch?.agentIds?.join(','), FLEET_AGENT_IDS.join(','))
+assertListIncludes('hardware proof Pi skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
+assertEqual('hardware proof source repository', hardwareProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
+assertEqual('hardware proof local verification', hardwareProof.verification?.hardwareBridge, 'npm run verify:hardware')
+assertNoSecrets('hardware proof API', hardwareProof)
 
 console.log('\nHardware documentation anchors')
 const rootReadme = readFileSync('README.md', 'utf8')
