@@ -19,6 +19,10 @@ const checks = [
     moduleUrl: new URL('./verify-integration-guide.mjs', import.meta.url),
   },
   {
+    label: 'public docs keep Injective core-integration positioning',
+    moduleUrl: new URL('./verify-doc-positioning.mjs', import.meta.url),
+  },
+  {
     label: 'GitHub integration repo is public and aligned',
     moduleUrl: new URL('./verify-github-integration.mjs', import.meta.url),
   },

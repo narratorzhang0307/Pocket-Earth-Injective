@@ -57,6 +57,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:evidence',
   'npm run verify:public-proof',
   'npm run verify:github',
+  'npm run verify:positioning',
   'npm run verify:pitch',
   'npm run verify:judge',
   'npm run verify:brief',

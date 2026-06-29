@@ -25,7 +25,7 @@ Start with `JUDGE-QUICKSTART.md` for the 60-second path. The evidence is organiz
 | Product loop | `publicReadApis`, `plazaFlow`, `recordingOrder[].evidenceFocus` | public-plaza reads the chain; agent-plaza keeps the install loop separate and demonstrable |
 | Delivery guard | `reviewBrief`, `judgeRunbook`, `reviewChecklist`, `integrationAlignment`, `reviewEntrypoints`, `deliveryChecklist`, `sourceControl` | the docs, API fields, source anchor, privacy boundary, and reproduction commands stay aligned |
 
-The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-apis`, `npm run verify:registry`, `npm run verify:wallet`, `npm run verify:plaza-flow`, and `npm run verify:demo`.
+The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-apis`, `npm run verify:positioning`, `npm run verify:registry`, `npm run verify:wallet`, `npm run verify:plaza-flow`, and `npm run verify:demo`.
 
 | Check | Public evidence | Pass criteria |
 |---|---|---|
@@ -96,6 +96,7 @@ npm run verify:public-proof
 npm run verify:public-apis
 npm run verify:integration-guide
 npm run verify:github
+npm run verify:positioning
 npm run verify:pitch
 npm run verify:judge
 npm run verify:brief
@@ -123,6 +124,7 @@ The verification suite keeps the evidence readable and reproducible:
 | `npm run verify:public-apis` | four `publicReadApis` entries and their `judgeFocus` / `expectedFields` |
 | `npm run verify:integration-guide` | API table, runbook order, and script mappings |
 | `npm run verify:github` | public repository, remote README, integration guide, evidence pack, and demo script |
+| `npm run verify:positioning` | README, integration docs, key service code, and frost-agent wording guard |
 | `npm run verify:source` | `sourceControl` repository, branch, commit, and evidence API anchor |
 | `npm run verify:registry` | ERC-8004 `Transfer(0x0 -> owner, tokenId)` mint events for `agentId 43-47` |
 | `npm run verify:agent-proof` | single-agent proof cards for identity, mint, wallet, and source anchors |
@@ -150,6 +152,7 @@ npm run verify:public-proof
 npm run verify:public-apis
 npm run verify:integration-guide
 npm run verify:github
+npm run verify:positioning
 npm run verify:pitch
 npm run verify:judge
 npm run verify:brief
@@ -172,7 +175,7 @@ This read-only proof suite verifies:
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
 - `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, `get-agent-proof`, and `get-wallet-timeline`
-- review brief, API `judgeRunbook`, reviewer checklist, integration alignment, review entrypoints including the judge quickstart, delivery checklist, `publicReadApis`, `npm run verify:public-apis`, `npm run verify:integration-guide`, and sourceControl wiring for public links, local proof commands, API-returned Blockscout link reachability, three-minute demo timing, followable recording order with per-step `evidenceFocus`, registry mint event/summary link checks, plaza flow grouping, Nova story mapping, delivery requirement coverage, current source commit anchoring, and final review entry points
+- review brief, API `judgeRunbook`, reviewer checklist, integration alignment, review entrypoints including the judge quickstart, delivery checklist, `publicReadApis`, `npm run verify:public-apis`, `npm run verify:integration-guide`, `npm run verify:positioning`, and sourceControl wiring for public links, local proof commands, API-returned Blockscout link reachability, three-minute demo timing, followable recording order with per-step `evidenceFocus`, registry mint event/summary link checks, plaza flow grouping, Nova story mapping, delivery requirement coverage, current source commit anchoring, and final review entry points
 - `handshakeProof` wiring for the real `agentId 43 <-> 44` SocialHandshake, including score `88`, transaction/contract links, timestamp, public commitment policy, and local event/bytecode verification command
 - wallet timeline API output, its `summary`, public evidence `timeline` rows, and `timelineSummary` for registration, SocialHandshake deployment, fleet registration, and the real handshake transaction sequence, including shared `from` wallet and `expectedStatus` fields
 - pitch notes that keep the deck centered on Injective proof, bound Frost Buddy hardware claims, and cite the Raspberry Pi source

@@ -119,6 +119,7 @@ npm run verify:public-proof
 npm run verify:public-apis
 npm run verify:integration-guide
 npm run verify:github
+npm run verify:positioning
 npm run verify:pitch
 npm run verify:judge
 npm run verify:brief
@@ -137,7 +138,7 @@ npm run verify:plaza
 npm run verify:hardware
 ```
 
-其中 `npm run verify:demo` 是录制前总检查：它会串起公开证据包、钱包时间线 API/RPC 事实表、`sourceControl`、`reviewBrief`、`judgeRunbook`、`builderCode=pocket-earth` fleet 读回、Registry mint 事件、Blockscout 链接、`recordingOrder`、`plazaFlow`、`integrationAlignment`、`reviewEntrypoints` 和 `deliveryChecklist`。
+其中 `npm run verify:demo` 是录制前总检查：它会串起公开证据包、钱包时间线 API/RPC 事实表、文档定位快检、`sourceControl`、`reviewBrief`、`judgeRunbook`、`builderCode=pocket-earth` fleet 读回、Registry mint 事件、Blockscout 链接、`recordingOrder`、`plazaFlow`、`integrationAlignment`、`reviewEntrypoints` 和 `deliveryChecklist`。
 
 `npm run verify:delivery` 固定 GitHub 仓库、线上 `?demo`、四条公开 API、`JUDGE-QUICKSTART.md` 和交付清单；`npm run verify:github` 确认远端 README、集成说明、证据包、录制脚本和 60 秒复验入口都仍指向 `Pocket-Earth-Injective`。
 
