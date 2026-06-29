@@ -189,6 +189,10 @@ assertTrue(
     && readingOrder.indexOf('Frost Edge Node hardware proof API') < readingOrder.indexOf('`public-plaza` chain discovery'),
 )
 assertTrue('evidence review entrypoints array', Array.isArray(evidence.reviewEntrypoints))
+const reviewEntrypointByKey = new Map(evidence.reviewEntrypoints.map((item) => [item.key, item]))
+assertEqual('evidence hardware bridge API entrypoint type', reviewEntrypointByKey.get('hardware-bridge-api')?.type, 'api')
+assertEqual('evidence hardware bridge API entrypoint path', reviewEntrypointByKey.get('hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
+assertTrue('evidence hardware bridge API entrypoint label', String(reviewEntrypointByKey.get('hardware-bridge-api')?.label || '').includes('Frost Edge Node'))
 assertEqual('evidence hardware bridge entrypoint', evidence.reviewEntrypoints.find((item) => item.key === 'hardware-bridge')?.url, HARDWARE_BRIDGE_URL)
 assertTrue('evidence delivery checklist array', Array.isArray(evidence.deliveryChecklist))
 assertEqual('evidence Frost Edge Node check', evidence.deliveryChecklist.find((item) => item.key === 'frost-edge-node')?.localCheck, 'npm run verify:hardware')
