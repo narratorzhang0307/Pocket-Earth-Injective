@@ -48,6 +48,7 @@ npm run verify:source
 npm run verify:registry
 npm run verify:wallet
 npm run verify:plaza-flow
+npm run verify:hardware
 npm run verify:delivery
 npm run verify:demo
 ```

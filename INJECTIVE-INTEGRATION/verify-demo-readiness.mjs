@@ -35,6 +35,10 @@ const checks = [
     moduleUrl: new URL('./verify-pitch-notes.mjs', import.meta.url),
   },
   {
+    label: 'Frost Edge Node hardware bridge stays public-only',
+    moduleUrl: new URL('./verify-hardware-bridge.mjs', import.meta.url),
+  },
+  {
     label: 'judge quickstart is public and followable',
     moduleUrl: new URL('./verify-judge-quickstart.mjs', import.meta.url),
   },

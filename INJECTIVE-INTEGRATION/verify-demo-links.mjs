@@ -60,6 +60,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:positioning',
   'app source, hardware bridge, docs, and frost-agent wording guard',
   'npm run verify:pitch',
+  'npm run verify:hardware',
   'npm run verify:judge',
   'npm run verify:brief',
   'npm run verify:review',

@@ -25,7 +25,7 @@ Start with `JUDGE-QUICKSTART.md` for the 60-second path. The evidence is organiz
 | Product loop | `publicReadApis`, `plazaFlow`, `recordingOrder[].evidenceFocus` | public-plaza reads the chain; agent-plaza keeps the install loop separate and demonstrable |
 | Delivery guard | `reviewBrief`, `judgeRunbook`, `reviewChecklist`, `integrationAlignment`, `reviewEntrypoints`, `deliveryChecklist`, `sourceControl` | the docs, API fields, source anchor, privacy boundary, and reproduction commands stay aligned |
 
-The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-apis`, `npm run verify:positioning`, `npm run verify:registry`, `npm run verify:wallet`, `npm run verify:plaza-flow`, and `npm run verify:demo`.
+The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-apis`, `npm run verify:positioning`, `npm run verify:registry`, `npm run verify:wallet`, `npm run verify:plaza-flow`, `npm run verify:hardware`, and `npm run verify:demo`.
 
 | Check | Public evidence | Pass criteria |
 |---|---|---|
@@ -108,6 +108,7 @@ npm run verify:source
 npm run verify:registry
 npm run verify:agent-proof
 npm run verify:plaza-flow
+npm run verify:hardware
 npm run verify:nova-alignment
 npm run verify:delivery
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
@@ -131,6 +132,7 @@ The verification suite keeps the evidence readable and reproducible:
 | `npm run verify:wallet` | RPC-backed wallet timeline and successful receipt order |
 | `npm run verify:recording-order` | followable order from Blockscout to API to plaza smoke |
 | `npm run verify:plaza-flow` | public-plaza as chain discovery; agent-plaza as marketplace/install loop |
+| `npm run verify:hardware` | Frost Edge Node JSONL bridge, Pi skill router, and public-only hardware boundary |
 | `npm run verify:nova-alignment` | AI social, Injective execution, hardware extension, and privacy-first proof mapping |
 | `npm run verify:delivery` | live demo, API entrypoints, quickstart, GitHub, and delivery checklist |
 
@@ -164,6 +166,7 @@ npm run verify:source
 npm run verify:registry
 npm run verify:agent-proof
 npm run verify:plaza-flow
+npm run verify:hardware
 npm run verify:nova-alignment
 npm run verify:delivery
 npm run verify:injective
