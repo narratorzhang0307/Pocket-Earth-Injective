@@ -10,6 +10,7 @@ import {
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  JUDGE_RUNBOOK,
   JUDGE_QUICKSTART_URL,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
@@ -105,6 +106,7 @@ function collectCommands(evidence) {
   const commands = []
   for (const item of evidence.publicReadApis || []) commands.push(['publicReadApis', item.verification])
   for (const item of evidence.reviewBrief?.injectiveCore || []) commands.push(['reviewBrief.injectiveCore', item.machineCheck])
+  for (const item of evidence.judgeRunbook?.steps || []) commands.push(['judgeRunbook.steps', item.localCheck || item.command])
   for (const item of evidence.competitionAlignment || []) commands.push(['competitionAlignment', item.machineCheck])
   for (const item of evidence.reviewChecklist || []) commands.push(['reviewChecklist', item.machineCheck])
   for (const item of evidence.submissionChecklist || []) commands.push(['submissionChecklist', item.localCheck])
@@ -130,6 +132,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'handshakeContract',
   'handshakeProof',
   'handshakeScanUrl',
+  'judgeRunbook',
   'network',
   'ok',
   'owner',
@@ -197,7 +200,7 @@ assertEqual('publicReadApis chain evidence verification', publicReadApiByKey.get
 assertEqual('publicReadApis agent proof verification', publicReadApiByKey.get('agent-proof-api')?.verification, 'npm run verify:agent-proof')
 assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
-assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus'])
 assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof'])
 assertListIncludes('publicReadApis agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'reviewPath', 'sourceControl'])
 assertListIncludes('publicReadApis agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry'])
@@ -244,6 +247,30 @@ assertFocusIncludes('recording step 6', evidence.recordingOrder[5], `chainId ${I
 assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'handshake')
 assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'public-plaza')
 assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'agent-plaza')
+
+console.log('\nJudge runbook')
+assertTrue('judgeRunbook object', !!evidence.judgeRunbook && typeof evidence.judgeRunbook === 'object')
+assertEqual('judgeRunbook title', evidence.judgeRunbook.title, JUDGE_RUNBOOK.title)
+assertEqual('judgeRunbook estimated seconds', evidence.judgeRunbook.estimatedSeconds, 60)
+assertEqual('judgeRunbook quickstart URL', evidence.judgeRunbook.quickstartUrl, JUDGE_QUICKSTART_URL)
+assertEqual('judgeRunbook publicOnly', evidence.judgeRunbook.publicOnly, true)
+assertTrue('judgeRunbook steps array', Array.isArray(evidence.judgeRunbook.steps))
+assertEqual('judgeRunbook step count', evidence.judgeRunbook.steps.length, JUDGE_RUNBOOK.steps.length)
+assertEqual('judgeRunbook step 1 URL', evidence.judgeRunbook.steps[0]?.url, scanUrlForAgent(43))
+assertEqual('judgeRunbook step 2 URL', evidence.judgeRunbook.steps[1]?.url, scanUrlForAddress(PROOF_OWNER))
+assertEqual('judgeRunbook step 3 path', evidence.judgeRunbook.steps[2]?.path, '/api/injective?tool=get-chain-evidence')
+assertTrue('judgeRunbook step 4 paths include agent proof', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.agentProofApi))
+assertTrue('judgeRunbook step 4 paths include fleet', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.listAgentsApi))
+assertTrue('judgeRunbook step 4 paths include wallet timeline', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.walletTimelineApi))
+assertEqual('judgeRunbook step 5 command', evidence.judgeRunbook.steps[4]?.command, 'npm run verify:demo')
+for (const [index, step] of evidence.judgeRunbook.steps.entries()) {
+  assertEqual(`judgeRunbook step ${index + 1} number`, step.step, index + 1)
+  assertTrue(`judgeRunbook step ${index + 1} key`, String(step.key || '').length > 4)
+  assertTrue(`judgeRunbook step ${index + 1} action`, String(step.action || '').length > 10)
+  assertTrue(`judgeRunbook step ${index + 1} verifies`, String(step.verifies || '').length > 20)
+  assertTrue(`judgeRunbook step ${index + 1} focus`, Array.isArray(step.focus) && step.focus.length >= 3)
+  assertTrue(`judgeRunbook step ${index + 1} localCheck`, String(step.localCheck || '').startsWith('npm run verify:'))
+}
 
 console.log('\nFleet and timeline are review-ready')
 assertEqual('fleet agent count', evidence.agents.length, FLEET_AGENTS.length)

@@ -9,6 +9,7 @@ import {
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  JUDGE_RUNBOOK,
   JUDGE_QUICKSTART_URL,
   PLAZA_DEMO_FLOW,
   PROOF_OWNER,
@@ -90,7 +91,7 @@ assertEqual('public read evidence API path', publicReadApiByKey.get('chain-evide
 assertEqual('public read agent proof API path', publicReadApiByKey.get('agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('public read fleet API path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
 assertEqual('public read wallet API path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
-assertListIncludes('public read chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('public read chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'recordingOrder[].evidenceFocus'])
 assertListIncludes('public read chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof'])
 assertListIncludes('public read agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'])
 assertListIncludes('public read agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'single-card sourceControl anchor'])
@@ -139,6 +140,26 @@ assertEqual('review brief contest fit count', evidence.reviewBrief.contestFit?.l
 assertTrue('review brief names ERC-8004', evidence.reviewBrief.oneLiner?.includes('ERC-8004'))
 assertTrue('review brief maps to AI social', evidence.reviewBrief.contestFit?.some((item) => item.alignmentKey === 'ai-social'))
 assertTrue('review brief maps to physical world', evidence.reviewBrief.contestFit?.some((item) => item.alignmentKey === 'agent-physical-world'))
+assertTrue('judge runbook object', !!evidence.judgeRunbook && typeof evidence.judgeRunbook === 'object')
+assertEqual('judge runbook title', evidence.judgeRunbook.title, JUDGE_RUNBOOK.title)
+assertEqual('judge runbook estimated seconds', evidence.judgeRunbook.estimatedSeconds, JUDGE_RUNBOOK.estimatedSeconds)
+assertEqual('judge runbook quickstart URL', evidence.judgeRunbook.quickstartUrl, JUDGE_QUICKSTART_URL)
+assertEqual('judge runbook publicOnly', evidence.judgeRunbook.publicOnly, true)
+assertTrue('judge runbook steps array', Array.isArray(evidence.judgeRunbook.steps))
+assertEqual('judge runbook step count', evidence.judgeRunbook.steps.length, JUDGE_RUNBOOK.steps.length)
+for (const [index, step] of evidence.judgeRunbook.steps.entries()) {
+  const expected = JUDGE_RUNBOOK.steps[index]
+  assertEqual(`judge runbook step ${index + 1} number`, step.step, index + 1)
+  assertEqual(`judge runbook step ${index + 1} key`, step.key, expected.key)
+  assertEqual(`judge runbook step ${index + 1} type`, step.type, expected.type)
+  assertEqual(`judge runbook step ${index + 1} local check`, step.localCheck, expected.localCheck)
+  assertTrue(`judge runbook step ${index + 1} focus`, Array.isArray(step.focus) && step.focus.length >= 3)
+}
+assertEqual('judge runbook identity URL', evidence.judgeRunbook.steps[0]?.url, scanUrlForAgent(43))
+assertEqual('judge runbook wallet URL', evidence.judgeRunbook.steps[1]?.url, scanUrlForAddress(PROOF_OWNER))
+assertEqual('judge runbook evidence path', evidence.judgeRunbook.steps[2]?.path, '/api/injective?tool=get-chain-evidence')
+assertTrue('judge runbook public APIs include agent proof', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.agentProofApi))
+assertTrue('judge runbook command step runs demo', evidence.judgeRunbook.steps[4]?.command === 'npm run verify:demo')
 assertTrue('review checklist array', Array.isArray(evidence.reviewChecklist))
 assertEqual('review checklist count', evidence.reviewChecklist.length, REVIEW_CHECKLIST.length)
 assertEqual('review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')

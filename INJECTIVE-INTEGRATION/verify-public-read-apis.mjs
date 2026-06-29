@@ -102,7 +102,7 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof'],
     judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
@@ -147,6 +147,9 @@ assertEqual('chain evidence chainId', chainEvidence.chainId, INJECTIVE_TESTNET_C
 assertEqual('chain evidence readOnly', chainEvidence.readOnly, true)
 assertEqual('chain evidence publicOnly', chainEvidence.publicOnly, true)
 assertEqual('chain evidence source repository', chainEvidence.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertTrue('chain evidence carries judgeRunbook', Array.isArray(chainEvidence.judgeRunbook?.steps))
+assertEqual('chain evidence judgeRunbook step count', chainEvidence.judgeRunbook.steps.length, 5)
+assertEqual('chain evidence judgeRunbook starts with identity URL', chainEvidence.judgeRunbook.steps[0]?.url, scanUrlForAgent(43))
 assertTrue('chain evidence carries publicReadApis', Array.isArray(chainEvidence.publicReadApis))
 assertTrue('chain evidence carries agent proof rows', Array.isArray(chainEvidence.agents))
 assertEqual('chain evidence agent proof row count', chainEvidence.agents.length, FLEET_AGENTS.length)

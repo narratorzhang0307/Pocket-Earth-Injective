@@ -158,6 +158,69 @@ export const SUBMISSION_LINKS = [
   { key: 'wallet-timeline-api', label: 'Read wallet transaction timeline from RPC', type: 'api', path: '/api/injective?tool=get-wallet-timeline' },
 ]
 
+export const JUDGE_RUNBOOK = {
+  title: '60-second Injective evidence runbook',
+  estimatedSeconds: 60,
+  quickstartUrl: JUDGE_QUICKSTART_URL,
+  publicOnly: true,
+  steps: [
+    {
+      step: 1,
+      key: 'agent-identity',
+      action: 'Open Frost main identity #43',
+      type: 'blockscout',
+      url: scanUrlForAgent(43),
+      verifies: 'ERC-8004 agent identity exists on Injective testnet and belongs to the owner wallet.',
+      focus: ['agentId 43', `owner ${PROOF_OWNER}`, `builderCode ${BUILDER_CODE}`],
+      localCheck: 'npm run verify:agent-proof',
+    },
+    {
+      step: 2,
+      key: 'owner-wallet',
+      action: 'Open owner wallet timeline',
+      type: 'blockscout',
+      url: scanUrlForAddress(PROOF_OWNER),
+      verifies: 'Registration, fleet minting, contract deployment, and real handshake share the same wallet.',
+      focus: ['same owner wallet', 'registration to handshake sequence', 'successful testnet transactions'],
+      localCheck: 'npm run verify:wallet',
+    },
+    {
+      step: 3,
+      key: 'public-evidence-api',
+      action: 'Read public evidence API',
+      type: 'api',
+      path: '/api/injective?tool=get-chain-evidence',
+      verifies: 'The product API exposes sourceControl, registry mint summary, wallet timeline summary, handshake proof, and privacy boundary.',
+      focus: ['sourceControl', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'privacyBoundary'],
+      localCheck: 'npm run verify:public-proof',
+    },
+    {
+      step: 4,
+      key: 'public-read-apis',
+      action: 'Open judge-safe product APIs',
+      type: 'api-suite',
+      paths: [
+        '/api/injective?tool=get-agent-proof&agentId=43',
+        `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENT_IDS)}`,
+        '/api/injective?tool=get-wallet-timeline',
+      ],
+      verifies: 'The single-agent proof, builder-scoped fleet, and RPC wallet timeline are read-only and publicOnly.',
+      focus: ['agent proof card', `builderCode=${BUILDER_CODE}`, 'wallet summary allSucceeded'],
+      localCheck: 'npm run verify:public-apis',
+    },
+    {
+      step: 5,
+      key: 'demo-smoke',
+      action: 'Run the local demo readiness check',
+      type: 'command',
+      command: 'npm run verify:demo',
+      verifies: 'The full review path, three-minute script, Blockscout links, plaza split, and submission package still pass.',
+      focus: ['recordingOrder', 'plazaFlow', 'submissionLinks', 'sourceControl'],
+      localCheck: 'npm run verify:demo',
+    },
+  ],
+}
+
 export const SUBMISSION_CHECKLIST = [
   {
     key: 'public-github-readme',

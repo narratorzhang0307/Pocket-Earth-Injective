@@ -7,6 +7,7 @@ import {
   DEMO_VIDEO_LIMIT_SECONDS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  JUDGE_RUNBOOK,
   LIVE_DEMO_URL,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
@@ -98,6 +99,7 @@ for (const snippet of [
   'registryMintEvents',
   'registryMintSummary',
   'registry-mint-events',
+  'judgeRunbook',
   'publicReadApis',
   'get-agent-proof',
   'expectedStatus',
@@ -161,6 +163,18 @@ assertEqual('evidence public read API count', evidence.publicReadApis.length, 4)
 assertEqual('evidence public read agent proof path', evidence.publicReadApis.find((item) => item.key === 'agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('evidence public read fleet path', evidence.publicReadApis.find((item) => item.key === 'agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
+assertTrue('evidence judgeRunbook object', !!evidence.judgeRunbook && typeof evidence.judgeRunbook === 'object')
+assertEqual('evidence judgeRunbook title', evidence.judgeRunbook.title, JUDGE_RUNBOOK.title)
+assertEqual('evidence judgeRunbook estimated seconds', evidence.judgeRunbook.estimatedSeconds, JUDGE_RUNBOOK.estimatedSeconds)
+assertEqual('evidence judgeRunbook quickstart URL', evidence.judgeRunbook.quickstartUrl, JUDGE_RUNBOOK.quickstartUrl)
+assertEqual('evidence judgeRunbook publicOnly', evidence.judgeRunbook.publicOnly, true)
+assertTrue('evidence judgeRunbook steps array', Array.isArray(evidence.judgeRunbook.steps))
+assertEqual('evidence judgeRunbook step count', evidence.judgeRunbook.steps.length, JUDGE_RUNBOOK.steps.length)
+assertEqual('evidence judgeRunbook first URL', evidence.judgeRunbook.steps[0]?.url, scanUrlForAgent(43))
+assertEqual('evidence judgeRunbook wallet URL', evidence.judgeRunbook.steps[1]?.url, scanUrlForAddress(PROOF_OWNER))
+assertEqual('evidence judgeRunbook evidence API path', evidence.judgeRunbook.steps[2]?.path, '/api/injective?tool=get-chain-evidence')
+assertTrue('evidence judgeRunbook API suite includes agent proof', evidence.judgeRunbook.steps[3]?.paths?.includes('/api/injective?tool=get-agent-proof&agentId=43'))
+assertEqual('evidence judgeRunbook final command', evidence.judgeRunbook.steps[4]?.command, 'npm run verify:demo')
 assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)
 assertEqual('evidence timeline summary event count', evidence.timelineSummary?.eventCount, TIMELINE_EVENTS.length)
 assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary?.rpcVerification, '/api/injective?tool=get-wallet-timeline')
