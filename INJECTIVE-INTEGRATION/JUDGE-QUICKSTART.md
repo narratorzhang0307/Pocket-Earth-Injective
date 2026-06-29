@@ -8,7 +8,7 @@
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
 3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `judgeRunbook`, `publicReadApis[].judgeFocus`, `publicReadApis[].expectedFields`, `hardwareBridge`, `reviewEntrypoints.hardware-bridge-api`, `reviewEntrypoints.hardware-bridge`, `deliveryChecklist.frost-edge-node`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
 4. Open the single-agent proof card: `/api/injective?tool=get-agent-proof&agentId=43`
-5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
+5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`. Start from the top-level `sdk`, `total`, `offset`, `limit`; then inspect each `agents[]` row for `owner`, `wallet`, `identityTuple`, `builderCode`. For `agentId 44-47`, the attached public data URI card fields should include `card.tags` and `card.metadata.builderCode`, without raw private profile text.
 6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
 7. Open the Frost Edge Node proof card: `/api/injective?tool=get-hardware-bridge-proof`, starting from `hardwareBridge.chainDispatch`, `piRouter.skills`, and `privacyBoundary.hardware`
 8. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
@@ -20,6 +20,7 @@
 - `agentId 43-47` are Pocket Earth Frost identities on Injective testnet with `builderCode = pocket-earth`.
 - `judgeRunbook` embeds the same 60-second path in the product API: identity page, owner wallet, evidence API, public read API suite, and `npm run verify:demo`.
 - Each `agents[]` row in the public evidence API now includes a `proofApi`; `npm run verify:agent-proof` opens those single-agent cards for `agentId 43-47`.
+- The builder-scoped fleet API proves the same identities can be read back by `builderCode=pocket-earth`: top-level `sdk`, `total`, `offset`, `limit` confirm the query shape; `agents[]` exposes `owner`, `wallet`, `identityTuple`, `builderCode`; `agentId 44-47` expose only `card.tags` and `card.metadata.builderCode` as public data URI card fields.
 - The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events, and `registryMintSummary` condenses the agentId range, same-owner check, zero-address mint check, first/last block, and `npm run verify:registry` command.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
 - The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns `chainId 1439` plus its own `summary` so reviewers can confirm the Injective testnet, event count, all-succeeded status, and first/last block/time before reading every event row.
