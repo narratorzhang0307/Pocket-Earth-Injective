@@ -160,7 +160,7 @@ export const SUBMISSION_CHECKLIST = [
     requirement: 'Public GitHub repository with a complete README',
     status: 'ready',
     evidence: 'README.md opens with the Injective submission story and links to the evidence pack, demo script, and integration guide.',
-    localCheck: 'npm run verify:submission',
+    localCheck: 'npm run verify:github',
     linkKey: 'github-repo',
   },
   {
@@ -192,7 +192,7 @@ export const SUBMISSION_CHECKLIST = [
     requirement: 'Judges can reproduce public evidence without private keys',
     status: 'ready',
     evidence: 'get-chain-evidence, list-agents by builderCode, and get-wallet-timeline are read-only and publicOnly/testnet-scoped.',
-    localCheck: 'npm run verify:evidence',
+    localCheck: 'npm run verify:public-proof',
     linkKey: 'chain-evidence-api',
   },
 ]

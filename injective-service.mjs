@@ -227,6 +227,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           demoDuration: 'npm run verify:duration',
           evidenceSmoke: 'npm run verify:evidence',
           publicProof: 'npm run verify:public-proof',
+          githubRepo: 'npm run verify:github',
           reviewBrief: 'npm run verify:brief',
           reviewChecklist: 'npm run verify:review',
           reviewLinks: 'npm run verify:review-links',

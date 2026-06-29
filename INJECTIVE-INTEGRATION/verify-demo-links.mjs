@@ -48,6 +48,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:duration',
   'npm run verify:evidence',
   'npm run verify:public-proof',
+  'npm run verify:github',
   'npm run verify:brief',
   'npm run verify:review',
   'npm run verify:review-links',

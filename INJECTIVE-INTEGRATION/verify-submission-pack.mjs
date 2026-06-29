@@ -54,6 +54,8 @@ assertEqual('submissionLinks count', links.length, SUBMISSION_LINKS.length)
 assertEqual('submissionLinks unique key count', new Set(links.map((item) => item.key)).size, links.length)
 assertEqual('submission command', evidence.verification?.submissionPack, 'npm run verify:submission')
 assertEqual('submission script', packageJson.scripts?.['verify:submission'], 'node INJECTIVE-INTEGRATION/verify-submission-pack.mjs')
+assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
+assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
 assertEqual('demo duration command', evidence.verification?.demoDuration, 'npm run verify:duration')
 assertEqual('demo duration script', packageJson.scripts?.['verify:duration'], 'node INJECTIVE-INTEGRATION/verify-demo-duration.mjs')
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
@@ -99,10 +101,12 @@ for (const expected of SUBMISSION_CHECKLIST) {
   }
 }
 assertEqual('GitHub checklist status', checklistByKey.get('public-github-readme').status, 'ready')
+assertEqual('GitHub checklist local check', checklistByKey.get('public-github-readme').localCheck, 'npm run verify:github')
 assertEqual('Injective checklist status', checklistByKey.get('injective-integration').status, 'ready')
 assertEqual('Demo checklist status', checklistByKey.get('demo-video-script').status, 'ready-for-recording')
 assertEqual('Demo checklist local check', checklistByKey.get('demo-video-script').localCheck, 'npm run verify:duration')
 assertEqual('Pitch checklist status', checklistByKey.get('pitch-deck-notes').status, 'ready-for-deck')
+assertEqual('Public API checklist local check', checklistByKey.get('public-review-apis').localCheck, 'npm run verify:public-proof')
 assertTrue('checklist mentions no private keys', checklistByKey.get('public-review-apis').evidence.includes('without private keys') || checklistByKey.get('public-review-apis').evidence.includes('read-only'))
 
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
