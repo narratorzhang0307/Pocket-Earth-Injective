@@ -36,6 +36,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   '/api/injective?tool=get-wallet-timeline',
   'registryMintEvents',
   'registry-mint-events',
+  'expectedStatus',
   'reviewBrief',
   'reviewLinks',
   'reviewChecklist',

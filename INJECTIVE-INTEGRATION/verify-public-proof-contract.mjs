@@ -184,6 +184,9 @@ assertEqual('timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)
 for (const event of TIMELINE_EVENTS) {
   const actual = evidence.timeline.find((item) => item.hash === event.hash)
   assertTrue(`timeline ${event.role} exists`, !!actual)
+  assertEqual(`timeline ${event.role} from`, actual.from, PROOF_OWNER)
+  assertEqual(`timeline ${event.role} to`, actual.to, event.to)
+  assertEqual(`timeline ${event.role} expectedStatus`, actual.expectedStatus, 'success')
   assertEqual(`timeline ${event.role} scanUrl`, actual.scanUrl, scanUrlForTx(event.hash))
 }
 

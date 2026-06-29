@@ -6,7 +6,7 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents` and the `registry-mint-events` checklist item
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents`, the wallet `timeline` `from` / `expectedStatus` fields, and the `registry-mint-events` checklist item
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`
 6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
@@ -18,6 +18,7 @@
 - `agentId 43-47` are Pocket Earth Frost identities on Injective testnet with `builderCode = pocket-earth`.
 - The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
+- The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success` before the RPC-backed wallet timeline rechecks receipts and blocks.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
 - The evidence API is `readOnly` and `publicOnly`; raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
