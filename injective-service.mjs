@@ -1,7 +1,7 @@
 // ════════════════════════════════════════════════════════════════════════════
 // Injective 链上 agent 身份服务（server 端 · ESM · Injective 集成 P0-2/4/5）
 // ────────────────────────────────────────────────────────────────────────────
-// 路由 /api/injective?tool=ping | list-agents | get-status | get-wallet-timeline | register
+// 路由 /api/injective?tool=ping | list-agents | get-status | get-wallet-timeline | get-hardware-bridge-proof | register
 //  · SDK(@injective/agent-sdk) 用 dynamic import 容错：装好就走真链，没装好返回 stub/error 不崩。
 //  · 隐私：私钥只在本服务端从 env 读，绝不进前端 bundle；register 的脱敏 Taste Passport 由前端生成后 POST 进来。
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
@@ -245,12 +245,41 @@ export async function handleInjective(req, res, url, cfg = {}) {
       })
     }
 
+    // —— 只读：Frost Edge Node 硬件桥证明卡（无需私钥，公开事件边界单独打开）——
+    if (tool === 'get-hardware-bridge-proof') {
+      return json(res, {
+        ok: true,
+        network: 'testnet',
+        chainId: INJECTIVE_TESTNET_CHAIN_ID,
+        readOnly: true,
+        publicOnly: true,
+        hardwareBridge: HARDWARE_BRIDGE_PROOF,
+        sourceControl: getSourceControlEvidence(),
+        privacyBoundary: {
+          hardware: HARDWARE_BRIDGE_PROOF.privacyBoundary,
+          offChain: EVIDENCE_PRIVACY_BOUNDARY.offChain,
+          writeBoundary: 'Frost Edge Node reads public JSONL events only; it does not sign wallet transactions or store private profile payloads.',
+        },
+        reviewPath: [
+          { step: 1, label: 'Open Frost Edge Node module', url: HARDWARE_BRIDGE_PROOF.moduleUrl, verifies: 'The hardware bridge is a public-event adapter under the current repository.' },
+          { step: 2, label: 'Read Injective fleet source', path: HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead, verifies: 'chain_dispatch is sourced from the public builderCode=pocket-earth fleet.' },
+          { step: 3, label: 'Run hardware smoke', command: HARDWARE_BRIDGE_PROOF.localVerification, verifies: 'JSONL events and the Raspberry Pi skill router keep the public-only boundary.' },
+        ],
+        verification: {
+          hardwareBridge: 'npm run verify:hardware',
+          publicReadApis: 'npm run verify:public-apis',
+          chainEvidenceApi: '/api/injective?tool=get-chain-evidence',
+        },
+      })
+    }
+
     // —— 只读：公开链上证据包（供评审/录屏直接从产品 API 拉同一份公开事实表）——
     if (tool === 'get-chain-evidence') {
       const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
       const listAgentsApi = `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`
       const agentProofApi = '/api/injective?tool=get-agent-proof&agentId=43'
       const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
+      const hardwareBridgeApi = '/api/injective?tool=get-hardware-bridge-proof'
       const publicReadApis = [
         {
           key: 'chain-evidence-api',
@@ -303,6 +332,19 @@ export async function handleInjective(req, res, url, cfg = {}) {
           purpose: 'Replays registration, SocialHandshake deployment, fleet registration, and the real handshake from Injective RPC.',
           expectedFields: ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'],
           judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
+        },
+        {
+          key: 'hardware-bridge-api',
+          label: 'Open Frost Edge Node hardware bridge proof',
+          method: 'GET',
+          path: hardwareBridgeApi,
+          chainId: INJECTIVE_TESTNET_CHAIN_ID,
+          readOnly: true,
+          publicOnly: true,
+          verification: 'npm run verify:hardware',
+          purpose: 'Returns a focused proof card for the Raspberry Pi / BLE / TTS public-event bridge without private keys or raw profile payloads.',
+          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'privacyBoundary.hardware', 'sourceControl'],
+          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'no wallet signing or raw profile text'],
         },
       ]
       const firstTimelineEvent = TIMELINE_EVENTS[0]
@@ -488,6 +530,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           agentProofApi,
           listAgentsApi,
           walletTimelineApi,
+          hardwareBridgeApi,
         },
       })
     }

@@ -89,6 +89,7 @@ for (const tool of [
   'get-chain-evidence',
   'get-agent-proof',
   'get-wallet-timeline',
+  'get-hardware-bridge-proof',
   'register',
   'handshake',
 ]) {
@@ -103,6 +104,7 @@ for (const endpoint of [
   'tool=get-agent-proof&agentId=43',
   'tool=get-chain-evidence',
   'tool=get-wallet-timeline',
+  'tool=get-hardware-bridge-proof',
   'tool=register',
   'tool=handshake',
 ]) {

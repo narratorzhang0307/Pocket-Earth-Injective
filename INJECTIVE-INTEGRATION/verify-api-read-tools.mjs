@@ -55,7 +55,7 @@ console.error = (...args) => {
   else originalError(...args)
 }
 
-let ping, status, reputation, evidence, agentProof, timeline
+let ping, status, reputation, evidence, agentProof, timeline, hardwareProof
 try {
   ping = await callInjectiveApi('/api/injective?tool=ping')
   status = await callInjectiveApi('/api/injective?tool=get-status&agentId=43')
@@ -63,6 +63,7 @@ try {
   evidence = await callInjectiveApi('/api/injective?tool=get-chain-evidence')
   agentProof = await callInjectiveApi('/api/injective?tool=get-agent-proof&agentId=43')
   timeline = await callInjectiveApi('/api/injective?tool=get-wallet-timeline')
+  hardwareProof = await callInjectiveApi('/api/injective?tool=get-hardware-bridge-proof')
 } finally {
   console.warn = originalWarn
   console.error = originalError
@@ -99,16 +100,18 @@ assertEqual('evidence sourceControl branch', evidence.sourceControl.branch, 'mai
 assertTrue('evidence sourceControl commit is sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
 assertEqual('evidence sourceControl evidence API', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 assertTrue('evidence public read APIs array', Array.isArray(evidence.publicReadApis))
-assertEqual('evidence public read API count', evidence.publicReadApis.length, 4)
+assertEqual('evidence public read API count', evidence.publicReadApis.length, 5)
 const publicReadApiByKey = new Map(evidence.publicReadApis.map((item) => [item.key, item]))
 assertEqual('evidence public read chain evidence path', publicReadApiByKey.get('chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
 assertEqual('evidence public read agent proof path', publicReadApiByKey.get('agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('evidence public read fleet path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
 assertEqual('evidence public read wallet path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
+assertEqual('evidence public read hardware path', publicReadApiByKey.get('hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
 assertEqual('evidence public read evidence verification', publicReadApiByKey.get('chain-evidence-api')?.verification, 'npm run verify:public-proof')
 assertEqual('evidence public read agent proof verification', publicReadApiByKey.get('agent-proof-api')?.verification, 'npm run verify:agent-proof')
 assertEqual('evidence public read fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('evidence public read wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
+assertEqual('evidence public read hardware verification', publicReadApiByKey.get('hardware-bridge-api')?.verification, 'npm run verify:hardware')
 assertListIncludes('evidence public read chain expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge'])
 assertListIncludes('evidence public read chain judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof'])
 assertListIncludes('evidence public read agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'])
@@ -117,6 +120,8 @@ assertListIncludes('evidence public read fleet expected fields', publicReadApiBy
 assertListIncludes('evidence public read fleet judge focus', publicReadApiByKey.get('agent-fleet-api')?.judgeFocus, [`builderCode=${BUILDER_CODE}`, 'agentId 43-47 fleet', 'public-plaza chain discovery input'])
 assertListIncludes('evidence public read wallet expected fields', publicReadApiByKey.get('wallet-timeline-api')?.expectedFields, ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'])
 assertListIncludes('evidence public read wallet judge focus', publicReadApiByKey.get('wallet-timeline-api')?.judgeFocus, ['same owner wallet', 'all receipts succeeded', 'registration to real handshake sequence'])
+assertListIncludes('evidence public read hardware expected fields', publicReadApiByKey.get('hardware-bridge-api')?.expectedFields, ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'privacyBoundary.hardware', 'sourceControl'])
+assertListIncludes('evidence public read hardware judge focus', publicReadApiByKey.get('hardware-bridge-api')?.judgeFocus, ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'no wallet signing or raw profile text'])
 for (const [key, item] of publicReadApiByKey) {
   assertEqual(`evidence public read ${key} method`, item.method, 'GET')
   assertEqual(`evidence public read ${key} chainId`, item.chainId, INJECTIVE_TESTNET_CHAIN_ID)
@@ -365,8 +370,23 @@ for (let i = 1; i < timeline.events.length; i += 1) {
   assertTrue(`timeline block order ${i}`, BigInt(timeline.events[i - 1].blockNumber) <= BigInt(timeline.events[i].blockNumber))
 }
 
+console.log('\n/api get-hardware-bridge-proof')
+assertEqual('hardware proof ok', hardwareProof.ok, true)
+assertEqual('hardware proof network', hardwareProof.network, 'testnet')
+assertEqual('hardware proof chainId', hardwareProof.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('hardware proof readOnly', hardwareProof.readOnly, true)
+assertEqual('hardware proof publicOnly', hardwareProof.publicOnly, true)
+assertEqual('hardware proof key', hardwareProof.hardwareBridge?.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('hardware proof moduleUrl', hardwareProof.hardwareBridge?.moduleUrl, HARDWARE_BRIDGE_PROOF.moduleUrl)
+assertListIncludes('hardware proof eventKinds', hardwareProof.hardwareBridge?.eventKinds, ['music_now_playing', 'chain_dispatch'])
+assertEqual('hardware proof chainRead', hardwareProof.hardwareBridge?.chainDispatch?.chainRead, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
+assertListIncludes('hardware proof pi skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
+assertEqual('hardware proof source repository', hardwareProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
+assertEqual('hardware proof verification command', hardwareProof.verification?.hardwareBridge, 'npm run verify:hardware')
+
 if (sdkWarnings.length) {
   console.log('\nNOTE Agent SDK card fetch warnings were suppressed; API read-tool fields were verified directly.')
 }
 
-console.log('\nOK /api/injective ping, get-status, get-reputation, get-chain-evidence, get-agent-proof, and get-wallet-timeline read from Injective testnet.')
+console.log('\nOK /api/injective ping, get-status, get-reputation, get-chain-evidence, get-agent-proof, get-wallet-timeline, and get-hardware-bridge-proof read from Injective testnet.')

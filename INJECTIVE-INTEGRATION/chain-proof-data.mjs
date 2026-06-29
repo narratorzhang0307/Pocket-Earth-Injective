@@ -66,7 +66,7 @@ export const INTEGRATION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     integrationSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, handshakeProof, hardwareBridge, reviewBrief, reviewLinks, reviewChecklist, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, handshakeProof, hardwareBridge, reviewBrief, reviewLinks, reviewChecklist, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow; /api/injective?tool=get-hardware-bridge-proof opens the Frost Edge Node proof card directly.',
     machineCheck: 'npm run verify:public-proof',
   },
 ]
@@ -186,6 +186,7 @@ export const REVIEW_ENTRYPOINTS = [
   { key: 'agent-proof-api', label: 'Single-agent proof card for Frost #43', type: 'api', path: '/api/injective?tool=get-agent-proof&agentId=43' },
   { key: 'agent-fleet-api', label: 'Read agentId 43-47 by builderCode', type: 'api', path: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47` },
   { key: 'wallet-timeline-api', label: 'Read wallet transaction timeline from RPC', type: 'api', path: '/api/injective?tool=get-wallet-timeline' },
+  { key: 'hardware-bridge-api', label: 'Frost Edge Node hardware bridge proof API', type: 'api', path: '/api/injective?tool=get-hardware-bridge-proof' },
   { key: 'hardware-bridge', label: 'Frost Edge Node hardware bridge', type: 'module', url: HARDWARE_BRIDGE_URL },
 ]
 
@@ -234,9 +235,10 @@ export const JUDGE_RUNBOOK = {
         '/api/injective?tool=get-agent-proof&agentId=43',
         `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENT_IDS)}`,
         '/api/injective?tool=get-wallet-timeline',
+        '/api/injective?tool=get-hardware-bridge-proof',
       ],
-      verifies: 'The single-agent proof, builder-scoped fleet, and RPC wallet timeline are read-only and publicOnly.',
-      focus: ['agent proof card', `builderCode=${BUILDER_CODE}`, 'wallet summary allSucceeded'],
+      verifies: 'The single-agent proof, builder-scoped fleet, RPC wallet timeline, and Frost Edge Node bridge proof are read-only and publicOnly.',
+      focus: ['agent proof card', `builderCode=${BUILDER_CODE}`, 'wallet summary allSucceeded', 'hardwareBridge public JSONL boundary'],
       localCheck: 'npm run verify:public-apis',
     },
     {
@@ -289,7 +291,7 @@ export const DELIVERY_CHECKLIST = [
     key: 'public-review-apis',
     requirement: 'Judges can reproduce public evidence without private keys',
     status: 'ready',
-    evidence: 'get-chain-evidence, get-agent-proof, list-agents by builderCode, and get-wallet-timeline are read-only and publicOnly/testnet-scoped.',
+    evidence: 'get-chain-evidence, get-agent-proof, list-agents by builderCode, get-wallet-timeline, and get-hardware-bridge-proof are read-only and publicOnly/testnet-scoped.',
     localCheck: 'npm run verify:public-proof',
     linkKey: 'chain-evidence-api',
   },

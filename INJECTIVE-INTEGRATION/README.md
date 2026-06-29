@@ -65,7 +65,7 @@
 | 能力 | 文件 | 状态 |
 |---|---|---|
 | Taste Passport 脱敏名片，只导标签字符串，不含原文和热度 | `src/app/lib/injective/passport.ts` | 已实现 |
-| `/api/injective` 服务：`ping` / `list-agents` / `get-status` / `get-reputation` / `get-chain-evidence` / `get-agent-proof` / `get-wallet-timeline` / `register` / `handshake` | `injective-service.mjs` | 已实现 |
+| `/api/injective` 服务：`ping` / `list-agents` / `get-status` / `get-reputation` / `get-chain-evidence` / `get-agent-proof` / `get-wallet-timeline` / `get-hardware-bridge-proof` / `register` / `handshake` | `injective-service.mjs` | 已实现 |
 | dev/prod 双挂路由 | `server.mjs` / `vite.config.ts` | 已实现 |
 | Injective testnet 连通性 | `npm run verify:injective` | 已复验 |
 | `public-plaza` 读取链上真实 agent，失败时回落本地示意，不白屏 | `PublicPlazaPage.tsx` | 已实现 |
@@ -125,10 +125,11 @@ SocialHandshake 的部署交易 `0x6048425a...fa722` 由同一测试网钱包创
 | GET | `?tool=get-agent-proof&agentId=43` | 单 agent 证明卡：owner、`builderCode`、registry、mint tx、身份页、钱包页、源码锚点 | 否 |
 | GET | `?tool=get-chain-evidence` | 公开证据包：`registryMintEvents`、`registryMintSummary`、`timeline`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`reviewBrief`、`judgeRunbook`、`reviewLinks`、`reviewChecklist`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist`、`publicReadApis`、`recordingOrder`、`privacyBoundary`、`plazaFlow`、`sourceControl` | 否 |
 | GET | `?tool=get-wallet-timeline` | `{ chainId: 1439, readOnly: true, publicOnly: true, summary, events }`，从 RPC 复验钱包时间线 | 否 |
+| GET | `?tool=get-hardware-bridge-proof` | Frost Edge Node 单页证明卡：`hardwareBridge`、`chainDispatch.chainRead`、Pi 技能白名单、公开 JSONL 隐私边界和源码锚点 | 否 |
 | POST | `?tool=register` `{ passport, confirm }` | `{ agentId, txHashes, scanUrl }`；未确认时 dry-run | 真写需 |
 | POST | `?tool=handshake` `{ agentA, agentB, profileHashA, profileHashB, score, confirm }` | `{ txHash }`；未确认时 dry-run | 真写需 |
 
-四条公开只读入口由 `publicReadApis` 固定：`get-chain-evidence`、`get-agent-proof&agentId=43`、`list-agents&builderCode=pocket-earth`、`get-wallet-timeline`。每条都带 `judgeFocus` 和 `expectedFields`，方便快速复验字段，不需要展开源码。
+五条公开只读入口由 `publicReadApis` 固定：`get-chain-evidence`、`get-agent-proof&agentId=43`、`list-agents&builderCode=pocket-earth`、`get-wallet-timeline`、`get-hardware-bridge-proof`。每条都带 `judgeFocus` 和 `expectedFields`，方便快速复验字段，不需要展开源码。
 
 ---
 
@@ -167,7 +168,7 @@ npm run verify:hardware
 
 其中 `npm run verify:demo` 是录制前总检查：`verify:demo` 会串起公开证据包、钱包时间线 API/RPC 事实表、文档定位快检、`sourceControl`、`reviewBrief`、`judgeRunbook`、`builderCode=pocket-earth` fleet 读回、Registry mint 事件、Blockscout 链接、`recordingOrder`、`plazaFlow`、`integrationAlignment`、`reviewEntrypoints` 和 `deliveryChecklist`。
 
-`npm run verify:delivery` 固定 GitHub 仓库、线上 `?demo`、四条公开 API、`JUDGE-QUICKSTART.md` 和交付清单；`npm run verify:github` 确认远端 README、集成说明、证据包、录制脚本和 60 秒复验入口都仍指向 `Pocket-Earth-Injective`。
+`npm run verify:delivery` 固定 GitHub 仓库、线上 `?demo`、五条公开 API、`JUDGE-QUICKSTART.md` 和交付清单；`npm run verify:github` 确认远端 README、集成说明、证据包、录制脚本和 60 秒复验入口都仍指向 `Pocket-Earth-Injective`。
 
 ---
 

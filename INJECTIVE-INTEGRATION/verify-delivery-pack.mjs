@@ -102,6 +102,7 @@ assertEqual('chain evidence API path', expectedByKey.get('chain-evidence-api').p
 assertEqual('agent proof API path', expectedByKey.get('agent-proof-api').path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('agent fleet API path', expectedByKey.get('agent-fleet-api').path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('wallet timeline API path', expectedByKey.get('wallet-timeline-api').path, '/api/injective?tool=get-wallet-timeline')
+assertEqual('hardware bridge API path', expectedByKey.get('hardware-bridge-api').path, '/api/injective?tool=get-hardware-bridge-proof')
 assertEqual('hardware bridge url', expectedByKey.get('hardware-bridge').url, HARDWARE_BRIDGE_URL)
 assertTrue('hardware bridge url stays in integration repo', HARDWARE_BRIDGE_URL.startsWith(INTEGRATION_REPOSITORY_URL))
 

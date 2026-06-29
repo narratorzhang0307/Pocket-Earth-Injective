@@ -100,6 +100,7 @@ const expectedPaths = new Map([
   ['agent-proof-api', '/api/injective?tool=get-agent-proof&agentId=43'],
   ['agent-fleet-api', `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`],
   ['wallet-timeline-api', '/api/injective?tool=get-wallet-timeline'],
+  ['hardware-bridge-api', '/api/injective?tool=get-hardware-bridge-proof'],
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
@@ -117,6 +118,10 @@ const expectedGuidance = new Map([
   ['wallet-timeline-api', {
     expectedFields: ['summary.owner', 'summary.eventCount', 'summary.allSucceeded', 'events[].hash', 'events[].status'],
     judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
+  }],
+  ['hardware-bridge-api', {
+    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'privacyBoundary.hardware', 'sourceControl'],
+    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'no wallet signing or raw profile text'],
   }],
 ])
 
@@ -217,11 +222,28 @@ assertEqual('timeline event count', timeline.events?.length, TIMELINE_EVENTS.len
 assertEqual('timeline summary allSucceeded', timeline.summary?.allSucceeded, true)
 assertEqual('timeline summary evidence API', timeline.summary?.evidenceApi, '/api/injective?tool=get-chain-evidence')
 
+console.log('\nhardware bridge proof endpoint')
+const hardwareProof = await callApi(byKey.get('hardware-bridge-api').path)
+assertEqual('hardware proof ok', hardwareProof.ok, true)
+assertEqual('hardware proof chainId', hardwareProof.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('hardware proof readOnly', hardwareProof.readOnly, true)
+assertEqual('hardware proof publicOnly', hardwareProof.publicOnly, true)
+assertEqual('hardware proof key', hardwareProof.hardwareBridge?.key, HARDWARE_BRIDGE_PROOF.key)
+assertEqual('hardware proof moduleUrl', hardwareProof.hardwareBridge?.moduleUrl, HARDWARE_BRIDGE_PROOF.moduleUrl)
+assertListIncludes('hardware proof eventKinds', hardwareProof.hardwareBridge?.eventKinds, ['music_now_playing', 'chain_dispatch'])
+assertEqual('hardware proof chain source', hardwareProof.hardwareBridge?.chainDispatch?.source, 'injective-public-plaza')
+assertEqual('hardware proof chainRead', hardwareProof.hardwareBridge?.chainDispatch?.chainRead, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`)
+assertListIncludes('hardware proof skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
+assertEqual('hardware proof source repository', hardwareProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
+assertEqual('hardware proof verification command', hardwareProof.verification?.hardwareBridge, 'npm run verify:hardware')
+
 console.log('\nPublic-only guard')
 guardPublicText('publicReadApis', evidence.publicReadApis)
 guardPublicText('chain evidence response', chainEvidence)
 guardPublicText('agent proof response', agentProof)
 guardPublicText('fleet response', fleet)
 guardPublicText('wallet timeline response', timeline)
+guardPublicText('hardware bridge response', hardwareProof)
 
-console.log('\nOK publicReadApis opens the four judge-safe read-only Injective endpoints.')
+console.log('\nOK publicReadApis opens the five judge-safe read-only Injective endpoints.')

@@ -22,7 +22,7 @@ Start with `JUDGE-QUICKSTART.md` for the 60-second path. The evidence is organiz
 | Fleet | `registryMintEvents`, `registryMintSummary`, `list-agents&builderCode=pocket-earth` | `agentId 43-47` were minted from `0x0` to the same owner and are readable by builderCode |
 | Wallet timeline | `timeline`, `timelineSummary`, `get-wallet-timeline` | registration, contract deployment, fleet minting, and real handshake share one successful wallet sequence |
 | Social proof | `handshakeProof` | `agentId 43 <-> 44` produced a real SocialHandshake event with score `88` and non-zero public commitments |
-| Product loop | `publicReadApis`, `hardwareBridge`, `plazaFlow`, `recordingOrder[].evidenceFocus` | public-plaza reads the chain; agent-plaza keeps the install loop separate; Frost Edge Node receives only public event handoffs |
+| Product loop | `publicReadApis`, `hardwareBridge`, `get-hardware-bridge-proof`, `plazaFlow`, `recordingOrder[].evidenceFocus` | public-plaza reads the chain; agent-plaza keeps the install loop separate; Frost Edge Node receives only public event handoffs |
 | Delivery guard | `reviewBrief`, `judgeRunbook`, `reviewChecklist`, `integrationAlignment`, `reviewEntrypoints`, `deliveryChecklist`, `sourceControl` | the docs, API fields, hardware bridge entrypoint, source anchor, privacy boundary, and reproduction commands stay aligned |
 
 The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-apis`, `npm run verify:positioning`, `npm run verify:registry`, `npm run verify:wallet`, `npm run verify:plaza-flow`, `npm run verify:hardware`, and `npm run verify:demo`.
@@ -89,6 +89,7 @@ curl 'http://localhost:5173/api/injective?tool=get-chain-evidence'
 curl 'http://localhost:5173/api/injective?tool=get-agent-proof&agentId=43'
 curl 'http://localhost:5173/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47'
 curl 'http://localhost:5173/api/injective?tool=get-wallet-timeline'
+curl 'http://localhost:5173/api/injective?tool=get-hardware-bridge-proof'
 npm run verify:demo
 npm run verify:duration
 npm run verify:evidence
@@ -114,7 +115,7 @@ npm run verify:delivery
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`; its `hardwareBridge` field exposes the Frost Edge Node public-event bridge, `reviewEntrypoints` includes the hardware module, and `deliveryChecklist` includes the `npm run verify:hardware` privacy-bounded prototype check. The second call opens the #43 single-agent proof card. The third call reads `agentId 43-47` by `builderCode = pocket-earth`. The fourth call returns the RPC-backed wallet timeline with `summary, events`, including registration, SocialHandshake deployment, fleet registration, the real `agentId 43 <-> 44` handshake, owner, event count, all-succeeded status, first/last block, and first/last timestamp.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`; its `hardwareBridge` field exposes the Frost Edge Node public-event bridge, `reviewEntrypoints` includes both the hardware module and the hardware proof API, and `deliveryChecklist` includes the `npm run verify:hardware` privacy-bounded prototype check. The second call opens the #43 single-agent proof card. The third call reads `agentId 43-47` by `builderCode = pocket-earth`. The fourth call returns the RPC-backed wallet timeline with `summary, events`, including registration, SocialHandshake deployment, fleet registration, the real `agentId 43 <-> 44` handshake, owner, event count, all-succeeded status, first/last block, and first/last timestamp. The fifth call opens the Frost Edge Node proof card directly, so the Raspberry Pi / BLE / TTS boundary can be reviewed without searching through the full evidence package.
 
 The verification suite keeps the evidence readable and reproducible:
 
@@ -122,7 +123,7 @@ The verification suite keeps the evidence readable and reproducible:
 |---|---|
 | `npm run verify:evidence` | JSON-only evidence package |
 | `npm run verify:public-proof` | field shape, privacy boundary, public URLs, repo boundary, and leak guards |
-| `npm run verify:public-apis` | four `publicReadApis` entries and their `judgeFocus` / `expectedFields` |
+| `npm run verify:public-apis` | five `publicReadApis` entries and their `judgeFocus` / `expectedFields` |
 | `npm run verify:integration-guide` | API table, runbook order, and script mappings |
 | `npm run verify:github` | public repository, remote README, integration guide, evidence pack, and demo script |
 | `npm run verify:positioning` | README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent wording guard |
@@ -177,7 +178,7 @@ This read-only proof suite verifies:
 - `agentId 43-47` on Injective testnet
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
-- `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, `get-agent-proof`, and `get-wallet-timeline`
+- `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, `get-agent-proof`, `get-wallet-timeline`, and `get-hardware-bridge-proof`
 - review brief, API `judgeRunbook`, reviewer checklist, integration alignment, review entrypoints including the judge quickstart, delivery checklist, `publicReadApis`, `npm run verify:public-apis`, `npm run verify:integration-guide`, `npm run verify:positioning`, and sourceControl wiring for public links, local proof commands, API-returned Blockscout link reachability, three-minute demo timing, followable recording order with per-step `evidenceFocus`, registry mint event/summary link checks, plaza flow grouping, Nova story mapping, delivery requirement coverage, current source commit anchoring, and final review entry points
 - `handshakeProof` wiring for the real `agentId 43 <-> 44` SocialHandshake, including score `88`, transaction/contract links, timestamp, public commitment policy, and local event/bytecode verification command
 - wallet timeline API output, its `summary`, public evidence `timeline` rows, and `timelineSummary` for registration, SocialHandshake deployment, fleet registration, and the real handshake transaction sequence, including shared `from` wallet and `expectedStatus` fields
