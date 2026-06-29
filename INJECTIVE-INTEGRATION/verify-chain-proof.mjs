@@ -63,6 +63,10 @@ const checks = [
     moduleUrl: new URL('./verify-recording-order.mjs', import.meta.url),
   },
   {
+    label: 'Plaza flow separates public chain discovery from agent install loop',
+    moduleUrl: new URL('./verify-plaza-flow.mjs', import.meta.url),
+  },
+  {
     label: 'Frost Buddy hardware bridge: music + Injective chain dispatch events',
     moduleUrl: new URL('./verify-hardware-bridge.mjs', import.meta.url),
   },

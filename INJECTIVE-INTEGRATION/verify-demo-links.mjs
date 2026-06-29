@@ -47,6 +47,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:review',
   'npm run verify:review-links',
   'npm run verify:recording-order',
+  'npm run verify:plaza-flow',
   'npm run verify:injective',
   'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
 ]

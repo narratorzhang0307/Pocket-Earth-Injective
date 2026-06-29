@@ -18,6 +18,10 @@ const checks = [
     label: 'recording order Blockscout/API path is followable',
     moduleUrl: new URL('./verify-recording-order.mjs', import.meta.url),
   },
+  {
+    label: 'plaza flow manifest separates chain discovery and install loop',
+    moduleUrl: new URL('./verify-plaza-flow.mjs', import.meta.url),
+  },
 ]
 
 console.log('Pocket Earth x Injective demo readiness')

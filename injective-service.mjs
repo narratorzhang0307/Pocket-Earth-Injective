@@ -223,6 +223,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           reviewChecklist: 'npm run verify:review',
           reviewLinks: 'npm run verify:review-links',
           recordingOrder: 'npm run verify:recording-order',
+          plazaFlow: 'npm run verify:plaza-flow',
           proofSuite: 'npm run verify:injective',
           apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
           listAgentsApi,

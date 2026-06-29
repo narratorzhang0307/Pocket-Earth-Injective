@@ -12,6 +12,7 @@
     "verify:review": "node INJECTIVE-INTEGRATION/verify-review-checklist.mjs",
     "verify:review-links": "node INJECTIVE-INTEGRATION/verify-review-links.mjs",
     "verify:recording-order": "node INJECTIVE-INTEGRATION/verify-recording-order.mjs",
+    "verify:plaza-flow": "node INJECTIVE-INTEGRATION/verify-plaza-flow.mjs",
     "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
     "verify:hardware": "node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs",
     "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs"
