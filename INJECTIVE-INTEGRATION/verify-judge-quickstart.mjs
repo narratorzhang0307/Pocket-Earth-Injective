@@ -117,6 +117,7 @@ for (const snippet of [
   'publicOnly',
   '180s',
   'secret keys stay off-chain',
+  'README first-minute evidence guide',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))
 }

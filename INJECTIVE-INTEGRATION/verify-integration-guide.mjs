@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url'
 const integrationDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(integrationDir, '..')
 const guide = readFileSync(resolve(integrationDir, 'README.md'), 'utf8')
+const readme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
 const packageJson = JSON.parse(readFileSync(resolve(projectRoot, 'package.json'), 'utf8'))
 
 function assertTrue(label, condition) {
@@ -87,6 +88,22 @@ for (const endpoint of [
   'tool=handshake',
 ]) {
   assertTrue(`API table contains ${endpoint}`, guide.includes(endpoint))
+}
+
+console.log('\nREADME first-minute evidence guide')
+for (const phrase of [
+  '### 0. 先看什么',
+  'Frost 链上身份',
+  '同钱包时间线',
+  '产品闭环',
+  '隐私边界',
+  'get-agent-proof&agentId=43',
+  'list-agents&builderCode=pocket-earth',
+  'get-wallet-timeline',
+  'verify:plaza-flow',
+  'verify:public-proof',
+]) {
+  assertTrue(`README evidence guide includes ${phrase}`, readme.includes(phrase))
 }
 
 console.log('\nIntegration guide runbook')
