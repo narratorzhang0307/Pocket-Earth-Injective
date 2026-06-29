@@ -62,10 +62,69 @@ export const COMPETITION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     contestSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewLinks, reviewChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewBrief, reviewLinks, reviewChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
     machineCheck: 'npm run verify:evidence',
   },
 ]
+
+export const REVIEW_BRIEF = {
+  title: 'Frost Passport on Injective',
+  oneLiner: 'Pocket Earth gives each Frost agent an Injective ERC-8004 identity, lets it meet other on-chain agents through public-plaza, and keeps private memories off-chain.',
+  injectiveCore: [
+    {
+      key: 'erc8004-identity',
+      label: 'ERC-8004 agent identity',
+      proof: `agentId 43 is owned by ${PROOF_OWNER} and uses builderCode ${BUILDER_CODE}.`,
+      linkKey: 'frost-agent-43',
+      machineCheck: 'node INJECTIVE-INTEGRATION/verify-agent43.mjs',
+    },
+    {
+      key: 'agent-fleet',
+      label: 'Builder-scoped agent fleet',
+      proof: 'agentId 43-47 are readable from Injective testnet and expose only public data URI card fields.',
+      linkKey: 'identity-registry',
+      machineCheck: 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs',
+    },
+    {
+      key: 'social-handshake',
+      label: 'On-chain social proof',
+      proof: `SocialHandshake ${SOCIAL_HANDSHAKE} records agent ids, non-zero profile commitments, score, and block timestamp.`,
+      linkKey: 'real-handshake-tx',
+      machineCheck: 'node INJECTIVE-INTEGRATION/verify-handshake.mjs',
+    },
+    {
+      key: 'product-loop',
+      label: 'Product loop reads the chain',
+      proof: 'public-plaza reads the builderCode fleet, ranks taste overlap, pins agent markers, and returns a Nightly Chain Dispatch.',
+      linkKey: 'frost-agent-43',
+      machineCheck: 'npm run verify:plaza',
+    },
+  ],
+  contestFit: [
+    {
+      theme: 'AI social',
+      alignmentKey: 'ai-social',
+      why: 'Frost is a digital agent persona that meets other agents through public chain identity and taste overlap.',
+    },
+    {
+      theme: 'Agent infrastructure',
+      alignmentKey: 'injective-execution-layer',
+      why: 'Injective testnet is the identity, wallet timeline, contract, and proof layer instead of a decorative badge.',
+    },
+    {
+      theme: 'Agent x physical world',
+      alignmentKey: 'agent-physical-world',
+      why: 'Frost Buddy keeps a Raspberry Pi / BLE / TTS bridge for music-agent events and Injective chain dispatches.',
+    },
+  ],
+  reviewerPath: [
+    { step: 1, label: 'Open agentId 43', linkKey: 'frost-agent-43', verifies: 'Frost has a public ERC-8004 identity on Injective testnet.' },
+    { step: 2, label: 'Open owner wallet', linkKey: 'owner-wallet', verifies: 'Registration, fleet, contract deployment, and handshake belong to the same wallet.' },
+    { step: 3, label: 'Read public evidence API', submissionKey: 'chain-evidence-api', verifies: 'The product exposes the same public facts through /api/injective.' },
+    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, Blockscout links, plaza split, alignment, and submission entries still pass.' },
+  ],
+  privacyLine: 'Only public proofs go on-chain: identities, card fields, wallet/contract addresses, profile commitments, similarity score, and timestamps. Raw media, mood text, precise locations, profile counts, and secret env values stay off-chain.',
+}
 
 export const PLAZA_DEMO_FLOW = [
   {

@@ -10,6 +10,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   PLAZA_DEMO_FLOW,
   PROOF_OWNER,
+  REVIEW_BRIEF,
   REVIEW_CHECKLIST,
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
@@ -68,6 +69,13 @@ assertEqual('review links count', evidence.reviewLinks.length, REVIEW_LINKS.leng
 assertEqual('review link first url', evidence.reviewLinks[0]?.url, scanUrlForAgent(43))
 assertEqual('review link wallet url', evidence.reviewLinks.find((link) => link.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('review link handshake tx url', evidence.reviewLinks.find((link) => link.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
+assertTrue('review brief object', !!evidence.reviewBrief && typeof evidence.reviewBrief === 'object')
+assertEqual('review brief title', evidence.reviewBrief.title, REVIEW_BRIEF.title)
+assertEqual('review brief core count', evidence.reviewBrief.injectiveCore?.length, REVIEW_BRIEF.injectiveCore.length)
+assertEqual('review brief contest fit count', evidence.reviewBrief.contestFit?.length, REVIEW_BRIEF.contestFit.length)
+assertTrue('review brief names ERC-8004', evidence.reviewBrief.oneLiner?.includes('ERC-8004'))
+assertTrue('review brief maps to AI social', evidence.reviewBrief.contestFit?.some((item) => item.alignmentKey === 'ai-social'))
+assertTrue('review brief maps to physical world', evidence.reviewBrief.contestFit?.some((item) => item.alignmentKey === 'agent-physical-world'))
 assertTrue('review checklist array', Array.isArray(evidence.reviewChecklist))
 assertEqual('review checklist count', evidence.reviewChecklist.length, REVIEW_CHECKLIST.length)
 assertEqual('review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')
@@ -121,6 +129,7 @@ for (const expected of TIMELINE_EVENTS) {
 console.log('\nReviewer follow-up paths')
 assertEqual('demo readiness command', evidence.verification?.demoReadiness, 'npm run verify:demo')
 assertEqual('evidence smoke command', evidence.verification?.evidenceSmoke, 'npm run verify:evidence')
+assertEqual('review brief command', evidence.verification?.reviewBrief, 'npm run verify:brief')
 assertEqual('review checklist command', evidence.verification?.reviewChecklist, 'npm run verify:review')
 assertEqual('review links command', evidence.verification?.reviewLinks, 'npm run verify:review-links')
 assertEqual('recording order command', evidence.verification?.recordingOrder, 'npm run verify:recording-order')

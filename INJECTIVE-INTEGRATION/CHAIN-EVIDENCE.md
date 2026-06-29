@@ -14,7 +14,7 @@
 
 ## Reviewer Checklist
 
-`/api/injective?tool=get-chain-evidence` also returns `reviewChecklist`: a compact reviewer path that explains what each public proof is meant to verify. It also includes `competitionAlignment`, which maps the same public proofs to AI social agents, Injective execution, the physical Frost Buddy extension, and the privacy-first evidence boundary. `submissionLinks` keeps the final review entry points together: the GitHub repo, live `?demo` URL, public evidence API, fleet API, and wallet timeline API.
+`/api/injective?tool=get-chain-evidence` also returns `reviewBrief`: a judge-facing summary with one line, four Injective proof cards, three contest-fit mappings, and a four-step review path. `reviewChecklist` then expands that into what each public proof is meant to verify. It also includes `competitionAlignment`, which maps the same public proofs to AI social agents, Injective execution, the physical Frost Buddy extension, and the privacy-first evidence boundary. `submissionLinks` keeps the final review entry points together: the GitHub repo, live `?demo` URL, public evidence API, fleet API, and wallet timeline API.
 
 | Check | Public evidence | Pass criteria |
 |---|---|---|
@@ -79,6 +79,7 @@ curl 'http://localhost:5173/api/injective?tool=list-agents&builderCode=pocket-ea
 curl 'http://localhost:5173/api/injective?tool=get-wallet-timeline'
 npm run verify:demo
 npm run verify:evidence
+npm run verify:brief
 npm run verify:review
 npm run verify:review-links
 npm run verify:recording-order
@@ -88,7 +89,7 @@ npm run verify:submission
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:review`, `npm run verify:review-links`, `npm run verify:recording-order`, `npm run verify:plaza-flow`, `npm run verify:nova-alignment`, `npm run verify:submission`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, `competitionAlignment` for mapping the public proof to the Injective Nova story, `submissionLinks` for the final review entry points, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, Blockscout links, recording order, plaza-flow grouping, competition alignment, and submission links; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package; `npm run verify:review` checks that the reviewer checklist still points at existing public links and local proof commands; `npm run verify:review-links` checks that the API-returned reviewer links are still complete, public-only, and reachable on Injective Blockscout; `npm run verify:recording-order` checks the exact recording order from Blockscout pages through product API calls to the plaza smoke; `npm run verify:plaza-flow` checks that `public-plaza` remains the chain-discovery flow and `agent-plaza` remains the marketplace/install flow; `npm run verify:nova-alignment` checks that the evidence package still maps Pocket Earth to AI social agents, Injective execution, the physical hardware extension, and privacy-first public proof without leaking local paths or secrets; `npm run verify:submission` checks that the final GitHub, live demo, and API entry points still point to this Injective submission.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:brief`, `npm run verify:review`, `npm run verify:review-links`, `npm run verify:recording-order`, `npm run verify:plaza-flow`, `npm run verify:nova-alignment`, `npm run verify:submission`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewBrief` for the one-page judge summary, `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, `competitionAlignment` for mapping the public proof to the Injective Nova story, `submissionLinks` for the final review entry points, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, review brief, fleet readback, Blockscout links, recording order, plaza-flow grouping, competition alignment, and submission links; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package; `npm run verify:brief` checks that the judge-facing `reviewBrief` still explains the Injective proof path, contest fit, and privacy line without local paths or secrets; `npm run verify:review` checks that the reviewer checklist still points at existing public links and local proof commands; `npm run verify:review-links` checks that the API-returned reviewer links are still complete, public-only, and reachable on Injective Blockscout; `npm run verify:recording-order` checks the exact recording order from Blockscout pages through product API calls to the plaza smoke; `npm run verify:plaza-flow` checks that `public-plaza` remains the chain-discovery flow and `agent-plaza` remains the marketplace/install flow; `npm run verify:nova-alignment` checks that the evidence package still maps Pocket Earth to AI social agents, Injective execution, the physical hardware extension, and privacy-first public proof without leaking local paths or secrets; `npm run verify:submission` checks that the final GitHub, live demo, and API entry points still point to this Injective submission.
 
 Handshake calldata and event both decode to:
 
@@ -103,6 +104,7 @@ Handshake calldata and event both decode to:
 ```bash
 npm run verify:demo
 npm run verify:evidence
+npm run verify:brief
 npm run verify:review
 npm run verify:review-links
 npm run verify:recording-order
@@ -118,7 +120,7 @@ This read-only proof suite verifies:
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
 - `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, and `get-wallet-timeline`
-- reviewer checklist, competition alignment, and submission links wiring for public links, local proof commands, API-returned Blockscout link reachability, followable recording order, plaza flow grouping, Nova story mapping, and final review entry points
+- review brief, reviewer checklist, competition alignment, and submission links wiring for public links, local proof commands, API-returned Blockscout link reachability, followable recording order, plaza flow grouping, Nova story mapping, and final review entry points
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
 - wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links

@@ -19,6 +19,10 @@ const checks = [
     moduleUrl: new URL('./verify-chain-evidence-api.mjs', import.meta.url),
   },
   {
+    label: 'Review brief gives judges a concise Injective proof path',
+    moduleUrl: new URL('./verify-review-brief.mjs', import.meta.url),
+  },
+  {
     label: 'Reviewer checklist maps proof steps to public links and commands',
     moduleUrl: new URL('./verify-review-checklist.mjs', import.meta.url),
   },

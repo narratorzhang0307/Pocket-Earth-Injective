@@ -7,6 +7,10 @@ const checks = [
     moduleUrl: new URL('./verify-chain-evidence-api.mjs', import.meta.url),
   },
   {
+    label: 'review brief explains the Injective proof path',
+    moduleUrl: new URL('./verify-review-brief.mjs', import.meta.url),
+  },
+  {
     label: 'builderCode API reads agentId 43-47',
     moduleUrl: new URL('./verify-api-list-agents.mjs', import.meta.url),
   },

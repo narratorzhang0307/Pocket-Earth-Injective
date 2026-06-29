@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "verify:demo": "node INJECTIVE-INTEGRATION/verify-demo-readiness.mjs",
     "verify:evidence": "node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs",
+    "verify:brief": "node INJECTIVE-INTEGRATION/verify-review-brief.mjs",
     "verify:review": "node INJECTIVE-INTEGRATION/verify-review-checklist.mjs",
     "verify:review-links": "node INJECTIVE-INTEGRATION/verify-review-links.mjs",
     "verify:recording-order": "node INJECTIVE-INTEGRATION/verify-recording-order.mjs",
