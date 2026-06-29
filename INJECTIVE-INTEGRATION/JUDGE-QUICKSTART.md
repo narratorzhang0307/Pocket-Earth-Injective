@@ -24,7 +24,7 @@
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, and plaza grouping.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
-- The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the three judge-safe GET endpoints (`get-chain-evidence`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, and local verification commands. `npm run verify:public-apis` opens all three endpoints through the product API and checks the manifest, source anchor, fleet, wallet timeline, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
+- The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the four judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, and local verification commands. `npm run verify:public-apis` opens all four endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
 
 ## Submission Package
 

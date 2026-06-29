@@ -153,6 +153,7 @@ export const SUBMISSION_LINKS = [
   { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: SUBMISSION_REPOSITORY_URL },
   { key: 'live-demo', label: 'Live demo with demo profile seed', type: 'demo', url: LIVE_DEMO_URL },
   { key: 'chain-evidence-api', label: 'Public chain evidence API', type: 'api', path: '/api/injective?tool=get-chain-evidence' },
+  { key: 'agent-proof-api', label: 'Single-agent proof card for Frost #43', type: 'api', path: '/api/injective?tool=get-agent-proof&agentId=43' },
   { key: 'agent-fleet-api', label: 'Read agentId 43-47 by builderCode', type: 'api', path: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47` },
   { key: 'wallet-timeline-api', label: 'Read wallet transaction timeline from RPC', type: 'api', path: '/api/injective?tool=get-wallet-timeline' },
 ]
@@ -194,7 +195,7 @@ export const SUBMISSION_CHECKLIST = [
     key: 'public-review-apis',
     requirement: 'Judges can reproduce public evidence without private keys',
     status: 'ready',
-    evidence: 'get-chain-evidence, list-agents by builderCode, and get-wallet-timeline are read-only and publicOnly/testnet-scoped.',
+    evidence: 'get-chain-evidence, get-agent-proof, list-agents by builderCode, and get-wallet-timeline are read-only and publicOnly/testnet-scoped.',
     localCheck: 'npm run verify:public-proof',
     linkKey: 'chain-evidence-api',
   },

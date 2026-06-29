@@ -83,6 +83,7 @@ for (const snippet of [
   scanUrlForTx(TIMELINE_EVENTS.at(-1).hash),
   SUBMISSION_REPOSITORY_URL,
   LIVE_DEMO_URL,
+  '/api/injective?tool=get-agent-proof&agentId=43',
   `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`,
   '/api/injective?tool=get-chain-evidence',
   '/api/injective?tool=get-wallet-timeline',
@@ -97,6 +98,7 @@ for (const snippet of [
   'registryMintSummary',
   'registry-mint-events',
   'publicReadApis',
+  'get-agent-proof',
   'expectedStatus',
   'timelineSummary',
   'recordingOrder[].evidenceFocus',
@@ -123,6 +125,7 @@ for (const command of [
   'npm run verify:public-apis',
   'npm run verify:source',
   'npm run verify:registry',
+  'npm run verify:agent-proof',
   'npm run verify:recording-order',
   'npm run verify:injective',
   'npm run verify:plaza',
@@ -148,7 +151,8 @@ assertEqual('evidence chainId', evidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
 assertTrue('evidence still public-only', evidence.readOnly === true && evidence.publicOnly === true)
 assertTrue('evidence public read APIs array', Array.isArray(evidence.publicReadApis))
-assertEqual('evidence public read API count', evidence.publicReadApis.length, 3)
+assertEqual('evidence public read API count', evidence.publicReadApis.length, 4)
+assertEqual('evidence public read agent proof path', evidence.publicReadApis.find((item) => item.key === 'agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('evidence public read fleet path', evidence.publicReadApis.find((item) => item.key === 'agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('evidence timeline summary owner', evidence.timelineSummary?.owner, PROOF_OWNER)

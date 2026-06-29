@@ -78,9 +78,10 @@ assertTrue('sourceControl commit is a sha or null', evidence.sourceControl.commi
 if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
 assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 assertTrue('public read APIs array', Array.isArray(evidence.publicReadApis))
-assertEqual('public read API count', evidence.publicReadApis.length, 3)
+assertEqual('public read API count', evidence.publicReadApis.length, 4)
 const publicReadApiByKey = new Map(evidence.publicReadApis.map((item) => [item.key, item]))
 assertEqual('public read evidence API path', publicReadApiByKey.get('chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
+assertEqual('public read agent proof API path', publicReadApiByKey.get('agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('public read fleet API path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
 assertEqual('public read wallet API path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 for (const [key, item] of publicReadApiByKey) {
@@ -244,6 +245,7 @@ assertEqual('submission pack command', evidence.verification?.submissionPack, 'n
 assertEqual('proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
 assertEqual('agent proof command', evidence.verification?.agentProof, 'npm run verify:agent-proof')
+assertEqual('agent proof api', evidence.verification?.agentProofApi, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)
 assertEqual('wallet timeline api', evidence.verification?.walletTimelineApi, '/api/injective?tool=get-wallet-timeline')
 

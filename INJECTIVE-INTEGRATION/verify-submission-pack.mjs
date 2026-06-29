@@ -98,6 +98,7 @@ assertTrue('live demo url includes demo seed', LIVE_DEMO_URL.endsWith('/?demo'))
 assertTrue('live demo url uses Pocket Earth domain', LIVE_DEMO_URL.startsWith('https://pocketearth.throughtheglass.art/'))
 
 assertEqual('chain evidence API path', expectedByKey.get('chain-evidence-api').path, '/api/injective?tool=get-chain-evidence')
+assertEqual('agent proof API path', expectedByKey.get('agent-proof-api').path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('agent fleet API path', expectedByKey.get('agent-fleet-api').path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('wallet timeline API path', expectedByKey.get('wallet-timeline-api').path, '/api/injective?tool=get-wallet-timeline')
 

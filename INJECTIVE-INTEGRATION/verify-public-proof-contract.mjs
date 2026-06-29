@@ -165,12 +165,14 @@ assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/a
 
 console.log('\nPublic read API manifest')
 assertTrue('publicReadApis array', Array.isArray(evidence.publicReadApis))
-assertEqual('publicReadApis count', evidence.publicReadApis.length, 3)
+assertEqual('publicReadApis count', evidence.publicReadApis.length, 4)
 const publicReadApiByKey = new Map(evidence.publicReadApis.map((item) => [item.key, item]))
 assertEqual('publicReadApis chain evidence path', publicReadApiByKey.get('chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
+assertEqual('publicReadApis agent proof path', publicReadApiByKey.get('agent-proof-api')?.path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('publicReadApis fleet path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
 assertEqual('publicReadApis wallet path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('publicReadApis chain evidence verification', publicReadApiByKey.get('chain-evidence-api')?.verification, 'npm run verify:public-proof')
+assertEqual('publicReadApis agent proof verification', publicReadApiByKey.get('agent-proof-api')?.verification, 'npm run verify:agent-proof')
 assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
 for (const [key, item] of publicReadApiByKey) {

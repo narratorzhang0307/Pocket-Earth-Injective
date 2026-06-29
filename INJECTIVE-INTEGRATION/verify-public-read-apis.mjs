@@ -91,6 +91,7 @@ async function suppressCardFetchWarnings(fn) {
 const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
 const expectedPaths = new Map([
   ['chain-evidence-api', '/api/injective?tool=get-chain-evidence'],
+  ['agent-proof-api', '/api/injective?tool=get-agent-proof&agentId=43'],
   ['agent-fleet-api', `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`],
   ['wallet-timeline-api', '/api/injective?tool=get-wallet-timeline'],
 ])
@@ -141,6 +142,22 @@ for (const expected of FLEET_AGENTS) {
   assertEqual(`chain evidence agent ${expected.id} scanUrl`, actual.scanUrl, scanUrlForAgent(expected.id))
 }
 
+console.log('\nagent proof endpoint')
+const agentProof = await callApi(byKey.get('agent-proof-api').path)
+assertEqual('agent proof ok', agentProof.ok, true)
+assertEqual('agent proof chainId', agentProof.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('agent proof readOnly', agentProof.readOnly, true)
+assertEqual('agent proof publicOnly', agentProof.publicOnly, true)
+assertEqual('agent proof id', agentProof.agent?.agentId, 43)
+assertEqual('agent proof owner', agentProof.agent?.owner, PROOF_OWNER)
+assertEqual('agent proof builderCode', agentProof.agent?.builderCode, BUILDER_CODE)
+assertEqual('agent proof registry', agentProof.agent?.registry, IDENTITY_REGISTRY)
+assertEqual('agent proof mint tx', agentProof.agent?.mintTransactionHash, REGISTRY_MINT_EVENTS[0].transactionHash)
+assertEqual('agent proof proofApi', agentProof.agent?.proofApi, '/api/injective?tool=get-agent-proof&agentId=43')
+assertEqual('agent proof scanUrl', agentProof.agent?.scanUrl, scanUrlForAgent(43))
+assertEqual('agent proof source repository', agentProof.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('agent proof verification command', agentProof.verification?.agentProof, 'npm run verify:agent-proof')
+
 console.log('\nagent fleet endpoint')
 const fleet = await suppressCardFetchWarnings(() => callApi(byKey.get('agent-fleet-api').path))
 assertEqual('fleet builderCode', fleet.builderCode, BUILDER_CODE)
@@ -166,7 +183,8 @@ assertEqual('timeline summary evidence API', timeline.summary?.evidenceApi, '/ap
 console.log('\nPublic-only guard')
 guardPublicText('publicReadApis', evidence.publicReadApis)
 guardPublicText('chain evidence response', chainEvidence)
+guardPublicText('agent proof response', agentProof)
 guardPublicText('fleet response', fleet)
 guardPublicText('wallet timeline response', timeline)
 
-console.log('\nOK publicReadApis opens the three judge-safe read-only Injective endpoints.')
+console.log('\nOK publicReadApis opens the four judge-safe read-only Injective endpoints.')

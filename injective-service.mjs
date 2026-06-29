@@ -249,6 +249,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
     if (tool === 'get-chain-evidence') {
       const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
       const listAgentsApi = `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`
+      const agentProofApi = '/api/injective?tool=get-agent-proof&agentId=43'
       const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
       const publicReadApis = [
         {
@@ -261,6 +262,17 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:public-proof',
           purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, and privacy boundary.',
+        },
+        {
+          key: 'agent-proof-api',
+          label: 'Open Frost agentId 43 proof card',
+          method: 'GET',
+          path: agentProofApi,
+          chainId: INJECTIVE_TESTNET_CHAIN_ID,
+          readOnly: true,
+          publicOnly: true,
+          verification: 'npm run verify:agent-proof',
+          purpose: 'Returns a focused proof card for agentId 43 with identity, mint transaction, owner wallet, and sourceControl anchors.',
         },
         {
           key: 'agent-fleet-api',
@@ -449,6 +461,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           submissionPack: 'npm run verify:submission',
           proofSuite: 'npm run verify:injective',
           apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
+          agentProofApi,
           listAgentsApi,
           walletTimelineApi,
         },
