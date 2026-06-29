@@ -2,11 +2,11 @@
 """Pocket Earth Frost Buddy Raspberry Pi skill router.
 
 This is a small, standalone Pi-side companion to frost-hardware-bridge.mjs.
-It borrows the safe shape of the Sunset Radio Pi skill-agent pattern:
+It borrows the safe shape of an existing Pi skill-agent pattern:
 understand a loose voice request, validate it against a tiny skill registry,
 then emit either a canonical music command or a public hardware event.
 
-It does not import the Sunset Radio daemon and it never signs transactions.
+It does not import any larger local hardware daemon and it never signs transactions.
 """
 
 import json

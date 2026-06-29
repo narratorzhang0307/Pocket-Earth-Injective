@@ -1,6 +1,7 @@
 // Verify the optional Frost Buddy hardware bridge event contract.
 // Usage: node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs
 import { execFileSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 
 import {
   EVENT_KIND,
@@ -58,6 +59,64 @@ assertNoSecrets('chain hardware event', chain)
 const jsonLine = toJsonLine(chain)
 assertTrue('hardware bridge emits JSONL', jsonLine.endsWith('\n'))
 assertEqual('hardware JSONL round-trip kind', JSON.parse(jsonLine).kind, EVENT_KIND.CHAIN_DISPATCH)
+
+console.log('\nHardware documentation anchors')
+const rootReadme = readFileSync('README.md', 'utf8')
+const integrationReadme = readFileSync('INJECTIVE-INTEGRATION/README.md', 'utf8')
+const hardwareReadme = readFileSync('hardware/frost-buddy/README.md', 'utf8')
+const raspiReadme = readFileSync('hardware/frost-buddy/raspi/README.md', 'utf8')
+
+for (const snippet of [
+  'Frost Edge Node',
+  'Raspberry Pi',
+  'BLE',
+  'TTS',
+  'music_now_playing',
+  'chain_dispatch',
+  'builderCode=pocket-earth',
+  'agentId 43-47',
+  '公开事件',
+  '不碰私钥',
+  '不签名',
+  '不读取原始画像',
+  '不是重资本硬件路线',
+  '开发套件',
+  '体验差异化',
+  '市场边界',
+  '隐私与安全边界',
+  'https://investors.raspberrypi.com/',
+]) {
+  assertTrue(`hardware README keeps ${snippet}`, hardwareReadme.includes(snippet))
+}
+
+for (const snippet of [
+  '### 5.2 Frost Edge Node',
+  'Raspberry Pi',
+  'public-plaza',
+  '公开事件',
+  '体验差异化',
+  '开发套件',
+]) {
+  assertTrue(`root README keeps hardware summary ${snippet}`, rootReadme.includes(snippet))
+}
+
+for (const snippet of [
+  '## 12. 技术深挖：Frost Edge Node 硬件原理与市场边界',
+  'music-agent 实体化',
+  '链上见闻实体化',
+  'Raspberry Pi 适合做原型平台',
+  'Agent Plaza 的安装、调用、评价和可选付费回执',
+]) {
+  assertTrue(`integration README keeps hardware depth ${snippet}`, integrationReadme.includes(snippet))
+}
+
+for (const snippet of [
+  'Raspberry Pi edge',
+  'skill registry',
+  'JSONL events such as `chain_dispatch`',
+]) {
+  assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
+}
 
 console.log('\nRaspberry Pi skill router smoke')
 const python = process.env.PYTHON || 'python3'

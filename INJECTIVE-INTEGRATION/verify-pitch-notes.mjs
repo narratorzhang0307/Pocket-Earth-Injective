@@ -6,6 +6,13 @@ import { handleInjective } from '../injective-service.mjs'
 
 const PITCH_FILE = 'INJECTIVE-INTEGRATION/PITCH-NOTES.md'
 const RASPBERRY_PI_SOURCE = 'https://data.fca.org.uk/artefacts/NSM/RNS/5182805.html'
+const SOURCE_URLS = [
+  RASPBERRY_PI_SOURCE,
+  'https://investors.raspberrypi.com/',
+  'https://ir.roblox.com/financials/annual-reports/default.aspx',
+  'https://developer.apple.com/app-store/small-business-program/',
+  'https://steamcommunity.com/groups/steamworks/announcements/detail/1697191267930157838',
+]
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -102,7 +109,18 @@ assertEqual('evidence pitch command', evidence.verification?.pitchNotes, 'npm ru
 assertEqual('delivery pitch local check', evidence.deliveryChecklist?.find((item) => item.key === 'pitch-deck-notes')?.localCheck, 'npm run verify:pitch')
 
 console.log('\nSource and leak guard')
-assertTrue('pitch cites Raspberry Pi source URL', pitch.includes(RASPBERRY_PI_SOURCE))
+for (const url of SOURCE_URLS) {
+  assertTrue(`pitch cites source URL ${url}`, pitch.includes(url))
+}
+for (const snippet of [
+  '超过 6700 万台',
+  '9.228 亿美元',
+  '15% 抽成',
+  '不表示 Pocket Earth 已经拥有同等规模',
+  '不支持直接预测 Pocket Earth 硬件销量',
+]) {
+  assertTrue(`pitch keeps cautious market wording: ${snippet}`, pitch.includes(snippet))
+}
 await assertSourceReachable()
 for (const forbidden of [
   'INJ_PRIVATE_KEY',
