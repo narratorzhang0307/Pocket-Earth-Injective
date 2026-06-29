@@ -96,6 +96,25 @@ function getSourceControlEvidence() {
     evidenceApi: '/api/injective?tool=get-chain-evidence',
   }
 }
+function buildAgentProof(agent) {
+  const agentId = Number(agent.id)
+  const mintEvent = REGISTRY_MINT_EVENTS.find((event) => Number(event.agentId) === agentId)
+  return {
+    agentId,
+    label: agent.label,
+    owner: PROOF_OWNER,
+    builderCode: BUILDER_CODE,
+    registry: IDENTITY_REGISTRY,
+    registryScanUrl: scanUrlForRegistry(),
+    mintedFromZero: mintEvent ? sameAddress(mintEvent.from, REGISTRY_MINT_ZERO_ADDRESS) : false,
+    mintTransactionHash: mintEvent?.transactionHash ?? null,
+    mintBlockNumber: mintEvent?.blockNumber ?? null,
+    mintScanUrl: mintEvent?.scanUrl ?? null,
+    proofApi: `/api/injective?tool=get-agent-proof&agentId=${agentId}`,
+    ...(agent.requiredTag ? { requiredTag: agent.requiredTag } : {}),
+    scanUrl: scanUrlForAgent(agent.id),
+  }
+}
 
 // list-agents 结果缓存（id → {agent, at}），抹平 testnet RPC 抖动：本次 getStatus 没返回的、但 60s 内查到过的 agent 仍带上，避免广场在场数忽多忽少。
 const _agentCache = new Map()
@@ -185,6 +204,47 @@ export async function handleInjective(req, res, url, cfg = {}) {
       return json(res, rep)
     }
 
+    // —— 只读：单个 agent 的评审证明卡（无需私钥，录屏时可直接打开 #43）——
+    if (tool === 'get-agent-proof') {
+      const agentId = Number(url.searchParams.get('agentId') || 43)
+      const agent = FLEET_AGENTS.find((item) => Number(item.id) === agentId)
+      if (!agent) return json(res, { error: 'unknown_agentId', agentId, supportedAgentIds: FLEET_AGENTS.map((item) => Number(item.id)) }, 404)
+      const mintEvent = REGISTRY_MINT_EVENTS.find((event) => Number(event.agentId) === agentId)
+      const timelineEvent = TIMELINE_EVENTS.find((event) => event.role === `agentId ${agentId}`)
+      return json(res, {
+        ok: true,
+        network: 'testnet',
+        chainId: INJECTIVE_TESTNET_CHAIN_ID,
+        readOnly: true,
+        publicOnly: true,
+        agent: buildAgentProof(agent),
+        mintEvent,
+        timelineEvent: timelineEvent ? {
+          label: timelineEvent.label,
+          role: timelineEvent.role,
+          hash: timelineEvent.hash,
+          from: PROOF_OWNER,
+          to: timelineEvent.to,
+          expectedStatus: 'success',
+          blockNumber: timelineEvent.blockNumber,
+          timestamp: timelineEvent.timestamp,
+          scanUrl: scanUrlForTx(timelineEvent.hash),
+        } : null,
+        sourceControl: getSourceControlEvidence(),
+        reviewPath: [
+          { step: 1, label: `Open agentId ${agentId} identity`, url: scanUrlForAgent(agentId), verifies: 'ERC-8004 identity page is public on Injective Blockscout.' },
+          { step: 2, label: 'Open mint transaction', url: mintEvent?.scanUrl ?? null, verifies: 'The token was minted from 0x0 to the owner wallet.' },
+          { step: 3, label: 'Open owner wallet', url: scanUrlForAddress(PROOF_OWNER), verifies: 'The same wallet anchors registration, fleet, deployment, and handshake transactions.' },
+        ],
+        verification: {
+          agentProof: 'npm run verify:agent-proof',
+          registryEvents: 'npm run verify:registry',
+          sourceControl: 'npm run verify:source',
+          chainEvidenceApi: '/api/injective?tool=get-chain-evidence',
+        },
+      })
+    }
+
     // —— 只读：公开链上证据包（供评审/录屏直接从产品 API 拉同一份公开事实表）——
     if (tool === 'get-chain-evidence') {
       const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
@@ -266,23 +326,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         submissionChecklist: SUBMISSION_CHECKLIST,
         privacyBoundary: EVIDENCE_PRIVACY_BOUNDARY,
         plazaFlow: PLAZA_DEMO_FLOW,
-        agents: FLEET_AGENTS.map((agent) => {
-          const mintEvent = REGISTRY_MINT_EVENTS.find((event) => Number(event.agentId) === Number(agent.id))
-          return {
-            agentId: Number(agent.id),
-            label: agent.label,
-            owner: PROOF_OWNER,
-            builderCode: BUILDER_CODE,
-            registry: IDENTITY_REGISTRY,
-            registryScanUrl: scanUrlForRegistry(),
-            mintedFromZero: mintEvent ? sameAddress(mintEvent.from, REGISTRY_MINT_ZERO_ADDRESS) : false,
-            mintTransactionHash: mintEvent?.transactionHash ?? null,
-            mintBlockNumber: mintEvent?.blockNumber ?? null,
-            mintScanUrl: mintEvent?.scanUrl ?? null,
-            ...(agent.requiredTag ? { requiredTag: agent.requiredTag } : {}),
-            scanUrl: scanUrlForAgent(agent.id),
-          }
-        }),
+        agents: FLEET_AGENTS.map(buildAgentProof),
         registryMintEvents: REGISTRY_MINT_EVENTS,
         registryMintSummary: {
           owner: PROOF_OWNER,
@@ -399,6 +443,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           walletTimeline: 'npm run verify:wallet',
           sourceControl: 'npm run verify:source',
           registryEvents: 'npm run verify:registry',
+          agentProof: 'npm run verify:agent-proof',
           plazaFlow: 'npm run verify:plaza-flow',
           novaAlignment: 'npm run verify:nova-alignment',
           submissionPack: 'npm run verify:submission',

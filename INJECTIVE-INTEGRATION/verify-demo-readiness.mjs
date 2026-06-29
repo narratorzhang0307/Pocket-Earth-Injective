@@ -59,6 +59,10 @@ const checks = [
     moduleUrl: new URL('./verify-recording-order.mjs', import.meta.url),
   },
   {
+    label: 'single-agent proof API opens agentId 43-47 evidence cards',
+    moduleUrl: new URL('./verify-agent-proof-api.mjs', import.meta.url),
+  },
+  {
     label: 'plaza flow manifest separates chain discovery and install loop',
     moduleUrl: new URL('./verify-plaza-flow.mjs', import.meta.url),
   },

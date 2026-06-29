@@ -19,6 +19,7 @@
     "verify:review": "node INJECTIVE-INTEGRATION/verify-review-checklist.mjs",
     "verify:review-links": "node INJECTIVE-INTEGRATION/verify-review-links.mjs",
     "verify:recording-order": "node INJECTIVE-INTEGRATION/verify-recording-order.mjs",
+    "verify:agent-proof": "node INJECTIVE-INTEGRATION/verify-agent-proof-api.mjs",
     "verify:wallet": "node INJECTIVE-INTEGRATION/verify-wallet-timeline-api.mjs",
     "verify:source": "node INJECTIVE-INTEGRATION/verify-source-control.mjs",
     "verify:registry": "node INJECTIVE-INTEGRATION/verify-registry-events.mjs",

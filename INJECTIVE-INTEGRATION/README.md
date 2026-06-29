@@ -59,7 +59,8 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{agents, total}`，可直接复验 Pocket Earth agent fleet | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
-| GET | `?tool=get-chain-evidence` | 公开证据包：testnet chainId 1439、agentId 43–47、每个 `agents[]` 直接携带 owner / `builderCode` / registry / mint tx、ERC-8004 `registryMintEvents`、汇总 agentId 范围 / 同一 owner / mint from `0x0` 的 `registryMintSummary`、带 `from` / `expectedStatus` 的钱包 `timeline`、汇总 owner/首尾区块/RPC 复验入口的 `timelineSummary`、钱包、合约、时间线交易、Blockscout 链接、`reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、含评审 60 秒入口的 `submissionLinks`、`submissionChecklist`、三条评审只读入口 `publicReadApis`、带 `evidenceFocus` 的 `recordingOrder`、`privacyBoundary`、`plazaFlow` 与录屏/复验命令 | 否 |
+| GET | `?tool=get-agent-proof&agentId=43` | 单 agent 证明卡：owner、`builderCode`、registry、mint tx、身份页、钱包页、源码锚点与本地复验命令 | 否 |
+| GET | `?tool=get-chain-evidence` | 公开证据包：testnet chainId 1439、agentId 43–47、每个 `agents[]` 直接携带 owner / `builderCode` / registry / mint tx / `proofApi`、ERC-8004 `registryMintEvents`、汇总 agentId 范围 / 同一 owner / mint from `0x0` 的 `registryMintSummary`、带 `from` / `expectedStatus` 的钱包 `timeline`、汇总 owner/首尾区块/RPC 复验入口的 `timelineSummary`、钱包、合约、时间线交易、Blockscout 链接、`reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、含评审 60 秒入口的 `submissionLinks`、`submissionChecklist`、三条评审只读入口 `publicReadApis`、带 `evidenceFocus` 的 `recordingOrder`、`privacyBoundary`、`plazaFlow` 与录屏/复验命令 | 否 |
 | GET | `?tool=get-wallet-timeline` | `{chainId:1439, readOnly:true, publicOnly:true, summary, events}`，直接从 Injective RPC 复验钱包交易时间线，并汇总 owner、事件数、成功状态、首尾区块/时间 | 否 |
 | POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
 | POST | `?tool=handshake` `{agentA, agentB, profileHashA, profileHashB, score, confirm}` | `{txHash}`（无私钥/合约 → dryRun + willEmit；真写必须带非零 `bytes32` 名片哈希） | 真写需 |
@@ -128,22 +129,25 @@ npm run verify:source
 # 17. 单独验证 ERC-8004 registry mint 事件和 agentId 43-47 注册交易
 npm run verify:registry
 
-# 18. 验证 public-plaza / agent-plaza 演示分组未漂移
+# 18. 验证单 agent 证明卡可直接打开 agentId 43-47 的身份/mint/钱包/source 证据
+npm run verify:agent-proof
+
+# 19. 验证 public-plaza / agent-plaza 演示分组未漂移
 npm run verify:plaza-flow
 
-# 19. 验证公开证据包和 Injective 新星计划叙事对齐
+# 20. 验证公开证据包和 Injective 新星计划叙事对齐
 npm run verify:nova-alignment
 
-# 20. 验证提交入口不误指旧仓库，并固定 demo/API 路径
+# 21. 验证提交入口不误指旧仓库，并固定 demo/API 路径
 npm run verify:submission
 
-# 21. 一键验证 Injective 链上证据（只读，不需要私钥）
+# 22. 一键验证 Injective 链上证据（只读，不需要私钥）
 npm run verify:injective
 
-# 22. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
+# 23. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
 npm run verify:plaza
 
-# 23. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
+# 24. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
 npm run verify:hardware
 
 # 也可以单独验证具体证据
@@ -160,6 +164,7 @@ node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs
 node INJECTIVE-INTEGRATION/verify-review-brief.mjs
 node INJECTIVE-INTEGRATION/verify-review-checklist.mjs
 node INJECTIVE-INTEGRATION/verify-recording-order.mjs
+node INJECTIVE-INTEGRATION/verify-agent-proof-api.mjs
 node INJECTIVE-INTEGRATION/verify-wallet-timeline-api.mjs
 node INJECTIVE-INTEGRATION/verify-source-control.mjs
 node INJECTIVE-INTEGRATION/verify-registry-events.mjs

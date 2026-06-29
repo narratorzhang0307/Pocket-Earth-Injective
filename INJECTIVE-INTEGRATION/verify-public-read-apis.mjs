@@ -137,6 +137,7 @@ for (const expected of FLEET_AGENTS) {
   assertEqual(`chain evidence agent ${expected.id} mintTransactionHash`, actual.mintTransactionHash, mintEvent.transactionHash)
   assertEqual(`chain evidence agent ${expected.id} mintBlockNumber`, actual.mintBlockNumber, mintEvent.blockNumber)
   assertEqual(`chain evidence agent ${expected.id} mintScanUrl`, actual.mintScanUrl, mintEvent.scanUrl)
+  assertEqual(`chain evidence agent ${expected.id} proofApi`, actual.proofApi, `/api/injective?tool=get-agent-proof&agentId=${Number(expected.id)}`)
   assertEqual(`chain evidence agent ${expected.id} scanUrl`, actual.scanUrl, scanUrlForAgent(expected.id))
 }
 

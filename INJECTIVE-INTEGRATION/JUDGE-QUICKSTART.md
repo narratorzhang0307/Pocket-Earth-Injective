@@ -6,16 +6,18 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `publicReadApis`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
-4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
-5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
-6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
-7. Check the ERC-8004 mint events locally: `npm run verify:registry`
-8. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:source && npm run verify:registry && npm run verify:demo`
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `publicReadApis`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
+4. Open the single-agent proof card: `/api/injective?tool=get-agent-proof&agentId=43`
+5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
+6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
+7. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
+8. Check the ERC-8004 mint events locally: `npm run verify:registry`
+9. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:demo`
 
 ## What This Proves
 
 - `agentId 43-47` are Pocket Earth Frost identities on Injective testnet with `builderCode = pocket-earth`.
+- Each `agents[]` row in the public evidence API now includes a `proofApi`; `npm run verify:agent-proof` opens those single-agent cards for `agentId 43-47`.
 - The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events, and `registryMintSummary` condenses the agentId range, same-owner check, zero-address mint check, first/last block, and `npm run verify:registry` command.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
 - The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns `chainId 1439` plus its own `summary` so reviewers can confirm the Injective testnet, event count, all-succeeded status, and first/last block/time before reading every event row.
@@ -31,6 +33,7 @@
 - Demo limit: `180s`, guarded by `npm run verify:duration`
 - Source-control guard: `npm run verify:source`
 - Registry mint-event guard: `npm run verify:registry`
+- Single-agent proof guard: `npm run verify:agent-proof`
 - Pitch notes guard: `npm run verify:pitch`
 - Judge quickstart guard: `npm run verify:judge`
 
@@ -57,6 +60,7 @@ npm run verify:wallet
 npm run verify:public-apis
 npm run verify:source
 npm run verify:registry
+npm run verify:agent-proof
 npm run verify:recording-order
 npm run verify:injective
 npm run verify:plaza
@@ -65,4 +69,4 @@ npm run verify:pitch
 
 ## Demo Reading Order
 
-Use this order in the recording or in a live judge walkthrough: `agentId 43` page -> owner wallet -> public evidence API -> builderCode fleet API -> wallet timeline API -> `public-plaza` chain discovery -> `agent-plaza` install loop.
+Use this order in the recording or in a live judge walkthrough: `agentId 43` page -> owner wallet -> public evidence API -> single-agent proof API -> builderCode fleet API -> wallet timeline API -> `public-plaza` chain discovery -> `agent-plaza` install loop.

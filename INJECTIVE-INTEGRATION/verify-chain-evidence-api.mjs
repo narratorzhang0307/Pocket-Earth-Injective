@@ -162,6 +162,7 @@ for (const expected of FLEET_AGENTS) {
   assertEqual(`agent ${expected.id} mintTransactionHash`, actual.mintTransactionHash, mintEvent.transactionHash)
   assertEqual(`agent ${expected.id} mintBlockNumber`, actual.mintBlockNumber, mintEvent.blockNumber)
   assertEqual(`agent ${expected.id} mintScanUrl`, actual.mintScanUrl, mintEvent.scanUrl)
+  assertEqual(`agent ${expected.id} proofApi`, actual.proofApi, `/api/injective?tool=get-agent-proof&agentId=${Number(expected.id)}`)
   assertEqual(`agent ${expected.id} scanUrl`, actual.scanUrl, scanUrlForAgent(expected.id))
   if (expected.requiredTag) assertEqual(`agent ${expected.id} requiredTag`, actual.requiredTag, expected.requiredTag)
 }
@@ -242,6 +243,7 @@ assertEqual('nova alignment command', evidence.verification?.novaAlignment, 'npm
 assertEqual('submission pack command', evidence.verification?.submissionPack, 'npm run verify:submission')
 assertEqual('proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
+assertEqual('agent proof command', evidence.verification?.agentProof, 'npm run verify:agent-proof')
 assertEqual('list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)
 assertEqual('wallet timeline api', evidence.verification?.walletTimelineApi, '/api/injective?tool=get-wallet-timeline')
 

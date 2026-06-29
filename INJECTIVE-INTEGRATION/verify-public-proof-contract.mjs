@@ -223,6 +223,7 @@ for (const agent of FLEET_AGENTS) {
   assertEqual(`agent ${agent.id} mintTransactionHash`, actual.mintTransactionHash, mintEvent.transactionHash)
   assertEqual(`agent ${agent.id} mintBlockNumber`, actual.mintBlockNumber, mintEvent.blockNumber)
   assertEqual(`agent ${agent.id} mintScanUrl`, actual.mintScanUrl, mintEvent.scanUrl)
+  assertEqual(`agent ${agent.id} proofApi`, actual.proofApi, `/api/injective?tool=get-agent-proof&agentId=${Number(agent.id)}`)
   assertEqual(`agent ${agent.id} scanUrl`, actual.scanUrl, scanUrlForAgent(agent.id))
 }
 assertEqual('registry mint event count', evidence.registryMintEvents.length, REGISTRY_MINT_EVENTS.length)
