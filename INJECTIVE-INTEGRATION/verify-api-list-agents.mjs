@@ -1,19 +1,10 @@
 // Verify Pocket Earth's own /api/injective list-agents route reads the on-chain Injective agent fleet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs
 import { handleInjective } from '../injective-service.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, PROOF_OWNER } from './chain-proof-data.mjs'
 
-const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
-const BUILDER_CODE = 'pocket-earth'
-const REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
-const API_URL = 'http://localhost/api/injective?tool=list-agents&limit=5&top=47&builderCode=pocket-earth'
-
-const REQUIRED = [
-  { id: '43', label: 'Frost main identity' },
-  { id: '44', label: 'FROST·拉美文学旅人', requiredTag: '拉美文学' },
-  { id: '45', label: 'FROST·黑色电影迷', requiredTag: '黑色电影' },
-  { id: '46', label: 'FROST·爵士夜行者', requiredTag: '爵士' },
-  { id: '47', label: 'FROST·北欧极光客', requiredTag: '北欧' },
-]
+const topAgentId = Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))
+const API_URL = `http://localhost/api/injective?tool=list-agents&limit=${FLEET_AGENTS.length}&top=${topAgentId}&builderCode=${BUILDER_CODE}`
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -65,21 +56,22 @@ try {
 assertEqual('api sdk flag', payload.sdk, true)
 assertEqual('api builderCode filter', payload.builderCode, BUILDER_CODE)
 assertTrue('api agents array', Array.isArray(payload.agents))
-assertTrue('api returned full Pocket Earth fleet', payload.agents.length >= REQUIRED.length)
+assertTrue('api returned full Pocket Earth fleet', payload.agents.length >= FLEET_AGENTS.length)
 
 const byId = new Map(payload.agents.map((agent) => [String(agent.agentId), agent]))
-for (const agent of REQUIRED) {
-  const status = byId.get(agent.id)
-  console.log(`\n/api list-agents agentId ${agent.id} · ${agent.label}`)
-  assertTrue(`agent ${agent.id} present in /api list-agents`, !!status)
-  assertEqual(`agent ${agent.id} owner`, status.owner, OWNER)
-  assertEqual(`agent ${agent.id} wallet`, status.wallet, OWNER)
-  assertEqual(`agent ${agent.id} builderCode`, status.builderCode, BUILDER_CODE)
-  assertEqual(`agent ${agent.id} identity registry`, String(status.identityTuple || '').split(':')[2], REGISTRY)
+for (const agent of FLEET_AGENTS) {
+  const id = String(agent.id)
+  const status = byId.get(id)
+  console.log(`\n/api list-agents agentId ${id} · ${agent.label}`)
+  assertTrue(`agent ${id} present in /api list-agents`, !!status)
+  assertEqual(`agent ${id} owner`, status.owner, PROOF_OWNER)
+  assertEqual(`agent ${id} wallet`, status.wallet, PROOF_OWNER)
+  assertEqual(`agent ${id} builderCode`, status.builderCode, BUILDER_CODE)
+  assertEqual(`agent ${id} identity registry`, String(status.identityTuple || '').split(':')[2], IDENTITY_REGISTRY)
   if (agent.requiredTag) {
-    assertEqual(`agent ${agent.id} decoded card builderCode`, status.card?.metadata?.builderCode, BUILDER_CODE)
-    assertEqual(`agent ${agent.id} decoded card name`, status.card?.name, agent.label)
-    assertTrue(`agent ${agent.id} decoded card tag ${agent.requiredTag}`, Array.isArray(status.card?.tags) && status.card.tags.includes(agent.requiredTag))
+    assertEqual(`agent ${id} decoded card builderCode`, status.card?.metadata?.builderCode, BUILDER_CODE)
+    assertEqual(`agent ${id} decoded card name`, status.card?.name, agent.label)
+    assertTrue(`agent ${id} decoded card tag ${agent.requiredTag}`, Array.isArray(status.card?.tags) && status.card.tags.includes(agent.requiredTag))
   }
 }
 

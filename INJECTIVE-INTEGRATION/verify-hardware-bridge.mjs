@@ -8,8 +8,7 @@ import {
   createMusicNowPlayingEvent,
   toJsonLine,
 } from '../hardware/frost-buddy/frost-hardware-bridge.mjs'
-
-const REGISTRY_URL = 'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e'
+import { BUILDER_CODE, FLEET_AGENT_IDS, scanUrlForRegistry } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -40,10 +39,10 @@ assertTrue('music hardware speech line', music.speak.includes('Frost 正在播�
 assertNoSecrets('music hardware event', music)
 
 const chain = createChainDispatchEvent({
-  count: 5,
-  agentIds: [43, 44, 45, 46, 47],
-  body: 'builderCode=pocket-earth returned agentId 43-47 from Injective testnet.',
-  scanUrl: REGISTRY_URL,
+  count: FLEET_AGENT_IDS.length,
+  agentIds: FLEET_AGENT_IDS,
+  body: `builderCode=${BUILDER_CODE} returned agentId ${FLEET_AGENT_IDS[0]}-${FLEET_AGENT_IDS.at(-1)} from Injective testnet.`,
+  scanUrl: scanUrlForRegistry(),
   createdAt: '2026-06-29T00:00:01.000Z',
 })
 
@@ -51,8 +50,8 @@ assertEqual('chain hardware event kind', chain.kind, EVENT_KIND.CHAIN_DISPATCH)
 assertEqual('chain hardware event source', chain.source, 'injective-public-plaza')
 assertEqual('chain hardware buddy state', chain.state, 'attention')
 assertEqual('chain hardware priority', chain.priority, 'urgent')
-assertEqual('chain hardware scanUrl', chain.scanUrl, REGISTRY_URL)
-assertEqual('chain hardware fleet ids', chain.agentIds.join(','), '43,44,45,46,47')
+assertEqual('chain hardware scanUrl', chain.scanUrl, scanUrlForRegistry())
+assertEqual('chain hardware fleet ids', chain.agentIds.join(','), FLEET_AGENT_IDS.join(','))
 assertTrue('chain hardware speech line', chain.speak.includes('Injective 链上'))
 assertNoSecrets('chain hardware event', chain)
 

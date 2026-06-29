@@ -1,22 +1,11 @@
 // Verify the Pocket Earth agent fleet on Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-fleet.mjs
 import { AgentReadClient } from '@injective/agent-sdk'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, PROOF_OWNER, scanUrlForAgent } from './chain-proof-data.mjs'
 
-const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
-const BUILDER_CODE = 'pocket-earth'
-const REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
-const REGISTRY_URL = `https://testnet.blockscout.injective.network/token/${REGISTRY}`
 const CARD_TYPE = 'https://eips.ethereum.org/EIPS/eip-8004#registration-v1'
 const CARD_KEYS = ['description', 'metadata', 'name', 'tags', 'type']
 const METADATA_KEYS = ['builderCode', 'chain']
-
-const AGENTS = [
-  { id: 43n, label: 'Frost main identity' },
-  { id: 44n, label: 'FROST·拉美文学旅人', requiredTag: '拉美文学' },
-  { id: 45n, label: 'FROST·黑色电影迷', requiredTag: '黑色电影' },
-  { id: 46n, label: 'FROST·爵士夜行者', requiredTag: '爵士' },
-  { id: 47n, label: 'FROST·北欧极光客', requiredTag: '北欧' },
-]
 
 function assertEqual(label, actual, expected) {
   if (String(actual).toLowerCase() !== String(expected).toLowerCase()) {
@@ -79,7 +68,7 @@ console.error = (...args) => {
 
 const statuses = []
 try {
-  for (const agent of AGENTS) statuses.push({ agent, status: await reader.getStatus(agent.id) })
+  for (const agent of FLEET_AGENTS) statuses.push({ agent, status: await reader.getStatus(agent.id) })
 } finally {
   console.warn = originalWarn
   console.error = originalError
@@ -89,11 +78,11 @@ for (const { agent, status } of statuses) {
   const id = String(agent.id)
   console.log(`\nagentId ${id} · ${agent.label}`)
   assertEqual(`agent ${id} id`, status.agentId, agent.id)
-  assertEqual(`agent ${id} owner`, status.owner, OWNER)
-  assertEqual(`agent ${id} wallet`, status.wallet, OWNER)
+  assertEqual(`agent ${id} owner`, status.owner, PROOF_OWNER)
+  assertEqual(`agent ${id} wallet`, status.wallet, PROOF_OWNER)
   assertEqual(`agent ${id} builderCode`, status.builderCode, BUILDER_CODE)
-  assertEqual(`agent ${id} identity registry`, status.identityTuple.split(':')[2], REGISTRY)
-  await assertHttp200(`agent ${id} Blockscout`, `${REGISTRY_URL}/instance/${id}`)
+  assertEqual(`agent ${id} identity registry`, status.identityTuple.split(':')[2], IDENTITY_REGISTRY)
+  await assertHttp200(`agent ${id} Blockscout`, scanUrlForAgent(id))
 
   const card = decodeDataCard(status.tokenUri)
   if (agent.requiredTag) {

@@ -6,6 +6,15 @@ export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 export const SOCIAL_HANDSHAKE = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
 
+export const FLEET_AGENTS = [
+  { id: 43n, label: 'Frost main identity' },
+  { id: 44n, label: 'FROST·拉美文学旅人', requiredTag: '拉美文学' },
+  { id: 45n, label: 'FROST·黑色电影迷', requiredTag: '黑色电影' },
+  { id: 46n, label: 'FROST·爵士夜行者', requiredTag: '爵士' },
+  { id: 47n, label: 'FROST·北欧极光客', requiredTag: '北欧' },
+]
+export const FLEET_AGENT_IDS = FLEET_AGENTS.map((agent) => Number(agent.id))
+
 export const TIMELINE_EVENTS = [
   { label: 'Frost main identity registration', role: 'agentId 43', hash: '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554', to: IDENTITY_REGISTRY, blockNumber: 131678496n, timestamp: '2026-06-27T01:46:30.000Z' },
   { label: 'SocialHandshake deployment', role: 'contract deployment', hash: '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722', to: null, contractAddress: SOCIAL_HANDSHAKE, blockNumber: 131678987n, timestamp: '2026-06-27T01:53:16.000Z' },
@@ -22,4 +31,16 @@ export function sameAddress(a, b) {
 
 export function scanUrlForTx(hash) {
   return `https://testnet.blockscout.injective.network/tx/${hash}`
+}
+
+export function scanUrlForAddress(address) {
+  return `https://testnet.blockscout.injective.network/address/${address}`
+}
+
+export function scanUrlForAgent(agentId) {
+  return `https://testnet.blockscout.injective.network/token/${IDENTITY_REGISTRY}/instance/${agentId}`
+}
+
+export function scanUrlForRegistry() {
+  return `https://testnet.blockscout.injective.network/token/${IDENTITY_REGISTRY}`
 }

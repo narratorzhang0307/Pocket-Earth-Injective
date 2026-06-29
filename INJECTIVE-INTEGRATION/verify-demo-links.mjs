@@ -1,7 +1,7 @@
 // Verify the public Blockscout links shown in README, evidence pack, and the demo script.
 // Usage: node INJECTIVE-INTEGRATION/verify-demo-links.mjs
 import { readFile } from 'node:fs/promises'
-import { BUILDER_CODE, IDENTITY_REGISTRY, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENT_IDS, IDENTITY_REGISTRY, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
 
 const FILES = [
   'README.md',
@@ -10,27 +10,23 @@ const FILES = [
   'INJECTIVE-INTEGRATION/DEMO-SCRIPT.md',
 ]
 
-const BLOCKSCOUT_BASE = 'https://testnet.blockscout.injective.network'
-const FLEET_AGENT_IDS = [43, 44, 45, 46, 47]
-const addressUrl = (address) => `${BLOCKSCOUT_BASE}/address/${address}`
-const agentUrl = (agentId) => `${BLOCKSCOUT_BASE}/token/${IDENTITY_REGISTRY}/instance/${agentId}`
 const mainRegistration = TIMELINE_EVENTS[0]
 const handshakeDeployment = TIMELINE_EVENTS[1]
 const realHandshake = TIMELINE_EVENTS.at(-1)
 
 const REQUIRED_DEMO_LINKS = [
-  agentUrl(43),
-  addressUrl(PROOF_OWNER),
+  scanUrlForAgent(43),
+  scanUrlForAddress(PROOF_OWNER),
   scanUrlForTx(mainRegistration.hash),
-  addressUrl(SOCIAL_HANDSHAKE),
+  scanUrlForAddress(SOCIAL_HANDSHAKE),
   scanUrlForTx(handshakeDeployment.hash),
   scanUrlForTx(realHandshake.hash),
-  addressUrl(IDENTITY_REGISTRY),
+  scanUrlForAddress(IDENTITY_REGISTRY),
 ]
 
 const REQUIRED_EVIDENCE_LINKS = [
   ...REQUIRED_DEMO_LINKS,
-  ...FLEET_AGENT_IDS.slice(1).map(agentUrl),
+  ...FLEET_AGENT_IDS.slice(1).map(scanUrlForAgent),
   ...TIMELINE_EVENTS.slice(2, 6).map((event) => scanUrlForTx(event.hash)),
 ]
 
