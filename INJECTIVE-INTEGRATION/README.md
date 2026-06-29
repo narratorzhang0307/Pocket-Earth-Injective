@@ -119,7 +119,7 @@ SocialHandshake 的部署交易 `0x6048425a...fa722` 由同一测试网钱包创
 | 方法 | 端点 | 返回 | 私钥 |
 |---|---|---|---|
 | GET | `/api/injective?tool=ping` | `{ reachable, sdk, network }` | 否 |
-| GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{ agents, total }`，可读回 Pocket Earth agent fleet | 否 |
+| GET | `?tool=list-agents&builderCode=pocket-earth&limit=20` | `{ sdk, agents, total, offset, limit }`，可读回 Pocket Earth agent fleet；每个 agent 带 `owner/wallet/identityTuple/builderCode`，#44-47 的 data URI 名片带 `card.tags` 与 `card.metadata.builderCode` | 否 |
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{ score, count, clients }` | 否 |
 | GET | `?tool=get-agent-proof&agentId=43` | 单 agent 证明卡：owner、`builderCode`、registry、mint tx、身份页、钱包页、源码锚点 | 否 |
@@ -129,7 +129,7 @@ SocialHandshake 的部署交易 `0x6048425a...fa722` 由同一测试网钱包创
 | POST | `?tool=register` `{ passport, confirm }` | `{ agentId, txHashes, scanUrl }`；未确认时 dry-run | 真写需 |
 | POST | `?tool=handshake` `{ agentA, agentB, profileHashA, profileHashB, score, confirm }` | `{ txHash }`；未确认时 dry-run | 真写需 |
 
-五条公开只读入口由 `publicReadApis` 固定：`get-chain-evidence`、`get-agent-proof&agentId=43`、`list-agents&builderCode=pocket-earth`、`get-wallet-timeline`、`get-hardware-bridge-proof`。每条都带 `judgeFocus` 和 `expectedFields`，方便快速复验字段，不需要展开源码。
+五条公开只读入口由 `publicReadApis` 固定：`get-chain-evidence`、`get-agent-proof&agentId=43`、`list-agents&builderCode=pocket-earth`、`get-wallet-timeline`、`get-hardware-bridge-proof`。每条都带 `judgeFocus` 和 `expectedFields`，方便快速复验字段，不需要展开源码。`agent-fleet-api` 的 `expectedFields` 固定 `agents[].owner`、`agents[].wallet`、`agents[].identityTuple`、`agents[].builderCode`、`agents[44-47].card.tags`、`agents[44-47].card.metadata.builderCode`、`total`、`offset`、`limit` 和 `sdk`，让公开名片、分页范围和 builderCode 过滤都能被逐项核对。
 
 ---
 

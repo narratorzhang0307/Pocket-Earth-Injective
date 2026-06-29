@@ -113,6 +113,29 @@ for (const endpoint of [
   assertTrue(`API table contains ${endpoint}`, guide.includes(endpoint))
 }
 
+for (const phrase of [
+  '{ sdk, agents, total, offset, limit }',
+  'owner/wallet/identityTuple/builderCode',
+  'card.tags',
+  'card.metadata.builderCode',
+  'agents[].owner',
+  'agents[].wallet',
+  'agents[].identityTuple',
+  'agents[44-47].card.tags',
+  'agents[44-47].card.metadata.builderCode',
+]) {
+  assertTrue(`integration guide documents fleet proof field ${phrase}`, guide.includes(phrase))
+}
+
+for (const phrase of [
+  'sdk/total/offset/limit',
+  'owner/wallet/identityTuple/builderCode',
+  'card.tags',
+  'card.metadata.builderCode',
+]) {
+  assertTrue(`root README documents fleet proof field ${phrase}`, readme.includes(phrase))
+}
+
 console.log('\nREADME first-minute evidence guide')
 for (const phrase of [
   '### 0. 先看什么',
