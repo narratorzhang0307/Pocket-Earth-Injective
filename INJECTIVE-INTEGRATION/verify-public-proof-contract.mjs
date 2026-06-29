@@ -290,6 +290,7 @@ assertEqual('judgeRunbook step 3 path', evidence.judgeRunbook.steps[2]?.path, '/
 assertTrue('judgeRunbook step 4 paths include agent proof', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.agentProofApi))
 assertTrue('judgeRunbook step 4 paths include fleet', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.listAgentsApi))
 assertTrue('judgeRunbook step 4 paths include wallet timeline', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.walletTimelineApi))
+assertTrue('judgeRunbook step 4 paths include hardware proof', evidence.judgeRunbook.steps[3]?.paths?.includes(evidence.verification?.hardwareBridgeApi))
 assertEqual('judgeRunbook step 5 command', evidence.judgeRunbook.steps[4]?.command, 'npm run verify:demo')
 for (const [index, step] of evidence.judgeRunbook.steps.entries()) {
   assertEqual(`judgeRunbook step ${index + 1} number`, step.step, index + 1)

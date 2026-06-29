@@ -134,6 +134,7 @@ assertEqual('evidence judgeRunbook estimated seconds', evidence.judgeRunbook.est
 assertEqual('evidence judgeRunbook step count', evidence.judgeRunbook.steps?.length, JUDGE_RUNBOOK.steps.length)
 assertEqual('evidence judgeRunbook first URL', evidence.judgeRunbook.steps?.[0]?.url, scanUrlForAgent(43))
 assertTrue('evidence judgeRunbook includes API suite', evidence.judgeRunbook.steps?.some((step) => step.key === 'public-read-apis' && step.paths?.includes(evidence.verification?.walletTimelineApi)))
+assertTrue('evidence judgeRunbook includes hardware proof API', evidence.judgeRunbook.steps?.some((step) => step.key === 'public-read-apis' && step.paths?.includes(evidence.verification?.hardwareBridgeApi)))
 assertEqual('evidence owner', evidence.owner, PROOF_OWNER)
 assertEqual('evidence owner scanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
 assertEqual('evidence registry', evidence.registry, IDENTITY_REGISTRY)
