@@ -1,7 +1,15 @@
 // Verify reviewer-facing links returned by the product evidence API.
 // Usage: npm run verify:review-links
 import { handleInjective } from '../injective-service.mjs'
-import { REVIEW_CHECKLIST, REVIEW_LINKS } from './chain-proof-data.mjs'
+import {
+  IDENTITY_REGISTRY,
+  PROOF_OWNER,
+  REGISTRY_MINT_EVENTS,
+  REVIEW_CHECKLIST,
+  REVIEW_LINKS,
+  scanUrlForAddress,
+  scanUrlForRegistry,
+} from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -45,6 +53,8 @@ async function assertHttpOk(label, url) {
 const evidence = await callEvidenceApi()
 const apiLinks = evidence.reviewLinks
 const apiChecklist = evidence.reviewChecklist
+const apiRegistryMintEvents = evidence.registryMintEvents
+const apiRegistryMintSummary = evidence.registryMintSummary
 
 assertTrue('api reviewLinks array', Array.isArray(apiLinks))
 assertEqual('api reviewLinks count', apiLinks.length, REVIEW_LINKS.length)
@@ -70,9 +80,35 @@ for (const item of apiChecklist) {
   assertTrue(`${item.key} primary review link exists in facts`, expectedByKey.has(item.primaryLinkKey))
 }
 
-const publicText = JSON.stringify({ reviewLinks: apiLinks, reviewChecklist: apiChecklist })
+assertTrue('api registryMintEvents array', Array.isArray(apiRegistryMintEvents))
+assertEqual('api registryMintEvents count', apiRegistryMintEvents.length, REGISTRY_MINT_EVENTS.length)
+assertTrue('api registryMintSummary object', Boolean(apiRegistryMintSummary) && typeof apiRegistryMintSummary === 'object')
+assertEqual('api registryMintSummary owner', apiRegistryMintSummary.owner, PROOF_OWNER)
+assertEqual('api registryMintSummary ownerScanUrl', apiRegistryMintSummary.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('api registryMintSummary registry', apiRegistryMintSummary.registry, IDENTITY_REGISTRY)
+assertEqual('api registryMintSummary registryScanUrl', apiRegistryMintSummary.registryScanUrl, scanUrlForRegistry())
+await assertHttpOk('registryMintSummary owner Blockscout page', apiRegistryMintSummary.ownerScanUrl)
+await assertHttpOk('registryMintSummary registry token page', apiRegistryMintSummary.registryScanUrl)
+
+for (const expected of REGISTRY_MINT_EVENTS) {
+  const actual = apiRegistryMintEvents.find((event) => Number(event.agentId) === Number(expected.agentId))
+  assertTrue(`registry mint agent ${expected.agentId} exists in API`, Boolean(actual))
+  assertEqual(`registry mint agent ${expected.agentId} scanUrl`, actual.scanUrl, expected.scanUrl)
+  assertEqual(`registry mint agent ${expected.agentId} agentScanUrl`, actual.agentScanUrl, expected.agentScanUrl)
+  assertTrue(`registry mint agent ${expected.agentId} tx uses Injective Blockscout`, String(actual.scanUrl).startsWith('https://testnet.blockscout.injective.network/'))
+  assertTrue(`registry mint agent ${expected.agentId} identity uses Injective Blockscout`, String(actual.agentScanUrl).startsWith('https://testnet.blockscout.injective.network/'))
+  await assertHttpOk(`registry mint agent ${expected.agentId} transaction page`, actual.scanUrl)
+  await assertHttpOk(`registry mint agent ${expected.agentId} identity page`, actual.agentScanUrl)
+}
+
+const publicText = JSON.stringify({
+  reviewLinks: apiLinks,
+  reviewChecklist: apiChecklist,
+  registryMintEvents: apiRegistryMintEvents,
+  registryMintSummary: apiRegistryMintSummary,
+})
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB']) {
   assertTrue(`api reviewer links omit ${forbidden}`, !publicText.includes(forbidden))
 }
 
-console.log('\nOK API reviewer links are complete, public-only, and reachable on Injective Blockscout.')
+console.log('\nOK API reviewer links and registry mint evidence links are complete, public-only, and reachable on Injective Blockscout.')
