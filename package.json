@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "verify:evidence": "node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs",
     "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
     "verify:hardware": "node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs",
     "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs"

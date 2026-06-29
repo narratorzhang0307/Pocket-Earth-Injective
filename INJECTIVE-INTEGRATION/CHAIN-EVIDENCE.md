@@ -64,10 +64,11 @@ Reviewers can also verify the same chain facts through Pocket Earth itself. Thes
 curl 'http://localhost:5173/api/injective?tool=get-chain-evidence'
 curl 'http://localhost:5173/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47'
 curl 'http://localhost:5173/api/injective?tool=get-wallet-timeline'
+npm run verify:evidence
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:injective`, `list-agents`, and `get-wallet-timeline`). The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:injective`, `list-agents`, and `get-wallet-timeline`). The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:evidence` is the fastest local smoke check for this JSON-only evidence package.
 
 Handshake calldata and event both decode to:
 
@@ -80,6 +81,7 @@ Handshake calldata and event both decode to:
 ## Local Reproduction
 
 ```bash
+npm run verify:evidence
 npm run verify:injective
 ```
 

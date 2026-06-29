@@ -82,19 +82,23 @@ npm run build && node server.mjs
 # 3. 验证真连 testnet
 curl 'localhost:5173/api/injective?tool=ping'   # → {reachable:true,sdk:true,network:testnet}
 
-# 4. 一键验证 Injective 链上证据（只读，不需要私钥）
+# 4. 快速验证公开证据 API（只读，不需要私钥、不扫链）
+npm run verify:evidence
+
+# 5. 一键验证 Injective 链上证据（只读，不需要私钥）
 npm run verify:injective
 
-# 5. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
+# 6. 录屏前验证 public-plaza / agent-plaza 前端闭环（会自动启动/关闭本地 Vite）
 npm run verify:plaza
 
-# 6. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
+# 7. 验证 Frost Buddy 硬件桥事件契约（只读，无硬件也能跑）
 npm run verify:hardware
 
 # 也可以单独验证具体证据
 node INJECTIVE-INTEGRATION/verify-agent43.mjs
 node INJECTIVE-INTEGRATION/verify-fleet.mjs
 node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs
+node INJECTIVE-INTEGRATION/verify-chain-evidence-api.mjs
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 node INJECTIVE-INTEGRATION/verify-api-write-boundaries.mjs
 node INJECTIVE-INTEGRATION/verify-registry-events.mjs

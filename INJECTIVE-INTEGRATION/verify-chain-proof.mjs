@@ -15,6 +15,10 @@ const checks = [
     moduleUrl: new URL('./verify-api-list-agents.mjs', import.meta.url),
   },
   {
+    label: 'Public chain evidence API is self-contained and safe to show',
+    moduleUrl: new URL('./verify-chain-evidence-api.mjs', import.meta.url),
+  },
+  {
     label: 'App /api/injective ping, get-status, get-reputation read tools',
     moduleUrl: new URL('./verify-api-read-tools.mjs', import.meta.url),
   },
