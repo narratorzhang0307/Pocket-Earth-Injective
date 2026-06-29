@@ -61,12 +61,13 @@
 Reviewers can also verify the same chain facts through Pocket Earth itself. These are read-only API calls; they do not need a private key and do not create transactions:
 
 ```bash
+curl 'http://localhost:5173/api/injective?tool=get-chain-evidence'
 curl 'http://localhost:5173/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47'
 curl 'http://localhost:5173/api/injective?tool=get-wallet-timeline'
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call reads `agentId 43-47` by `builderCode = pocket-earth`. The second call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake.
 
 Handshake calldata and event both decode to:
 
@@ -87,7 +88,7 @@ This read-only proof suite verifies:
 - `agentId 43-47` on Injective testnet
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
-- `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, and `get-wallet-timeline`
+- `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, and `get-wallet-timeline`
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events and transaction hashes
 - wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links

@@ -7,7 +7,7 @@
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
 // ════════════════════════════════════════════════════════════════════════════
 
-import { IDENTITY_REGISTRY, INJECTIVE_TESTNET_RPC, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, sameAddress, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_RPC, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -139,6 +139,37 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const id = url.searchParams.get('agentId'); if (!id) return json(res, { error: 'no_agentId' })
       const rep = await reader.getReputation(BigInt(id)).catch(() => ({ score: 0, count: 0, clients: [] }))
       return json(res, rep)
+    }
+
+    // —— 只读：公开链上证据包（供评审/录屏直接从产品 API 拉同一份公开事实表）——
+    if (tool === 'get-chain-evidence') {
+      return json(res, {
+        ok: true,
+        network,
+        builderCode: BUILDER_CODE,
+        owner: PROOF_OWNER,
+        ownerScanUrl: scanUrlForAddress(PROOF_OWNER),
+        registry: IDENTITY_REGISTRY,
+        registryScanUrl: scanUrlForRegistry(),
+        handshakeContract: SOCIAL_HANDSHAKE,
+        handshakeScanUrl: scanUrlForAddress(SOCIAL_HANDSHAKE),
+        agents: FLEET_AGENTS.map((agent) => ({
+          agentId: Number(agent.id),
+          label: agent.label,
+          ...(agent.requiredTag ? { requiredTag: agent.requiredTag } : {}),
+          scanUrl: scanUrlForAgent(agent.id),
+        })),
+        timeline: TIMELINE_EVENTS.map((event) => ({
+          label: event.label,
+          role: event.role,
+          hash: event.hash,
+          to: event.to,
+          blockNumber: event.blockNumber,
+          timestamp: event.timestamp,
+          scanUrl: scanUrlForTx(event.hash),
+          ...(event.contractAddress ? { contractAddress: event.contractAddress } : {}),
+        })),
+      })
     }
 
     // —— 只读：钱包证据时间线（直接读 Injective RPC 的 tx/receipt/block，无需私钥）——

@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, IDENTITY_REGISTRY, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS } from './chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -44,11 +44,12 @@ console.error = (...args) => {
   else originalError(...args)
 }
 
-let ping, status, reputation, timeline
+let ping, status, reputation, evidence, timeline
 try {
   ping = await callInjectiveApi('/api/injective?tool=ping')
   status = await callInjectiveApi('/api/injective?tool=get-status&agentId=43')
   reputation = await callInjectiveApi('/api/injective?tool=get-reputation&agentId=43')
+  evidence = await callInjectiveApi('/api/injective?tool=get-chain-evidence')
   timeline = await callInjectiveApi('/api/injective?tool=get-wallet-timeline')
 } finally {
   console.warn = originalWarn
@@ -72,6 +73,35 @@ assertTrue('reputation score is numeric', Number.isFinite(Number(reputation.scor
 assertTrue('reputation count is numeric', Number.isFinite(Number(reputation.count)))
 assertTrue('reputation clients array', Array.isArray(reputation.clients))
 
+console.log('\n/api get-chain-evidence')
+assertEqual('evidence ok', evidence.ok, true)
+assertEqual('evidence network', evidence.network, 'testnet')
+assertEqual('evidence builderCode', evidence.builderCode, BUILDER_CODE)
+assertEqual('evidence owner', evidence.owner, PROOF_OWNER)
+assertEqual('evidence owner scanUrl', evidence.ownerScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('evidence registry', evidence.registry, IDENTITY_REGISTRY)
+assertEqual('evidence registry scanUrl', evidence.registryScanUrl, scanUrlForRegistry())
+assertEqual('evidence handshake contract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
+assertEqual('evidence handshake scanUrl', evidence.handshakeScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertTrue('evidence agents array', Array.isArray(evidence.agents))
+assertEqual('evidence agent count', evidence.agents.length, FLEET_AGENTS.length)
+for (const expected of FLEET_AGENTS) {
+  const actual = evidence.agents.find((agent) => Number(agent.agentId) === Number(expected.id))
+  assertTrue(`evidence agent ${expected.id} present`, !!actual)
+  assertEqual(`evidence agent ${expected.id} label`, actual.label, expected.label)
+  assertEqual(`evidence agent ${expected.id} scanUrl`, actual.scanUrl, scanUrlForAgent(expected.id))
+  if (expected.requiredTag) assertEqual(`evidence agent ${expected.id} requiredTag`, actual.requiredTag, expected.requiredTag)
+}
+assertTrue('evidence timeline array', Array.isArray(evidence.timeline))
+assertEqual('evidence timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)
+for (const expected of TIMELINE_EVENTS) {
+  const actual = evidence.timeline.find((event) => event.hash === expected.hash)
+  assertTrue(`evidence timeline ${expected.role} present`, !!actual)
+  assertEqual(`evidence timeline ${expected.role} block`, actual.blockNumber, expected.blockNumber)
+  assertEqual(`evidence timeline ${expected.role} timestamp`, actual.timestamp, expected.timestamp)
+  assertEqual(`evidence timeline ${expected.role} scanUrl`, actual.scanUrl, scanUrlForTx(expected.hash))
+}
+
 console.log('\n/api get-wallet-timeline')
 assertEqual('timeline ok', timeline.ok, true)
 assertEqual('timeline owner', timeline.owner, PROOF_OWNER)
@@ -94,4 +124,4 @@ if (sdkWarnings.length) {
   console.log('\nNOTE Agent SDK card fetch warnings were suppressed; API read-tool fields were verified directly.')
 }
 
-console.log('\nOK /api/injective ping, get-status, get-reputation, and get-wallet-timeline read from Injective testnet.')
+console.log('\nOK /api/injective ping, get-status, get-reputation, get-chain-evidence, and get-wallet-timeline read from Injective testnet.')
