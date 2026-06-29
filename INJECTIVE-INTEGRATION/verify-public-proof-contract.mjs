@@ -179,6 +179,7 @@ for (const event of REGISTRY_MINT_EVENTS) {
   assertEqual(`registry mint agent ${event.agentId} block`, actual.blockNumber, event.blockNumber)
   assertEqual(`registry mint agent ${event.agentId} scanUrl`, actual.scanUrl, scanUrlForTx(event.transactionHash))
 }
+assertEqual('registry mint checklist command', evidence.reviewChecklist.find((item) => item.key === 'registry-mint-events')?.machineCheck, 'npm run verify:registry')
 assertEqual('timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)
 for (const event of TIMELINE_EVENTS) {
   const actual = evidence.timeline.find((item) => item.hash === event.hash)

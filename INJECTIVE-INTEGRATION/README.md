@@ -196,7 +196,7 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 
 - Frost 主身份：`agentId 43`，`builderCode = pocket-earth`，Owner/Wallet 为 `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`。
 - Pocket Earth agent fleet：`agentId 43–47` 均可读回 `builderCode = pocket-earth`；44–47 的脱敏口味名片用 data URI 内联上链，无需 Pinata。`verify-fleet.mjs` 会验证这些名片只含公开字段（type/name/description/tags/metadata），metadata 只含 `chain` 和 `builderCode`。
-- Registry 事件级证据：`/api/injective?tool=get-chain-evidence` 会公开返回 `registryMintEvents`，列出 `agentId 43–47` 的 mint from `0x0`、owner、交易哈希、区块号、tx 链接和身份页；`verify-registry-events.mjs` 会读取 ERC-8004 `Transfer(0x0 → wallet, tokenId)` mint 事件，核验这些公开字段没有漂移。
+- Registry 事件级证据：`/api/injective?tool=get-chain-evidence` 会公开返回 `registryMintEvents`，列出 `agentId 43–47` 的 mint from `0x0`、owner、交易哈希、区块号、tx 链接和身份页；`reviewChecklist` 也有 `registry-mint-events` 独立检查项；`verify-registry-events.mjs` 会读取 ERC-8004 `Transfer(0x0 → wallet, tokenId)` mint 事件，核验这些公开字段没有漂移。
 - 钱包证据链：注册交易 `0xd2b574...0554` 与握手交易 `0x0e597f...f2d6` 都由同一个测试网钱包发起；`verify-wallet-flow.mjs` 会核验交易 from/to、注册事件、合约代码、recordHandshake calldata、非零名片哈希和公开页面。
 - 交易时间线：`verify-chain-timeline.mjs` 会通过 Injective testnet JSON-RPC 直接读取注册、合约部署、fleet 注册和真实握手的 transaction / receipt / block，核验区块号、UTC 时间戳、from/to 与成功状态，作为钱包页录屏的机器可复验证据。
 - 防漂移数据源：`chain-proof-data.mjs` 集中维护公开钱包、IdentityRegistry、SocialHandshake 和 7 笔时间线交易；产品 API、RPC 时间线验证和文档链接检查共用同一份公开事实表，避免演示接口、证据脚本和评审文档各写一份导致不一致。

@@ -102,13 +102,17 @@ assertTrue('remote README points at chain evidence API', remoteReadme.includes('
 assertTrue('remote README names proof suite', remoteReadme.includes('npm run verify:injective'))
 assertTrue('remote README names public proof guard', remoteReadme.includes('npm run verify:public-proof'))
 assertTrue('remote README names registry mint events', remoteReadme.includes('registryMintEvents'))
+assertTrue('remote README names registry mint checklist', remoteReadme.includes('registry-mint-events'))
 assertTrue('remote integration guide names ERC-8004', remoteIntegration.includes('ERC-8004'))
 assertTrue('remote integration guide names wallet timeline', remoteIntegration.includes('get-wallet-timeline'))
 assertTrue('remote integration guide names registryMintEvents', remoteIntegration.includes('registryMintEvents'))
+assertTrue('remote integration guide names registry mint checklist', remoteIntegration.includes('registry-mint-events'))
 assertTrue('remote evidence pack names reviewBrief', remoteEvidence.includes('reviewBrief'))
 assertTrue('remote evidence pack names registryMintEvents', remoteEvidence.includes('registryMintEvents'))
+assertTrue('remote evidence pack names registry mint checklist', remoteEvidence.includes('registry-mint-events'))
 assertTrue('remote evidence pack names submissionChecklist', remoteEvidence.includes('submissionChecklist'))
 assertTrue('remote demo script names registryMintEvents', remoteDemo.includes('registryMintEvents'))
+assertTrue('remote demo script names registry mint checklist', remoteDemo.includes('registry-mint-events'))
 assertTrue('remote demo script keeps 3-minute limit', remoteDemo.includes('≤ 3 分钟') && remoteDemo.includes('180s'))
 for (const [label, text] of [
   ['remote README', remoteReadme],

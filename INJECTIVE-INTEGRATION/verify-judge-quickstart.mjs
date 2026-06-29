@@ -84,6 +84,8 @@ for (const snippet of [
 for (const snippet of [
   'ERC-8004',
   'agentId 43-47',
+  'registryMintEvents',
+  'registry-mint-events',
   'SocialHandshake',
   'public-plaza',
   'agent-plaza',

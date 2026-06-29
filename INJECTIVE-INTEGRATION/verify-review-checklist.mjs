@@ -48,11 +48,12 @@ const checklistKeys = new Set(REVIEW_CHECKLIST.map((item) => item.key))
 
 assertEqual('review link key count', reviewLinkKeys.size, REVIEW_LINKS.length)
 assertEqual('review checklist key count', checklistKeys.size, REVIEW_CHECKLIST.length)
-assertEqual('review checklist count', REVIEW_CHECKLIST.length, 6)
+assertEqual('review checklist count', REVIEW_CHECKLIST.length, 7)
 
 for (const required of [
   'erc8004-identity',
   'fleet-builder-code',
+  'registry-mint-events',
   'wallet-timeline',
   'social-handshake',
   'privacy-boundary',
@@ -74,6 +75,8 @@ for (const item of REVIEW_CHECKLIST) {
 const checklistText = JSON.stringify(REVIEW_CHECKLIST)
 assertTrue('checklist mentions owner wallet', checklistText.includes(PROOF_OWNER))
 assertTrue('checklist mentions builderCode', checklistText.includes(BUILDER_CODE))
+assertTrue('checklist names registryMintEvents', checklistText.includes('registryMintEvents'))
+assertTrue('checklist names zero-address mint proof', checklistText.includes('zero address'))
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB']) {
   assertTrue(`checklist omits ${forbidden}`, !checklistText.includes(forbidden))
 }

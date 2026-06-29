@@ -105,6 +105,7 @@ assertTrue('evidence review brief maps Injective execution', evidence.reviewBrie
 assertTrue('evidence review checklist array', Array.isArray(evidence.reviewChecklist))
 assertEqual('evidence review checklist count', evidence.reviewChecklist.length, REVIEW_CHECKLIST.length)
 assertEqual('evidence review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')
+assertEqual('evidence review checklist registry mint command', evidence.reviewChecklist.find((item) => item.key === 'registry-mint-events')?.machineCheck, 'npm run verify:registry')
 assertEqual('evidence review checklist wallet link', evidence.reviewChecklist.find((item) => item.key === 'wallet-timeline')?.primaryLinkKey, 'owner-wallet')
 assertEqual('evidence review checklist product command', evidence.reviewChecklist.at(-1)?.machineCheck, 'npm run verify:plaza')
 assertTrue('evidence competition alignment array', Array.isArray(evidence.competitionAlignment))

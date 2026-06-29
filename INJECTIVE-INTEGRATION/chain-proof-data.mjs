@@ -278,6 +278,18 @@ export const REVIEW_CHECKLIST = [
     machineCheck: 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs',
   },
   {
+    key: 'registry-mint-events',
+    label: 'ERC-8004 Registry mint events',
+    evidence: 'Inspect registryMintEvents in /api/injective?tool=get-chain-evidence, then run the Registry event verifier.',
+    primaryLinkKey: 'identity-registry',
+    passCriteria: [
+      'agentId 43-47 each have a Transfer mint event from the zero address',
+      `each mint event sends the identity to ${PROOF_OWNER}`,
+      'the registration tx hash, block number, tx link, and agent identity link match the public evidence API',
+    ],
+    machineCheck: 'npm run verify:registry',
+  },
+  {
     key: 'wallet-timeline',
     label: 'Wallet evidence chain',
     evidence: 'Open the owner wallet page or call /api/injective?tool=get-wallet-timeline.',

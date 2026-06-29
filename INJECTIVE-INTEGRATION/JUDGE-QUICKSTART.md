@@ -6,7 +6,7 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents` and the `registry-mint-events` checklist item
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
 5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`
 6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
