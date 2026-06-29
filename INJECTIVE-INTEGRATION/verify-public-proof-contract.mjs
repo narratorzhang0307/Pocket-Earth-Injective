@@ -247,6 +247,8 @@ assertFocusIncludes('recording step 6', evidence.recordingOrder[5], `chainId ${I
 assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'handshake')
 assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'public-plaza')
 assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'agent-plaza')
+assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'Frost Edge Node')
+assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'chain_dispatch')
 
 console.log('\nJudge runbook')
 assertTrue('judgeRunbook object', !!evidence.judgeRunbook && typeof evidence.judgeRunbook === 'object')

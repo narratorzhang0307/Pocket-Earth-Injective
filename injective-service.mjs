@@ -456,6 +456,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             evidenceFocus: [
               'public-plaza shows chain social discovery',
               'agent-plaza shows marketplace and install loop',
+              'Frost Edge Node can speak the same chain_dispatch public event',
               'smoke test keeps the UI proof path executable',
             ],
           },

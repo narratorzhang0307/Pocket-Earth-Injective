@@ -323,6 +323,8 @@ assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'allSucceede
 assertFocusIncludes('recording step 6', evidence.recordingOrder[5], `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`)
 assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'public-plaza')
 assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'agent-plaza')
+assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'Frost Edge Node')
+assertFocusIncludes('recording step 7', evidence.recordingOrder[6], 'chain_dispatch')
 
 console.log('\nPublic-only guard')
 const evidenceText = JSON.stringify(evidence)

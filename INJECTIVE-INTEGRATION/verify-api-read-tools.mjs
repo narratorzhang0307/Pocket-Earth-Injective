@@ -229,6 +229,8 @@ assertFocusIncludes('evidence recording step 5', evidence.recordingOrder[4], 'ag
 assertFocusIncludes('evidence recording step 6', evidence.recordingOrder[5], 'allSucceeded')
 assertFocusIncludes('evidence recording step 7', evidence.recordingOrder[6], 'public-plaza')
 assertFocusIncludes('evidence recording step 7', evidence.recordingOrder[6], 'agent-plaza')
+assertFocusIncludes('evidence recording step 7', evidence.recordingOrder[6], 'Frost Edge Node')
+assertFocusIncludes('evidence recording step 7', evidence.recordingOrder[6], 'chain_dispatch')
 assertTrue('evidence agents array', Array.isArray(evidence.agents))
 assertEqual('evidence agent count', evidence.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {

@@ -229,6 +229,8 @@ assertFocusIncludes('judge step 5', evidence.recordingOrder[4], `builderCode=${B
 assertFocusIncludes('judge step 6', evidence.recordingOrder[5], 'allSucceeded')
 assertFocusIncludes('judge step 6', evidence.recordingOrder[5], `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`)
 assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'agent-plaza')
+assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'Frost Edge Node')
+assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'chain_dispatch')
 
 console.log('\nDocs link the one-page path')
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))

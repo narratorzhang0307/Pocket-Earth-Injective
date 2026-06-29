@@ -174,6 +174,8 @@ assertEqual('recording step 7 type', plazaSmoke.type, 'command')
 assertEqual('recording step 7 command', plazaSmoke.command, 'npm run verify:plaza')
 assertFocusIncludes('recording step 7', plazaSmoke, 'public-plaza')
 assertFocusIncludes('recording step 7', plazaSmoke, 'agent-plaza')
+assertFocusIncludes('recording step 7', plazaSmoke, 'Frost Edge Node')
+assertFocusIncludes('recording step 7', plazaSmoke, 'chain_dispatch')
 assertTrue('recording step 7 npm script exists', Boolean(packageJson.scripts?.['verify:plaza']))
 
 const publicText = JSON.stringify(order)
