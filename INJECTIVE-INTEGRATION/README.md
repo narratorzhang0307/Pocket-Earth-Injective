@@ -83,7 +83,7 @@ npm run build && node server.mjs
 # 3. 验证真连 testnet
 curl 'localhost:5173/api/injective?tool=ping'   # → {reachable:true,sdk:true,network:testnet}
 
-# 4. 录屏前快速验证链上证据路径（只读，不需要私钥、不打开浏览器）
+# 4. 录屏前快速验证链上证据路径（只读，不需要私钥、不打开浏览器；含钱包时间线 API/RPC 事实表）
 npm run verify:demo
 
 # 5. 验证 Demo 脚本仍在 180s / 3 分钟提交限制内
