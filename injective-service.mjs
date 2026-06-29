@@ -399,6 +399,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
         ok: true,
         network,
         chainId: INJECTIVE_TESTNET_CHAIN_ID,
+        readOnly: true,
+        publicOnly: true,
         owner: PROOF_OWNER,
         registry: IDENTITY_REGISTRY,
         handshakeContract: SOCIAL_HANDSHAKE,
