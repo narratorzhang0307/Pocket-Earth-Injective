@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { handleInjective } from '../injective-service.mjs'
-import { SUBMISSION_REPOSITORY_URL } from './chain-proof-data.mjs'
+import { INTEGRATION_REPOSITORY_URL } from './chain-proof-data.mjs'
 
 const integrationDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(integrationDir, '..')
@@ -54,15 +54,15 @@ const remoteMain = git(['ls-remote', '--heads', 'origin', 'main']).split(/\s+/)[
 
 console.log('\nLocal source boundary')
 assertEqual('current branch', branch, 'main')
-assertEqual('origin repository', origin, SUBMISSION_REPOSITORY_URL)
+assertEqual('origin repository', origin, INTEGRATION_REPOSITORY_URL)
 assertTrue('local HEAD is a 40-char sha', /^[0-9a-f]{40}$/i.test(head))
 
 console.log('\nEvidence sourceControl')
 assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
-assertEqual('sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('sourceControl repository', evidence.sourceControl.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
 assertEqual('sourceControl commit', evidence.sourceControl.commit, head)
-assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${head}`)
+assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${INTEGRATION_REPOSITORY_URL}/commit/${head}`)
 assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 assertEqual('sourceControl command', evidence.verification?.sourceControl, 'npm run verify:source')
 
@@ -83,4 +83,4 @@ for (const forbidden of [
   assertTrue(`sourceControl omits ${forbidden}`, !sourceText.includes(forbidden))
 }
 
-console.log('\nOK sourceControl ties the public evidence API to the current Injective submission commit.')
+console.log('\nOK sourceControl ties the public evidence API to the current Injective integration commit.')

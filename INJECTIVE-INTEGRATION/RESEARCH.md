@@ -185,7 +185,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 1. **Injective testnet EVM 私钥**（`0x...`，仅 testnet、勿用主网密钥）→ `INJ_PRIVATE_KEY`，server 端 .env 读、绝不进前端 bundle。同一私钥既当 operator 又当 agent wallet（SDK 仅支持自签绑定）。
 2. 该地址领 **testnet INJ gas**：`https://testnet.faucet.injective.network/`。
 3. （可选）**Pinata JWT**（免费 app.pinata.cloud）→ `PINATA_JWT`，自动把 card 传 IPFS；不想用 IPFS 可改 `CustomUrlStorage` 指向自托管 card.json。
-4. 确认目标网络：比赛/demo 先 **testnet**（chainId 1439，默认）。
+4. 确认目标网络：集成与 demo 默认先跑 **testnet**（chainId 1439）。
 5. （仅 P2 x402）确认收款 stablecoin 与 facilitator 是否在 Injective 链结算。
 
 ---

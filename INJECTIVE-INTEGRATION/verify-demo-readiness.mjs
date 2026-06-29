@@ -19,8 +19,8 @@ const checks = [
     moduleUrl: new URL('./verify-integration-guide.mjs', import.meta.url),
   },
   {
-    label: 'GitHub submission repo is public and aligned',
-    moduleUrl: new URL('./verify-github-submission.mjs', import.meta.url),
+    label: 'GitHub integration repo is public and aligned',
+    moduleUrl: new URL('./verify-github-integration.mjs', import.meta.url),
   },
   {
     label: 'public evidence API is tied to the current source commit',
@@ -71,12 +71,12 @@ const checks = [
     moduleUrl: new URL('./verify-plaza-flow.mjs', import.meta.url),
   },
   {
-    label: 'competition alignment maps Injective Nova story to public proof',
+    label: 'integration alignment maps Injective Nova story to public proof',
     moduleUrl: new URL('./verify-nova-alignment.mjs', import.meta.url),
   },
   {
-    label: 'submission links point to the Injective review entry points',
-    moduleUrl: new URL('./verify-submission-pack.mjs', import.meta.url),
+    label: 'review entrypoints point to the Injective review entry points',
+    moduleUrl: new URL('./verify-delivery-pack.mjs', import.meta.url),
   },
 ]
 

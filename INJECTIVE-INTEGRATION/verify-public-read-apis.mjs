@@ -8,7 +8,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
-  SUBMISSION_REPOSITORY_URL,
+  INTEGRATION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAgent,
   scanUrlForRegistry,
@@ -146,7 +146,7 @@ assertEqual('chain evidence ok', chainEvidence.ok, true)
 assertEqual('chain evidence chainId', chainEvidence.chainId, INJECTIVE_TESTNET_CHAIN_ID)
 assertEqual('chain evidence readOnly', chainEvidence.readOnly, true)
 assertEqual('chain evidence publicOnly', chainEvidence.publicOnly, true)
-assertEqual('chain evidence source repository', chainEvidence.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('chain evidence source repository', chainEvidence.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertTrue('chain evidence carries judgeRunbook', Array.isArray(chainEvidence.judgeRunbook?.steps))
 assertEqual('chain evidence judgeRunbook step count', chainEvidence.judgeRunbook.steps.length, 5)
 assertEqual('chain evidence judgeRunbook starts with identity URL', chainEvidence.judgeRunbook.steps[0]?.url, scanUrlForAgent(43))
@@ -183,7 +183,7 @@ assertEqual('agent proof registry', agentProof.agent?.registry, IDENTITY_REGISTR
 assertEqual('agent proof mint tx', agentProof.agent?.mintTransactionHash, REGISTRY_MINT_EVENTS[0].transactionHash)
 assertEqual('agent proof proofApi', agentProof.agent?.proofApi, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('agent proof scanUrl', agentProof.agent?.scanUrl, scanUrlForAgent(43))
-assertEqual('agent proof source repository', agentProof.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('agent proof source repository', agentProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('agent proof verification command', agentProof.verification?.agentProof, 'npm run verify:agent-proof')
 
 console.log('\nagent fleet endpoint')

@@ -3,7 +3,7 @@
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
-  COMPETITION_ALIGNMENT,
+  INTEGRATION_ALIGNMENT,
   DEMO_VIDEO_LIMIT_SECONDS,
   EVIDENCE_PRIVACY_BOUNDARY,
   FLEET_AGENTS,
@@ -20,9 +20,9 @@ import {
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
   SOCIAL_HANDSHAKE_PROOF,
-  SUBMISSION_CHECKLIST,
-  SUBMISSION_LINKS,
-  SUBMISSION_REPOSITORY_URL,
+  DELIVERY_CHECKLIST,
+  REVIEW_ENTRYPOINTS,
+  INTEGRATION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
   scanUrlForAgent,
@@ -79,10 +79,10 @@ assertEqual('publicOnly', evidence.publicOnly, true)
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 assertEqual('builderCode', evidence.builderCode, BUILDER_CODE)
 assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
-assertEqual('sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('sourceControl repository', evidence.sourceControl.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
 assertTrue('sourceControl commit is a sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
-if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
+if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${INTEGRATION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
 assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 assertTrue('public read APIs array', Array.isArray(evidence.publicReadApis))
 assertEqual('public read API count', evidence.publicReadApis.length, 4)
@@ -136,10 +136,10 @@ assertEqual('review link handshake tx url', evidence.reviewLinks.find((link) => 
 assertTrue('review brief object', !!evidence.reviewBrief && typeof evidence.reviewBrief === 'object')
 assertEqual('review brief title', evidence.reviewBrief.title, REVIEW_BRIEF.title)
 assertEqual('review brief core count', evidence.reviewBrief.injectiveCore?.length, REVIEW_BRIEF.injectiveCore.length)
-assertEqual('review brief contest fit count', evidence.reviewBrief.contestFit?.length, REVIEW_BRIEF.contestFit.length)
+assertEqual('review brief integration fit count', evidence.reviewBrief.integrationFit?.length, REVIEW_BRIEF.integrationFit.length)
 assertTrue('review brief names ERC-8004', evidence.reviewBrief.oneLiner?.includes('ERC-8004'))
-assertTrue('review brief maps to AI social', evidence.reviewBrief.contestFit?.some((item) => item.alignmentKey === 'ai-social'))
-assertTrue('review brief maps to physical world', evidence.reviewBrief.contestFit?.some((item) => item.alignmentKey === 'agent-physical-world'))
+assertTrue('review brief maps to AI social', evidence.reviewBrief.integrationFit?.some((item) => item.alignmentKey === 'ai-social'))
+assertTrue('review brief maps to physical world', evidence.reviewBrief.integrationFit?.some((item) => item.alignmentKey === 'agent-physical-world'))
 assertTrue('judge runbook object', !!evidence.judgeRunbook && typeof evidence.judgeRunbook === 'object')
 assertEqual('judge runbook title', evidence.judgeRunbook.title, JUDGE_RUNBOOK.title)
 assertEqual('judge runbook estimated seconds', evidence.judgeRunbook.estimatedSeconds, JUDGE_RUNBOOK.estimatedSeconds)
@@ -166,24 +166,24 @@ assertEqual('review checklist first key', evidence.reviewChecklist[0]?.key, 'erc
 assertTrue('review checklist first owner criterion', evidence.reviewChecklist[0]?.passCriteria?.some((item) => item.includes(PROOF_OWNER)))
 assertEqual('review checklist registry mint command', evidence.reviewChecklist.find((item) => item.key === 'registry-mint-events')?.machineCheck, 'npm run verify:registry')
 assertEqual('review checklist product loop command', evidence.reviewChecklist.at(-1)?.machineCheck, 'npm run verify:plaza')
-assertTrue('competition alignment array', Array.isArray(evidence.competitionAlignment))
-assertEqual('competition alignment count', evidence.competitionAlignment.length, COMPETITION_ALIGNMENT.length)
-assertEqual('competition alignment first key', evidence.competitionAlignment[0]?.key, 'ai-social')
-assertTrue('competition alignment mentions Injective execution', evidence.competitionAlignment.some((item) => item.key === 'injective-execution-layer'))
-assertTrue('competition alignment mentions hardware bridge', evidence.competitionAlignment.some((item) => item.key === 'agent-physical-world'))
-assertTrue('submission links array', Array.isArray(evidence.submissionLinks))
-assertEqual('submission links count', evidence.submissionLinks.length, SUBMISSION_LINKS.length)
-assertEqual('submission link judge quickstart url', evidence.submissionLinks.find((link) => link.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
-assertEqual('submission link repo url', evidence.submissionLinks.find((link) => link.key === 'github-repo')?.url, SUBMISSION_LINKS.find((link) => link.key === 'github-repo')?.url)
-assertEqual('submission link live demo url', evidence.submissionLinks.find((link) => link.key === 'live-demo')?.url, SUBMISSION_LINKS.find((link) => link.key === 'live-demo')?.url)
-assertEqual('submission link chain evidence path', evidence.submissionLinks.find((link) => link.key === 'chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
-assertTrue('submission checklist array', Array.isArray(evidence.submissionChecklist))
-assertEqual('submission checklist count', evidence.submissionChecklist.length, SUBMISSION_CHECKLIST.length)
-assertTrue('submission checklist includes GitHub README', evidence.submissionChecklist.some((item) => item.key === 'public-github-readme'))
-assertTrue('submission checklist includes Injective integration', evidence.submissionChecklist.some((item) => item.key === 'injective-integration'))
-assertTrue('submission checklist includes demo script', evidence.submissionChecklist.some((item) => item.key === 'demo-video-script'))
-assertTrue('submission checklist includes pitch notes', evidence.submissionChecklist.some((item) => item.key === 'pitch-deck-notes'))
-assertEqual('submission checklist demo local check', evidence.submissionChecklist.find((item) => item.key === 'demo-video-script')?.localCheck, 'npm run verify:duration')
+assertTrue('integration alignment array', Array.isArray(evidence.integrationAlignment))
+assertEqual('integration alignment count', evidence.integrationAlignment.length, INTEGRATION_ALIGNMENT.length)
+assertEqual('integration alignment first key', evidence.integrationAlignment[0]?.key, 'ai-social')
+assertTrue('integration alignment mentions Injective execution', evidence.integrationAlignment.some((item) => item.key === 'injective-execution-layer'))
+assertTrue('integration alignment mentions hardware bridge', evidence.integrationAlignment.some((item) => item.key === 'agent-physical-world'))
+assertTrue('review entrypoints array', Array.isArray(evidence.reviewEntrypoints))
+assertEqual('review entrypoints count', evidence.reviewEntrypoints.length, REVIEW_ENTRYPOINTS.length)
+assertEqual('review link judge quickstart url', evidence.reviewEntrypoints.find((link) => link.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
+assertEqual('review link repo url', evidence.reviewEntrypoints.find((link) => link.key === 'github-repo')?.url, REVIEW_ENTRYPOINTS.find((link) => link.key === 'github-repo')?.url)
+assertEqual('review link live demo url', evidence.reviewEntrypoints.find((link) => link.key === 'live-demo')?.url, REVIEW_ENTRYPOINTS.find((link) => link.key === 'live-demo')?.url)
+assertEqual('review link chain evidence path', evidence.reviewEntrypoints.find((link) => link.key === 'chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
+assertTrue('delivery checklist array', Array.isArray(evidence.deliveryChecklist))
+assertEqual('delivery checklist count', evidence.deliveryChecklist.length, DELIVERY_CHECKLIST.length)
+assertTrue('delivery checklist includes GitHub README', evidence.deliveryChecklist.some((item) => item.key === 'public-github-readme'))
+assertTrue('delivery checklist includes Injective integration', evidence.deliveryChecklist.some((item) => item.key === 'injective-integration'))
+assertTrue('delivery checklist includes demo script', evidence.deliveryChecklist.some((item) => item.key === 'demo-video-script'))
+assertTrue('delivery checklist includes pitch notes', evidence.deliveryChecklist.some((item) => item.key === 'pitch-deck-notes'))
+assertEqual('delivery checklist demo local check', evidence.deliveryChecklist.find((item) => item.key === 'demo-video-script')?.localCheck, 'npm run verify:duration')
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
@@ -293,7 +293,7 @@ assertEqual('source control command', evidence.verification?.sourceControl, 'npm
 assertEqual('registry events command', evidence.verification?.registryEvents, 'npm run verify:registry')
 assertEqual('plaza flow command', evidence.verification?.plazaFlow, 'npm run verify:plaza-flow')
 assertEqual('nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
-assertEqual('submission pack command', evidence.verification?.submissionPack, 'npm run verify:submission')
+assertEqual('delivery pack command', evidence.verification?.deliveryPack, 'npm run verify:delivery')
 assertEqual('proof suite command', evidence.verification?.proofSuite, 'npm run verify:injective')
 assertEqual('api read tools command', evidence.verification?.apiReadTools, 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs')
 assertEqual('agent proof command', evidence.verification?.agentProof, 'npm run verify:agent-proof')

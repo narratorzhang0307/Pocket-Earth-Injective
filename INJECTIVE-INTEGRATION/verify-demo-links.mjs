@@ -43,7 +43,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'reviewBrief',
   'reviewLinks',
   'reviewChecklist',
-  'submissionChecklist',
+  'deliveryChecklist',
   'sourceControl',
   'JUDGE-QUICKSTART.md',
   'recordingOrder',
@@ -68,7 +68,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   'npm run verify:registry',
   'npm run verify:plaza-flow',
   'npm run verify:nova-alignment',
-  'npm run verify:submission',
+  'npm run verify:delivery',
   'npm run verify:injective',
   'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
 ]

@@ -1,5 +1,5 @@
-// Verify the public submission links point to the Injective repo, demo, and review APIs.
-// Usage: npm run verify:submission
+// Verify the public review entrypoints point to the Injective repo, demo, and review APIs.
+// Usage: npm run verify:delivery
 import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
 import {
@@ -7,9 +7,9 @@ import {
   DEMO_VIDEO_LIMIT_SECONDS,
   JUDGE_QUICKSTART_URL,
   LIVE_DEMO_URL,
-  SUBMISSION_CHECKLIST,
-  SUBMISSION_LINKS,
-  SUBMISSION_REPOSITORY_URL,
+  DELIVERY_CHECKLIST,
+  REVIEW_ENTRYPOINTS,
+  INTEGRATION_REPOSITORY_URL,
 } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
@@ -44,19 +44,19 @@ const readme = await readFile('README.md', 'utf8')
 const chainEvidence = await readFile('INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md', 'utf8')
 const demoScript = await readFile('INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', 'utf8')
 const evidence = await callEvidenceApi()
-const links = evidence.submissionLinks
-const checklist = evidence.submissionChecklist
-const expectedByKey = new Map(SUBMISSION_LINKS.map((item) => [item.key, item]))
-const checklistByKey = new Map(SUBMISSION_CHECKLIST.map((item) => [item.key, item]))
-const linkKeys = new Set(SUBMISSION_LINKS.map((item) => item.key))
+const links = evidence.reviewEntrypoints
+const checklist = evidence.deliveryChecklist
+const expectedByKey = new Map(REVIEW_ENTRYPOINTS.map((item) => [item.key, item]))
+const checklistByKey = new Map(DELIVERY_CHECKLIST.map((item) => [item.key, item]))
+const linkKeys = new Set(REVIEW_ENTRYPOINTS.map((item) => item.key))
 
-assertTrue('submissionLinks array', Array.isArray(links))
-assertEqual('submissionLinks count', links.length, SUBMISSION_LINKS.length)
-assertEqual('submissionLinks unique key count', new Set(links.map((item) => item.key)).size, links.length)
-assertEqual('submission command', evidence.verification?.submissionPack, 'npm run verify:submission')
-assertEqual('submission script', packageJson.scripts?.['verify:submission'], 'node INJECTIVE-INTEGRATION/verify-submission-pack.mjs')
+assertTrue('reviewEntrypoints array', Array.isArray(links))
+assertEqual('reviewEntrypoints count', links.length, REVIEW_ENTRYPOINTS.length)
+assertEqual('reviewEntrypoints unique key count', new Set(links.map((item) => item.key)).size, links.length)
+assertEqual('delivery command', evidence.verification?.deliveryPack, 'npm run verify:delivery')
+assertEqual('delivery script', packageJson.scripts?.['verify:delivery'], 'node INJECTIVE-INTEGRATION/verify-delivery-pack.mjs')
 assertEqual('github repo command', evidence.verification?.githubRepo, 'npm run verify:github')
-assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
+assertEqual('github repo script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-integration.mjs')
 assertEqual('source control command', evidence.verification?.sourceControl, 'npm run verify:source')
 assertEqual('source control script', packageJson.scripts?.['verify:source'], 'node INJECTIVE-INTEGRATION/verify-source-control.mjs')
 assertEqual('registry events command', evidence.verification?.registryEvents, 'npm run verify:registry')
@@ -73,23 +73,23 @@ assertEqual('public read APIs command', evidence.verification?.publicReadApis, '
 assertEqual('public read APIs script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
 assertEqual('demo video limit seconds', evidence.demoVideoLimitSeconds, DEMO_VIDEO_LIMIT_SECONDS)
 
-for (const expected of SUBMISSION_LINKS) {
+for (const expected of REVIEW_ENTRYPOINTS) {
   const actual = links.find((item) => item.key === expected.key)
-  assertTrue(`submissionLinks includes ${expected.key}`, Boolean(actual))
+  assertTrue(`reviewEntrypoints includes ${expected.key}`, Boolean(actual))
   assertEqual(`${expected.key} label`, actual.label, expected.label)
   assertEqual(`${expected.key} type`, actual.type, expected.type)
   if (expected.url) assertEqual(`${expected.key} url`, actual.url, expected.url)
   if (expected.path) assertEqual(`${expected.key} path`, actual.path, expected.path)
 }
 
-assertEqual('repository url', expectedByKey.get('github-repo').url, SUBMISSION_REPOSITORY_URL)
-assertTrue('repository url points at Injective repo', SUBMISSION_REPOSITORY_URL.endsWith('/Pocket-Earth-Injective'))
-assertTrue('repository url is not the old plus repo', !SUBMISSION_REPOSITORY_URL.includes('Pocket-Earth-Plus'))
-assertTrue('repository url is not the sunset repo', !SUBMISSION_REPOSITORY_URL.includes('Sunset-Radio'))
+assertEqual('repository url', expectedByKey.get('github-repo').url, INTEGRATION_REPOSITORY_URL)
+assertTrue('repository url points at Injective repo', INTEGRATION_REPOSITORY_URL.endsWith('/Pocket-Earth-Injective'))
+assertTrue('repository url is not the old plus repo', !INTEGRATION_REPOSITORY_URL.includes('Pocket-Earth-Plus'))
+assertTrue('repository url is not the sunset repo', !INTEGRATION_REPOSITORY_URL.includes('Sunset-Radio'))
 assertEqual('judge quickstart url', expectedByKey.get('judge-quickstart').url, JUDGE_QUICKSTART_URL)
 assertTrue('judge quickstart url points at integration guide', JUDGE_QUICKSTART_URL.endsWith('/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))
-assertTrue('judge quickstart url stays in submission repo', JUDGE_QUICKSTART_URL.startsWith(SUBMISSION_REPOSITORY_URL))
-assertEqual('sourceControl repository', evidence.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertTrue('judge quickstart url stays in integration repo', JUDGE_QUICKSTART_URL.startsWith(INTEGRATION_REPOSITORY_URL))
+assertEqual('sourceControl repository', evidence.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl?.branch, 'main')
 assertTrue('sourceControl commit is sha or null', evidence.sourceControl?.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl?.commit))
 
@@ -102,19 +102,19 @@ assertEqual('agent proof API path', expectedByKey.get('agent-proof-api').path, '
 assertEqual('agent fleet API path', expectedByKey.get('agent-fleet-api').path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('wallet timeline API path', expectedByKey.get('wallet-timeline-api').path, '/api/injective?tool=get-wallet-timeline')
 
-console.log('\nSubmission checklist')
-assertTrue('submissionChecklist array', Array.isArray(checklist))
-assertEqual('submissionChecklist count', checklist.length, SUBMISSION_CHECKLIST.length)
-assertEqual('submissionChecklist unique key count', new Set(checklist.map((item) => item.key)).size, checklist.length)
-for (const expected of SUBMISSION_CHECKLIST) {
+console.log('\nDelivery checklist')
+assertTrue('deliveryChecklist array', Array.isArray(checklist))
+assertEqual('deliveryChecklist count', checklist.length, DELIVERY_CHECKLIST.length)
+assertEqual('deliveryChecklist unique key count', new Set(checklist.map((item) => item.key)).size, checklist.length)
+for (const expected of DELIVERY_CHECKLIST) {
   const actual = checklist.find((item) => item.key === expected.key)
-  assertTrue(`submissionChecklist includes ${expected.key}`, Boolean(actual))
+  assertTrue(`deliveryChecklist includes ${expected.key}`, Boolean(actual))
   assertEqual(`${expected.key} requirement`, actual.requirement, expected.requirement)
   assertEqual(`${expected.key} status`, actual.status, expected.status)
   assertEqual(`${expected.key} evidence`, actual.evidence, expected.evidence)
   assertEqual(`${expected.key} localCheck`, actual.localCheck, expected.localCheck)
   assertEqual(`${expected.key} linkKey`, actual.linkKey, expected.linkKey)
-  assertTrue(`${expected.key} linkKey points to submissionLinks`, linkKeys.has(actual.linkKey))
+  assertTrue(`${expected.key} linkKey points to reviewEntrypoints`, linkKeys.has(actual.linkKey))
   if (actual.localCheck.startsWith('npm run ')) {
     const scriptName = actual.localCheck.replace('npm run ', '')
     assertTrue(`${expected.key} npm script exists`, Boolean(packageJson.scripts?.[scriptName]))
@@ -131,21 +131,21 @@ assertEqual('Public API checklist local check', checklistByKey.get('public-revie
 assertTrue('checklist mentions no private keys', checklistByKey.get('public-review-apis').evidence.includes('without private keys') || checklistByKey.get('public-review-apis').evidence.includes('read-only'))
 
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
-assertTrue('README names Injective repository evidence package', readme.includes('Injective 参赛版本'))
+assertTrue('README names Injective core integration', readme.includes('Injective 核心集成'))
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))
 assertTrue('README mentions judgeRunbook', readme.includes('judgeRunbook'))
-assertTrue('CHAIN-EVIDENCE mentions submission links', chainEvidence.includes('submissionLinks'))
-assertTrue('CHAIN-EVIDENCE mentions submission checklist', chainEvidence.includes('submissionChecklist'))
+assertTrue('CHAIN-EVIDENCE mentions review entrypoints', chainEvidence.includes('reviewEntrypoints'))
+assertTrue('CHAIN-EVIDENCE mentions delivery checklist', chainEvidence.includes('deliveryChecklist'))
 assertTrue('CHAIN-EVIDENCE mentions judge quickstart', chainEvidence.includes('JUDGE-QUICKSTART.md'))
 assertTrue('CHAIN-EVIDENCE mentions judgeRunbook', chainEvidence.includes('judgeRunbook'))
-assertTrue('DEMO-SCRIPT mentions submission check', demoScript.includes('npm run verify:submission'))
+assertTrue('DEMO-SCRIPT mentions delivery check', demoScript.includes('npm run verify:delivery'))
 assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions judgeRunbook', demoScript.includes('judgeRunbook'))
 assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
 
 const publicText = JSON.stringify({ links, checklist })
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']) {
-  assertTrue(`submission pack omits ${forbidden}`, !publicText.includes(forbidden))
+  assertTrue(`delivery pack omits ${forbidden}`, !publicText.includes(forbidden))
 }
 
-console.log('\nOK submissionLinks and submissionChecklist point to the correct Injective review package.')
+console.log('\nOK reviewEntrypoints and deliveryChecklist point to the correct Injective review package.')

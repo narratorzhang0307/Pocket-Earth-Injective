@@ -10,7 +10,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, JUDGE_RUNBOOK, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, JUDGE_RUNBOOK, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -89,10 +89,10 @@ function readGitMetadata() {
 function getSourceControlEvidence() {
   const { branch, commit } = readGitMetadata()
   return {
-    repository: SUBMISSION_REPOSITORY_URL,
+    repository: INTEGRATION_REPOSITORY_URL,
     branch,
     commit,
-    commitUrl: commit ? `${SUBMISSION_REPOSITORY_URL}/commit/${commit}` : null,
+    commitUrl: commit ? `${INTEGRATION_REPOSITORY_URL}/commit/${commit}` : null,
     evidenceApi: '/api/injective?tool=get-chain-evidence',
   }
 }
@@ -343,9 +343,9 @@ export async function handleInjective(req, res, url, cfg = {}) {
         reviewBrief: REVIEW_BRIEF,
         judgeRunbook: JUDGE_RUNBOOK,
         reviewChecklist: REVIEW_CHECKLIST,
-        competitionAlignment: COMPETITION_ALIGNMENT,
-        submissionLinks: SUBMISSION_LINKS,
-        submissionChecklist: SUBMISSION_CHECKLIST,
+        integrationAlignment: INTEGRATION_ALIGNMENT,
+        reviewEntrypoints: REVIEW_ENTRYPOINTS,
+        deliveryChecklist: DELIVERY_CHECKLIST,
         privacyBoundary: EVIDENCE_PRIVACY_BOUNDARY,
         plazaFlow: PLAZA_DEMO_FLOW,
         agents: FLEET_AGENTS.map(buildAgentProof),
@@ -480,7 +480,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           agentProof: 'npm run verify:agent-proof',
           plazaFlow: 'npm run verify:plaza-flow',
           novaAlignment: 'npm run verify:nova-alignment',
-          submissionPack: 'npm run verify:submission',
+          deliveryPack: 'npm run verify:delivery',
           proofSuite: 'npm run verify:injective',
           apiReadTools: 'node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs',
           agentProofApi,

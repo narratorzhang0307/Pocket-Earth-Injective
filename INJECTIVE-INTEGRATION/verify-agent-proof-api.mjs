@@ -9,7 +9,7 @@ import {
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
   REGISTRY_MINT_ZERO_ADDRESS,
-  SUBMISSION_REPOSITORY_URL,
+  INTEGRATION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
   scanUrlForAgent,
@@ -109,7 +109,7 @@ for (const expected of FLEET_AGENTS) {
   assertEqual(`agent ${agentId} timeline timestamp`, payload.timelineEvent.timestamp, timelineEvent.timestamp)
   assertEqual(`agent ${agentId} timeline scanUrl`, payload.timelineEvent.scanUrl, scanUrlForTx(timelineEvent.hash))
 
-  assertEqual(`agent ${agentId} source repository`, payload.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+  assertEqual(`agent ${agentId} source repository`, payload.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
   assertEqual(`agent ${agentId} source branch`, payload.sourceControl?.branch, 'main')
   assertTrue(`agent ${agentId} source commit is sha or null`, payload.sourceControl?.commit === null || /^[0-9a-f]{40}$/i.test(payload.sourceControl?.commit))
   assertEqual(`agent ${agentId} review path count`, payload.reviewPath?.length, 3)

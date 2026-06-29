@@ -2,7 +2,7 @@
 // Usage: npm run verify:nova-alignment
 import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, IDENTITY_REGISTRY, SOCIAL_HANDSHAKE } from './chain-proof-data.mjs'
+import { BUILDER_CODE, INTEGRATION_ALIGNMENT, IDENTITY_REGISTRY, SOCIAL_HANDSHAKE } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -35,19 +35,19 @@ const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
 const readme = await readFile('README.md', 'utf8')
 const demoScript = await readFile('INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', 'utf8')
 const evidence = await callEvidenceApi()
-const alignment = evidence.competitionAlignment
-const expectedByKey = new Map(COMPETITION_ALIGNMENT.map((item) => [item.key, item]))
+const alignment = evidence.integrationAlignment
+const expectedByKey = new Map(INTEGRATION_ALIGNMENT.map((item) => [item.key, item]))
 
-assertTrue('competitionAlignment array', Array.isArray(alignment))
-assertEqual('competitionAlignment count', alignment.length, COMPETITION_ALIGNMENT.length)
-assertEqual('competitionAlignment unique key count', new Set(alignment.map((item) => item.key)).size, alignment.length)
+assertTrue('integrationAlignment array', Array.isArray(alignment))
+assertEqual('integrationAlignment count', alignment.length, INTEGRATION_ALIGNMENT.length)
+assertEqual('integrationAlignment unique key count', new Set(alignment.map((item) => item.key)).size, alignment.length)
 assertEqual('nova alignment command', evidence.verification?.novaAlignment, 'npm run verify:nova-alignment')
 assertEqual('nova alignment script', packageJson.scripts?.['verify:nova-alignment'], 'node INJECTIVE-INTEGRATION/verify-nova-alignment.mjs')
 
-for (const expected of COMPETITION_ALIGNMENT) {
+for (const expected of INTEGRATION_ALIGNMENT) {
   const actual = alignment.find((item) => item.key === expected.key)
   assertTrue(`alignment includes ${expected.key}`, Boolean(actual))
-  assertEqual(`${expected.key} contestSignal`, actual.contestSignal, expected.contestSignal)
+  assertEqual(`${expected.key} integrationSignal`, actual.integrationSignal, expected.integrationSignal)
   assertEqual(`${expected.key} projectSignal`, actual.projectSignal, expected.projectSignal)
   assertEqual(`${expected.key} evidence`, actual.evidence, expected.evidence)
   assertEqual(`${expected.key} machineCheck`, actual.machineCheck, expected.machineCheck)
@@ -85,7 +85,7 @@ assertTrue('demo script names physical hardware carefully', demoScript.includes(
 
 const publicText = JSON.stringify(alignment)
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB', '/Users/zhangcheng/Desktop']) {
-  assertTrue(`competitionAlignment omits ${forbidden}`, !publicText.includes(forbidden))
+  assertTrue(`integrationAlignment omits ${forbidden}`, !publicText.includes(forbidden))
 }
 
-console.log('\nOK competitionAlignment maps Pocket Earth to the Injective Nova story without private data.')
+console.log('\nOK integrationAlignment maps Pocket Earth to the Injective Nova story without private data.')

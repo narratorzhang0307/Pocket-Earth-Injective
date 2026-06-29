@@ -4,11 +4,11 @@ import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
-  COMPETITION_ALIGNMENT,
+  INTEGRATION_ALIGNMENT,
   PROOF_OWNER,
   REVIEW_BRIEF,
   REVIEW_LINKS,
-  SUBMISSION_LINKS,
+  REVIEW_ENTRYPOINTS,
 } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
@@ -49,8 +49,8 @@ assertTrue('oneLiner names ERC-8004', brief.oneLiner.includes('ERC-8004'))
 assertTrue('oneLiner states off-chain privacy', brief.oneLiner.includes('off-chain'))
 
 const linkKeys = new Set(REVIEW_LINKS.map((link) => link.key))
-const alignmentKeys = new Set(COMPETITION_ALIGNMENT.map((item) => item.key))
-const submissionKeys = new Set(SUBMISSION_LINKS.map((link) => link.key))
+const alignmentKeys = new Set(INTEGRATION_ALIGNMENT.map((item) => item.key))
+const entrypointKeys = new Set(REVIEW_ENTRYPOINTS.map((link) => link.key))
 
 console.log('\nInjective core proof cards')
 assertTrue('injectiveCore array', Array.isArray(brief.injectiveCore))
@@ -74,18 +74,18 @@ assertTrue('identity proof names builderCode', brief.injectiveCore.find((item) =
 assertTrue('handshake proof names commitments', brief.injectiveCore.find((item) => item.key === 'social-handshake')?.proof.includes('commitments'))
 assertTrue('product loop proof names public-plaza', brief.injectiveCore.find((item) => item.key === 'product-loop')?.proof.includes('public-plaza'))
 
-console.log('\nContest fit')
-assertTrue('contestFit array', Array.isArray(brief.contestFit))
-assertEqual('contestFit count', brief.contestFit.length, REVIEW_BRIEF.contestFit.length)
-assertTrue('contestFit includes AI social', brief.contestFit.some((item) => item.alignmentKey === 'ai-social'))
-assertTrue('contestFit includes Injective execution layer', brief.contestFit.some((item) => item.alignmentKey === 'injective-execution-layer'))
-assertTrue('contestFit includes physical world', brief.contestFit.some((item) => item.alignmentKey === 'agent-physical-world'))
-for (const item of brief.contestFit) {
-  const expected = REVIEW_BRIEF.contestFit.find((candidate) => candidate.alignmentKey === item.alignmentKey)
+console.log('\nIntegration fit')
+assertTrue('integrationFit array', Array.isArray(brief.integrationFit))
+assertEqual('integrationFit count', brief.integrationFit.length, REVIEW_BRIEF.integrationFit.length)
+assertTrue('integrationFit includes AI social', brief.integrationFit.some((item) => item.alignmentKey === 'ai-social'))
+assertTrue('integrationFit includes Injective execution layer', brief.integrationFit.some((item) => item.alignmentKey === 'injective-execution-layer'))
+assertTrue('integrationFit includes physical world', brief.integrationFit.some((item) => item.alignmentKey === 'agent-physical-world'))
+for (const item of brief.integrationFit) {
+  const expected = REVIEW_BRIEF.integrationFit.find((candidate) => candidate.alignmentKey === item.alignmentKey)
   assertTrue(`${item.alignmentKey} exists in source of truth`, !!expected)
   assertEqual(`${item.alignmentKey} theme`, item.theme, expected.theme)
   assertEqual(`${item.alignmentKey} why`, item.why, expected.why)
-  assertTrue(`${item.alignmentKey} points to competitionAlignment`, alignmentKeys.has(item.alignmentKey))
+  assertTrue(`${item.alignmentKey} points to integrationAlignment`, alignmentKeys.has(item.alignmentKey))
 }
 
 console.log('\nReviewer path')
@@ -97,7 +97,7 @@ for (const [index, item] of brief.reviewerPath.entries()) {
   assertEqual(`reviewer step ${index + 1} label`, item.label, expected.label)
   assertEqual(`reviewer step ${index + 1} verifies`, item.verifies, expected.verifies)
   if (item.linkKey) assertTrue(`reviewer step ${index + 1} linkKey is public`, linkKeys.has(item.linkKey))
-  if (item.submissionKey) assertTrue(`reviewer step ${index + 1} submissionKey is public`, submissionKeys.has(item.submissionKey))
+  if (item.entrypointKey) assertTrue(`reviewer step ${index + 1} entrypointKey is public`, entrypointKeys.has(item.entrypointKey))
   if (item.command) assertEqual(`reviewer step ${index + 1} command`, item.command, 'npm run verify:demo')
 }
 

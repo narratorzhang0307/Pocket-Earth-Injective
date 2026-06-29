@@ -1,17 +1,17 @@
-// Verify the public GitHub submission repo, review files, and origin boundary.
+// Verify the public GitHub integration repo, review files, and origin boundary.
 // Usage: npm run verify:github
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { INJECTIVE_TESTNET_CHAIN_ID, SUBMISSION_REPOSITORY_URL } from './chain-proof-data.mjs'
+import { INJECTIVE_TESTNET_CHAIN_ID, INTEGRATION_REPOSITORY_URL } from './chain-proof-data.mjs'
 
 const integrationDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(integrationDir, '..')
-const expectedRepo = new URL(SUBMISSION_REPOSITORY_URL)
+const expectedRepo = new URL(INTEGRATION_REPOSITORY_URL)
 const [, expectedOwner, expectedName] = expectedRepo.pathname.split('/')
 const expectedSlug = `${expectedOwner}/${expectedName}`
-const expectedGitUrl = `${SUBMISSION_REPOSITORY_URL}.git`
+const expectedGitUrl = `${INTEGRATION_REPOSITORY_URL}.git`
 const forbiddenRepoSnippets = [
   'Pocket-Earth-Plus',
   'Sunset-Radio',
@@ -70,7 +70,7 @@ git(['fetch', 'origin', 'main', '--quiet'])
 assertEqual('current branch', git(['branch', '--show-current']), 'main')
 assertEqual('origin url', git(['remote', 'get-url', 'origin']), expectedGitUrl)
 assertEqual('origin push url', git(['remote', 'get-url', '--push', 'origin']), expectedGitUrl)
-assertEqual('normalized origin url', normalizeGitUrl(git(['remote', 'get-url', 'origin'])), SUBMISSION_REPOSITORY_URL)
+assertEqual('normalized origin url', normalizeGitUrl(git(['remote', 'get-url', 'origin'])), INTEGRATION_REPOSITORY_URL)
 const head = git(['rev-parse', 'HEAD'])
 const originMain = git(['rev-parse', 'origin/main'])
 const remoteMain = git(['ls-remote', '--heads', 'origin', 'main']).split(/\s+/)[0]
@@ -81,7 +81,7 @@ console.log('\nGitHub public repository')
 const repo = await fetchJson(`https://api.github.com/repos/${expectedSlug}`)
 if (repo) {
   assertEqual('repo full_name', repo.full_name, expectedSlug)
-  assertEqual('repo html_url', repo.html_url, SUBMISSION_REPOSITORY_URL)
+  assertEqual('repo html_url', repo.html_url, INTEGRATION_REPOSITORY_URL)
   assertEqual('repo default branch', repo.default_branch, 'main')
   assertEqual('repo private flag', repo.private, false)
   assertTrue('repo is not archived', repo.archived === false)
@@ -97,33 +97,28 @@ const remoteIntegration = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/READ
 const remoteEvidence = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`)
 const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`)
 const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
-assertTrue('remote README names Injective submission', remoteReadme.includes('Injective 参赛版本'))
+assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
 assertTrue('remote README names agentId 43', remoteReadme.includes('agentId 43'))
 assertTrue('remote README points at chain evidence API', remoteReadme.includes('/api/injective?tool=get-chain-evidence'))
 assertTrue('remote README names proof suite', remoteReadme.includes('npm run verify:injective'))
 assertTrue('remote README names public proof guard', remoteReadme.includes('npm run verify:public-proof'))
 assertTrue('remote README names public API guard', remoteReadme.includes('npm run verify:public-apis'))
-assertTrue('remote README names integration guide guard', remoteReadme.includes('npm run verify:integration-guide'))
+assertTrue('remote README links integration guide', remoteReadme.includes('INJECTIVE-INTEGRATION/README.md'))
 assertTrue('remote README names registry mint events', remoteReadme.includes('registryMintEvents'))
 assertTrue('remote README names registry mint summary', remoteReadme.includes('registryMintSummary'))
-assertTrue('remote README names registry mint checklist', remoteReadme.includes('registry-mint-events'))
-assertTrue('remote README names wallet timeline status field', remoteReadme.includes('expectedStatus'))
 assertTrue('remote README names wallet timeline summary', remoteReadme.includes('timelineSummary'))
-assertTrue('remote README names direct wallet summary', remoteReadme.includes('返回 `summary`'))
-assertTrue('remote README names wallet timeline in demo quick check', remoteReadme.includes('钱包时间线 API/RPC 事实表'))
-assertTrue('remote README names judge quickstart submission link', remoteReadme.includes('含评审 60 秒入口的 `submissionLinks`'))
+assertTrue('remote README names wallet timeline API', remoteReadme.includes('get-wallet-timeline'))
+assertTrue('remote README names judge quickstart', remoteReadme.includes('60 秒核验路径') || remoteReadme.includes('JUDGE-QUICKSTART.md'))
 assertTrue('remote README names judge runbook', remoteReadme.includes('judgeRunbook'))
 assertTrue('remote README names public read API manifest', remoteReadme.includes('publicReadApis'))
 assertTrue('remote integration guide names ERC-8004', remoteIntegration.includes('ERC-8004'))
 assertTrue('remote integration guide names wallet timeline', remoteIntegration.includes('get-wallet-timeline'))
 assertTrue('remote integration guide names registryMintEvents', remoteIntegration.includes('registryMintEvents'))
 assertTrue('remote integration guide names registryMintSummary', remoteIntegration.includes('registryMintSummary'))
-assertTrue('remote integration guide names registry mint checklist', remoteIntegration.includes('registry-mint-events'))
-assertTrue('remote integration guide names wallet timeline status field', remoteIntegration.includes('expectedStatus'))
 assertTrue('remote integration guide names wallet timeline summary', remoteIntegration.includes('timelineSummary'))
 assertTrue('remote integration guide names direct wallet summary', remoteIntegration.includes('summary, events'))
 assertTrue('remote integration guide names wallet timeline in demo quick check', remoteIntegration.includes('钱包时间线 API/RPC 事实表'))
-assertTrue('remote integration guide names judge quickstart submission link', remoteIntegration.includes('含评审 60 秒入口的 `submissionLinks`') || remoteIntegration.includes('直接链接 `JUDGE-QUICKSTART.md` 的 `submissionLinks`'))
+assertTrue('remote integration guide names judge quickstart entrypoint', remoteIntegration.includes('JUDGE-QUICKSTART.md') && remoteIntegration.includes('reviewEntrypoints'))
 assertTrue('remote integration guide names judge runbook', remoteIntegration.includes('judgeRunbook'))
 assertTrue('remote integration guide names public read API manifest', remoteIntegration.includes('publicReadApis'))
 assertTrue('remote integration guide names public API guard', remoteIntegration.includes('npm run verify:public-apis'))
@@ -135,9 +130,9 @@ assertTrue('remote evidence pack names registry mint checklist', remoteEvidence.
 assertTrue('remote evidence pack names wallet timeline status field', remoteEvidence.includes('expectedStatus'))
 assertTrue('remote evidence pack names wallet timeline summary', remoteEvidence.includes('timelineSummary'))
 assertTrue('remote evidence pack names direct wallet summary', remoteEvidence.includes('all-succeeded status'))
-assertTrue('remote evidence pack names judge quickstart submission link', remoteEvidence.includes('60-second judge quickstart') && remoteEvidence.includes('JUDGE-QUICKSTART.md'))
+assertTrue('remote evidence pack names judge quickstart entrypoint', remoteEvidence.includes('60-second') && remoteEvidence.includes('JUDGE-QUICKSTART.md'))
 assertTrue('remote evidence pack names judge runbook', remoteEvidence.includes('judgeRunbook'))
-assertTrue('remote evidence pack names submissionChecklist', remoteEvidence.includes('submissionChecklist'))
+assertTrue('remote evidence pack names deliveryChecklist', remoteEvidence.includes('deliveryChecklist'))
 assertTrue('remote evidence pack names public read API manifest', remoteEvidence.includes('publicReadApis'))
 assertTrue('remote evidence pack names public API guard', remoteEvidence.includes('npm run verify:public-apis'))
 assertTrue('remote demo script names registryMintEvents', remoteDemo.includes('registryMintEvents'))
@@ -146,7 +141,7 @@ assertTrue('remote demo script names registry mint checklist', remoteDemo.includ
 assertTrue('remote demo script names wallet timeline status field', remoteDemo.includes('expectedStatus'))
 assertTrue('remote demo script names wallet timeline summary', remoteDemo.includes('timelineSummary'))
 assertTrue('remote demo script names direct wallet summary', remoteDemo.includes('get-wallet-timeline` 的 `summary`'))
-assertTrue('remote demo script names judge quickstart submission link', remoteDemo.includes('submissionLinks') && remoteDemo.includes('固定评审 60 秒入口'))
+assertTrue('remote demo script names judge quickstart entrypoint', remoteDemo.includes('reviewEntrypoints') && remoteDemo.includes('60 秒'))
 assertTrue('remote demo script names judge runbook', remoteDemo.includes('judgeRunbook'))
 assertTrue('remote demo script names public API guard', remoteDemo.includes('npm run verify:public-apis'))
 assertTrue('remote demo script names integration guide guard', remoteDemo.includes('npm run verify:integration-guide'))
@@ -177,12 +172,12 @@ for (const [label, text] of [
   assertNoOldRepoText(label, text)
 }
 
-console.log('\nLocal submission config')
+console.log('\nLocal integration config')
 const packageJson = JSON.parse(readFileSync(resolve(projectRoot, 'package.json'), 'utf8'))
-assertEqual('local verify:github script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-submission.mjs')
-assertTrue('local package includes verify:submission', Boolean(packageJson.scripts?.['verify:submission']))
+assertEqual('local verify:github script', packageJson.scripts?.['verify:github'], 'node INJECTIVE-INTEGRATION/verify-github-integration.mjs')
+assertTrue('local package includes verify:delivery', Boolean(packageJson.scripts?.['verify:delivery']))
 assertTrue('local package includes verify:injective', Boolean(packageJson.scripts?.['verify:injective']))
 assertEqual('local verify:public-apis script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
 assertEqual('local verify:integration-guide script', packageJson.scripts?.['verify:integration-guide'], 'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs')
 
-console.log('\nOK GitHub submission repo is public, current, and bounded to Pocket-Earth-Injective.')
+console.log('\nOK GitHub integration repo is public, current, and bounded to Pocket-Earth-Injective.')

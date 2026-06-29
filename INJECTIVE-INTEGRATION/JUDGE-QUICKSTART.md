@@ -29,7 +29,7 @@
 - `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, and npm script mappings still match the product API.
 - The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the four judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`) with `chainId 1439`, matching public-only flags, `judgeFocus`, `expectedFields`, and local verification commands. `npm run verify:public-apis` opens all four endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, reviewer guidance, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
 
-## Submission Package
+## Review Package
 
 - GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective
 - Live demo: https://pocketearth.throughtheglass.art/?demo

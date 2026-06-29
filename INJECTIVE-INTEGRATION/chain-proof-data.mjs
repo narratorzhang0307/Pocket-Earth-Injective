@@ -2,9 +2,9 @@ export const INJECTIVE_TESTNET_RPC = 'https://testnet.sentry.chain.json-rpc.inje
 export const INJECTIVE_TESTNET_CHAIN_ID = 1439
 
 export const BUILDER_CODE = 'pocket-earth'
-export const SUBMISSION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
+export const INTEGRATION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
 export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
-export const JUDGE_QUICKSTART_URL = `${SUBMISSION_REPOSITORY_URL}/blob/main/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`
+export const JUDGE_QUICKSTART_URL = `${INTEGRATION_REPOSITORY_URL}/blob/main/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`
 export const DEMO_VIDEO_LIMIT_SECONDS = 180
 export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
@@ -39,33 +39,33 @@ export const EVIDENCE_PRIVACY_BOUNDARY = {
   writeBoundary: 'testnet-only writes require a server-side private key and explicit confirm:true; otherwise register/handshake stay dry-run',
 }
 
-export const COMPETITION_ALIGNMENT = [
+export const INTEGRATION_ALIGNMENT = [
   {
     key: 'ai-social',
-    contestSignal: 'AI social agent experience',
+    integrationSignal: 'AI social agent experience',
     projectSignal: 'Frost carries a public Taste Passport into public-plaza, reads on-chain agents, ranks taste overlap, pins agent markers, and returns a Nightly Chain Dispatch.',
     evidence: `public-plaza reads /api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47 and verifies agentId 43-47.`,
     machineCheck: 'npm run verify:plaza-flow',
   },
   {
     key: 'injective-execution-layer',
-    contestSignal: 'Injective as the on-chain execution layer for agents',
+    integrationSignal: 'Injective as the on-chain execution layer for agents',
     projectSignal: 'Pocket Earth uses Injective testnet ERC-8004 identity, builderCode pocket-earth, RPC transaction timelines, and a real SocialHandshake contract event.',
     evidence: `agentId 43-47 are registered in IdentityRegistry ${IDENTITY_REGISTRY}; SocialHandshake is deployed at ${SOCIAL_HANDSHAKE}.`,
     machineCheck: 'npm run verify:injective',
   },
   {
     key: 'agent-physical-world',
-    contestSignal: 'Agent x physical-world product surface',
+    integrationSignal: 'Agent x physical-world product surface',
     projectSignal: 'Frost Buddy keeps a Raspberry Pi / BLE / TTS event bridge so music-agent events and Injective chain dispatches can be spoken by a physical Frost device.',
     evidence: 'hardware/frost-buddy emits safe JSONL events and the Pi skill router maps chain_dispatch and music requests without private keys.',
     machineCheck: 'npm run verify:hardware',
   },
   {
     key: 'privacy-first-public-proof',
-    contestSignal: 'Demo-ready product with verifiable public evidence',
+    integrationSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, registryMintSummary, timelineSummary, reviewBrief, reviewLinks, reviewChecklist, deliveryChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
     machineCheck: 'npm run verify:public-proof',
   },
 ]
@@ -103,7 +103,7 @@ export const REVIEW_BRIEF = {
       machineCheck: 'npm run verify:plaza',
     },
   ],
-  contestFit: [
+  integrationFit: [
     {
       theme: 'AI social',
       alignmentKey: 'ai-social',
@@ -123,8 +123,8 @@ export const REVIEW_BRIEF = {
   reviewerPath: [
     { step: 1, label: 'Open agentId 43', linkKey: 'frost-agent-43', verifies: 'Frost has a public ERC-8004 identity on Injective testnet.' },
     { step: 2, label: 'Open owner wallet', linkKey: 'owner-wallet', verifies: 'Registration, fleet, contract deployment, and handshake belong to the same wallet.' },
-    { step: 3, label: 'Read public evidence API', submissionKey: 'chain-evidence-api', verifies: 'The product exposes the same public facts through /api/injective.' },
-    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, three-minute script, Blockscout links, plaza split, alignment, submission entries, and submission checklist still pass.' },
+    { step: 3, label: 'Read public evidence API', entrypointKey: 'chain-evidence-api', verifies: 'The product exposes the same public facts through /api/injective.' },
+    { step: 4, label: 'Run demo smoke', command: 'npm run verify:demo', verifies: 'The recording path, three-minute script, Blockscout links, plaza split, alignment, review entrypoints, and delivery checklist still pass.' },
   ],
   privacyLine: 'Only public proofs go on-chain: identities, card fields, wallet/contract addresses, profile commitments, similarity score, and timestamps. Raw media, mood text, precise locations, profile counts, and secret env values stay off-chain.',
 }
@@ -148,9 +148,9 @@ export const PLAZA_DEMO_FLOW = [
   },
 ]
 
-export const SUBMISSION_LINKS = [
+export const REVIEW_ENTRYPOINTS = [
   { key: 'judge-quickstart', label: '60-second judge quickstart', type: 'guide', url: JUDGE_QUICKSTART_URL },
-  { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: SUBMISSION_REPOSITORY_URL },
+  { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: INTEGRATION_REPOSITORY_URL },
   { key: 'live-demo', label: 'Live demo with demo profile seed', type: 'demo', url: LIVE_DEMO_URL },
   { key: 'chain-evidence-api', label: 'Public chain evidence API', type: 'api', path: '/api/injective?tool=get-chain-evidence' },
   { key: 'agent-proof-api', label: 'Single-agent proof card for Frost #43', type: 'api', path: '/api/injective?tool=get-agent-proof&agentId=43' },
@@ -214,19 +214,19 @@ export const JUDGE_RUNBOOK = {
       action: 'Run the local demo readiness check',
       type: 'command',
       command: 'npm run verify:demo',
-      verifies: 'The full review path, three-minute script, Blockscout links, plaza split, and submission package still pass.',
-      focus: ['recordingOrder', 'plazaFlow', 'submissionLinks', 'sourceControl'],
+      verifies: 'The full review path, three-minute script, Blockscout links, plaza split, and delivery package still pass.',
+      focus: ['recordingOrder', 'plazaFlow', 'reviewEntrypoints', 'sourceControl'],
       localCheck: 'npm run verify:demo',
     },
   ],
 }
 
-export const SUBMISSION_CHECKLIST = [
+export const DELIVERY_CHECKLIST = [
   {
     key: 'public-github-readme',
     requirement: 'Public GitHub repository with a complete README',
     status: 'ready',
-    evidence: 'README.md opens with the Injective submission story and links to the evidence pack, demo script, and integration guide.',
+    evidence: 'README.md opens with the Injective integration story and links to the evidence pack, demo script, and integration guide.',
     localCheck: 'npm run verify:github',
     linkKey: 'github-repo',
   },

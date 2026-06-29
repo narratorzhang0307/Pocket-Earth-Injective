@@ -1,4 +1,4 @@
-// Run the read-only Injective proof checks used in the competition demo.
+// Run the read-only Injective proof checks used by the demo.
 // Usage: npm run verify:injective
 
 const checks = [
@@ -39,7 +39,7 @@ const checks = [
     moduleUrl: new URL('./verify-judge-quickstart.mjs', import.meta.url),
   },
   {
-    label: 'Evidence API sourceControl matches the Injective submission commit',
+    label: 'Evidence API sourceControl matches the Injective integration commit',
     moduleUrl: new URL('./verify-source-control.mjs', import.meta.url),
   },
   {
@@ -87,12 +87,12 @@ const checks = [
     moduleUrl: new URL('./verify-plaza-flow.mjs', import.meta.url),
   },
   {
-    label: 'Competition alignment maps Injective Nova story to public proof',
+    label: 'Integration alignment maps Injective story to public proof',
     moduleUrl: new URL('./verify-nova-alignment.mjs', import.meta.url),
   },
   {
-    label: 'Submission links point to the Injective review entry points',
-    moduleUrl: new URL('./verify-submission-pack.mjs', import.meta.url),
+    label: 'Delivery links point to the Injective review entry points',
+    moduleUrl: new URL('./verify-delivery-pack.mjs', import.meta.url),
   },
   {
     label: 'Frost Buddy hardware bridge: music + Injective chain dispatch events',

@@ -18,7 +18,7 @@ import {
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
   SOCIAL_HANDSHAKE_PROOF,
-  SUBMISSION_REPOSITORY_URL,
+  INTEGRATION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAddress,
   scanUrlForAgent,
@@ -107,9 +107,9 @@ function collectCommands(evidence) {
   for (const item of evidence.publicReadApis || []) commands.push(['publicReadApis', item.verification])
   for (const item of evidence.reviewBrief?.injectiveCore || []) commands.push(['reviewBrief.injectiveCore', item.machineCheck])
   for (const item of evidence.judgeRunbook?.steps || []) commands.push(['judgeRunbook.steps', item.localCheck || item.command])
-  for (const item of evidence.competitionAlignment || []) commands.push(['competitionAlignment', item.machineCheck])
+  for (const item of evidence.integrationAlignment || []) commands.push(['integrationAlignment', item.machineCheck])
   for (const item of evidence.reviewChecklist || []) commands.push(['reviewChecklist', item.machineCheck])
-  for (const item of evidence.submissionChecklist || []) commands.push(['submissionChecklist', item.localCheck])
+  for (const item of evidence.deliveryChecklist || []) commands.push(['deliveryChecklist', item.localCheck])
   if (evidence.handshakeProof?.localVerification) commands.push(['handshakeProof', evidence.handshakeProof.localVerification])
   for (const [key, value] of Object.entries(evidence.verification || {})) {
     if (typeof value === 'string' && (value.startsWith('npm run ') || value.startsWith('node '))) commands.push([`verification.${key}`, value])
@@ -127,7 +127,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'agents',
   'builderCode',
   'chainId',
-  'competitionAlignment',
+  'integrationAlignment',
   'demoVideoLimitSeconds',
   'handshakeContract',
   'handshakeProof',
@@ -151,8 +151,8 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'reviewChecklist',
   'reviewLinks',
   'sourceControl',
-  'submissionChecklist',
-  'submissionLinks',
+  'deliveryChecklist',
+  'reviewEntrypoints',
   'timeline',
   'timelineSummary',
   'verification',
@@ -182,10 +182,10 @@ assertTrue('handshake proof only exposes commitment policy', String(evidence.han
 assertTrue('handshake proof public fields include commitments', evidence.handshakeProof.publicFields?.includes('profile commitment hashes'))
 assertEqual('handshake proof local verification', evidence.handshakeProof.localVerification, SOCIAL_HANDSHAKE_PROOF.localVerification)
 assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
-assertEqual('sourceControl repository', evidence.sourceControl.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('sourceControl repository', evidence.sourceControl.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
 assertTrue('sourceControl commit is sha or null', evidence.sourceControl.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl.commit))
-if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${SUBMISSION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
+if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', evidence.sourceControl.commitUrl, `${INTEGRATION_REPOSITORY_URL}/commit/${evidence.sourceControl.commit}`)
 assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 
 console.log('\nPublic read API manifest')
@@ -219,8 +219,8 @@ for (const [key, item] of publicReadApiByKey) {
 }
 
 console.log('\nReview entry points')
-assertEqual('judge quickstart link stays on Injective submission repo', evidence.submissionLinks.find((item) => item.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
-assertEqual('repo link stays on Injective submission repo', evidence.submissionLinks.find((item) => item.key === 'github-repo')?.url, SUBMISSION_REPOSITORY_URL)
+assertEqual('judge quickstart link stays on Injective integration repo', evidence.reviewEntrypoints.find((item) => item.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
+assertEqual('repo link stays on Injective integration repo', evidence.reviewEntrypoints.find((item) => item.key === 'github-repo')?.url, INTEGRATION_REPOSITORY_URL)
 assertEqual('agentId 43 link', evidence.reviewLinks.find((item) => item.key === 'frost-agent-43')?.url, scanUrlForAgent(43))
 assertEqual('owner wallet link', evidence.reviewLinks.find((item) => item.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('real handshake link', evidence.reviewLinks.find((item) => item.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))

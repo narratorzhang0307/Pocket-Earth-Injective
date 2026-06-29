@@ -1,6 +1,6 @@
 // 端侧大脑 · 浏览器内 WebGPU 跑 Qwen（B 路线 · 纯 PWA，iOS/安卓通吃）
 // 用 @mlc-ai/web-llm 把一个小 Qwen（默认 Qwen3-0.6B）整个跑在浏览器里：
-//   - 不经服务器、不出端：真·端侧推理，满足比赛「核心交互逻辑本地运行」。
+//   - 不经服务器、不出端：真·端侧推理，让核心交互逻辑可在本地运行。
 //   - 实现现有 EdgeModel 契约的文本三件套（chat/classify/rank），调用点零改动。
 //   - web-llm 走【动态 import】：不进主 bundle，用户点「启用」时才下载 ~400MB 权重 + 引擎。
 //   - 需要 WebGPU（Safari 26/iOS 26、Chrome、Edge 默认开启）；不支持时 available()=false，自动回退 /api/edge。
@@ -14,7 +14,7 @@ interface MLCEngine {
   unload?: () => Promise<void>;
 }
 
-// 默认端侧模型：Qwen3-0.6B（q4f16，~400MB），比赛点名的 Qwen3 小模型。
+// 默认端侧模型：Qwen3-0.6B（q4f16，~400MB），适合浏览器端轻量推理。
 // 想更强可换 'Qwen3-1.7B-q4f16_1-MLC'（~1.1GB）。
 export const DEFAULT_WEBLLM_MODEL = 'Qwen3-0.6B-q4f16_1-MLC';
 

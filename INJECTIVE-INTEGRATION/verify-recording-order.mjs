@@ -2,7 +2,7 @@
 // Usage: npm run verify:recording-order
 import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, REGISTRY_MINT_EVENTS, REVIEW_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PROOF_OWNER, REGISTRY_MINT_EVENTS, REVIEW_LINKS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAddress, scanUrlForAgent, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -124,7 +124,7 @@ assertEqual('recording step 4 proof owner', proofPayload.agent?.owner, PROOF_OWN
 assertEqual('recording step 4 proof builderCode', proofPayload.agent?.builderCode, BUILDER_CODE)
 assertEqual('recording step 4 proof registry', proofPayload.agent?.registry, IDENTITY_REGISTRY)
 assertEqual('recording step 4 proof mint transaction', proofPayload.agent?.mintTransactionHash, REGISTRY_MINT_EVENTS[0].transactionHash)
-assertEqual('recording step 4 proof source repository', proofPayload.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertEqual('recording step 4 proof source repository', proofPayload.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertTrue('recording step 4 proof reviewPath array', Array.isArray(proofPayload.reviewPath) && proofPayload.reviewPath.length >= 3)
 
 assertEqual('recording step 5 type', listAgentsApi.type, 'api')

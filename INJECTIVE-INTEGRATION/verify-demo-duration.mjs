@@ -1,4 +1,4 @@
-// Verify the Injective demo script stays within the 3-minute submission limit.
+// Verify the Injective demo script stays within the 3-minute demo limit.
 // Usage: npm run verify:duration
 import { readFile } from 'node:fs/promises'
 import { DEMO_VIDEO_LIMIT_SECONDS } from './chain-proof-data.mjs'
@@ -65,4 +65,4 @@ for (const item of forbidden) {
   assertTrue(`demo duration script text omits ${item}`, !demoScript.includes(item))
 }
 
-console.log(`\nOK demo script totals ${total}s, within the ${DEMO_VIDEO_LIMIT_SECONDS}s Injective submission limit.`)
+console.log(`\nOK demo script totals ${total}s, within the ${DEMO_VIDEO_LIMIT_SECONDS}s Injective demo limit.`)

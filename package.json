@@ -13,7 +13,7 @@
     "verify:public-proof": "node INJECTIVE-INTEGRATION/verify-public-proof-contract.mjs",
     "verify:public-apis": "node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs",
     "verify:integration-guide": "node INJECTIVE-INTEGRATION/verify-integration-guide.mjs",
-    "verify:github": "node INJECTIVE-INTEGRATION/verify-github-submission.mjs",
+    "verify:github": "node INJECTIVE-INTEGRATION/verify-github-integration.mjs",
     "verify:pitch": "node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs",
     "verify:judge": "node INJECTIVE-INTEGRATION/verify-judge-quickstart.mjs",
     "verify:brief": "node INJECTIVE-INTEGRATION/verify-review-brief.mjs",
@@ -26,7 +26,7 @@
     "verify:registry": "node INJECTIVE-INTEGRATION/verify-registry-events.mjs",
     "verify:plaza-flow": "node INJECTIVE-INTEGRATION/verify-plaza-flow.mjs",
     "verify:nova-alignment": "node INJECTIVE-INTEGRATION/verify-nova-alignment.mjs",
-    "verify:submission": "node INJECTIVE-INTEGRATION/verify-submission-pack.mjs",
+    "verify:delivery": "node INJECTIVE-INTEGRATION/verify-delivery-pack.mjs",
     "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
     "verify:hardware": "node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs",
     "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs"

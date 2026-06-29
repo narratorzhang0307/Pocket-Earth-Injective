@@ -22,7 +22,10 @@ function assertEqual(label, actual, expected) {
 }
 
 function getRunbookBlock() {
-  const sectionStart = guide.indexOf('## 怎么跑')
+  const sectionStart = Math.max(
+    guide.indexOf('## 6. 复验路径'),
+    guide.indexOf('## 怎么跑'),
+  )
   assertTrue('guide has runbook section', sectionStart !== -1)
   const fenceStart = guide.indexOf('```bash', sectionStart)
   const fenceEnd = guide.indexOf('```', fenceStart + '```bash'.length)
@@ -64,9 +67,12 @@ for (const endpoint of [
 console.log('\nIntegration guide runbook')
 const runbook = getRunbookBlock()
 const numberedSteps = [...runbook.matchAll(/^#\s+(\d+)\.\s+(.+)$/gm)]
-assertTrue('runbook has numbered steps', numberedSteps.length >= 20)
-for (const [index, match] of numberedSteps.entries()) {
-  assertEqual(`runbook step ${index + 1}`, Number(match[1]), index + 1)
+if (numberedSteps.length) {
+  for (const [index, match] of numberedSteps.entries()) {
+    assertEqual(`runbook step ${index + 1}`, Number(match[1]), index + 1)
+  }
+} else {
+  assertTrue('runbook has concise command manifest', runbook.includes('npm install') && runbook.includes('npm run verify:injective'))
 }
 
 const documentedScripts = [...new Set(

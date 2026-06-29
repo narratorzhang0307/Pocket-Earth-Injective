@@ -1,4 +1,4 @@
-// Verify the pitch notes stay aligned with the Injective submission story.
+// Verify the pitch notes stay aligned with the Injective integration story.
 // Usage: npm run verify:pitch
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -96,10 +96,10 @@ assertTrue('hardware bridge README exists', existsSync(resolve('hardware/frost-b
 assertTrue('raspi skill router exists', existsSync(resolve('hardware/frost-buddy/raspi/frost_pi_skill_agent.py')))
 assertTrue('raspi smoke exists', existsSync(resolve('hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py')))
 
-console.log('\nSubmission contract wiring')
+console.log('\nDelivery contract wiring')
 assertEqual('verify:pitch script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')
 assertEqual('evidence pitch command', evidence.verification?.pitchNotes, 'npm run verify:pitch')
-assertEqual('submission pitch local check', evidence.submissionChecklist?.find((item) => item.key === 'pitch-deck-notes')?.localCheck, 'npm run verify:pitch')
+assertEqual('delivery pitch local check', evidence.deliveryChecklist?.find((item) => item.key === 'pitch-deck-notes')?.localCheck, 'npm run verify:pitch')
 
 console.log('\nSource and leak guard')
 assertTrue('pitch cites Raspberry Pi source URL', pitch.includes(RASPBERRY_PI_SOURCE))
@@ -117,4 +117,4 @@ for (const forbidden of [
   assertTrue(`pitch omits ${forbidden}`, !pitch.includes(forbidden))
 }
 
-console.log('\nOK pitch notes are aligned with the Injective submission and safe for the deck.')
+console.log('\nOK pitch notes are aligned with the Injective integration and safe for the deck.')
