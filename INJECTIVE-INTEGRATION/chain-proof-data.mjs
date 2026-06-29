@@ -82,3 +82,13 @@ export function scanUrlForAgent(agentId) {
 export function scanUrlForRegistry() {
   return `https://testnet.blockscout.injective.network/token/${IDENTITY_REGISTRY}`
 }
+
+export const REVIEW_LINKS = [
+  { key: 'frost-agent-43', label: 'Frost main identity #43', type: 'agent', url: scanUrlForAgent(43) },
+  { key: 'owner-wallet', label: 'Owner wallet evidence chain', type: 'wallet', url: scanUrlForAddress(PROOF_OWNER) },
+  { key: 'identity-registry', label: 'ERC-8004 IdentityRegistry contract', type: 'contract', url: scanUrlForAddress(IDENTITY_REGISTRY) },
+  { key: 'social-handshake', label: 'SocialHandshake contract', type: 'contract', url: scanUrlForAddress(SOCIAL_HANDSHAKE) },
+  { key: 'frost-registration-tx', label: 'Frost identity registration transaction', type: 'transaction', txHash: TIMELINE_EVENTS[0].hash, url: scanUrlForTx(TIMELINE_EVENTS[0].hash) },
+  { key: 'handshake-deployment-tx', label: 'SocialHandshake deployment transaction', type: 'transaction', txHash: TIMELINE_EVENTS[1].hash, url: scanUrlForTx(TIMELINE_EVENTS[1].hash) },
+  { key: 'real-handshake-tx', label: 'Real SocialHandshake 43 <-> 44 transaction', type: 'transaction', txHash: TIMELINE_EVENTS.at(-1).hash, url: scanUrlForTx(TIMELINE_EVENTS.at(-1).hash) },
+]

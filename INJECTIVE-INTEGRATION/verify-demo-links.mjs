@@ -34,6 +34,7 @@ const REQUIRED_EVIDENCE_SNIPPETS = [
   '/api/injective?tool=get-chain-evidence',
   `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`,
   '/api/injective?tool=get-wallet-timeline',
+  'reviewLinks',
   'recordingOrder',
   'privacyBoundary',
   'plazaFlow',

@@ -9,6 +9,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   PLAZA_DEMO_FLOW,
   PROOF_OWNER,
+  REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
   TIMELINE_EVENTS,
   scanUrlForAddress,
@@ -59,6 +60,11 @@ assertEqual('registry', evidence.registry, IDENTITY_REGISTRY)
 assertEqual('registryScanUrl', evidence.registryScanUrl, scanUrlForRegistry())
 assertEqual('handshakeContract', evidence.handshakeContract, SOCIAL_HANDSHAKE)
 assertEqual('handshakeScanUrl', evidence.handshakeScanUrl, scanUrlForAddress(SOCIAL_HANDSHAKE))
+assertTrue('review links array', Array.isArray(evidence.reviewLinks))
+assertEqual('review links count', evidence.reviewLinks.length, REVIEW_LINKS.length)
+assertEqual('review link first url', evidence.reviewLinks[0]?.url, scanUrlForAgent(43))
+assertEqual('review link wallet url', evidence.reviewLinks.find((link) => link.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
+assertEqual('review link handshake tx url', evidence.reviewLinks.find((link) => link.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
