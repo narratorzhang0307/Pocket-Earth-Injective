@@ -50,12 +50,13 @@ console.error = (...args) => {
   else originalError(...args)
 }
 
-let ping, status, reputation, evidence, timeline
+let ping, status, reputation, evidence, agentProof, timeline
 try {
   ping = await callInjectiveApi('/api/injective?tool=ping')
   status = await callInjectiveApi('/api/injective?tool=get-status&agentId=43')
   reputation = await callInjectiveApi('/api/injective?tool=get-reputation&agentId=43')
   evidence = await callInjectiveApi('/api/injective?tool=get-chain-evidence')
+  agentProof = await callInjectiveApi('/api/injective?tool=get-agent-proof&agentId=43')
   timeline = await callInjectiveApi('/api/injective?tool=get-wallet-timeline')
 } finally {
   console.warn = originalWarn
@@ -180,22 +181,25 @@ assertEqual('evidence agent proof api', evidence.verification?.agentProofApi, '/
 assertEqual('evidence list-agents api', evidence.verification?.listAgentsApi, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${Math.max(...FLEET_AGENTS.map((agent) => Number(agent.id)))}`)
 assertEqual('evidence wallet timeline api', evidence.verification?.walletTimelineApi, '/api/injective?tool=get-wallet-timeline')
 assertTrue('evidence recording order array', Array.isArray(evidence.recordingOrder))
-assertEqual('evidence recording order count', evidence.recordingOrder.length, 6)
+assertEqual('evidence recording order count', evidence.recordingOrder.length, 7)
 assertEqual('evidence recording step 1 url', evidence.recordingOrder[0]?.url, scanUrlForAgent(43))
 assertEqual('evidence recording step 2 url', evidence.recordingOrder[1]?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('evidence recording step 3 path', evidence.recordingOrder[2]?.path, '/api/injective?tool=get-chain-evidence')
-assertEqual('evidence recording step 4 path', evidence.recordingOrder[3]?.path, evidence.verification?.listAgentsApi)
-assertEqual('evidence recording step 5 path', evidence.recordingOrder[4]?.path, evidence.verification?.walletTimelineApi)
-assertEqual('evidence recording step 6 command', evidence.recordingOrder[5]?.command, 'npm run verify:plaza')
+assertEqual('evidence recording step 4 path', evidence.recordingOrder[3]?.path, evidence.verification?.agentProofApi)
+assertEqual('evidence recording step 5 path', evidence.recordingOrder[4]?.path, evidence.verification?.listAgentsApi)
+assertEqual('evidence recording step 6 path', evidence.recordingOrder[5]?.path, evidence.verification?.walletTimelineApi)
+assertEqual('evidence recording step 7 command', evidence.recordingOrder[6]?.command, 'npm run verify:plaza')
 assertFocusIncludes('evidence recording step 1', evidence.recordingOrder[0], 'agentId 43')
 assertFocusIncludes('evidence recording step 2', evidence.recordingOrder[1], 'same wallet')
 assertFocusIncludes('evidence recording step 3', evidence.recordingOrder[2], 'registryMintSummary')
 assertFocusIncludes('evidence recording step 3', evidence.recordingOrder[2], 'sourceControl')
-assertFocusIncludes('evidence recording step 4', evidence.recordingOrder[3], 'builderCode=pocket-earth')
-assertFocusIncludes('evidence recording step 4', evidence.recordingOrder[3], 'agentId 43-47')
-assertFocusIncludes('evidence recording step 5', evidence.recordingOrder[4], 'allSucceeded')
-assertFocusIncludes('evidence recording step 6', evidence.recordingOrder[5], 'public-plaza')
-assertFocusIncludes('evidence recording step 6', evidence.recordingOrder[5], 'agent-plaza')
+assertFocusIncludes('evidence recording step 4', evidence.recordingOrder[3], 'agentId 43')
+assertFocusIncludes('evidence recording step 4', evidence.recordingOrder[3], 'sourceControl')
+assertFocusIncludes('evidence recording step 5', evidence.recordingOrder[4], 'builderCode=pocket-earth')
+assertFocusIncludes('evidence recording step 5', evidence.recordingOrder[4], 'agentId 43-47')
+assertFocusIncludes('evidence recording step 6', evidence.recordingOrder[5], 'allSucceeded')
+assertFocusIncludes('evidence recording step 7', evidence.recordingOrder[6], 'public-plaza')
+assertFocusIncludes('evidence recording step 7', evidence.recordingOrder[6], 'agent-plaza')
 assertTrue('evidence agents array', Array.isArray(evidence.agents))
 assertEqual('evidence agent count', evidence.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {
@@ -264,6 +268,25 @@ assertEqual('evidence timeline summary first role', evidence.timelineSummary.fir
 assertEqual('evidence timeline summary last role', evidence.timelineSummary.lastRole, TIMELINE_EVENTS.at(-1).role)
 assertEqual('evidence timeline summary RPC verification', evidence.timelineSummary.rpcVerification, evidence.verification?.walletTimelineApi)
 
+console.log('\n/api get-agent-proof agentId 43')
+assertEqual('agent proof ok', agentProof.ok, true)
+assertEqual('agent proof network', agentProof.network, 'testnet')
+assertEqual('agent proof chainId', agentProof.chainId, INJECTIVE_TESTNET_CHAIN_ID)
+assertEqual('agent proof readOnly', agentProof.readOnly, true)
+assertEqual('agent proof publicOnly', agentProof.publicOnly, true)
+assertEqual('agent proof id', agentProof.agent?.agentId, 43)
+assertEqual('agent proof owner', agentProof.agent?.owner, PROOF_OWNER)
+assertEqual('agent proof builderCode', agentProof.agent?.builderCode, BUILDER_CODE)
+assertEqual('agent proof registry', agentProof.agent?.registry, IDENTITY_REGISTRY)
+assertEqual('agent proof mint tx', agentProof.agent?.mintTransactionHash, REGISTRY_MINT_EVENTS[0].transactionHash)
+assertEqual('agent proof proofApi', agentProof.agent?.proofApi, '/api/injective?tool=get-agent-proof&agentId=43')
+assertEqual('agent proof scanUrl', agentProof.agent?.scanUrl, scanUrlForAgent(43))
+assertEqual('agent proof source repository', agentProof.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
+assertTrue('agent proof review path array', Array.isArray(agentProof.reviewPath) && agentProof.reviewPath.length >= 3)
+assertEqual('agent proof review identity url', agentProof.reviewPath?.[0]?.url, scanUrlForAgent(43))
+assertEqual('agent proof review mint url', agentProof.reviewPath?.[1]?.url, scanUrlForTx(REGISTRY_MINT_EVENTS[0].transactionHash))
+assertEqual('agent proof review wallet url', agentProof.reviewPath?.[2]?.url, scanUrlForAddress(PROOF_OWNER))
+
 console.log('\n/api get-wallet-timeline')
 assertEqual('timeline ok', timeline.ok, true)
 assertEqual('timeline network', timeline.network, 'testnet')
@@ -301,4 +324,4 @@ if (sdkWarnings.length) {
   console.log('\nNOTE Agent SDK card fetch warnings were suppressed; API read-tool fields were verified directly.')
 }
 
-console.log('\nOK /api/injective ping, get-status, get-reputation, get-chain-evidence, and get-wallet-timeline read from Injective testnet.')
+console.log('\nOK /api/injective ping, get-status, get-reputation, get-chain-evidence, get-agent-proof, and get-wallet-timeline read from Injective testnet.')

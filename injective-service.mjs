@@ -406,6 +406,17 @@ export async function handleInjective(req, res, url, cfg = {}) {
           },
           {
             step: 4,
+            label: 'Open the Frost #43 single-agent proof API',
+            type: 'api',
+            path: agentProofApi,
+            evidenceFocus: [
+              'agentId 43 proof card repeats owner, builderCode, registry, and mint transaction',
+              'reviewPath links identity page, mint transaction, and owner wallet',
+              'sourceControl ties the proof card to the current GitHub commit',
+            ],
+          },
+          {
+            step: 5,
             label: 'Read agentId 43-47 by builderCode',
             type: 'api',
             path: listAgentsApi,
@@ -416,7 +427,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             ],
           },
           {
-            step: 5,
+            step: 6,
             label: 'Read the wallet transaction timeline from RPC',
             type: 'api',
             path: walletTimelineApi,
@@ -428,7 +439,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             ],
           },
           {
-            step: 6,
+            step: 7,
             label: 'Run the plaza UI smoke after chain evidence is ready',
             type: 'command',
             command: 'npm run verify:plaza',
