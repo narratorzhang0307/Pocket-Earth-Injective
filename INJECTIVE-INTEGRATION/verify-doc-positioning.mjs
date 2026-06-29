@@ -68,6 +68,7 @@ console.log('Positioning text guard')
 assertTrue('scan has files', files.length > 0)
 const rootReadme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
 const hardwareReadme = readFileSync(resolve(projectRoot, 'hardware/frost-buddy/README.md'), 'utf8')
+const demoScript = readFileSync(resolve(projectRoot, 'INJECTIVE-INTEGRATION/DEMO-SCRIPT.md'), 'utf8')
 const indexHtml = readFileSync(resolve(projectRoot, 'index.html'), 'utf8')
 const webManifest = JSON.parse(readFileSync(resolve(projectRoot, 'public/manifest.webmanifest'), 'utf8'))
 const publicPlaza = readFileSync(resolve(projectRoot, 'src/app/components/PublicPlazaPage.tsx'), 'utf8')
@@ -78,6 +79,8 @@ assertTrue('README intro names explicit real destinations', rootReadme.includes(
 assertTrue('README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(rootReadme))
 assertTrue('README uses product-first three-entry heading', rootReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.test(rootReadme))
+assertTrue('README explains agents as panels, not UI tabs', rootReadme.includes('双面板结构') && rootReadme.includes('数据层（左侧）') && rootReadme.includes('对话层（右侧）'))
+assertTrue('demo script names globe entrance instead of tab', demoScript.includes('切到地球入口'))
 assertTrue('README names Frost Edge Node hardware direction explicitly', rootReadme.includes('Frost Edge Node 硬件方向的商业判断'))
 assertTrue('hardware README names module subject explicitly', hardwareReadme.includes('Frost Edge Node 模块先承担三个角色'))
 assertTrue('PWA manifest description names each record explicitly', webManifest.description.includes('每条记录各自对应的真实地点'))
@@ -96,8 +99,18 @@ const explicitPublicDocSnippets = [
   ['README.md', '它不靠你手选歌单'],
   ['README.md', '夜里它回来'],
   ['README.md', '它不再只是示意界面'],
+  ['README.md', '控制台 tab'],
+  ['README.md', '控制台（右 Tab）'],
+  ['README.md', '双 Tab 结构'],
+  ['README.md', '数据层（左 Tab）'],
+  ['README.md', '对话层（右 Tab）'],
+  ['README.md', '双 Tab 骨架'],
+  ['README.md', '双 Tab 容器'],
+  ['README.md', '通用双 Tab'],
+  ['README.md', '两 tab 联动'],
   ['INJECTIVE-INTEGRATION/README.md', '证明它不是单页概念图'],
   ['INJECTIVE-INTEGRATION/README.md', '它会串起公开证据包'],
+  ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '切地球 tab'],
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '今天它有了新身份'],
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '它带着你的长期口味画像'],
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '跳到它的链上身份页'],
