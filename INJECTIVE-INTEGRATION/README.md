@@ -20,6 +20,7 @@
 | Frost Buddy 硬件事件桥（music-agent + Injective 链上见闻 → JSONL，供 Raspberry Pi / BLE / TTS 适配） | `hardware/frost-buddy/` | ✅ 事件契约 + Pi 技能路由已就绪 |
 | `SocialHandshake.sol` 握手合约（只存哈希 / 身份 / 相似度 / 时间戳） | `INJECTIVE-INTEGRATION/contracts/` | ✅ 已部署 |
 | register / handshake 真写逻辑（confirm 闸门，testnet-only） | `injective-service.mjs` | ✅ 已上链验证 |
+| 录屏证据焦点（`recordingOrder[].evidenceFocus` 标出每一步该看 owner / builderCode / mint 摘要 / 钱包时间线 / plaza 分组） | `injective-service.mjs` / `verify-recording-order.mjs` | ✅ |
 | 一键链上证明套件（agentId 43–47 + 公开 data URI 名片结构 + `/api/injective` 读链路 + 写链 dry-run 边界 + registry mint 事件 + 钱包证据链 + RPC 区块时间线 + 合约部署交易/源码字节码 + Demo/README 链接 + 握手 hash/calldata/event + 硬件桥安全事件） | `INJECTIVE-INTEGRATION/verify-chain-proof.mjs` | ✅ |
 
 ---

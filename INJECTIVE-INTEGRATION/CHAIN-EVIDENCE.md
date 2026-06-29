@@ -136,7 +136,7 @@ This read-only proof suite verifies:
 - `builderCode = pocket-earth`
 - public data URI card shape for #44-47
 - `/api/injective` read path for `ping`, `list-agents`, `get-status`, `get-reputation`, `get-chain-evidence`, and `get-wallet-timeline`
-- review brief, reviewer checklist, competition alignment, submission links, submission checklist, and sourceControl wiring for public links, local proof commands, API-returned Blockscout link reachability, three-minute demo timing, followable recording order, registry mint event/summary link checks, plaza flow grouping, Nova story mapping, contest requirement coverage, current source commit anchoring, and final review entry points
+- review brief, reviewer checklist, competition alignment, submission links, submission checklist, and sourceControl wiring for public links, local proof commands, API-returned Blockscout link reachability, three-minute demo timing, followable recording order with per-step `evidenceFocus`, registry mint event/summary link checks, plaza flow grouping, Nova story mapping, contest requirement coverage, current source commit anchoring, and final review entry points
 - wallet timeline API output, its `summary`, public evidence `timeline` rows, and `timelineSummary` for registration, SocialHandshake deployment, fleet registration, and the real handshake transaction sequence, including shared `from` wallet and `expectedStatus` fields
 - pitch notes that keep the deck centered on Injective proof, bound Frost Buddy hardware claims, and cite the Raspberry Pi source
 - dry-run boundaries for write tools without key-backed confirmation

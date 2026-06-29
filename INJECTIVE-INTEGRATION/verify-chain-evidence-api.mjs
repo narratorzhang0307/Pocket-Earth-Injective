@@ -39,6 +39,12 @@ function assertEqual(label, actual, expected) {
   console.log(`OK ${label}: ${actual}`)
 }
 
+function assertFocusIncludes(label, item, expected) {
+  assertTrue(`${label} evidenceFocus array`, Array.isArray(item.evidenceFocus))
+  const text = item.evidenceFocus.join(' | ')
+  assertTrue(`${label} evidenceFocus includes ${expected}`, text.includes(expected))
+}
+
 async function callEvidenceApi() {
   let statusCode = 0
   let body = ''
@@ -222,6 +228,15 @@ assertEqual('recording step 3 path', evidence.recordingOrder[2]?.path, '/api/inj
 assertEqual('recording step 4 path', evidence.recordingOrder[3]?.path, evidence.verification?.listAgentsApi)
 assertEqual('recording step 5 path', evidence.recordingOrder[4]?.path, evidence.verification?.walletTimelineApi)
 assertEqual('recording step 6 command', evidence.recordingOrder[5]?.command, 'npm run verify:plaza')
+assertFocusIncludes('recording step 1', evidence.recordingOrder[0], 'agentId 43')
+assertFocusIncludes('recording step 2', evidence.recordingOrder[1], 'same wallet')
+assertFocusIncludes('recording step 3', evidence.recordingOrder[2], 'registryMintSummary')
+assertFocusIncludes('recording step 3', evidence.recordingOrder[2], 'sourceControl')
+assertFocusIncludes('recording step 4', evidence.recordingOrder[3], 'builderCode=pocket-earth')
+assertFocusIncludes('recording step 4', evidence.recordingOrder[3], 'agentId 43-47')
+assertFocusIncludes('recording step 5', evidence.recordingOrder[4], 'allSucceeded')
+assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'public-plaza')
+assertFocusIncludes('recording step 6', evidence.recordingOrder[5], 'agent-plaza')
 
 console.log('\nPublic-only guard')
 const evidenceText = JSON.stringify(evidence)

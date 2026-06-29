@@ -15,6 +15,12 @@ function assertEqual(label, actual, expected) {
   console.log(`OK ${label}: ${actual}`)
 }
 
+function assertFocusIncludes(label, item, expected) {
+  assertTrue(`${label} evidenceFocus array`, Array.isArray(item.evidenceFocus))
+  const text = item.evidenceFocus.join(' | ')
+  assertTrue(`${label} evidenceFocus includes ${expected}`, text.includes(expected))
+}
+
 async function callInjectiveApi(path) {
   let statusCode = 0
   let body = ''
@@ -162,6 +168,15 @@ assertEqual('evidence recording step 3 path', evidence.recordingOrder[2]?.path, 
 assertEqual('evidence recording step 4 path', evidence.recordingOrder[3]?.path, evidence.verification?.listAgentsApi)
 assertEqual('evidence recording step 5 path', evidence.recordingOrder[4]?.path, evidence.verification?.walletTimelineApi)
 assertEqual('evidence recording step 6 command', evidence.recordingOrder[5]?.command, 'npm run verify:plaza')
+assertFocusIncludes('evidence recording step 1', evidence.recordingOrder[0], 'agentId 43')
+assertFocusIncludes('evidence recording step 2', evidence.recordingOrder[1], 'same wallet')
+assertFocusIncludes('evidence recording step 3', evidence.recordingOrder[2], 'registryMintSummary')
+assertFocusIncludes('evidence recording step 3', evidence.recordingOrder[2], 'sourceControl')
+assertFocusIncludes('evidence recording step 4', evidence.recordingOrder[3], 'builderCode=pocket-earth')
+assertFocusIncludes('evidence recording step 4', evidence.recordingOrder[3], 'agentId 43-47')
+assertFocusIncludes('evidence recording step 5', evidence.recordingOrder[4], 'allSucceeded')
+assertFocusIncludes('evidence recording step 6', evidence.recordingOrder[5], 'public-plaza')
+assertFocusIncludes('evidence recording step 6', evidence.recordingOrder[5], 'agent-plaza')
 assertTrue('evidence agents array', Array.isArray(evidence.agents))
 assertEqual('evidence agent count', evidence.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {

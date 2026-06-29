@@ -16,6 +16,12 @@ function assertEqual(label, actual, expected) {
   console.log(`OK ${label}: ${actual}`)
 }
 
+function assertFocusIncludes(label, item, expected) {
+  assertTrue(`${label} evidenceFocus array`, Array.isArray(item.evidenceFocus))
+  const text = item.evidenceFocus.join(' | ')
+  assertTrue(`${label} evidenceFocus includes ${expected}`, text.includes(expected))
+}
+
 async function callInjectiveApi(path) {
   let statusCode = 0
   let body = ''
@@ -69,27 +75,39 @@ assertEqual('recordingOrder count', order.length, 6)
 for (const [index, item] of order.entries()) {
   assertEqual(`recording step ${index + 1} number`, item.step, index + 1)
   assertTrue(`recording step ${index + 1} label`, Boolean(item.label))
+  assertTrue(`recording step ${index + 1} evidenceFocus has items`, Array.isArray(item.evidenceFocus) && item.evidenceFocus.length >= 2)
 }
 
 const [agentPage, walletPage, evidenceApi, listAgentsApi, timelineApi, plazaSmoke] = order
 assertEqual('recording step 1 type', agentPage.type, 'blockscout')
 assertEqual('recording step 1 url', agentPage.url, scanUrlForAgent(43))
 assertEqual('recording step 1 review link', agentPage.url, reviewLinkByKey.get('frost-agent-43')?.url)
+assertFocusIncludes('recording step 1', agentPage, 'agentId 43')
+assertFocusIncludes('recording step 1', agentPage, 'owner')
+assertFocusIncludes('recording step 1', agentPage, 'builderCode')
 await assertHttpOk('recording step 1 Blockscout page', agentPage.url)
 
 assertEqual('recording step 2 type', walletPage.type, 'blockscout')
 assertEqual('recording step 2 url', walletPage.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('recording step 2 review link', walletPage.url, reviewLinkByKey.get('owner-wallet')?.url)
+assertFocusIncludes('recording step 2', walletPage, 'same wallet')
+assertFocusIncludes('recording step 2', walletPage, 'registration')
+assertFocusIncludes('recording step 2', walletPage, 'handshake')
 await assertHttpOk('recording step 2 Blockscout page', walletPage.url)
 
 assertEqual('recording step 3 type', evidenceApi.type, 'api')
 assertEqual('recording step 3 path', evidenceApi.path, '/api/injective?tool=get-chain-evidence')
+assertFocusIncludes('recording step 3', evidenceApi, 'registryMintSummary')
+assertFocusIncludes('recording step 3', evidenceApi, 'timelineSummary')
+assertFocusIncludes('recording step 3', evidenceApi, 'sourceControl')
 const evidenceAgain = await callInjectiveApi(evidenceApi.path)
 assertEqual('recording step 3 evidence ok', evidenceAgain.ok, true)
 assertEqual('recording step 3 evidence publicOnly', evidenceAgain.publicOnly, true)
 
 assertEqual('recording step 4 type', listAgentsApi.type, 'api')
 assertEqual('recording step 4 path', listAgentsApi.path, evidence.verification?.listAgentsApi)
+assertFocusIncludes('recording step 4', listAgentsApi, 'builderCode=pocket-earth')
+assertFocusIncludes('recording step 4', listAgentsApi, 'agentId 43-47')
 const fleetPayload = await callInjectiveApi(listAgentsApi.path)
 assertTrue('recording step 4 agents array', Array.isArray(fleetPayload.agents))
 for (const expected of FLEET_AGENTS) {
@@ -98,6 +116,9 @@ for (const expected of FLEET_AGENTS) {
 
 assertEqual('recording step 5 type', timelineApi.type, 'api')
 assertEqual('recording step 5 path', timelineApi.path, evidence.verification?.walletTimelineApi)
+assertFocusIncludes('recording step 5', timelineApi, 'summary')
+assertFocusIncludes('recording step 5', timelineApi, 'allSucceeded')
+assertFocusIncludes('recording step 5', timelineApi, 'handshake')
 const timelinePayload = await callInjectiveApi(timelineApi.path)
 assertEqual('recording step 5 timeline ok', timelinePayload.ok, true)
 assertTrue('recording step 5 timeline summary object', !!timelinePayload.summary && typeof timelinePayload.summary === 'object')
@@ -112,6 +133,8 @@ assertEqual('recording step 5 final event', timelinePayload.events.at(-1)?.hash,
 
 assertEqual('recording step 6 type', plazaSmoke.type, 'command')
 assertEqual('recording step 6 command', plazaSmoke.command, 'npm run verify:plaza')
+assertFocusIncludes('recording step 6', plazaSmoke, 'public-plaza')
+assertFocusIncludes('recording step 6', plazaSmoke, 'agent-plaza')
 assertTrue('recording step 6 npm script exists', Boolean(packageJson.scripts?.['verify:plaza']))
 
 const publicText = JSON.stringify(order)

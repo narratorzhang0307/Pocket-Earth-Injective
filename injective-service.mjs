@@ -273,36 +273,66 @@ export async function handleInjective(req, res, url, cfg = {}) {
             label: 'Open Frost agentId 43 identity page',
             type: 'blockscout',
             url: scanUrlForAgent(43),
+            evidenceFocus: [
+              'agentId 43 identity is visible on Injective Blockscout',
+              `owner matches ${PROOF_OWNER}`,
+              `builderCode is ${BUILDER_CODE}`,
+            ],
           },
           {
             step: 2,
             label: 'Open the owner wallet page',
             type: 'blockscout',
             url: scanUrlForAddress(PROOF_OWNER),
+            evidenceFocus: [
+              'each key transaction uses the same wallet',
+              'registration, deployment, fleet, and handshake transactions are visible',
+              'wallet page anchors the owner before opening product APIs',
+            ],
           },
           {
             step: 3,
             label: 'Show the public evidence API package',
             type: 'api',
             path: '/api/injective?tool=get-chain-evidence',
+            evidenceFocus: [
+              'registryMintSummary proves agentId 43-47 were minted from 0x0 to the owner',
+              'timelineSummary proves the same owner and successful chain timeline',
+              'sourceControl anchors evidence to the current GitHub commit',
+            ],
           },
           {
             step: 4,
             label: 'Read agentId 43-47 by builderCode',
             type: 'api',
             path: listAgentsApi,
+            evidenceFocus: [
+              `builderCode=${BUILDER_CODE} filters agentId 43-47 from Injective`,
+              'public data URI cards are returned without private keys',
+              'agent-plaza can install from the same fleet later',
+            ],
           },
           {
             step: 5,
             label: 'Read the wallet transaction timeline from RPC',
             type: 'api',
             path: walletTimelineApi,
+            evidenceFocus: [
+              'summary shows owner, eventCount, allSucceeded, and first/last blocks',
+              'events replay registration, deployment, fleet, and handshake RPC facts',
+              'final event is the real SocialHandshake transaction',
+            ],
           },
           {
             step: 6,
             label: 'Run the plaza UI smoke after chain evidence is ready',
             type: 'command',
             command: 'npm run verify:plaza',
+            evidenceFocus: [
+              'public-plaza shows chain social discovery',
+              'agent-plaza shows marketplace and install loop',
+              'smoke test keeps the UI proof path executable',
+            ],
           },
         ],
         verification: {
