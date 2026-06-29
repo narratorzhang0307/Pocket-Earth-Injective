@@ -112,11 +112,15 @@ const remoteIntegration = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/READ
 const remoteEvidence = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`)
 const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`)
 const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
+const remoteHardware = await fetchText(`${rawBase}/hardware/frost-buddy/README.md`)
+const remotePublicPlaza = await fetchText(`${rawBase}/src/app/components/PublicPlazaPage.tsx`)
 assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
 assertTrue('remote README names explicit Pocket Earth definition heading', remoteReadme.includes('## 一、Pocket Earth 是什么'))
 assertTrue('remote README omits ambiguous product heading', !remoteReadme.includes('## 一、它是什么'))
 assertTrue('remote README names product-first three-entry heading', remoteReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('remote README omits UI-jargon three-tab heading', !remoteReadme.includes('## 二、三个 Tab'))
+assertTrue('remote README names Frost Edge Node hardware direction explicitly', remoteReadme.includes('Frost Edge Node 硬件方向的商业判断'))
+assertTrue('remote README omits vague hardware direction subject', !remoteReadme.includes('这个硬件方向'))
 assertTrue('remote README names agentId 43', remoteReadme.includes('agentId 43'))
 assertTrue('remote README points at chain evidence API', remoteReadme.includes('/api/injective?tool=get-chain-evidence'))
 assertTrue('remote README names proof suite', remoteReadme.includes('npm run verify:injective'))
@@ -254,12 +258,20 @@ assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJud
 assertTrue('remote judge quickstart names Frost Edge Node checklist', remoteJudge.includes('deliveryChecklist.frost-edge-node') && remoteJudge.includes('npm run verify:hardware'))
 assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
 assertTrue('remote judge quickstart names plaza split', remoteJudge.includes('public-plaza') && remoteJudge.includes('agent-plaza'))
+assertTrue('remote hardware README names module subject explicitly', remoteHardware.includes('Frost Edge Node 模块先承担三个角色'))
+assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
+assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
+assertTrue('remote hardware README omits vague market subject', !remoteHardware.includes('这个判断在 Markdown'))
+assertTrue('remote public-plaza source names Frost as the actor', remotePublicPlaza.includes('Frost 替你去广场') && remotePublicPlaza.includes('Frost 带出的名片'))
+assertTrue('remote public-plaza source omits vague agent actor', !remotePublicPlaza.includes('它替你去广场') && !remotePublicPlaza.includes('它带出的名片'))
 for (const [label, text] of [
   ['remote README', remoteReadme],
   ['remote integration guide', remoteIntegration],
   ['remote evidence pack', remoteEvidence],
   ['remote demo script', remoteDemo],
   ['remote judge quickstart', remoteJudge],
+  ['remote hardware README', remoteHardware],
+  ['remote public-plaza source', remotePublicPlaza],
 ]) {
   assertNoOldRepoText(label, text)
   assertNoEventPositioning(label, text)
