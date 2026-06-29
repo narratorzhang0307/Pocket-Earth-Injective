@@ -7,6 +7,8 @@
 //  · 只读(ping/list-agents/get-status)无需私钥；register 无私钥时强制 dryRun（不上链、只验结构）。
 // ════════════════════════════════════════════════════════════════════════════
 
+import { IDENTITY_REGISTRY, INJECTIVE_TESTNET_RPC, PROOF_OWNER, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, sameAddress, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+
 let _sdk = null, _sdkTried = false
 async function getSDK() {
   if (_sdkTried) return _sdk
@@ -49,22 +51,6 @@ function normalizeBytes32(value) {
 }
 function isBytes32(value) {
   return /^0x[0-9a-f]{64}$/i.test(String(value || ''))
-}
-
-const TIMELINE_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
-const TIMELINE_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
-const TIMELINE_HANDSHAKE = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
-const TIMELINE_EVENTS = [
-  { label: 'Frost main identity registration', role: 'agentId 43', hash: '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554', to: TIMELINE_REGISTRY, blockNumber: 131678496n, timestamp: '2026-06-27T01:46:30.000Z' },
-  { label: 'SocialHandshake deployment', role: 'contract deployment', hash: '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722', to: null, contractAddress: TIMELINE_HANDSHAKE, blockNumber: 131678987n, timestamp: '2026-06-27T01:53:16.000Z' },
-  { label: 'Fleet agent registration', role: 'agentId 44', hash: '0x02a0590c2f1bc1e475d7cdfb2fa4c3eb5e0b9f7de4ac1f97e66663e0f5a38f44', to: TIMELINE_REGISTRY, blockNumber: 131679781n, timestamp: '2026-06-27T02:04:14.000Z' },
-  { label: 'Fleet agent registration', role: 'agentId 45', hash: '0xc161f0df707b1c9b1e29311e944b7c1b40f3d525c9d1cbd2d71c67713333fffe', to: TIMELINE_REGISTRY, blockNumber: 131679930n, timestamp: '2026-06-27T02:06:17.000Z' },
-  { label: 'Fleet agent registration', role: 'agentId 46', hash: '0x1bbd3df139b2558ff315d2029f00c01dc881a45542d5854176bbc49e6dfaea4e', to: TIMELINE_REGISTRY, blockNumber: 131679941n, timestamp: '2026-06-27T02:06:26.000Z' },
-  { label: 'Fleet agent registration', role: 'agentId 47', hash: '0xada3e082b8e8988e414bcf201739f2a2a3b5fe9c947db71ebe1e7467f3de1a50', to: TIMELINE_REGISTRY, blockNumber: 131679948n, timestamp: '2026-06-27T02:06:32.000Z' },
-  { label: 'Real SocialHandshake', role: 'agentId 43 <-> 44', hash: '0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6', to: TIMELINE_HANDSHAKE, blockNumber: 131869118n, timestamp: '2026-06-28T21:34:21.000Z' },
-]
-function sameAddress(a, b) {
-  return String(a ?? '').toLowerCase() === String(b ?? '').toLowerCase()
 }
 
 // list-agents 结果缓存（id → {agent, at}），抹平 testnet RPC 抖动：本次 getStatus 没返回的、但 60s 内查到过的 agent 仍带上，避免广场在场数忽多忽少。
@@ -158,7 +144,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
     // —— 只读：钱包证据时间线（直接读 Injective RPC 的 tx/receipt/block，无需私钥）——
     if (tool === 'get-wallet-timeline') {
       const { createPublicClient, defineChain, http } = await import('viem')
-      const rpcUrl = cfg.rpcUrl || 'https://testnet.sentry.chain.json-rpc.injective.network'
+      const rpcUrl = cfg.rpcUrl || INJECTIVE_TESTNET_RPC
       const chain = defineChain({ id: network === 'mainnet' ? 1776 : 1439, name: 'Injective', nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 }, rpcUrls: { default: { http: [rpcUrl] } } })
       const client = createPublicClient({ chain, transport: http(rpcUrl) })
       const events = []
@@ -169,7 +155,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         ])
         const block = await client.getBlock({ blockNumber: receipt.blockNumber })
         const timestamp = new Date(Number(block.timestamp) * 1000).toISOString()
-        if (!sameAddress(tx.from, TIMELINE_OWNER)) throw new Error(`timeline_from_mismatch:${expected.role}`)
+        if (!sameAddress(tx.from, PROOF_OWNER)) throw new Error(`timeline_from_mismatch:${expected.role}`)
         if (!sameAddress(tx.to, expected.to)) throw new Error(`timeline_to_mismatch:${expected.role}`)
         if (String(receipt.status) !== 'success') throw new Error(`timeline_receipt_failed:${expected.role}`)
         if (receipt.blockNumber !== expected.blockNumber) throw new Error(`timeline_block_mismatch:${expected.role}`)
@@ -185,15 +171,15 @@ export async function handleInjective(req, res, url, cfg = {}) {
           blockNumber: receipt.blockNumber,
           timestamp,
           contractAddress: receipt.contractAddress || null,
-          scanUrl: `https://testnet.blockscout.injective.network/tx/${expected.hash}`,
+          scanUrl: scanUrlForTx(expected.hash),
         })
       }
       return json(res, {
         ok: true,
         network,
-        owner: TIMELINE_OWNER,
-        registry: TIMELINE_REGISTRY,
-        handshakeContract: TIMELINE_HANDSHAKE,
+        owner: PROOF_OWNER,
+        registry: IDENTITY_REGISTRY,
+        handshakeContract: SOCIAL_HANDSHAKE,
         events,
       })
     }
