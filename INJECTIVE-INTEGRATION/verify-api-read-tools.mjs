@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, COMPETITION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, SUBMISSION_CHECKLIST, SUBMISSION_LINKS, SUBMISSION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -169,6 +169,18 @@ for (const expected of FLEET_AGENTS) {
   assertEqual(`evidence agent ${expected.id} label`, actual.label, expected.label)
   assertEqual(`evidence agent ${expected.id} scanUrl`, actual.scanUrl, scanUrlForAgent(expected.id))
   if (expected.requiredTag) assertEqual(`evidence agent ${expected.id} requiredTag`, actual.requiredTag, expected.requiredTag)
+}
+assertTrue('evidence registry mint events array', Array.isArray(evidence.registryMintEvents))
+assertEqual('evidence registry mint event count', evidence.registryMintEvents.length, REGISTRY_MINT_EVENTS.length)
+for (const expected of REGISTRY_MINT_EVENTS) {
+  const actual = evidence.registryMintEvents.find((event) => Number(event.agentId) === expected.agentId)
+  assertTrue(`evidence registry mint agent ${expected.agentId} present`, !!actual)
+  assertEqual(`evidence registry mint agent ${expected.agentId} from`, actual.from, REGISTRY_MINT_ZERO_ADDRESS)
+  assertEqual(`evidence registry mint agent ${expected.agentId} to`, actual.to, PROOF_OWNER)
+  assertEqual(`evidence registry mint agent ${expected.agentId} transactionHash`, actual.transactionHash, expected.transactionHash)
+  assertEqual(`evidence registry mint agent ${expected.agentId} block`, actual.blockNumber, expected.blockNumber)
+  assertEqual(`evidence registry mint agent ${expected.agentId} scanUrl`, actual.scanUrl, scanUrlForTx(expected.transactionHash))
+  assertEqual(`evidence registry mint agent ${expected.agentId} agentScanUrl`, actual.agentScanUrl, scanUrlForAgent(expected.agentId))
 }
 assertTrue('evidence timeline array', Array.isArray(evidence.timeline))
 assertEqual('evidence timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)

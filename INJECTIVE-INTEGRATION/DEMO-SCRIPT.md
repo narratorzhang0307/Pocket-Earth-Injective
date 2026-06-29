@@ -21,7 +21,7 @@
 
 ## 操作要点（别卡壳）
 - **进广场**：底部 `AGENTS`（右下角 ✦）→ 卡片列表往下滑到 `PLAZA` 区 → 点 `public-plaza` 卡的 `▶ RUN`。
-- **API 复验**：评委想看接口时，可先展示 `/api/injective?tool=get-chain-evidence` 输出公开证据包，里面的 `reviewBrief` 是一页评审简报，`reviewLinks` 是最该点击的 Blockscout 页面，`reviewChecklist` 说明每个证据要证明什么，`competitionAlignment` 把 AI 社交 / Injective 链上执行 / 硬件延展 / 隐私证明映射到复验命令，`submissionLinks` 固定 GitHub、线上 `?demo` 和公开 API 入口，`submissionChecklist` 对齐公开 GitHub + README、Injective 集成、3 分钟 demo 脚本、pitch 备注和只读复验 API，`sourceControl` 把这份证据包锚到当前 GitHub 提交，`recordingOrder` 是链上证据推荐录屏顺序；再展示 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47` 读回 `agentId 43–47`，最后展示 `/api/injective?tool=get-wallet-timeline` 读回注册、部署、fleet、握手的 RPC 时间线。
+- **API 复验**：评委想看接口时，可先展示 `/api/injective?tool=get-chain-evidence` 输出公开证据包，里面的 `registryMintEvents` 直接列出 `agentId 43–47` 的 ERC-8004 mint from、owner、tx、区块号和身份页，`reviewBrief` 是一页评审简报，`reviewLinks` 是最该点击的 Blockscout 页面，`reviewChecklist` 说明每个证据要证明什么，`competitionAlignment` 把 AI 社交 / Injective 链上执行 / 硬件延展 / 隐私证明映射到复验命令，`submissionLinks` 固定 GitHub、线上 `?demo` 和公开 API 入口，`submissionChecklist` 对齐公开 GitHub + README、Injective 集成、3 分钟 demo 脚本、pitch 备注和只读复验 API，`sourceControl` 把这份证据包锚到当前 GitHub 提交，`recordingOrder` 是链上证据推荐录屏顺序；再展示 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47` 读回 `agentId 43–47`，最后展示 `/api/injective?tool=get-wallet-timeline` 读回注册、部署、fleet、握手的 RPC 时间线。
 - **广场加载**：链上 agent 约 2–3 秒出现（先显示本机示意，随后替换为链上真实 agent，正常现象）。
 - **若相似度没差异 / 显示画像太薄**：确认地址栏带了 `?demo`（刷新会被 demoReset 清画像，`?demo` 会自动重新预置）。
 - **地球的 agent 点**：蓝紫色（`#7c5cff`），和音乐绿 / 照片青等其他图层区分；缩放后会自动散开不重叠。

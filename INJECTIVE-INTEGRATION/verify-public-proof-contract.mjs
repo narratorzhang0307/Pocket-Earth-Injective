@@ -11,6 +11,8 @@ import {
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
   PROOF_OWNER,
+  REGISTRY_MINT_EVENTS,
+  REGISTRY_MINT_ZERO_ADDRESS,
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
   SUBMISSION_REPOSITORY_URL,
@@ -121,6 +123,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'readOnly',
   'recordingOrder',
   'registry',
+  'registryMintEvents',
   'registryScanUrl',
   'reviewBrief',
   'reviewChecklist',
@@ -165,6 +168,16 @@ for (const agent of FLEET_AGENTS) {
   const actual = evidence.agents.find((item) => Number(item.agentId) === Number(agent.id))
   assertTrue(`agent ${agent.id} exists`, !!actual)
   assertEqual(`agent ${agent.id} scanUrl`, actual.scanUrl, scanUrlForAgent(agent.id))
+}
+assertEqual('registry mint event count', evidence.registryMintEvents.length, REGISTRY_MINT_EVENTS.length)
+for (const event of REGISTRY_MINT_EVENTS) {
+  const actual = evidence.registryMintEvents.find((item) => Number(item.agentId) === event.agentId)
+  assertTrue(`registry mint agent ${event.agentId} exists`, !!actual)
+  assertEqual(`registry mint agent ${event.agentId} from`, actual.from, REGISTRY_MINT_ZERO_ADDRESS)
+  assertEqual(`registry mint agent ${event.agentId} to`, actual.to, PROOF_OWNER)
+  assertEqual(`registry mint agent ${event.agentId} transactionHash`, actual.transactionHash, event.transactionHash)
+  assertEqual(`registry mint agent ${event.agentId} block`, actual.blockNumber, event.blockNumber)
+  assertEqual(`registry mint agent ${event.agentId} scanUrl`, actual.scanUrl, scanUrlForTx(event.transactionHash))
 }
 assertEqual('timeline count', evidence.timeline.length, TIMELINE_EVENTS.length)
 for (const event of TIMELINE_EVENTS) {

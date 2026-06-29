@@ -8,6 +8,7 @@ export const DEMO_VIDEO_LIMIT_SECONDS = 180
 export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 export const SOCIAL_HANDSHAKE = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
+export const REGISTRY_MINT_ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const FLEET_AGENTS = [
   { id: 43n, label: 'Frost main identity' },
@@ -63,7 +64,7 @@ export const COMPETITION_ALIGNMENT = [
     key: 'privacy-first-public-proof',
     contestSignal: 'Demo-ready product with verifiable public evidence',
     projectSignal: 'The review path exposes public-only chain evidence while raw books, films, music, photos, mood text, precise locations, and secret env values stay off-chain.',
-    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
+    evidence: '/api/injective?tool=get-chain-evidence returns readOnly, publicOnly evidence with registryMintEvents, reviewBrief, reviewLinks, reviewChecklist, submissionChecklist, recordingOrder, privacyBoundary, and plazaFlow.',
     machineCheck: 'npm run verify:public-proof',
   },
 ]
@@ -226,6 +227,20 @@ export function scanUrlForAgent(agentId) {
 export function scanUrlForRegistry() {
   return `https://testnet.blockscout.injective.network/token/${IDENTITY_REGISTRY}`
 }
+
+export const REGISTRY_MINT_EVENTS = FLEET_AGENTS.map((agent) => {
+  const timelineEvent = TIMELINE_EVENTS.find((event) => event.role === `agentId ${Number(agent.id)}`)
+  if (!timelineEvent) throw new Error(`Missing registry mint timeline event for agentId ${agent.id}`)
+  return {
+    agentId: Number(agent.id),
+    from: REGISTRY_MINT_ZERO_ADDRESS,
+    to: PROOF_OWNER,
+    transactionHash: timelineEvent.hash,
+    blockNumber: timelineEvent.blockNumber,
+    scanUrl: scanUrlForTx(timelineEvent.hash),
+    agentScanUrl: scanUrlForAgent(agent.id),
+  }
+})
 
 export const REVIEW_LINKS = [
   { key: 'frost-agent-43', label: 'Frost main identity #43', type: 'agent', url: scanUrlForAgent(43) },
