@@ -23,7 +23,7 @@ Start with `JUDGE-QUICKSTART.md` for the 60-second path. The evidence is organiz
 | Wallet timeline | `timeline`, `timelineSummary`, `get-wallet-timeline` | registration, contract deployment, fleet minting, and real handshake share one successful wallet sequence |
 | Social proof | `handshakeProof` | `agentId 43 <-> 44` produced a real SocialHandshake event with score `88` and non-zero public commitments |
 | Product loop | `publicReadApis`, `plazaFlow`, `recordingOrder[].evidenceFocus` | public-plaza reads the chain; agent-plaza keeps the install loop separate and demonstrable |
-| Delivery guard | `reviewBrief`, `judgeRunbook`, `reviewChecklist`, `integrationAlignment`, `reviewEntrypoints`, `deliveryChecklist`, `sourceControl` | the docs, API fields, source anchor, privacy boundary, and reproduction commands stay aligned |
+| Delivery guard | `reviewBrief`, `judgeRunbook`, `reviewChecklist`, `integrationAlignment`, `reviewEntrypoints`, `deliveryChecklist`, `sourceControl` | the docs, API fields, hardware bridge entrypoint, source anchor, privacy boundary, and reproduction commands stay aligned |
 
 The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-apis`, `npm run verify:positioning`, `npm run verify:registry`, `npm run verify:wallet`, `npm run verify:plaza-flow`, `npm run verify:hardware`, and `npm run verify:demo`.
 
@@ -114,7 +114,7 @@ npm run verify:delivery
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`. The second call opens the #43 single-agent proof card. The third call reads `agentId 43-47` by `builderCode = pocket-earth`. The fourth call returns the RPC-backed wallet timeline with `summary, events`, including registration, SocialHandshake deployment, fleet registration, the real `agentId 43 <-> 44` handshake, owner, event count, all-succeeded status, first/last block, and first/last timestamp.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`; its `reviewEntrypoints` now include the Frost Edge Node hardware bridge, and its `deliveryChecklist` includes the `npm run verify:hardware` privacy-bounded prototype check. The second call opens the #43 single-agent proof card. The third call reads `agentId 43-47` by `builderCode = pocket-earth`. The fourth call returns the RPC-backed wallet timeline with `summary, events`, including registration, SocialHandshake deployment, fleet registration, the real `agentId 43 <-> 44` handshake, owner, event count, all-succeeded status, first/last block, and first/last timestamp.
 
 The verification suite keeps the evidence readable and reproducible:
 

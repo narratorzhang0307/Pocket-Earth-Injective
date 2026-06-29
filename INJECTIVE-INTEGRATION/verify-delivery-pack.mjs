@@ -5,6 +5,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   DEMO_VIDEO_LIMIT_SECONDS,
+  HARDWARE_BRIDGE_URL,
   JUDGE_QUICKSTART_URL,
   LIVE_DEMO_URL,
   DELIVERY_CHECKLIST,
@@ -101,6 +102,8 @@ assertEqual('chain evidence API path', expectedByKey.get('chain-evidence-api').p
 assertEqual('agent proof API path', expectedByKey.get('agent-proof-api').path, '/api/injective?tool=get-agent-proof&agentId=43')
 assertEqual('agent fleet API path', expectedByKey.get('agent-fleet-api').path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertEqual('wallet timeline API path', expectedByKey.get('wallet-timeline-api').path, '/api/injective?tool=get-wallet-timeline')
+assertEqual('hardware bridge url', expectedByKey.get('hardware-bridge').url, HARDWARE_BRIDGE_URL)
+assertTrue('hardware bridge url stays in integration repo', HARDWARE_BRIDGE_URL.startsWith(INTEGRATION_REPOSITORY_URL))
 
 console.log('\nDelivery checklist')
 assertTrue('deliveryChecklist array', Array.isArray(checklist))
@@ -129,6 +132,9 @@ assertEqual('Pitch checklist status', checklistByKey.get('pitch-deck-notes').sta
 assertEqual('Pitch checklist local check', checklistByKey.get('pitch-deck-notes').localCheck, 'npm run verify:pitch')
 assertEqual('Public API checklist local check', checklistByKey.get('public-review-apis').localCheck, 'npm run verify:public-proof')
 assertTrue('checklist mentions no private keys', checklistByKey.get('public-review-apis').evidence.includes('without private keys') || checklistByKey.get('public-review-apis').evidence.includes('read-only'))
+assertEqual('Frost Edge Node checklist status', checklistByKey.get('frost-edge-node').status, 'ready-prototype')
+assertEqual('Frost Edge Node checklist local check', checklistByKey.get('frost-edge-node').localCheck, 'npm run verify:hardware')
+assertTrue('Frost Edge Node checklist mentions JSONL', checklistByKey.get('frost-edge-node').evidence.includes('JSONL'))
 
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
 assertTrue('README names Injective core integration', readme.includes('Injective 核心集成'))
@@ -142,6 +148,8 @@ assertTrue('DEMO-SCRIPT mentions delivery check', demoScript.includes('npm run v
 assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions judgeRunbook', demoScript.includes('judgeRunbook'))
 assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
+assertTrue('README links hardware bridge', readme.includes('hardware/frost-buddy/'))
+assertTrue('CHAIN-EVIDENCE mentions hardware check', chainEvidence.includes('npm run verify:hardware'))
 
 const publicText = JSON.stringify({ links, checklist })
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']) {

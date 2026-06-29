@@ -5,6 +5,7 @@ export const BUILDER_CODE = 'pocket-earth'
 export const INTEGRATION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
 export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
 export const JUDGE_QUICKSTART_URL = `${INTEGRATION_REPOSITORY_URL}/blob/main/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`
+export const HARDWARE_BRIDGE_URL = `${INTEGRATION_REPOSITORY_URL}/tree/main/hardware/frost-buddy`
 export const DEMO_VIDEO_LIMIT_SECONDS = 180
 export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
@@ -156,6 +157,7 @@ export const REVIEW_ENTRYPOINTS = [
   { key: 'agent-proof-api', label: 'Single-agent proof card for Frost #43', type: 'api', path: '/api/injective?tool=get-agent-proof&agentId=43' },
   { key: 'agent-fleet-api', label: 'Read agentId 43-47 by builderCode', type: 'api', path: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47` },
   { key: 'wallet-timeline-api', label: 'Read wallet transaction timeline from RPC', type: 'api', path: '/api/injective?tool=get-wallet-timeline' },
+  { key: 'hardware-bridge', label: 'Frost Edge Node hardware bridge', type: 'module', url: HARDWARE_BRIDGE_URL },
 ]
 
 export const JUDGE_RUNBOOK = {
@@ -261,6 +263,14 @@ export const DELIVERY_CHECKLIST = [
     evidence: 'get-chain-evidence, get-agent-proof, list-agents by builderCode, and get-wallet-timeline are read-only and publicOnly/testnet-scoped.',
     localCheck: 'npm run verify:public-proof',
     linkKey: 'chain-evidence-api',
+  },
+  {
+    key: 'frost-edge-node',
+    requirement: 'Frost Edge Node hardware bridge stays demonstrable and privacy-bounded',
+    status: 'ready-prototype',
+    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router, without private keys or raw profile data.',
+    localCheck: 'npm run verify:hardware',
+    linkKey: 'hardware-bridge',
   },
 ]
 
