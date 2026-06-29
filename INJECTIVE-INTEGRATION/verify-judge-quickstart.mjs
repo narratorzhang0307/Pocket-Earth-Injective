@@ -88,6 +88,7 @@ for (const snippet of [
   'registry-mint-events',
   'expectedStatus',
   'timelineSummary',
+  'starting from its `summary`',
   'SocialHandshake',
   'public-plaza',
   'agent-plaza',

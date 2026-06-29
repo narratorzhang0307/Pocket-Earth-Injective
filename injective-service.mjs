@@ -352,6 +352,20 @@ export async function handleInjective(req, res, url, cfg = {}) {
         owner: PROOF_OWNER,
         registry: IDENTITY_REGISTRY,
         handshakeContract: SOCIAL_HANDSHAKE,
+        summary: {
+          owner: PROOF_OWNER,
+          walletScanUrl: scanUrlForAddress(PROOF_OWNER),
+          eventCount: events.length,
+          allFromOwner: events.every((event) => sameAddress(event.from, PROOF_OWNER)),
+          allSucceeded: events.every((event) => event.status === 'success'),
+          firstBlock: events[0]?.blockNumber ?? null,
+          lastBlock: events.at(-1)?.blockNumber ?? null,
+          firstTimestamp: events[0]?.timestamp ?? null,
+          lastTimestamp: events.at(-1)?.timestamp ?? null,
+          firstRole: events[0]?.role ?? null,
+          lastRole: events.at(-1)?.role ?? null,
+          evidenceApi: '/api/injective?tool=get-chain-evidence',
+        },
         events,
       })
     }

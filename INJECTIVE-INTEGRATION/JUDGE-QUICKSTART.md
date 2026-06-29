@@ -8,7 +8,7 @@
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
 3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `registryMintEvents`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, and the `registry-mint-events` checklist item
 4. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`
-5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`
+5. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary`
 6. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
 7. Check the ERC-8004 mint events locally: `npm run verify:registry`
 8. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:source && npm run verify:registry && npm run verify:demo`
@@ -18,7 +18,7 @@
 - `agentId 43-47` are Pocket Earth Frost identities on Injective testnet with `builderCode = pocket-earth`.
 - The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events.
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
-- The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks.
+- The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns its own `summary` so reviewers can confirm event count, all-succeeded status, and first/last block/time before reading every event row.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
 - The evidence API is `readOnly` and `publicOnly`; raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.

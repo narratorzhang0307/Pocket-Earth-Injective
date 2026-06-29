@@ -6,6 +6,7 @@ import {
   PROOF_OWNER,
   SOCIAL_HANDSHAKE,
   TIMELINE_EVENTS,
+  scanUrlForAddress,
   scanUrlForTx,
 } from './chain-proof-data.mjs'
 
@@ -51,6 +52,19 @@ assertEqual('timeline handshake contract', timeline.handshakeContract, SOCIAL_HA
 assertTrue('timeline events array', Array.isArray(timeline.events))
 assertEqual('timeline event count', timeline.events.length, TIMELINE_EVENTS.length)
 assertEqual('timeline unique hash count', new Set(timeline.events.map((event) => event.hash)).size, TIMELINE_EVENTS.length)
+assertTrue('timeline summary object', !!timeline.summary && typeof timeline.summary === 'object')
+assertEqual('timeline summary owner', timeline.summary.owner, PROOF_OWNER)
+assertEqual('timeline summary wallet scanUrl', timeline.summary.walletScanUrl, scanUrlForAddress(PROOF_OWNER))
+assertEqual('timeline summary event count', timeline.summary.eventCount, TIMELINE_EVENTS.length)
+assertEqual('timeline summary all from owner', timeline.summary.allFromOwner, true)
+assertEqual('timeline summary all succeeded', timeline.summary.allSucceeded, true)
+assertEqual('timeline summary first block', timeline.summary.firstBlock, TIMELINE_EVENTS[0].blockNumber)
+assertEqual('timeline summary last block', timeline.summary.lastBlock, TIMELINE_EVENTS.at(-1).blockNumber)
+assertEqual('timeline summary first timestamp', timeline.summary.firstTimestamp, TIMELINE_EVENTS[0].timestamp)
+assertEqual('timeline summary last timestamp', timeline.summary.lastTimestamp, TIMELINE_EVENTS.at(-1).timestamp)
+assertEqual('timeline summary first role', timeline.summary.firstRole, TIMELINE_EVENTS[0].role)
+assertEqual('timeline summary last role', timeline.summary.lastRole, TIMELINE_EVENTS.at(-1).role)
+assertEqual('timeline summary evidence API', timeline.summary.evidenceApi, '/api/injective?tool=get-chain-evidence')
 
 console.log('\nTimeline events')
 for (const expected of TIMELINE_EVENTS) {

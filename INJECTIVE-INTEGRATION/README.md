@@ -59,7 +59,7 @@ Nightly Chain Dispatch  「今夜我在 Injective 上遇见 N 个口味相近的
 | GET | `?tool=get-status&agentId=N` | StatusResult | 否 |
 | GET | `?tool=get-reputation&agentId=N` | `{score, count, clients}` | 否 |
 | GET | `?tool=get-chain-evidence` | 公开证据包：testnet chainId 1439、agentId 43–47、ERC-8004 `registryMintEvents`、带 `from` / `expectedStatus` 的钱包 `timeline`、汇总 owner/首尾区块/RPC 复验入口的 `timelineSummary`、钱包、合约、时间线交易、Blockscout 链接、`reviewBrief`、`reviewLinks`、`reviewChecklist`、`competitionAlignment`、`submissionLinks`、`submissionChecklist`、`recordingOrder`、`privacyBoundary`、`plazaFlow` 与录屏/复验命令 | 否 |
-| GET | `?tool=get-wallet-timeline` | `{events}`，直接从 Injective RPC 复验钱包交易时间线 | 否 |
+| GET | `?tool=get-wallet-timeline` | `{summary, events}`，直接从 Injective RPC 复验钱包交易时间线，并汇总 owner、事件数、成功状态、首尾区块/时间 | 否 |
 | POST | `?tool=register` `{passport, confirm}` | `{agentId, txHashes, scanUrl}`（无私钥/未 confirm → dryRun 预览；有私钥 dryRun 时可估算） | 真写需 |
 | POST | `?tool=handshake` `{agentA, agentB, profileHashA, profileHashB, score, confirm}` | `{txHash}`（无私钥/合约 → dryRun + willEmit；真写必须带非零 `bytes32` 名片哈希） | 真写需 |
 
@@ -198,7 +198,7 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 - Pocket Earth agent fleet：`agentId 43–47` 均可读回 `builderCode = pocket-earth`；44–47 的脱敏口味名片用 data URI 内联上链，无需 Pinata。`verify-fleet.mjs` 会验证这些名片只含公开字段（type/name/description/tags/metadata），metadata 只含 `chain` 和 `builderCode`。
 - Registry 事件级证据：`/api/injective?tool=get-chain-evidence` 会公开返回 `registryMintEvents`，列出 `agentId 43–47` 的 mint from `0x0`、owner、交易哈希、区块号、tx 链接和身份页；`reviewChecklist` 也有 `registry-mint-events` 独立检查项；`verify-registry-events.mjs` 会读取 ERC-8004 `Transfer(0x0 → wallet, tokenId)` mint 事件，核验这些公开字段没有漂移。
 - 钱包证据链：注册交易 `0xd2b574...0554` 与握手交易 `0x0e597f...f2d6` 都由同一个测试网钱包发起；`verify-wallet-flow.mjs` 会核验交易 from/to、注册事件、合约代码、recordHandshake calldata、非零名片哈希和公开页面。
-- 交易时间线：`/api/injective?tool=get-chain-evidence` 的公开 `timeline` 会先给每笔关键交易标出同一 `from` 钱包和 `expectedStatus: success`，`timelineSummary` 会把 owner、事件数、首尾区块/时间和 RPC 复验入口汇总给评审；`verify-chain-timeline.mjs` 会再通过 Injective testnet JSON-RPC 直接读取注册、合约部署、fleet 注册和真实握手的 transaction / receipt / block，核验区块号、UTC 时间戳、from/to 与成功状态，作为钱包页录屏的机器可复验证据。
+- 交易时间线：`/api/injective?tool=get-chain-evidence` 的公开 `timeline` 会先给每笔关键交易标出同一 `from` 钱包和 `expectedStatus: success`，`timelineSummary` 会把 owner、事件数、首尾区块/时间和 RPC 复验入口汇总给评审；`/api/injective?tool=get-wallet-timeline` 也返回 RPC 推导出的 `summary`，不用展开 7 笔交易就能先看到 owner、事件数、成功状态和首尾区块/时间；`verify-chain-timeline.mjs` 会再通过 Injective testnet JSON-RPC 直接读取注册、合约部署、fleet 注册和真实握手的 transaction / receipt / block，核验区块号、UTC 时间戳、from/to 与成功状态，作为钱包页录屏的机器可复验证据。
 - 防漂移数据源：`chain-proof-data.mjs` 集中维护公开钱包、IdentityRegistry、SocialHandshake 和 7 笔时间线交易；产品 API、RPC 时间线验证和文档链接检查共用同一份公开事实表，避免演示接口、证据脚本和评审文档各写一份导致不一致。
 - SocialHandshake 合约：`0xe5338a162a44a685201e1f6120b1a851949e3aee`；部署交易 `0x6048425a...fa722` 由比赛钱包 nonce 2 创建。`verify-handshake-contract.mjs` 会核验这笔部署交易、合约地址推导、交易 input 与本地 creation bytecode 一致、代码在 Frost 注册后且握手前出现，并重新编译本仓库的 `SocialHandshake.sol` 比对 Injective testnet runtime bytecode。
 - 真实握手交易：`0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6`，`verify-handshake.mjs` 会用公开脱敏 demo seed 重算两个 profileHash，并核验 calldata 与事件参数均为 `agentA 43`、`agentB 44`、`score 88`，以及两个非零 `bytes32` 名片哈希字段与事件时间戳。
