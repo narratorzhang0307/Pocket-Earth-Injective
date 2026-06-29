@@ -5,6 +5,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   DEMO_VIDEO_LIMIT_SECONDS,
+  JUDGE_QUICKSTART_URL,
   LIVE_DEMO_URL,
   SUBMISSION_CHECKLIST,
   SUBMISSION_LINKS,
@@ -83,6 +84,9 @@ assertEqual('repository url', expectedByKey.get('github-repo').url, SUBMISSION_R
 assertTrue('repository url points at Injective repo', SUBMISSION_REPOSITORY_URL.endsWith('/Pocket-Earth-Injective'))
 assertTrue('repository url is not the old plus repo', !SUBMISSION_REPOSITORY_URL.includes('Pocket-Earth-Plus'))
 assertTrue('repository url is not the sunset repo', !SUBMISSION_REPOSITORY_URL.includes('Sunset-Radio'))
+assertEqual('judge quickstart url', expectedByKey.get('judge-quickstart').url, JUDGE_QUICKSTART_URL)
+assertTrue('judge quickstart url points at integration guide', JUDGE_QUICKSTART_URL.endsWith('/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))
+assertTrue('judge quickstart url stays in submission repo', JUDGE_QUICKSTART_URL.startsWith(SUBMISSION_REPOSITORY_URL))
 assertEqual('sourceControl repository', evidence.sourceControl?.repository, SUBMISSION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl?.branch, 'main')
 assertTrue('sourceControl commit is sha or null', evidence.sourceControl?.commit === null || /^[0-9a-f]{40}$/i.test(evidence.sourceControl?.commit))

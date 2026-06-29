@@ -9,6 +9,7 @@ import {
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  JUDGE_QUICKSTART_URL,
   PLAZA_DEMO_FLOW,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
@@ -107,6 +108,7 @@ assertTrue('competition alignment mentions Injective execution', evidence.compet
 assertTrue('competition alignment mentions hardware bridge', evidence.competitionAlignment.some((item) => item.key === 'agent-physical-world'))
 assertTrue('submission links array', Array.isArray(evidence.submissionLinks))
 assertEqual('submission links count', evidence.submissionLinks.length, SUBMISSION_LINKS.length)
+assertEqual('submission link judge quickstart url', evidence.submissionLinks.find((link) => link.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
 assertEqual('submission link repo url', evidence.submissionLinks.find((link) => link.key === 'github-repo')?.url, SUBMISSION_LINKS.find((link) => link.key === 'github-repo')?.url)
 assertEqual('submission link live demo url', evidence.submissionLinks.find((link) => link.key === 'live-demo')?.url, SUBMISSION_LINKS.find((link) => link.key === 'live-demo')?.url)
 assertEqual('submission link chain evidence path', evidence.submissionLinks.find((link) => link.key === 'chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')

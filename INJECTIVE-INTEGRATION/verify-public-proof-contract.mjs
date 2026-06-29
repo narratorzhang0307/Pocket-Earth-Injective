@@ -10,6 +10,7 @@ import {
   FLEET_AGENTS,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  JUDGE_QUICKSTART_URL,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
   REGISTRY_MINT_ZERO_ADDRESS,
@@ -160,6 +161,7 @@ if (evidence.sourceControl.commit) assertEqual('sourceControl commitUrl', eviden
 assertEqual('sourceControl evidenceApi', evidence.sourceControl.evidenceApi, '/api/injective?tool=get-chain-evidence')
 
 console.log('\nReview entry points')
+assertEqual('judge quickstart link stays on Injective submission repo', evidence.submissionLinks.find((item) => item.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
 assertEqual('repo link stays on Injective submission repo', evidence.submissionLinks.find((item) => item.key === 'github-repo')?.url, SUBMISSION_REPOSITORY_URL)
 assertEqual('agentId 43 link', evidence.reviewLinks.find((item) => item.key === 'frost-agent-43')?.url, scanUrlForAgent(43))
 assertEqual('owner wallet link', evidence.reviewLinks.find((item) => item.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))

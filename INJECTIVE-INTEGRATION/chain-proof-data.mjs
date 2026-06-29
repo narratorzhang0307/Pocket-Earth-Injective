@@ -4,6 +4,7 @@ export const INJECTIVE_TESTNET_CHAIN_ID = 1439
 export const BUILDER_CODE = 'pocket-earth'
 export const SUBMISSION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
 export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
+export const JUDGE_QUICKSTART_URL = `${SUBMISSION_REPOSITORY_URL}/blob/main/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`
 export const DEMO_VIDEO_LIMIT_SECONDS = 180
 export const PROOF_OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 export const IDENTITY_REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
@@ -148,6 +149,7 @@ export const PLAZA_DEMO_FLOW = [
 ]
 
 export const SUBMISSION_LINKS = [
+  { key: 'judge-quickstart', label: '60-second judge quickstart', type: 'guide', url: JUDGE_QUICKSTART_URL },
   { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: SUBMISSION_REPOSITORY_URL },
   { key: 'live-demo', label: 'Live demo with demo profile seed', type: 'demo', url: LIVE_DEMO_URL },
   { key: 'chain-evidence-api', label: 'Public chain evidence API', type: 'api', path: '/api/injective?tool=get-chain-evidence' },
