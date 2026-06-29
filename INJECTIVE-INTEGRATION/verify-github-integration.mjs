@@ -115,6 +115,8 @@ const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUIC
 assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
 assertTrue('remote README names explicit Pocket Earth definition heading', remoteReadme.includes('## 一、Pocket Earth 是什么'))
 assertTrue('remote README omits ambiguous product heading', !remoteReadme.includes('## 一、它是什么'))
+assertTrue('remote README names product-first three-entry heading', remoteReadme.includes('## 二、三入口，一颗地球'))
+assertTrue('remote README omits UI-jargon three-tab heading', !remoteReadme.includes('## 二、三个 Tab'))
 assertTrue('remote README names agentId 43', remoteReadme.includes('agentId 43'))
 assertTrue('remote README points at chain evidence API', remoteReadme.includes('/api/injective?tool=get-chain-evidence'))
 assertTrue('remote README names proof suite', remoteReadme.includes('npm run verify:injective'))

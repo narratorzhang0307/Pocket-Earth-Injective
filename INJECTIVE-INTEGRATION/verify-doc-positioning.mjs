@@ -60,6 +60,8 @@ assertTrue('scan has files', files.length > 0)
 const rootReadme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
 assertTrue('README uses explicit Pocket Earth definition heading', rootReadme.includes('## 一、Pocket Earth 是什么'))
 assertTrue('README omits ambiguous product heading', !rootReadme.includes('## 一、它是什么'))
+assertTrue('README uses product-first three-entry heading', rootReadme.includes('## 二、三入口，一颗地球'))
+assertTrue('README omits UI-jargon three-tab heading', !rootReadme.includes('## 二、三个 Tab'))
 const explicitPublicDocSnippets = [
   ['README.md', '它立刻被钉回真实坐标'],
   ['README.md', 'Injective 在这里不是装饰徽章'],
