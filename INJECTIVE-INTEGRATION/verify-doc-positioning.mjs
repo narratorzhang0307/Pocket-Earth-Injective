@@ -38,6 +38,7 @@ const forbiddenPositioningSnippets = [
 const vaguePositioningSnippets = [
   '它们' + '在地球',
   '钉回' + '它们',
+  '各自' + '在地球上的那个地点',
 ]
 
 function assertTrue(label, condition) {
@@ -72,6 +73,8 @@ const webManifest = JSON.parse(readFileSync(resolve(projectRoot, 'public/manifes
 const publicPlaza = readFileSync(resolve(projectRoot, 'src/app/components/PublicPlazaPage.tsx'), 'utf8')
 const vagueRecordPlace = '它们' + '在地球上的那个地点'
 assertTrue('README uses explicit Pocket Earth definition heading', rootReadme.includes('## 一、Pocket Earth 是什么'))
+assertTrue('README intro names all six memory types', rootReadme.includes('书、电影、音乐、照片、行程和心情'))
+assertTrue('README intro names explicit real destinations', rootReadme.includes('钉回各自对应的真实地点'))
 assertTrue('README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(rootReadme))
 assertTrue('README uses product-first three-entry heading', rootReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.test(rootReadme))

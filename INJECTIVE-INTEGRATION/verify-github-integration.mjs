@@ -27,7 +27,7 @@ const forbiddenPositioningSnippets = [
   'con' + 'test',
 ].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
 const vagueRecordPlace = '它们' + '在地球上的那个地点'
-const vaguePositioningSnippets = ['它们' + '在地球', '钉回' + '它们']
+const vaguePositioningSnippets = ['它们' + '在地球', '钉回' + '它们', '各自' + '在地球上的那个地点']
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -124,6 +124,8 @@ const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanife
 const remoteManifest = JSON.parse(remoteManifestText)
 assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
 assertTrue('remote README names explicit Pocket Earth definition heading', remoteReadme.includes('## 一、Pocket Earth 是什么'))
+assertTrue('remote README intro names all six memory types', remoteReadme.includes('书、电影、音乐、照片、行程和心情'))
+assertTrue('remote README intro names explicit real destinations', remoteReadme.includes('钉回各自对应的真实地点'))
 assertTrue('remote README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(remoteReadme))
 assertTrue('remote README names product-first three-entry heading', remoteReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('remote README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.test(remoteReadme))
