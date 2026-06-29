@@ -92,3 +92,78 @@ export const REVIEW_LINKS = [
   { key: 'handshake-deployment-tx', label: 'SocialHandshake deployment transaction', type: 'transaction', txHash: TIMELINE_EVENTS[1].hash, url: scanUrlForTx(TIMELINE_EVENTS[1].hash) },
   { key: 'real-handshake-tx', label: 'Real SocialHandshake 43 <-> 44 transaction', type: 'transaction', txHash: TIMELINE_EVENTS.at(-1).hash, url: scanUrlForTx(TIMELINE_EVENTS.at(-1).hash) },
 ]
+
+export const REVIEW_CHECKLIST = [
+  {
+    key: 'erc8004-identity',
+    label: 'ERC-8004 identity ownership',
+    evidence: 'Open the Frost agentId 43 Blockscout instance page.',
+    primaryLinkKey: 'frost-agent-43',
+    passCriteria: [
+      `agentId 43 is owned by ${PROOF_OWNER}`,
+      `builderCode equals ${BUILDER_CODE}`,
+      `IdentityRegistry equals ${IDENTITY_REGISTRY}`,
+    ],
+    machineCheck: 'node INJECTIVE-INTEGRATION/verify-agent43.mjs',
+  },
+  {
+    key: 'fleet-builder-code',
+    label: 'Pocket Earth agent fleet',
+    evidence: `Read /api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47.`,
+    primaryLinkKey: 'identity-registry',
+    passCriteria: [
+      'agentId 43-47 are returned from Injective testnet',
+      `each returned agent has builderCode ${BUILDER_CODE}`,
+      'public data URI cards contain only type, name, description, tags, and metadata',
+    ],
+    machineCheck: 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs',
+  },
+  {
+    key: 'wallet-timeline',
+    label: 'Wallet evidence chain',
+    evidence: 'Open the owner wallet page or call /api/injective?tool=get-wallet-timeline.',
+    primaryLinkKey: 'owner-wallet',
+    passCriteria: [
+      'registration, SocialHandshake deployment, fleet registration, and handshake txs are in block order',
+      `all timeline txs are sent by ${PROOF_OWNER}`,
+      'RPC block timestamps match the public timeline',
+    ],
+    machineCheck: 'node INJECTIVE-INTEGRATION/verify-chain-timeline.mjs',
+  },
+  {
+    key: 'social-handshake',
+    label: 'Real SocialHandshake proof',
+    evidence: 'Open the real SocialHandshake transaction and deployed contract pages.',
+    primaryLinkKey: 'real-handshake-tx',
+    passCriteria: [
+      'call and event decode to agentA 43, agentB 44, score 88',
+      'two non-zero bytes32 Taste Passport commitments are recorded',
+      'deployed runtime bytecode matches the local SocialHandshake.sol source',
+    ],
+    machineCheck: 'node INJECTIVE-INTEGRATION/verify-handshake.mjs && node INJECTIVE-INTEGRATION/verify-handshake-contract.mjs',
+  },
+  {
+    key: 'privacy-boundary',
+    label: 'Public-only privacy boundary',
+    evidence: 'Inspect /api/injective?tool=get-chain-evidence.',
+    primaryLinkKey: 'owner-wallet',
+    passCriteria: [
+      'evidence package is marked readOnly and publicOnly',
+      'raw books, films, music, photos, mood text, precise locations, and private keys stay off-chain',
+      'write tools stay dry-run without server key plus explicit confirm:true',
+    ],
+    machineCheck: 'node INJECTIVE-INTEGRATION/verify-api-write-boundaries.mjs',
+  },
+  {
+    key: 'product-demo-loop',
+    label: 'Product demo loop',
+    evidence: 'Run the plaza smoke after chain evidence is ready.',
+    primaryLinkKey: 'frost-agent-43',
+    passCriteria: [
+      'public-plaza reads agentId 43-47 from Injective',
+      'agent markers are pinned to the globe',
+      'agent-plaza keeps the install loop demonstrable',
+    ],
+    machineCheck: 'npm run verify:plaza',
+  },
+]

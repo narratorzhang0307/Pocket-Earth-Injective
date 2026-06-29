@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_LINKS, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, PLAZA_DEMO_FLOW, PROOF_OWNER, REVIEW_CHECKLIST, REVIEW_LINKS, SOCIAL_HANDSHAKE, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -91,6 +91,11 @@ assertEqual('evidence review links count', evidence.reviewLinks.length, REVIEW_L
 assertEqual('evidence review links first key', evidence.reviewLinks[0]?.key, 'frost-agent-43')
 assertEqual('evidence review links wallet', evidence.reviewLinks.find((link) => link.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('evidence review links handshake tx', evidence.reviewLinks.find((link) => link.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
+assertTrue('evidence review checklist array', Array.isArray(evidence.reviewChecklist))
+assertEqual('evidence review checklist count', evidence.reviewChecklist.length, REVIEW_CHECKLIST.length)
+assertEqual('evidence review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')
+assertEqual('evidence review checklist wallet link', evidence.reviewChecklist.find((item) => item.key === 'wallet-timeline')?.primaryLinkKey, 'owner-wallet')
+assertEqual('evidence review checklist product command', evidence.reviewChecklist.at(-1)?.machineCheck, 'npm run verify:plaza')
 assertTrue('evidence privacy on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('evidence privacy off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertTrue('evidence privacy mentions ERC-8004 identity', evidence.privacyBoundary.onChain.includes('ERC-8004 agent identity'))

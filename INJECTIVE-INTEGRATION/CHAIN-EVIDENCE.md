@@ -12,6 +12,19 @@
 - Fleet identities: `agentId 43-47`
 - SocialHandshake: `0xe5338a162a44a685201e1f6120b1a851949e3aee`
 
+## Reviewer Checklist
+
+`/api/injective?tool=get-chain-evidence` also returns `reviewChecklist`: a compact reviewer path that explains what each public proof is meant to verify.
+
+| Check | Public evidence | Pass criteria |
+|---|---|---|
+| ERC-8004 identity ownership | Frost main identity #43 | #43 belongs to `0x6D5A...C934`, uses `builderCode = pocket-earth`, and points to the Injective IdentityRegistry |
+| Pocket Earth agent fleet | `list-agents&builderCode=pocket-earth` | `agentId 43-47` are read back from Injective testnet and #44-47 expose only public data URI card fields |
+| Wallet evidence chain | Owner wallet + RPC timeline API | registration, SocialHandshake deployment, fleet registration, and the real handshake are sent by the same wallet in block order |
+| Real SocialHandshake proof | Contract + real handshake tx | call/event decode to `agentA 43`, `agentB 44`, `score 88`, with two non-zero Taste Passport commitments |
+| Public-only privacy boundary | Public evidence API | evidence is marked `readOnly` / `publicOnly`; raw books, films, music, photos, moods, precise locations, and private keys stay off-chain |
+| Product demo loop | Plaza UI smoke | `public-plaza` reads Injective agents and pins them to the globe; `agent-plaza` keeps the install loop demonstrable |
+
 ## IdentityRegistry
 
 | Evidence | Link |
@@ -69,7 +82,7 @@ npm run verify:evidence
 node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 ```
 
-The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, and Blockscout links; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package.
+The first call returns the public evidence package from the same `chain-proof-data.mjs` facts used by the verification suite. It is explicitly marked `network: testnet`, `chainId: 1439`, `readOnly: true`, and `publicOnly: true`, and includes the follow-up verification commands/paths (`npm run verify:demo`, `npm run verify:evidence`, `npm run verify:injective`, `list-agents`, and `get-wallet-timeline`) plus `reviewLinks` for the most important Blockscout pages, `reviewChecklist` for what each proof should establish, a `recordingOrder` array for the recommended demo sequence, a `privacyBoundary` manifest that spells out what is on-chain versus kept off-chain, and a `plazaFlow` manifest that separates `public-plaza` chain discovery from the `agent-plaza` install loop. The plaza flow maps to `verify-plaza.mjs`, `verify-space-plaza.mjs`, and `verify-plaza-install.mjs`. The second call reads `agentId 43-47` by `builderCode = pocket-earth`. The third call returns the RPC-backed wallet timeline above, including registration, SocialHandshake deployment, fleet registration, and the real `agentId 43 <-> 44` handshake. `npm run verify:demo` is the pre-recording check for evidence API, fleet readback, and Blockscout links; `npm run verify:evidence` is the fastest local smoke check for the JSON-only evidence package.
 
 Handshake calldata and event both decode to:
 

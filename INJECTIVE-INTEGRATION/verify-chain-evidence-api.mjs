@@ -9,6 +9,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   PLAZA_DEMO_FLOW,
   PROOF_OWNER,
+  REVIEW_CHECKLIST,
   REVIEW_LINKS,
   SOCIAL_HANDSHAKE,
   TIMELINE_EVENTS,
@@ -65,6 +66,11 @@ assertEqual('review links count', evidence.reviewLinks.length, REVIEW_LINKS.leng
 assertEqual('review link first url', evidence.reviewLinks[0]?.url, scanUrlForAgent(43))
 assertEqual('review link wallet url', evidence.reviewLinks.find((link) => link.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('review link handshake tx url', evidence.reviewLinks.find((link) => link.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
+assertTrue('review checklist array', Array.isArray(evidence.reviewChecklist))
+assertEqual('review checklist count', evidence.reviewChecklist.length, REVIEW_CHECKLIST.length)
+assertEqual('review checklist first key', evidence.reviewChecklist[0]?.key, 'erc8004-identity')
+assertTrue('review checklist first owner criterion', evidence.reviewChecklist[0]?.passCriteria?.some((item) => item.includes(PROOF_OWNER)))
+assertEqual('review checklist product loop command', evidence.reviewChecklist.at(-1)?.machineCheck, 'npm run verify:plaza')
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)
