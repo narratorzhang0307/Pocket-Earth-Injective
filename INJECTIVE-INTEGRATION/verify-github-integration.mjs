@@ -131,11 +131,13 @@ const remoteVerifyPlazaInstall = await fetchText(`${rawBase}/INJECTIVE-INTEGRATI
 const remoteVerifyDeliveryPack = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-delivery-pack.mjs`)
 const remoteVerifyIntegrationGuide = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-integration-guide.mjs`)
 const remoteVerifyForgeRun = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-forge-run.mjs`)
+const remoteTastePassport = await fetchText(`${rawBase}/src/app/lib/injective/passport.ts`)
 const remoteAgentPlazaPage = await fetchText(`${rawBase}/src/app/components/AgentPlazaPage.tsx`)
 const remotePlazaCatalog = await fetchText(`${rawBase}/src/app/lib/plaza/catalog.ts`)
 const remoteVerifyHardware = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs`)
 const remoteIndexHtml = await fetchText(`${rawBase}/index.html`)
 const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanifest`)
+const remotePackageJson = JSON.parse(await fetchText(`${rawBase}/package.json`))
 const remoteManifest = JSON.parse(remoteManifestText)
 assertTrue('remote README names Injective core integration', remoteReadme.includes('Injective 核心集成'))
 assertTrue('remote README names explicit Pocket Earth definition heading', remoteReadme.includes('## 一、Pocket Earth 是什么'))
@@ -391,6 +393,46 @@ for (const phrase of [
   '短期快速变脸',
 ]) {
   assertTrue(`remote integration verifier keeps Profile Confidence guard ${phrase}`, remoteVerifyIntegrationGuide.includes(phrase))
+}
+for (const phrase of [
+  'PPT 第 25-26 页的隐私红线已经落成具体实现',
+  'data:application/json;base64',
+  '不依赖 Pinata / IPFS',
+  'decodeDataCard',
+  'PUBLIC_K=5',
+  'TOPTAGS_CAP=12',
+  'TagCount.n',
+  '避免从计数反推行为强度',
+  '只 `emit Handshake` 事件',
+  '不写 storage',
+  'score <= 100',
+  '禁止 `agentA == agentB` 的自握手',
+  '私钥只在服务端 `.env`',
+  '前端不持密钥',
+  'confirm:true',
+]) {
+  assertTrue(`remote integration guide keeps privacy guard ${phrase}`, remoteIntegration.includes(phrase))
+}
+for (const phrase of [
+  'Privacy boundary implementation guard',
+  'integration guide keeps privacy guard',
+  'Taste Passport source keeps public-only guard',
+  'data:application/json;base64',
+  'PUBLIC_K=5',
+  'TOPTAGS_CAP=12',
+  'TagCount.n',
+  '前端不持密钥',
+]) {
+  assertTrue(`remote integration verifier keeps privacy guard ${phrase}`, remoteVerifyIntegrationGuide.includes(phrase))
+}
+for (const phrase of [
+  'const PUBLIC_K = 5',
+  'const TOPTAGS_CAP = 12',
+  'TagCount.n',
+  '热度计数都不导',
+  '丢弃 n',
+]) {
+  assertTrue(`remote Taste Passport source keeps public-only guard ${phrase}`, remoteTastePassport.includes(phrase))
 }
 assertTrue('remote evidence pack names reviewBrief', remoteEvidence.includes('reviewBrief'))
 assertTrue('remote evidence pack names public demo video', remoteEvidence.includes('reviewEntrypoints.demo-video') && remoteEvidence.includes(DEMO_VIDEO_URL))
@@ -718,6 +760,14 @@ assertTrue('local package includes verify:delivery', Boolean(packageJson.scripts
 assertTrue('local package includes verify:injective', Boolean(packageJson.scripts?.['verify:injective']))
 assertEqual('local verify:public-apis script', packageJson.scripts?.['verify:public-apis'], 'node INJECTIVE-INTEGRATION/verify-public-read-apis.mjs')
 assertEqual('local verify:integration-guide script', packageJson.scripts?.['verify:integration-guide'], 'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs')
+assertEqual('local verify:handshake script', packageJson.scripts?.['verify:handshake'], 'node INJECTIVE-INTEGRATION/verify-handshake.mjs')
+assertEqual('local verify:handshake-contract script', packageJson.scripts?.['verify:handshake-contract'], 'node INJECTIVE-INTEGRATION/verify-handshake-contract.mjs')
 assertEqual('local verify:positioning script', packageJson.scripts?.['verify:positioning'], 'node INJECTIVE-INTEGRATION/verify-doc-positioning.mjs')
+assertEqual('remote verify:handshake script', remotePackageJson.scripts?.['verify:handshake'], 'node INJECTIVE-INTEGRATION/verify-handshake.mjs')
+assertEqual(
+  'remote verify:handshake-contract script',
+  remotePackageJson.scripts?.['verify:handshake-contract'],
+  'node INJECTIVE-INTEGRATION/verify-handshake-contract.mjs',
+)
 
 console.log('\nOK GitHub integration repo is public, current, and bounded to Pocket-Earth-Injective.')

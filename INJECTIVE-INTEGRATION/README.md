@@ -215,6 +215,15 @@ npm run verify:hardware
 | 留在端侧 / 服务端 | 书、影、乐、照片、心情原文、精确坐标、长期画像计数、私钥和 secret env |
 | 公开 API 守门 | `readOnly: true`、`publicOnly: true`、旧仓库误指检查、本地路径和密钥名泄露检查 |
 
+PPT 第 25-26 页的隐私红线已经落成具体实现，而不是演示口号：
+
+| 红线 | 工程落点 | 复验方式 |
+|---|---|---|
+| Agent Card 自包含 | ERC-8004 的 `tokenUri` 使用 `data:application/json;base64`，名片直接内联上链，不依赖 Pinata / IPFS；服务端用 `decodeDataCard` 兼容 SDK 对 `data:` 的读取限制 | `npm run verify:agent-proof`、`list-agents&builderCode=pocket-earth` |
+| 公开名片只导 top-K | `buildTastePassport()` 固定 `PUBLIC_K=5`、`TOPTAGS_CAP=12`，只导标签字符串；`TagCount.n` 热度计数被丢弃，避免从计数反推行为强度 | `npm run verify:public-proof`、`src/app/lib/injective/passport.ts` |
+| SocialHandshake 不存私密状态 | 合约只 `emit Handshake` 事件，不写 storage；链上校验 `score <= 100`，并禁止 `agentA == agentB` 的自握手 | `npm run verify:handshake`、`npm run verify:handshake-contract` |
+| 写链权限不进前端 | 当前只允许 Injective testnet；私钥只在服务端 `.env`，前端不持密钥；没有服务端私钥、合约地址和 `confirm:true` 时只返回 dry-run | `npm run verify:injective`、`npm run verify:integration-guide` |
+
 Frost Buddy 的硬件桥也遵守同一条线：`hardware/frost-buddy/` 只发公开 JSONL 事件，Pi 侧 `frost_pi_skill_agent.py` 只把语音请求路由到音乐命令或 `chain_dispatch` 公开事件，Pi 侧 `frost_pi_event_adapter.py` 只把公开事件翻译成 `state/tts/display` 动作，不接触私钥、画像原文或 `bytes32` 名片哈希。
 
 ---

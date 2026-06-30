@@ -10,6 +10,7 @@ const guide = readFileSync(resolve(integrationDir, 'README.md'), 'utf8')
 const readme = readFileSync(resolve(projectRoot, 'README.md'), 'utf8')
 const demoScript = readFileSync(resolve(integrationDir, 'DEMO-SCRIPT.md'), 'utf8')
 const progress = readFileSync(resolve(integrationDir, 'PROGRESS.md'), 'utf8')
+const tastePassportSource = readFileSync(resolve(projectRoot, 'src/app/lib/injective/passport.ts'), 'utf8')
 const packageJson = JSON.parse(readFileSync(resolve(projectRoot, 'package.json'), 'utf8'))
 
 function assertTrue(label, condition) {
@@ -206,6 +207,36 @@ for (const phrase of [
   '社交佐证',
 ]) {
   assertTrue(`profile confidence guard includes ${phrase}`, guide.includes(phrase))
+}
+
+console.log('\nPrivacy boundary implementation guard')
+for (const phrase of [
+  'PPT 第 25-26 页的隐私红线已经落成具体实现',
+  'data:application/json;base64',
+  '不依赖 Pinata / IPFS',
+  'decodeDataCard',
+  'PUBLIC_K=5',
+  'TOPTAGS_CAP=12',
+  'TagCount.n',
+  '避免从计数反推行为强度',
+  '只 `emit Handshake` 事件',
+  '不写 storage',
+  'score <= 100',
+  '禁止 `agentA == agentB` 的自握手',
+  '私钥只在服务端 `.env`',
+  '前端不持密钥',
+  'confirm:true',
+]) {
+  assertTrue(`integration guide keeps privacy guard ${phrase}`, guide.includes(phrase))
+}
+for (const phrase of [
+  'const PUBLIC_K = 5',
+  'const TOPTAGS_CAP = 12',
+  'TagCount.n',
+  '热度计数都不导',
+  '丢弃 n',
+]) {
+  assertTrue(`Taste Passport source keeps public-only guard ${phrase}`, tastePassportSource.includes(phrase))
 }
 
 console.log('\nIntegration guide API manifest')
@@ -455,6 +486,12 @@ assertEqual(
   'package script verify:integration-guide',
   packageJson.scripts?.['verify:integration-guide'],
   'node INJECTIVE-INTEGRATION/verify-integration-guide.mjs',
+)
+assertEqual('package script verify:handshake', packageJson.scripts?.['verify:handshake'], 'node INJECTIVE-INTEGRATION/verify-handshake.mjs')
+assertEqual(
+  'package script verify:handshake-contract',
+  packageJson.scripts?.['verify:handshake-contract'],
+  'node INJECTIVE-INTEGRATION/verify-handshake-contract.mjs',
 )
 for (const scriptName of documentedScripts) {
   assertTrue(`package script exists for ${scriptName}`, Boolean(packageJson.scripts?.[scriptName]))
