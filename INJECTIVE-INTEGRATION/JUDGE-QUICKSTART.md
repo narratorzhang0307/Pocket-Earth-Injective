@@ -43,6 +43,23 @@
 | Why does Injective matter here? | `agentId 43-47`, wallet timeline, SocialHandshake, future Profile Checkpoint path | Developer, agent, install, handshake, review, and optional paid receipts need public identity and ordered receipts |
 | What is the market boundary? | `hardwareBridge.marketBoundary`, `get-hardware-bridge-proof`, `PITCH-NOTES.md` | Business center is Agent Plaza; Frost Edge Node is Raspberry Pi / BLE / TTS developer kit and physical experience, not the current revenue pillar |
 
+## Pocket Earth Roadmap And Safety Boundary Fast Check
+
+This path connects the product roadmap to the on-chain roadmap without changing the privacy model:
+
+| Roadmap layer | Current proof | Next boundary |
+|---|---|---|
+| P0 core | Long-term profile, agent registry, and fingerprint cache make Pocket Earth more useful over time | Local profile stays local; public proof starts from derived cards, not raw memories |
+| P1 compatibility | Provider compatibility, edge-side pre-classification, capability contracts, and health tracking make the local/cloud brain observable | Model providers can be swapped without changing the chain identity surface |
+| P2 self-learning | Heartbeat suggestion engine, learning skills with safety gates, and real SSE streaming are in progress | Active behavior only suggests; declarative skill routes do not execute arbitrary code |
+| NOW chain identity and handshake | ERC-8004 `agentId 43-47`, Blockscout proof, wallet timeline, and SocialHandshake are already public | Testnet writes are scoped to identity, mints, and handshake receipts |
+| P1 Profile Checkpoint | Future profileHash + version + timestamp checkpoint signed by Frost | Raw memories never go on-chain |
+| P2 Agent Plaza receipts | Future install / call / review / optional paid receipts from Agent Plaza | `reviewManifest` and `toManifest` keep permissions inspectable before receipts exist |
+| P3 Profile Confidence | Time continuity, source weighting, selective proof, and social corroboration | Bulk imports and suspicious jumps can be down-weighted instead of trusted blindly |
+| P4 Frost Network | Frost Edge Node, podcast summaries, chain dispatch narration, and agent-to-agent service calls | Hardware remains a developer-kit / experience layer until the software market loop is proven |
+
+One rule carries through every layer: only identity, versions, receipts, and selective proofs go on-chain; books, films, music, photos, moods, precise locations, and private profile text do not.
+
 ## Review Package
 
 - GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective

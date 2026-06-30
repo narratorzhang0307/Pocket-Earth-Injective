@@ -68,6 +68,7 @@ for (const snippet of [
   '# Judge Quickstart',
   '60-Second Path',
   'What This Proves',
+  'Pocket Earth Roadmap And Safety Boundary Fast Check',
   'Review Package',
   'Public Links',
   'Local Commands',
@@ -145,6 +146,18 @@ for (const snippet of [
   'chain_dispatch',
   'prototype and developer-kit endpoint',
   'no-private-key/no-raw-profile boundary',
+  'P0 core',
+  'P1 compatibility',
+  'P2 self-learning',
+  'Heartbeat suggestion engine',
+  'declarative skill routes',
+  'NOW chain identity and handshake',
+  'Profile Checkpoint',
+  'Agent Plaza receipts',
+  'Profile Confidence',
+  'P4 Frost Network',
+  'Raw memories never go on-chain',
+  'only identity, versions, receipts, and selective proofs go on-chain',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))
 }
@@ -204,6 +217,18 @@ for (const snippet of [
   'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
 ]) {
   assertTrue(`quickstart commercial path fast check explains ${snippet}`, quickstart.includes(snippet))
+}
+for (const snippet of [
+  'Long-term profile, agent registry, and fingerprint cache',
+  'Provider compatibility, edge-side pre-classification, capability contracts, and health tracking',
+  'Active behavior only suggests',
+  'Testnet writes are scoped to identity, mints, and handshake receipts',
+  'profileHash + version + timestamp checkpoint signed by Frost',
+  '`reviewManifest` and `toManifest` keep permissions inspectable',
+  'Bulk imports and suspicious jumps can be down-weighted',
+  'Hardware remains a developer-kit / experience layer',
+]) {
+  assertTrue(`quickstart roadmap fast check explains ${snippet}`, quickstart.includes(snippet))
 }
 const readingOrder = quickstart.match(/Use this order in the recording[^\n]+/)?.[0] || ''
 assertTrue('quickstart reading order mentions wallet timeline API', readingOrder.includes('wallet timeline API'))

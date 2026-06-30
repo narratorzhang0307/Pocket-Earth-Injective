@@ -420,6 +420,23 @@ for (const phrase of [
 ]) {
   assertTrue(`remote judge quickstart keeps commercial path ${phrase}`, remoteJudge.includes(phrase))
 }
+for (const phrase of [
+  'Pocket Earth Roadmap And Safety Boundary Fast Check',
+  'P0 core',
+  'P1 compatibility',
+  'P2 self-learning',
+  'Heartbeat suggestion engine',
+  'NOW chain identity and handshake',
+  'Profile Checkpoint',
+  'Agent Plaza receipts',
+  'Profile Confidence',
+  'P4 Frost Network',
+  'Raw memories never go on-chain',
+  'only identity, versions, receipts, and selective proofs go on-chain',
+  'Hardware remains a developer-kit / experience layer',
+]) {
+  assertTrue(`remote judge quickstart keeps roadmap boundary ${phrase}`, remoteJudge.includes(phrase))
+}
 assertTrue('remote hardware README names module subject explicitly', remoteHardware.includes('Frost Edge Node 模块先承担三个角色'))
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
