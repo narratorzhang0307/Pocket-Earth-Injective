@@ -413,7 +413,21 @@ PPT 第 36-38 页讲的是产品为什么成立：个人记忆缺一根能把一
 
 ### Roadmap 与安全边界
 
-P0/P1 已经完成长期画像、注册表化、fingerprint 缓存、provider 兼容层、端侧预分类、能力契约和 health 追踪；P2 正在把 heartbeat 建议、学习型 skill、安全闸和流式渲染磨稳。链上阶段已经完成 `agentId 43-47`、Blockscout 证明、钱包时间线和 SocialHandshake 真事件；下一步才是 Profile Checkpoint、Agent Plaza 回执和 Profile Confidence。
+PPT 第 38-39 页有两条路线：一条是 Pocket Earth 产品内核从 P0 到 P2 的演进；另一条是 Injective 信誉网络从 NOW 到 P4 的演进。两条线不能混写：产品 P2 解决“Frost 能否主动、自学、流式响应”，链上 P1/P2/P3/P4 解决“公开画像、安装回执、信誉和物理节点如何被见证”。
+
+| 产品演进路线 | 状态 | 工程落点 | 安全边界 |
+|---|---|---|---|
+| P0 内核 | 已完成 | 长期画像、agent 注册表化、fingerprint 缓存 | 只沉淀脱敏偏好标签和结构化画像，不把原始记忆扩散到公开层 |
+| P1 兼容 | 已完成 | provider 兼容层、端侧预分类、`edgeSafe` 能力契约、health 追踪 | model 是成本与隐私杠杆，端侧负责挑找，云端负责表达 |
+| P2 自学 | 进行中 | heartbeat 建议引擎、学习型 skill + 安全闸、真 SSE 流式渲染；记忆合并 / 历史检索继续打磨 | 主动能力只建议不偷改；skill 只走声明式路由不执行任意代码；WebSocket 跨端同步暂不贸然上线 |
+
+| 链上信誉网络路线 | 状态 | Injective 角色 | 上链边界 |
+|---|---|---|---|
+| NOW 链上身份与握手 | 已完成 | `agentId 43-47`、Blockscout 证明、钱包时间线、SocialHandshake 真事件 | 只读公开核验；当前写链均限定 testnet |
+| P1 Profile Checkpoint | 下一步 | 公开画像变化时记录 `profileHash + version + timestamp + FROST signature` | 原始书单、照片、心情、精确坐标不上链 |
+| P2 Agent Plaza 回执 | 下一步 | 安装、调用、评价和可选付费形成可追踪回执 | agent 必须符合空间对象逻辑，不做泛 AI 工具箱 |
+| P3 Profile Confidence | 后续 | 时间连续性、来源权重、选择性证明、社交佐证共同加权 | 只评估公开画像来源支撑，不做“人好坏”评分 |
+| P4 Frost Network | 后续 | 硬件节点、播客摘要、链上见闻播报、agent-to-agent service calls | Frost Edge Node 先是开发套件和体验差异化，不是当前收入主线 |
 
 安全边界保持不变：主动能力只建议不偷改，skill 只走声明式路由不执行任意代码，测试网写链必须服务端私钥、合约地址和 `confirm:true` 同时具备；原始记忆不上链，硬件不签名。
 
