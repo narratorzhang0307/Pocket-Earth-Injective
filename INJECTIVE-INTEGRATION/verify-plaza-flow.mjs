@@ -44,6 +44,7 @@ function smokeScripts(flow) {
 }
 
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
+const plazaInstallScript = await readFile('INJECTIVE-INTEGRATION/verify-plaza-install.mjs', 'utf8')
 const evidence = await callEvidenceApi()
 const flow = evidence.plazaFlow
 const expectedByKey = new Map(PLAZA_DEMO_FLOW.map((item) => [item.key, item]))
@@ -81,6 +82,9 @@ assertTrue('agent-plaza shows chain badge', agentPlaza.chainRead.includes('Injec
 assertTrue('agent-plaza verifies install gate', agentPlaza.verifies.includes('manifest review gate'))
 assertTrue('agent-plaza verifies cafe-map install', agentPlaza.verifies.includes('installs cafe-map'))
 assertTrue('agent-plaza verifies My Agents return', agentPlaza.verifies.includes('My Agents'))
+for (const phrase of ['installedCafe.domain ===', 'geoStrategy.includes', 'mark_place', '▶ RUN']) {
+  assertTrue(`plaza install script keeps ${phrase}`, plazaInstallScript.includes(phrase))
+}
 
 const productLoop = evidence.reviewChecklist?.find((item) => item.key === 'product-demo-loop')
 assertTrue('product demo loop checklist exists', Boolean(productLoop))

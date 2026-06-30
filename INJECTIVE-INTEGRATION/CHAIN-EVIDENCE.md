@@ -59,6 +59,8 @@ The public demo video is fixed in the evidence package as `reviewEntrypoints.dem
 
 最终整合版第 32 页把商业飞轮写成“长期使用 -> 画像可信 -> Agent 市场”。在当前仓库里，这条飞轮还不伪装成已经发生的收入，而是先落成可审核、可安装、可复验的回执槽位：只有 agent 通过 `manifest / schema / permissions` 审核，并能被用户从 `INSTALL -> My Agents -> RUN` 跑通，未来才有资格进入订阅、单次调用或平台抽成路径。
 
+当前 `npm run verify:plaza` 会真实走一遍 cafe-map 安装：`verify-plaza-install.mjs` 从 `pe.customAgents.v1` 读回安装后的 manifest，核对 `domain=地点`、`geoStrategy`、`tagFields`、`tools=[enrich, geocode, mark_place]`，再切回 `My Agents` 确认同一个 agent 的 `RUN` 入口可见。也就是说，Agent Plaza 的“安装 -> 回流 -> 可运行”不是只写在段落里，而是有可重复的浏览器 smoke。
+
 | Receipt stage | Current evidence | Future Injective receipt shape |
 |---|---|---|
 | 开发者发布 | `agent-plaza` 展示 `manifest / schema / permissions`；`reviewManifest` 拒绝未知字段、危险 URL、可执行代码和越界权限；`toManifest` 只做白名单转译 | `manifestReceipt(agentId, manifestHash, publisher, timestamp)`，只证明 manifest 版本和发布者，不写入 agent 源码或用户数据 |

@@ -1,4 +1,4 @@
-// 验证「添加 agent」闭环：进 agent-plaza → 点咖啡地图 INSTALL → 真进 customAgents → 切回 AGENTS 入口可见。
+// 验证「添加 agent」闭环：进 agent-plaza → 点咖啡地图 INSTALL → 真进 customAgents → 切回 AGENTS 入口可见且可运行。
 import puppeteer from 'puppeteer-core'
 const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const BASE_URL = process.env.PLAZA_BASE_URL || 'http://localhost:5173/?demo'
@@ -68,12 +68,26 @@ try {
   await sleep(1200)
   const custom = await page.evaluate(() => {
     try {
-      return JSON.parse(localStorage.getItem('pe.customAgents.v1') || '[]').map((a) => ({ name: a.name, emoji: a.emoji, domain: a.domain }))
+      return JSON.parse(localStorage.getItem('pe.customAgents.v1') || '[]').map((a) => ({
+        name: a.name,
+        emoji: a.emoji,
+        domain: a.domain,
+        geoStrategy: a.geoStrategy,
+        tagFields: a.tagFields,
+        tools: a.tools,
+      }))
     } catch { return 'err' }
   })
   console.log('→ customAgents 存储:', JSON.stringify(custom))
   expect(Array.isArray(custom), 'customAgents storage is not an array')
-  expect(custom.some((a) => a.name === '咖啡地图'), '咖啡地图 was not installed into customAgents')
+  const installedCafe = custom.find((a) => a.name === '咖啡地图')
+  expect(installedCafe, '咖啡地图 was not installed into customAgents')
+  expect(installedCafe.domain === '地点', `installed cafe-map domain mismatch: ${installedCafe.domain}`)
+  expect(Array.isArray(installedCafe.geoStrategy) && installedCafe.geoStrategy.includes('origin'), 'installed cafe-map lost place geoStrategy')
+  expect(Array.isArray(installedCafe.tagFields) && installedCafe.tagFields.includes('位置'), 'installed cafe-map lost visible place tag field')
+  for (const tool of ['enrich', 'geocode', 'mark_place']) {
+    expect(Array.isArray(installedCafe.tools) && installedCafe.tools.includes(tool), `installed cafe-map lost ${tool} tool`)
+  }
   await page.screenshot({ path: '/tmp/plaza_install.png', fullPage: true })
   // 返回 AGENTS 入口（顶部第一个 button = 返回钮）
   await page.evaluate(() => { const b = document.querySelector('button'); if (b) b.click() })
@@ -81,6 +95,7 @@ try {
   const txt = await page.evaluate(() => document.body.innerText.replace(/\n{2,}/g, '\n').slice(0, 1400))
   expect(txt.includes('我的 AGENT'), 'custom agent section missing after returning to AGENTS')
   expect(txt.includes('咖啡地图'), 'installed cafe-map missing after returning to AGENTS')
+  expect(txt.includes('▶ RUN'), 'installed cafe-map RUN action missing after returning to AGENTS')
   console.log('\n=== 切回 AGENTS 入口顶部所见 ===\n' + txt)
   await page.screenshot({ path: '/tmp/agents_after.png', fullPage: true })
   expect(errs.length === 0, 'console/page errors:\n' + errs.join('\n'))
