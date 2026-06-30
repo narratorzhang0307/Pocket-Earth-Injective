@@ -13,7 +13,7 @@ Frost Buddy 是 Pocket Earth 的硬件延展：music-agent 可以变成桌面上
 3. **Product loop**：public-plaza 从 Injective 读取真实 agent，按脱敏 Taste Passport 排相似度，把 agent 钉回地球，再生成 Nightly Chain Dispatch。
 4. **Privacy boundary**：只上链身份、公开名片字段、名片哈希、相似度和时间戳；书影音原文、画像明细、精确坐标和私钥都不上链。
 5. **Hardware extension**：Frost Buddy 只占一页角落或一行补充，表达为 Raspberry Pi / BLE / TTS 原型接口，把 music-agent 与 Injective `chain_dispatch` 公开事件播报出来。
-6. **Future plan**：先把链上身份、广场发现、握手证据和公开复验做扎实，再接更完整的设备常驻进程、TTS 声线和可能的 x402 小额结算。
+6. **Future plan**：先把链上身份、广场发现、握手证据和公开复验做扎实，再接更完整的设备常驻进程、TTS 声线，以及 Agent Plaza 的安装、调用、评价和可选付费回执。
 7. **Market stance**：商业主线是“长期使用 -> 可信画像 -> Agent Plaza”，硬件只作为开发套件和体验差异化；外部平台数字只作为模式参考，不外推成 Pocket Earth 的收入预测。
 
 ## 讲法边界

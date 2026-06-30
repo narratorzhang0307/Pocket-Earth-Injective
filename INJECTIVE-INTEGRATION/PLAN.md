@@ -43,13 +43,13 @@
 ┌─────────────────────────────────────── 链上 / Injective testnet (chainId 1439) ──────────────┐
 │                                                                                               │
 │   @injective/agent-sdk (纯 viem)                                                              │
-│   ├─ AgentClient.register({name,type,builderCode,wallet,description=Passport,services,x402})  │
+│   ├─ AgentClient.register({name,type,builderCode,wallet,description=Passport,services})       │
 │   │     → soulbound 身份 NFT · agentId · identityTuple(eip155:1439:registry:id) · scanUrl     │
 │   │     → Agent Card JSON 上 IPFS(Pinata) / 或 CustomUrlStorage 自托管                         │
 │   ├─ AgentReadClient.listAgents()/getAgentsByOwner()/getReputation()/watchRegistrations()     │
 │   │     → 广场真实邻居 + 地图 agent 点 + Nightly Dispatch 素材                                  │
 │   ├─ giveFeedback() 声誉写入（P1+：握手后互评）                                                │
-│   └─ x402Support（P2：小额打赏）                                                               │
+│   └─ Agent Plaza 付费回执（P2：可选服务回执）                                                  │
 │                                                                                               │
 │   IdentityRegistry 0x8004A818…BD9e   ReputationRegistry 0x8004B663…8713                       │
 │   握手事件：P0/P1 先复用 register 的 Registered 事件；P1 真握手补 ~15 行 SocialHandshake 合约   │
@@ -72,7 +72,7 @@
 `AgentReadClient.listAgents({enrich}) → 链上真实 agent 列表 → PublicPlazaPage.neighbors 用真数据 → 对每个 agent markPlace({kind:'agent',prefix:'uag-',key:agentId,meta:{agentId,cardUri,scanUrl}}) → 地球上钉出 agent 点 → 点详情卡渲染 name/口味/scanUrl 外链`。相似度（口味匹配）= 本机 Taste tags ∩ 对方 card tags。
 
 ### 2.3 回报告（Nightly Chain Dispatch）
-`每晚(或手动触发) → 拉 listAgents 近期新增 + getReputation + (P1)握手事件 + (P2)收到的打赏 → FROST(Qwen) 把素材折成一段叙事「今夜我在 Injective 上遇见 N 个口味相近的 agent…」→ 同时：① App 内 dispatch 面板渲染 ② 经 memoryRouter L5 回流长期记忆 ③ (P2)经 BLE 推桌面硬件 Frost 播报，链上事件 derive 折成 celebrate/heart 态`。
+`每晚(或手动触发) → 拉 listAgents 近期新增 + getReputation + (P1)握手事件 + (P2)安装/调用/评价/可选付费回执 → FROST(Qwen) 把素材折成一段叙事「今夜我在 Injective 上遇见 N 个口味相近的 agent…」→ 同时：① App 内 dispatch 面板渲染 ② 经 memoryRouter L5 回流长期记忆 ③ (P2)经 BLE 推桌面硬件 Frost 播报，链上事件 derive 折成 celebrate/heart 态`。
 
 ---
 
@@ -86,7 +86,7 @@
 | **足迹存在性凭证**（"某时钉过某点"） | ✅ 可上 | 哈希 + 时间戳（不上坐标/原文） | 存在性证明（书 L3148），P1+ |
 | **agent 身份** | ✅ 上 | soulbound NFT + identityTuple | 陌生人信任基础（书 L1666） |
 | **跨 agent 握手/声誉** | ✅ 上 | Registered/SocialHandshake 事件 + giveFeedback | 多方协作共识结果（书 §3.4①②③） |
-| **小额打赏** | ✅ 上(P2) | x402 / bank send | 价值转移（书 L1668） |
+| **可选付费回执** | ✅ 上(P2) | Agent Plaza service receipt / bank send | 价值转移（书 L1668） |
 | 地图渲染/心情回望/记忆装配 | ❌ 不上 | 端侧 | 高频低价值，上链=效率流失伪需求（书 L1772） |
 | **私钥** | ❌ 永不上、永不进前端 | 服务端 .env | server.mjs:33 同款密钥模式 |
 
@@ -98,13 +98,13 @@
 
 ## 4. 对 ChatGPT 方案的认同 + 补充 + 修正
 
-ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport / Agent Plaza / Handshake / Nightly Chain Dispatch / x402。
+ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport / Agent Plaza / Handshake / Nightly Chain Dispatch / 可选付费回执。
 
 ### 4.1 认同（直接采纳）
 - **Taste Passport → Agent Card**：方向完全正确，且 Pocket Earth 已有现成脱敏导出三件套（profile.ts），落地成本极低。
 - **Agent Plaza 接真实对端**：PublicPlazaPage 叙事壳已就位、只缺数据源，Injective registry 正好补洞，叙事天然同构。
 - **Nightly Chain Dispatch**：与「FROST 夜里回来给报告」的既有叙事完全咬合，且能推到桌面硬件，是 demo 的高光。
-- **Handshake / x402**：方向对，但放后置阶段（见修正）。
+- **Handshake / 可选付费回执**：方向对，但放后置阶段（见修正）。
 
 ### 4.2 补充（研究新增、ChatGPT 未覆盖）
 - **+ Boundary 闸门**：所有链上写操作过 `validator.ts` 注册校验器（testnet-only/金额地址白名单/二次确认）——这是 ChatGPT 方案缺的安全层，也是 Pocket Earth「suggest-then-validate」架构的自然延伸。
@@ -115,7 +115,7 @@ ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport 
 
 ### 4.3 修正（研究纠偏 ChatGPT 假设）
 - **Handshake「真握手上链」放 P1，不进 P0**：SDK 当前钱包绑定**只支持自签**（`wallet==签名者`，client.ts:254），且自定义 `SocialHandshake` 事件需自部署 ~15 行合约。P0 先用 register 自带的 `Registered` 事件验证链路，P1 再补真握手合约。
-- **x402 放 P2，且需先验证 facilitator**：x402 facilitator(Coinbase CDP)默认结算在 Base 等链，**是否走 Injective 结算需先确认**。不阻塞主线。
+- **可选付费回执放 P2，且需先验证结算入口**：HTTP 402 支付 facilitator 默认结算链路需要单独确认，**是否走 Injective 结算需先验证**。不阻塞主线。
 - **不引入 iagent**：ChatGPT 若设想用 iagent 做链上动作——它强绑 **OpenAI**，违反 Qwen-only 硬约束，且是 Python 服务（后端是 Node/TS）。最小依赖只要 `viem`。
 - **Agent Plaza 相似度算法落地化**：ChatGPT 的「口味匹配」要给确定性实现 = 本机 Taste tags ∩ 对方 card tags 的交集占比，避免每次云脑现编不稳定（对齐记忆 `agent-generalization-fix` 的「确定性护栏」原则）。
 
@@ -149,11 +149,11 @@ ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport 
 | `giveFeedback` 互评声誉写入（握手后双向评分） | `getReputation` 读到分数变化 | ReputationRegistry（已部署） |
 | 足迹存在性凭证（钉点哈希+时间戳上链，不上坐标原文） | 链上存证，端侧能验 | 同上 |
 
-### P2 — x402 打赏 + 树莓派硬件播报
+### P2 — Agent Plaza 回执 + 树莓派硬件播报
 | 产出物 | 验收 | 依赖 |
 |---|---|---|
-| 先验证 x402 facilitator 是否支持 Injective 结算 | 确认结论 | — |
-| `register` 时 `x402:true` + 付费路由加 x402 中间件 + `inj_tip` Boundary 校验器（限额） | 一次小额打赏跑通（testnet） | x402 SDK + 确认 |
+| 先验证 HTTP 402 支付 facilitator 是否支持 Injective 结算 | 确认结论 | — |
+| 付费路由接入 Agent Plaza service receipt + `inj_tip` Boundary 校验器（限额） | 一次可选付费回执跑通（testnet） | 支付中间件 + Injective 结算确认 |
 | Nightly Dispatch 经 BLE 推桌面硬件 Frost（`FrostSignals.chainEvent` 源 + derive 折 celebrate/heart/attention/dizzy 态） | 硬件 Frost 滚动播报 + 态切换 | Frost Buddy 固件 |
 | 树莓派常驻播报端（可选） | 每晚自动播 dispatch | 硬件 |
 
@@ -179,7 +179,7 @@ ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport 
 - **技术**：纯 viem 最小依赖、ERC-8004 标准、IPFS 内容寻址（fingerprint 当版本键）、suggest-then-validate Boundary 包链上写、服务端密钥隔离、dryRun 可验证。架构图清晰、有 file:line 级集成点。
 - **应用价值**：解决「agent 社交缺真实可信对端」的真问题；隐私友好（原文不上链）；声誉系统给陌生 agent 协作提供信任基础。
 - **用户体验**：零新 UI 学习成本（长在既有 PublicPlazaPage / 地球上）；FROST 特使 + 夜间报告的情感化叙事；硬件 Frost 让链上事件「看得见摸得着」。
-- **生态契合**：用 Injective 官方 Agent SDK + ERC-8004 registry + testnet，未来可接 x402（已支持 Injective）、MCP 侧车；soulbound 身份 + 声誉正是 Injective agent 生态的基础设施使用方。
+- **生态契合**：用 Injective 官方 Agent SDK + ERC-8004 registry + testnet，未来可接 Agent Plaza 服务回执、MCP 侧车；soulbound 身份 + 声誉正是 Injective agent 生态的基础设施使用方。
 
 ---
 

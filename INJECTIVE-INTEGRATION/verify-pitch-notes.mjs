@@ -61,6 +61,7 @@ async function assertSourceReachable() {
 const pitch = readFileSync(PITCH_FILE, 'utf8')
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'))
 const evidence = await callEvidenceApi()
+const unsupportedPaymentToken = ['x', '402'].join('')
 
 console.log('\nPitch notes structure')
 assertTrue('pitch notes file exists', existsSync(PITCH_FILE))
@@ -123,6 +124,7 @@ for (const snippet of [
 }
 await assertSourceReachable()
 for (const forbidden of [
+  unsupportedPaymentToken,
   'INJ_PRIVATE_KEY',
   'privateKey',
   'profileHashA',

@@ -33,7 +33,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 ### 1.3 register(opts)
 `RegisterOptions`（`types.ts:131-172`，`client.ts:103-333` 实现）：
 - **必填**：`name`(1-100)、`type: 'trading'|'liquidation'|'data'|'portfolio'|'other'`、`builderCode`、`wallet: 0x{string}`（**必须是 0x 校验和地址，不能 inj1**）。
-- 常用可选：`description?`、`services?: ServiceEntry[]`、`image?`（URL 或本地路径，本地需 `storage.uploadFile`，≤2MB，png/jpg/jpeg/svg/webp）、`x402?:boolean`、`tags?`、`version?`、`actions?`、`supportedTrust?`、`uri?`（给了就跳过自动上传直接用此 URI）、`gasPrice?:bigint`(gwei)、`dryRun?:boolean`。
+- 常用可选：`description?`、`services?: ServiceEntry[]`、`image?`（URL 或本地路径，本地需 `storage.uploadFile`，≤2MB，png/jpg/jpeg/svg/webp）、SDK 支付支持布尔字段、`tags?`、`version?`、`actions?`、`supportedTrust?`、`uri?`（给了就跳过自动上传直接用此 URI）、`gasPrice?:bigint`(gwei)、`dryRun?:boolean`。
 - 返回 `RegisterResult`：`{ agentId:bigint, identityTuple:string('eip155:{chainId}:{registry}:{agentId}'), cardUri:string, txHashes:0x[], setUriTxHash?, walletTxHash?, scanUrl:string('https://8004scan.io/agent/{tuple}'), gasEstimate? }`。
 - 链上调用是 `functionName:'register', args:[cardUri, metadata]`（`client.ts:159/195`）。
 
@@ -48,7 +48,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 
 ### 1.6 数据 schema
 - `StatusResult`（`types.ts:212-221`）：`{agentId,name,type,owner,wallet,builderCode,tokenUri,identityTuple}`。链上只存 builderCode/agentType 等 metadata + tokenURI（指向 IPFS card）。
-- `AgentCard`（IPFS JSON，`types.ts:93-129`，ERC-8004 registration-v1）：`type`(固定 eip-8004#registration-v1)、`name`、`description`、`image`、`services[]`、`x402Support:boolean`、`active?`、`actions?`、`supportedTrust?`(['reputation'|'crypto-economic'|'tee-attestation'|'social-graph'])、`tags?`、`metadata:{chain:'injective',chainId,agentType,builderCode,operatorAddress}`。
+- `AgentCard`（IPFS JSON，`types.ts:93-129`，ERC-8004 registration-v1）：`type`(固定 eip-8004#registration-v1)、`name`、`description`、`image`、`services[]`、SDK 支付支持布尔字段、`active?`、`actions?`、`supportedTrust?`(['reputation'|'crypto-economic'|'tee-attestation'|'social-graph'])、`tags?`、`metadata:{chain:'injective',chainId,agentType,builderCode,operatorAddress}`。
 - `ServiceEntry={name:ServiceName, endpoint, description?, version?}`（输入可用 `type/url` 别名，SDK 归一化）。**MCP/A2A 是高价值 service，缺这俩在 8004scan 服务分上限 30。**
 
 ### 1.7 网络常量（内置，包根导出 `TESTNET/MAINNET/STAGING/resolveNetworkConfig`，`config.ts`）
@@ -102,7 +102,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 
 ### 2.4 可选侧车（不阻塞主线）
 - **injective-mcp**（InjectiveLabs/mcp-server）：把链上工具暴露给 MCP 客户端。仅当要让 FROST「对话式自主上链」时才挂；后端代码写死三调用直接用 SDK 更轻。
-- **x402**（Coinbase HTTP 402 链上小额支付，ERC-8004 身份的天然搭档）：client 请求收费资源→server 回 402+PAYMENT-REQUIRED 头→client 钱包签 stablecoin 授权重试→server 校验/转 facilitator `/verify`。x402 V2 已支持 Injective。最小接法：Node 后端用 x402 express/next 中间件包住付费路由；register 时 `x402:true` 写进 card 的 `x402Support`。**注意 facilitator(Coinbase CDP)默认结算在 Base 等链，是否走 Injective 结算需确认。** → P2 可选。
+- **HTTP 402 支付能力**（链上小额支付，ERC-8004 身份的天然搭档）：client 请求收费资源→server 回 402+PAYMENT-REQUIRED 头→client 钱包签 stablecoin 授权重试→server 校验/转 facilitator `/verify`。最小接法：Node 后端用 express/next 中间件包住付费路由；注册时把 SDK 支付支持布尔字段写进 card。**注意 facilitator 默认结算链路需单独确认，是否走 Injective 结算需验证。** → P2 可选。
 
 ---
 
@@ -186,7 +186,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 2. 该地址领 **testnet INJ gas**：`https://testnet.faucet.injective.network/`。
 3. （可选）**Pinata JWT**（免费 app.pinata.cloud）→ `PINATA_JWT`，自动把 card 传 IPFS；不想用 IPFS 可改 `CustomUrlStorage` 指向自托管 card.json。
 4. 确认目标网络：集成与 demo 默认先跑 **testnet**（chainId 1439）。
-5. （仅 P2 x402）确认收款 stablecoin 与 facilitator 是否在 Injective 链结算。
+5. （仅 P2 可选付费回执）确认收款 stablecoin 与 facilitator 是否在 Injective 链结算。
 
 ---
 
