@@ -7,6 +7,7 @@ import {
   HARDWARE_BRIDGE_PROOF,
   IDENTITY_REGISTRY,
   INJECTIVE_TESTNET_CHAIN_ID,
+  MARKET_LANDSCAPE_BOUNDARY,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
   ROADMAP_SAFETY_BOUNDARY,
@@ -105,8 +106,8 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'roadmapSafetyBoundary'],
-    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'roadmap safety boundary', 'current GitHub commit anchor'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary'],
+    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
     expectedFields: ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'],
@@ -172,6 +173,19 @@ assertEqual('chain evidence hardwareBridge market source', chainEvidence.hardwar
 assertEqual('chain evidence hardwareBridge roadmap current', chainEvidence.hardwareBridge.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertListIncludes('chain evidence hardwareBridge roadmap pending adapters', chainEvidence.hardwareBridge.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
 assertTrue('chain evidence hardwareBridge roadmap integration rule', String(chainEvidence.hardwareBridge.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
+assertTrue('chain evidence market landscape object', !!chainEvidence.marketLandscapeBoundary && typeof chainEvidence.marketLandscapeBoundary === 'object')
+assertEqual('chain evidence market landscape key', chainEvidence.marketLandscapeBoundary.key, MARKET_LANDSCAPE_BOUNDARY.key)
+assertEqual('chain evidence market landscape core thesis', chainEvidence.marketLandscapeBoundary.coreThesis, MARKET_LANDSCAPE_BOUNDARY.coreThesis)
+assertListIncludes('chain evidence market landscape commercial flywheel', chainEvidence.marketLandscapeBoundary.commercialFlywheel, MARKET_LANDSCAPE_BOUNDARY.commercialFlywheel)
+assertEqual('chain evidence market landscape preferred path', chainEvidence.marketLandscapeBoundary.preferredPath?.label, MARKET_LANDSCAPE_BOUNDARY.preferredPath.label)
+assertTrue('chain evidence market landscape preferred proof names install loop', String(chainEvidence.marketLandscapeBoundary.preferredPath?.proof || '').includes('INSTALL'))
+assertTrue('chain evidence market landscape preferred proof names willEmit', String(chainEvidence.marketLandscapeBoundary.preferredPath?.proof || '').includes('willEmit'))
+assertTrue('chain evidence market landscape precedent boundary avoids revenue claim', String(chainEvidence.marketLandscapeBoundary.preferredPath?.precedentBoundary || '').includes('not as Pocket Earth revenue claims'))
+assertListIncludes('chain evidence market landscape rejected paths', (chainEvidence.marketLandscapeBoundary.rejectedPaths || []).map((item) => item.key), MARKET_LANDSCAPE_BOUNDARY.rejectedPaths.map((item) => item.key))
+assertTrue('chain evidence market landscape rejects token-first path', chainEvidence.marketLandscapeBoundary.rejectedPaths?.some((item) => item.key === 'token-first' && item.boundary.includes('identity, versioning, receipts')))
+assertTrue('chain evidence market landscape rejects hardware revenue first', chainEvidence.marketLandscapeBoundary.rejectedPaths?.some((item) => item.key === 'hardware-revenue-first' && item.boundary.includes('developer-kit')))
+assertListIncludes('chain evidence market landscape differentiation', chainEvidence.marketLandscapeBoundary.differentiation, MARKET_LANDSCAPE_BOUNDARY.differentiation)
+assertEqual('chain evidence market landscape local verification', chainEvidence.marketLandscapeBoundary.localVerification, MARKET_LANDSCAPE_BOUNDARY.localVerification)
 assertEqual('chain evidence roadmap safety key', chainEvidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
 assertListIncludes('chain evidence roadmap safety always-on boundaries', chainEvidence.roadmapSafetyBoundary?.alwaysOn, ROADMAP_SAFETY_BOUNDARY.alwaysOn)
 assertTrue('chain evidence roadmap safety P2 no arbitrary code', chainEvidence.roadmapSafetyBoundary?.productRoadmap?.some((item) => item.phase === 'P2 self-learning' && item.boundary.includes('never execute arbitrary code')))

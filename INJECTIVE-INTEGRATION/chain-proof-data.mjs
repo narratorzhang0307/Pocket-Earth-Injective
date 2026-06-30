@@ -197,6 +197,48 @@ export const HARDWARE_BRIDGE_PROOF = {
   localVerification: 'npm run verify:hardware',
 }
 
+export const MARKET_LANDSCAPE_BOUNDARY = {
+  key: 'pocket-earth-market-landscape-boundary',
+  coreThesis: 'Pocket Earth grows from long-term use to trusted profiles, then to an Agent Plaza market; the business center is not token issuance or hardware revenue.',
+  commercialFlywheel: [
+    'long-term spatial memory use',
+    'trusted public profile provenance',
+    'Agent Plaza agent supply',
+    'install, call, review, and optional payment receipts',
+    'better agents improve user retention',
+  ],
+  preferredPath: {
+    label: 'Agent Plaza platform path',
+    proof: 'agent-plaza already demonstrates manifest review, INSTALL, My Agents return, and willEmit dry-run; P2 adds install/call/review/optional payment receipts.',
+    precedentBoundary: 'Roblox, Apple, and Steam are cited only as mature creator/distribution platform precedents, not as Pocket Earth revenue claims.',
+    machineCheck: 'npm run verify:pitch && npm run verify:plaza-flow',
+  },
+  rejectedPaths: [
+    {
+      key: 'pure-social-monetization',
+      reason: 'pure social monetization is not the core path',
+      boundary: 'SocialHandshake proves public agent encounters, while the durable asset remains long-term spatial memory and trusted profile provenance.',
+    },
+    {
+      key: 'token-first',
+      reason: 'token issuance is not the product strategy',
+      boundary: 'Injective is used for identity, versioning, receipts, and public proof rather than a token-first narrative.',
+    },
+    {
+      key: 'hardware-revenue-first',
+      reason: 'consumer AI hardware is treated as high-risk for an early product',
+      boundary: 'Frost Edge Node remains a Raspberry Pi / BLE / TTS developer-kit and physical-experience layer; Agent Plaza remains the revenue path.',
+    },
+  ],
+  differentiation: [
+    'on-device privacy boundary',
+    'real-coordinate knowledge base',
+    'ERC-8004 public agent identity',
+    'platform-take-rate-compatible Agent Plaza',
+  ],
+  localVerification: 'npm run verify:pitch && npm run verify:delivery',
+}
+
 export const ROADMAP_SAFETY_BOUNDARY = {
   key: 'pocket-earth-roadmap-safety-boundary',
   productRoadmap: [

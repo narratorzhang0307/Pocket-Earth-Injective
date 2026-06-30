@@ -13,6 +13,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   JUDGE_RUNBOOK,
   JUDGE_QUICKSTART_URL,
+  MARKET_LANDSCAPE_BOUNDARY,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
   REGISTRY_MINT_ZERO_ADDRESS,
@@ -135,6 +136,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'builderCode',
   'chainId',
   'integrationAlignment',
+  'marketLandscapeBoundary',
   'demoVideoLimitSeconds',
   'handshakeContract',
   'handshakeProof',
@@ -217,6 +219,20 @@ assertListIncludes('hardwareBridge roadmap pending adapters', evidence.hardwareB
 assertTrue('hardwareBridge roadmap integration rule', String(evidence.hardwareBridge.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
 assertTrue('hardwareBridge roadmap P4 framing', String(evidence.hardwareBridge.roadmapBoundary?.p4Framing || '').includes('not a mass-produced revenue product'))
 assertEqual('hardwareBridge local verification', evidence.hardwareBridge.localVerification, 'npm run verify:hardware')
+assertTrue('marketLandscapeBoundary object', !!evidence.marketLandscapeBoundary && typeof evidence.marketLandscapeBoundary === 'object')
+assertEqual('marketLandscapeBoundary key', evidence.marketLandscapeBoundary.key, MARKET_LANDSCAPE_BOUNDARY.key)
+assertEqual('marketLandscapeBoundary core thesis', evidence.marketLandscapeBoundary.coreThesis, MARKET_LANDSCAPE_BOUNDARY.coreThesis)
+assertSetEqual('marketLandscapeBoundary commercial flywheel', new Set(evidence.marketLandscapeBoundary.commercialFlywheel || []), new Set(MARKET_LANDSCAPE_BOUNDARY.commercialFlywheel))
+assertEqual('marketLandscapeBoundary preferred path label', evidence.marketLandscapeBoundary.preferredPath?.label, MARKET_LANDSCAPE_BOUNDARY.preferredPath.label)
+assertTrue('marketLandscapeBoundary preferred path names manifest review', String(evidence.marketLandscapeBoundary.preferredPath?.proof || '').includes('manifest review'))
+assertTrue('marketLandscapeBoundary preferred path names willEmit', String(evidence.marketLandscapeBoundary.preferredPath?.proof || '').includes('willEmit'))
+assertTrue('marketLandscapeBoundary precedent boundary avoids revenue claim', String(evidence.marketLandscapeBoundary.preferredPath?.precedentBoundary || '').includes('not as Pocket Earth revenue claims'))
+assertSetEqual('marketLandscapeBoundary rejected path keys', new Set((evidence.marketLandscapeBoundary.rejectedPaths || []).map((item) => item.key)), new Set(MARKET_LANDSCAPE_BOUNDARY.rejectedPaths.map((item) => item.key)))
+assertTrue('marketLandscapeBoundary rejects token-first path', evidence.marketLandscapeBoundary.rejectedPaths?.some((item) => item.key === 'token-first' && item.boundary.includes('identity, versioning, receipts')))
+assertTrue('marketLandscapeBoundary rejects hardware revenue first', evidence.marketLandscapeBoundary.rejectedPaths?.some((item) => item.key === 'hardware-revenue-first' && item.boundary.includes('developer-kit')))
+assertSetEqual('marketLandscapeBoundary differentiation', new Set(evidence.marketLandscapeBoundary.differentiation || []), new Set(MARKET_LANDSCAPE_BOUNDARY.differentiation))
+assertEqual('marketLandscapeBoundary local verification', evidence.marketLandscapeBoundary.localVerification, MARKET_LANDSCAPE_BOUNDARY.localVerification)
+assertKnownCommand('marketLandscapeBoundary local verification command', evidence.marketLandscapeBoundary.localVerification)
 assertTrue('roadmapSafetyBoundary object', !!evidence.roadmapSafetyBoundary && typeof evidence.roadmapSafetyBoundary === 'object')
 assertEqual('roadmapSafetyBoundary key', evidence.roadmapSafetyBoundary.key, ROADMAP_SAFETY_BOUNDARY.key)
 assertEqual('roadmapSafetyBoundary product roadmap count', evidence.roadmapSafetyBoundary.productRoadmap?.length, ROADMAP_SAFETY_BOUNDARY.productRoadmap.length)
@@ -247,8 +263,8 @@ assertEqual('publicReadApis agent proof verification', publicReadApiByKey.get('a
 assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
 assertEqual('publicReadApis hardware verification', publicReadApiByKey.get('hardware-bridge-api')?.verification, 'npm run verify:hardware')
-assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus'])
-assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'roadmap safety boundary'])
+assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'Agent Plaza market boundary', 'roadmap safety boundary'])
 assertListIncludes('publicReadApis agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'reviewPath', 'sourceControl'])
 assertListIncludes('publicReadApis agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry'])
 assertListIncludes('publicReadApis fleet expected fields', publicReadApiByKey.get('agent-fleet-api')?.expectedFields, ['agents[].agentId', 'agents[].owner', 'agents[].wallet', 'agents[].builderCode', 'agents[].identityTuple', 'agents[].card', 'agents[44-47].card.tags', 'agents[44-47].card.metadata.builderCode', 'total', 'offset', 'limit', 'sdk'])

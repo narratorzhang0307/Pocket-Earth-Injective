@@ -10,7 +10,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, JUDGE_RUNBOOK, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, ROADMAP_SAFETY_BOUNDARY, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, JUDGE_RUNBOOK, MARKET_LANDSCAPE_BOUNDARY, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, ROADMAP_SAFETY_BOUNDARY, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -290,9 +290,9 @@ export async function handleInjective(req, res, url, cfg = {}) {
           readOnly: true,
           publicOnly: true,
           verification: 'npm run verify:public-proof',
-          purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, hardware bridge, roadmap safety boundary, and privacy boundary.',
-          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
-          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'roadmap safety boundary', 'current GitHub commit anchor'],
+          purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, hardware bridge, market landscape boundary, roadmap safety boundary, and privacy boundary.',
+          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
+          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
         },
         {
           key: 'agent-proof-api',
@@ -382,6 +382,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         handshakeScanUrl: scanUrlForAddress(SOCIAL_HANDSHAKE),
         handshakeProof: SOCIAL_HANDSHAKE_PROOF,
         hardwareBridge: HARDWARE_BRIDGE_PROOF,
+        marketLandscapeBoundary: MARKET_LANDSCAPE_BOUNDARY,
         roadmapSafetyBoundary: ROADMAP_SAFETY_BOUNDARY,
         reviewLinks: REVIEW_LINKS,
         reviewBrief: REVIEW_BRIEF,

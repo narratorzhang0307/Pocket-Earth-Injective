@@ -6,7 +6,7 @@
 
 1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
 2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `judgeRunbook`, `publicReadApis[].judgeFocus`, `publicReadApis[].expectedFields`, `hardwareBridge`, `hardwareBridge.roadmapBoundary`, `roadmapSafetyBoundary`, `reviewEntrypoints.hardware-bridge-api`, `reviewEntrypoints.hardware-bridge`, `deliveryChecklist.frost-edge-node`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
+3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `judgeRunbook`, `publicReadApis[].judgeFocus`, `publicReadApis[].expectedFields`, `hardwareBridge`, `hardwareBridge.roadmapBoundary`, `marketLandscapeBoundary`, `commercialFlywheel`, `preferredPath`, `rejectedPaths`, `roadmapSafetyBoundary`, `reviewEntrypoints.hardware-bridge-api`, `reviewEntrypoints.hardware-bridge`, `deliveryChecklist.frost-edge-node`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
 4. Open the single-agent proof card: `/api/injective?tool=get-agent-proof&agentId=43`
 5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`. Start from the top-level `sdk`, `total`, `offset`, `limit`; then inspect each `agents[]` row for `owner`, `wallet`, `identityTuple`, `builderCode`. For `agentId 44-47`, the attached public data URI card fields should include `card.tags` and `card.metadata.builderCode`, without raw private profile text.
 6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
@@ -30,6 +30,7 @@
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
 - Agent Plaza is the commercial path boundary: developers publish `manifest / schema / permissions`, Pocket Earth runs `reviewManifest` and `toManifest`, users install with `INSTALL -> My Agents -> RUN`, and future install / call / review / optional paid receipts can flow back into Profile Confidence. This keeps `public-plaza` as chain discovery, `agent-plaza` as installable agent market, and Frost Edge Node as a developer-kit / experience layer rather than the revenue pillar.
+- `marketLandscapeBoundary` is the machine-readable field for the same market thesis: `commercialFlywheel` keeps Long-term use -> trusted profile -> Agent Plaza market visible, `preferredPath` fixes `Agent Plaza platform path`, and `rejectedPaths` states that Pure social monetization is not the core path, Token-first is not the product strategy, and Hardware revenue first is not the current strategy.
 - `reviewEntrypoints.hardware-bridge-api` opens `/api/injective?tool=get-hardware-bridge-proof`, `reviewEntrypoints.hardware-bridge` points to `hardware/frost-buddy/`, and `deliveryChecklist.frost-edge-node` keeps the Raspberry Pi / BLE / TTS bridge reviewable as a privacy-bounded prototype. `hardwareBridge.marketBoundary` keeps Frost Edge Node framed as a prototype and developer-kit endpoint rather than a hardware revenue projection, while `hardwareBridge.roadmapBoundary` keeps BLE/TTS/display drivers optional after the public action contract. `npm run verify:hardware` checks `music_now_playing`, Injective `chain_dispatch`, the Pi skill router, the Pi event adapter's `state/tts/display` actions, and the no-private-key/no-raw-profile boundary.
 - `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, npm script mappings, and README first-minute evidence guide still match the product API.
 - `npm run verify:positioning` checks that README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent files keep the Injective core-integration framing.
@@ -43,6 +44,19 @@
 | Is the install loop real enough to show? | `manifest / schema / permissions`, `reviewManifest`, `toManifest`, `INSTALL -> My Agents -> RUN` | A free example agent can be reviewed, installed, shown in My Agents, and run; without key-backed confirmation it stays a `willEmit` dry-run |
 | Why does Injective matter here? | `agentId 43-47`, wallet timeline, SocialHandshake, future Profile Checkpoint path | Developer, agent, install, handshake, review, and optional paid receipts need public identity and ordered receipts |
 | What is the market boundary? | `hardwareBridge.marketBoundary`, `get-hardware-bridge-proof`, `PITCH-NOTES.md` | Business center is Agent Plaza; Frost Edge Node is Raspberry Pi / BLE / TTS developer kit and physical experience, not the current revenue pillar |
+
+## Market Landscape Boundary Fast Check
+
+Use this table when reviewing PPT pages 32-35 and the API field `marketLandscapeBoundary`. The purpose is to separate the preferred commercial path from the three paths Pocket Earth does not claim.
+
+In plain API terms, marketLandscapeBoundary is the machine-readable field for this commercial boundary, so reviewers can verify the same thesis from the API instead of relying on narrative copy.
+
+| Field | What to inspect | Expected answer |
+|---|---|---|
+| `commercialFlywheel` | `/api/injective?tool=get-chain-evidence` | Long-term use -> trusted profile -> Agent Plaza market, then install / call / review / optional payment receipts improve both supply and retention |
+| `preferredPath` | `Agent Plaza platform path`, `agent-plaza`, `verify:plaza-flow` | The preferred path is a platform path: manifest review, `INSTALL`, My Agents return, and `willEmit` dry-run are already demonstrable |
+| `rejectedPaths` | pure social, token-first, hardware revenue first entries | Pure social monetization is not the core path; Token-first is not the product strategy; Hardware revenue first is not the current strategy |
+| `differentiation` | README and integration guide | On-device privacy, real-coordinate knowledge base, ERC-8004 identity, and platform-take-rate-compatible Agent Plaza all appear together |
 
 ## Agent Plaza Receipt Loop Fast Check
 

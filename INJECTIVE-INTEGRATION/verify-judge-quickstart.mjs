@@ -10,6 +10,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   JUDGE_RUNBOOK,
   LIVE_DEMO_URL,
+  MARKET_LANDSCAPE_BOUNDARY,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
   ROADMAP_SAFETY_BOUNDARY,
@@ -110,6 +111,10 @@ for (const snippet of [
   'reviewEntrypoints.hardware-bridge',
   'deliveryChecklist.frost-edge-node',
   'hardwareBridge.marketBoundary',
+  'marketLandscapeBoundary',
+  'commercialFlywheel',
+  'preferredPath',
+  'rejectedPaths',
   'Frost Edge Node',
   'hardware/frost-buddy/',
   HARDWARE_BRIDGE_URL,
@@ -139,6 +144,7 @@ for (const snippet of [
   'Profile Confidence',
   'willEmit',
   'Agent Plaza Commercial Path Fast Check',
+  'Market Landscape Boundary Fast Check',
   'Agent Plaza Receipt Loop Fast Check',
   'plazaFlow',
   'manifestReceipt(agentId, manifestHash, publisher, timestamp)',
@@ -246,6 +252,20 @@ assertEqual('evidence public read fleet path', evidence.publicReadApis.find((ite
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('evidence public read hardware path', evidence.publicReadApis.find((item) => item.key === 'hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
 assertTrue('quickstart names hardware proof API', quickstart.includes('/api/injective?tool=get-hardware-bridge-proof'))
+assertEqual('evidence market landscape key', evidence.marketLandscapeBoundary?.key, MARKET_LANDSCAPE_BOUNDARY.key)
+assertTrue(
+  'evidence market landscape flywheel matches constants',
+  MARKET_LANDSCAPE_BOUNDARY.commercialFlywheel.every((item) => evidence.marketLandscapeBoundary?.commercialFlywheel?.includes(item)),
+)
+assertEqual('evidence market landscape preferred path', evidence.marketLandscapeBoundary?.preferredPath?.label, MARKET_LANDSCAPE_BOUNDARY.preferredPath.label)
+assertTrue('evidence market landscape names willEmit dry-run', String(evidence.marketLandscapeBoundary?.preferredPath?.proof || '').includes('willEmit'))
+assertTrue(
+  'evidence market landscape rejected paths match constants',
+  MARKET_LANDSCAPE_BOUNDARY.rejectedPaths.every((item) => evidence.marketLandscapeBoundary?.rejectedPaths?.some((actual) => actual.key === item.key)),
+)
+assertTrue('evidence market landscape rejects pure social path', evidence.marketLandscapeBoundary?.rejectedPaths?.some((item) => item.key === 'pure-social-monetization' && item.boundary.includes('long-term spatial memory')))
+assertTrue('evidence market landscape rejects token-first path', evidence.marketLandscapeBoundary?.rejectedPaths?.some((item) => item.key === 'token-first' && item.boundary.includes('identity, versioning, receipts')))
+assertTrue('evidence market landscape rejects hardware revenue first', evidence.marketLandscapeBoundary?.rejectedPaths?.some((item) => item.key === 'hardware-revenue-first' && item.boundary.includes('developer-kit')))
 assertEqual('evidence roadmap safety key', evidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
 assertTrue('evidence roadmap safety always-on array', Array.isArray(evidence.roadmapSafetyBoundary?.alwaysOn))
 assertTrue(
@@ -270,6 +290,11 @@ for (const snippet of [
   'A free example agent can be reviewed, installed, shown in My Agents, and run',
   'Business center is Agent Plaza',
   'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
+  'marketLandscapeBoundary is the machine-readable field',
+  'Long-term use -> trusted profile -> Agent Plaza market',
+  'Pure social monetization is not the core path',
+  'Token-first is not the product strategy',
+  'Hardware revenue first is not the current strategy',
 ]) {
   assertTrue(`quickstart commercial path fast check explains ${snippet}`, quickstart.includes(snippet))
 }

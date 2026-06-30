@@ -9,6 +9,7 @@ import {
   HARDWARE_BRIDGE_PROOF,
   JUDGE_QUICKSTART_URL,
   LIVE_DEMO_URL,
+  MARKET_LANDSCAPE_BOUNDARY,
   ROADMAP_SAFETY_BOUNDARY,
   DELIVERY_CHECKLIST,
   REVIEW_ENTRYPOINTS,
@@ -113,6 +114,22 @@ assertTrue('evidence hardware Pi adapter exposes tts action', evidence.hardwareB
 assertTrue('evidence hardware Pi adapter exposes display action', evidence.hardwareBridge?.piAdapter?.actions?.includes('display'))
 assertEqual('evidence hardware roadmap current', evidence.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertTrue('evidence hardware roadmap keeps optional adapters', String(evidence.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
+assertEqual('evidence market landscape key', evidence.marketLandscapeBoundary?.key, MARKET_LANDSCAPE_BOUNDARY.key)
+assertTrue('evidence market landscape flywheel array', Array.isArray(evidence.marketLandscapeBoundary?.commercialFlywheel))
+assertTrue(
+  'evidence market landscape flywheel matches constants',
+  MARKET_LANDSCAPE_BOUNDARY.commercialFlywheel.every((item) => evidence.marketLandscapeBoundary?.commercialFlywheel?.includes(item)),
+)
+assertEqual('evidence market landscape preferred path', evidence.marketLandscapeBoundary?.preferredPath?.label, MARKET_LANDSCAPE_BOUNDARY.preferredPath.label)
+assertTrue('evidence market landscape names manifest review', String(evidence.marketLandscapeBoundary?.preferredPath?.proof || '').includes('manifest review'))
+assertTrue('evidence market landscape names willEmit dry-run', String(evidence.marketLandscapeBoundary?.preferredPath?.proof || '').includes('willEmit'))
+assertTrue(
+  'evidence market landscape rejected paths match constants',
+  MARKET_LANDSCAPE_BOUNDARY.rejectedPaths.every((item) => evidence.marketLandscapeBoundary?.rejectedPaths?.some((actual) => actual.key === item.key)),
+)
+assertTrue('evidence market landscape rejects hardware revenue first', evidence.marketLandscapeBoundary?.rejectedPaths?.some((item) => item.key === 'hardware-revenue-first' && item.boundary.includes('developer-kit')))
+assertTrue('evidence market landscape names differentiation', MARKET_LANDSCAPE_BOUNDARY.differentiation.every((item) => evidence.marketLandscapeBoundary?.differentiation?.includes(item)))
+assertEqual('evidence market landscape local verification', evidence.marketLandscapeBoundary?.localVerification, MARKET_LANDSCAPE_BOUNDARY.localVerification)
 assertEqual('evidence roadmap safety key', evidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
 assertTrue('evidence roadmap safety product roadmap array', Array.isArray(evidence.roadmapSafetyBoundary?.productRoadmap))
 assertTrue('evidence roadmap safety chain roadmap array', Array.isArray(evidence.roadmapSafetyBoundary?.chainRoadmap))
@@ -177,6 +194,9 @@ assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATI
 assertTrue('README mentions judgeRunbook', readme.includes('judgeRunbook'))
 assertTrue('CHAIN-EVIDENCE mentions review entrypoints', chainEvidence.includes('reviewEntrypoints'))
 assertTrue('CHAIN-EVIDENCE mentions delivery checklist', chainEvidence.includes('deliveryChecklist'))
+assertTrue('CHAIN-EVIDENCE mentions market landscape boundary', chainEvidence.includes('marketLandscapeBoundary'))
+assertTrue('CHAIN-EVIDENCE mentions commercial flywheel', chainEvidence.includes('commercialFlywheel'))
+assertTrue('CHAIN-EVIDENCE mentions rejected paths', chainEvidence.includes('rejectedPaths'))
 assertTrue('CHAIN-EVIDENCE mentions roadmap safety boundary', chainEvidence.includes('roadmapSafetyBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions judge quickstart', chainEvidence.includes('JUDGE-QUICKSTART.md'))
 assertTrue('CHAIN-EVIDENCE mentions judgeRunbook', chainEvidence.includes('judgeRunbook'))
@@ -193,12 +213,16 @@ assertTrue('CHAIN-EVIDENCE maps Profile Checkpoint boundary', chainEvidence.incl
 assertTrue('CHAIN-EVIDENCE maps Agent Plaza receipts', chainEvidence.includes('P2 Agent Plaza receipts') && chainEvidence.includes('reviewManifest'))
 assertTrue('CHAIN-EVIDENCE maps Profile Confidence', chainEvidence.includes('P3 Profile Confidence') && chainEvidence.includes('批量导入'))
 assertTrue('CHAIN-EVIDENCE maps Frost Network boundary', chainEvidence.includes('P4 Frost Network') && chainEvidence.includes('设备不签名、不持私钥、不读取原始画像'))
+assertTrue('CHAIN-EVIDENCE maps machine-readable market field', chainEvidence.includes('preferredPath') && chainEvidence.includes('Agent Plaza platform path'))
 assertTrue('DEMO-SCRIPT mentions delivery check', demoScript.includes('npm run verify:delivery'))
 assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions judgeRunbook', demoScript.includes('judgeRunbook'))
+assertTrue('DEMO-SCRIPT mentions market landscape boundary', demoScript.includes('marketLandscapeBoundary'))
 assertTrue('DEMO-SCRIPT mentions roadmap safety boundary', demoScript.includes('roadmapSafetyBoundary'))
 assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
 assertTrue('README links hardware bridge', readme.includes('hardware/frost-buddy/'))
+assertTrue('README mentions market landscape boundary', readme.includes('marketLandscapeBoundary'))
+assertTrue('README mentions Agent Plaza platform path', readme.includes('Agent Plaza platform path'))
 assertTrue('README mentions roadmap safety boundary', readme.includes('roadmapSafetyBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions hardware check', chainEvidence.includes('npm run verify:hardware'))
 
