@@ -128,6 +128,7 @@ const remoteVerifySpacePlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION
 const remoteVerifyPlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza.mjs`)
 const remoteVerifyPlazaFlow = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-flow.mjs`)
 const remoteVerifyPlazaInstall = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-install.mjs`)
+const remoteVerifyDeliveryPack = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-delivery-pack.mjs`)
 const remoteVerifyForgeRun = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-forge-run.mjs`)
 const remoteAgentPlazaPage = await fetchText(`${rawBase}/src/app/components/AgentPlazaPage.tsx`)
 const remotePlazaCatalog = await fetchText(`${rawBase}/src/app/lib/plaza/catalog.ts`)
@@ -485,6 +486,15 @@ for (const phrase of ['installedCafe.domain ===', 'geoStrategy.includes', 'mark_
 }
 for (const phrase of ["domain === '地点'", 'geoStrategy.includes', 'tagFields.includes', 'enrich', 'geocode', 'mark_place', '▶ RUN']) {
   assertTrue(`remote plaza install smoke keeps ${phrase}`, remoteVerifyPlazaInstall.includes(phrase))
+}
+for (const phrase of [
+  'CHAIN-EVIDENCE locks Agent Plaza install smoke source',
+  'CHAIN-EVIDENCE locks installed cafe-map manifest fields',
+  'CHAIN-EVIDENCE locks install-to-run loop',
+  'DEMO-SCRIPT separates public-plaza from agent-plaza',
+  'DEMO-SCRIPT locks Agent Plaza install narration',
+]) {
+  assertTrue(`remote delivery verifier keeps Agent Plaza install guard ${phrase}`, remoteVerifyDeliveryPack.includes(phrase))
 }
 assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.includes('Judge Quickstart'))
 assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))
