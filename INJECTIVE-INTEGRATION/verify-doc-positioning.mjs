@@ -94,6 +94,7 @@ assertTrue('README names commercial path boundary explicitly', rootReadme.includ
 assertTrue('README rejects token-first path explicitly', rootReadme.includes('不走代币优先'))
 assertTrue('README keeps Agent Plaza as commercial center', rootReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
 assertTrue('README maps deck negative coordinates into public API', rootReadme.includes('negativeCoordinates') && rootReadme.includes('PPT 第 34 页反面坐标') && rootReadme.includes('friend.tech / Lens / Farcaster') && rootReadme.includes('Virtuals-style agent token path') && rootReadme.includes('Humane AI Pin / Rabbit r1'))
+assertTrue('README names Profile Chain as Proof of Memory', rootReadme.includes('### 5. Profile Chain / Proof of Memory 路线') && rootReadme.includes('Proof of Memory 证明公开画像来自长期本地知识库'))
 assertTrue('README names FROST Chronicle delivery close explicitly', rootReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
 assertTrue('README puts FROST Chronicle in the one-minute proof ladder', rootReadme.includes('| 7 | **FROST Chronicle 与三件交付**'))
 assertTrue('README anchors final deck conclusion to image provenance', rootReadme.includes('Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库'))

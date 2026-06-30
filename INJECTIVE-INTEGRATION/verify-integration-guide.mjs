@@ -317,6 +317,7 @@ for (const phrase of [
   '### 5.1 最终整合版对照与技术深挖',
   'final-ppt-index',
   'Agent Personality Provenance',
+  'Proof of Memory',
   'ProfileCheckpoint',
   'RunTrace',
   'FrostBus',

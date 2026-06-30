@@ -89,7 +89,9 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 | `get-wallet-timeline` | RPC 复验钱包时间线 | owner、事件数、全部成功、首尾区块/时间、注册到握手的顺序 |
 | `get-hardware-bridge-proof` | Frost Edge Node 单页证明卡 | Raspberry Pi / BLE / TTS 公开事件桥、`chain_dispatch` 读链来源、Pi 技能白名单、事件适配动作、隐私边界、源码锚点 |
 
-### 5. Profile Chain 路线
+### 5. Profile Chain / Proof of Memory 路线
+
+`Proof of Memory` 是 Profile Chain 的读法：Frost 不是做一段自我介绍，而是用一串公开回执证明“这个 AI 分身的画像来自长期本地知识库”。链上只见身份、版本、时间戳、回执和可选择证明；原始书单、心情、照片与精确坐标仍留在端侧。
 
 | 阶段 | 目标 | 边界 |
 |---|---|---|
@@ -110,7 +112,7 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 | 1-7 产品定位 / 作者方法来源 / Frost 起源 / 一条线走完 | Pocket Earth 是空间知识库，不是普通聊天框；作者的独立开发、小说叙事和建筑/空间背景只作为方法来源，公开证据仍以仓库、链上身份和只读 API 为准；六类对象用真实坐标组织，`markPlace`、`userMarks`、`planets`、`geoStickers` 与 Mapbox `source.setData()` 负责把碎片实时钉回地球 | `npm run verify:positioning` |
 | 8-13 PHOTOS / JOT / music / travel / council / 端侧整理 | PHOTOS 三视图、统一记一笔、music-agent 一句话成单、travel 截图脱敏、COUNCIL 法庭、浏览器 CLIP + Qwen-VL 打分共同证明 Pocket Earth 是可运行产品；REDACT、trackId 反查、只读旅行资料源都是确定性边界 | `npm run verify:demo`、`npm run verify:plaza` |
 | 14-18 frost-agent harness | Shell / Brain / Selector / Router / Memory / Boundary / Sub-agents 组成 CEO 委派内核；`intentRegistry`、`registerActionValidator`、`edgeSafe`、`RunTrace`、`FrostBus`、SSE `x-accel-buffering:no` 和 skill 依赖方向把编排变成可观测工程 | [`docs/技术难点与解决方案.md`](docs/技术难点与解决方案.md) |
-| 19-29 Profile Chain | Injective 承担 Agent Personality Provenance：`recordHash -> domainRoot -> ProfileRoot -> profileHash` 只描述公开画像演化；`ProfileCheckpoint(agentId, version, previousProfileHash, newProfileHash, evidenceRoot, timestamp)` 是回执形态；Profile Confidence L0-L4 只评估来源支撑，不评判人 | `npm run verify:public-proof` |
+| 19-29 Profile Chain / Proof of Memory | Injective 承担 Agent Personality Provenance：`recordHash -> domainRoot -> ProfileRoot -> profileHash` 只描述公开画像演化；Proof of Memory 证明公开画像来自长期本地知识库，不是临时自我介绍；`ProfileCheckpoint(agentId, version, previousProfileHash, newProfileHash, evidenceRoot, timestamp)` 是回执形态；Profile Confidence L0-L4 只评估来源支撑，不评判人 | `npm run verify:public-proof` |
 | 25-31 ERC-8004 / SocialHandshake / Agent Plaza | `agentId 43-47`、data URI 名片、`decodeDataCard` 兼容、SocialHandshake 只发事件不存私密状态；`agentGeo` 用 FNV-1a 按 agentId 稳定钉点；`reviewManifest`、`toManifest` 和 DANGER 扫描守住安装边界 | `npm run verify:injective`、`npm run verify:plaza-flow` |
 | 32-35 商业判断 / 硬件节点 / 差异化 | 商业路径不是先发币，而是长期使用 -> 可信画像 -> Agent 市场；Roblox、Apple、Steam 只作为平台模式参考并保留官方来源；Frost Buddy 是 Raspberry Pi / BLE / TTS 轻量实体节点，不写成重资本硬件路线 | `npm run verify:pitch`、`npm run verify:hardware` |
 | 36-41 痛点 / 创新 / 路线图 / 结论 | P0/P1/P2 与 Profile Chain NOW/P1/P2/P3/P4 对齐：当前已完成链上身份、钱包时间线和握手；下一步是 checkpoint、Agent Plaza 回执、Profile Confidence 与硬件公开事件播报 | `npm run verify:integration-guide`、`npm run verify:delivery` |

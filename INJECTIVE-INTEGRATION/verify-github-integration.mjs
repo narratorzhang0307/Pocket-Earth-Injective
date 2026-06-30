@@ -185,6 +185,7 @@ assertTrue('remote README names commercial path boundary', remoteReadme.includes
 assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
 assertTrue('remote README keeps Agent Plaza commercial center', remoteReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
 assertTrue('remote README maps deck negative coordinates into public API', remoteReadme.includes('negativeCoordinates') && remoteReadme.includes('PPT 第 34 页反面坐标') && remoteReadme.includes('friend.tech / Lens / Farcaster') && remoteReadme.includes('Virtuals-style agent token path') && remoteReadme.includes('Humane AI Pin / Rabbit r1'))
+assertTrue('remote README names Profile Chain as Proof of Memory', remoteReadme.includes('### 5. Profile Chain / Proof of Memory 路线') && remoteReadme.includes('Proof of Memory 证明公开画像来自长期本地知识库'))
 assertTrue('remote README names FROST Chronicle delivery close', remoteReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
 assertTrue('remote README puts FROST Chronicle in the one-minute proof ladder', remoteReadme.includes('| 7 | **FROST Chronicle 与三件交付**'))
 assertTrue('remote README anchors final deck conclusion to image provenance', remoteReadme.includes('Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库'))
@@ -204,6 +205,7 @@ for (const phrase of [
   '### 1. 架构主线',
   'Frost Passport',
   'Profile Chain',
+  'Proof of Memory',
   'Agent Plaza',
   'Frost Edge Node',
   '### 5.1 最终整合版对照与技术深挖',
