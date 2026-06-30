@@ -36,6 +36,19 @@ The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-ap
 | Public-only privacy boundary | Public evidence API | evidence is marked `readOnly` / `publicOnly`; raw books, films, music, photos, moods, precise locations, and private keys stay off-chain |
 | Product demo loop | Plaza UI smoke | `public-plaza` reads Injective agents and pins them to the globe; `agent-plaza` keeps the install loop demonstrable |
 
+## 公开证据如何支撑 Agent Plaza 商业路径
+
+最终整合版第 30-35 页的商业判断可以用本页证据直接复验：Pocket Earth 不把链上身份写成单纯社交噱头，也不把 Frost Edge Node 写成短期硬件收入，而是把长期空间知识库、公开身份和 Agent Plaza 安装闭环接成一条可验证路径。
+
+| Boundary | Evidence in this repo | Why it matters |
+|---|---|---|
+| 不走纯社交变现 | `public-plaza` 只读取 `agentId 43-47`、`builderCode=pocket-earth`、SocialHandshake 和 `agentGeo` 稳定钉点 | 链上社交只负责发现和握手留痕，价值仍回到 Pocket Earth 的长期画像和空间知识库 |
+| 不走代币优先 | `ProfileCheckpoint` 路线只规划身份、版本、时间戳、签名和回执；当前 API 标记 `readOnly: true` / `publicOnly: true` | Injective 先承担公共身份层、画像版本见证层和未来结算入口，不用代币发行替代产品闭环 |
+| 不走重资本硬件路线 | `hardwareBridge.marketBoundary`、`get-hardware-bridge-proof`、`hardware/frost-buddy/` | Frost Edge Node 是 Raspberry Pi / BLE / TTS 开发套件和体验差异化，只消费公开 JSONL 事件，不接触私钥、画像原文或精确坐标 |
+| Agent Plaza 承接收入闭环 | `agent-plaza` 的 `manifest / schema / permissions`、`reviewManifest`、`toManifest`、`INSTALL -> My Agents -> RUN` | 未来安装、调用、评价和可选付费回执可以回流到 Profile Confidence，形成“长期使用 -> 可信画像 -> Agent 市场”的路径 |
+
+这也是本页要把 `plazaFlow` 和 `hardwareBridge` 放在同一个证据层的原因：`public-plaza` 证明 Frost 能读公开链上 agent 并进行可追踪社交，`agent-plaza` 证明符合空间逻辑的 agent 可以被审核、安装和运行，Frost Edge Node 证明同一套公开事件还能被实体节点消费。三者共同支撑的不是“发币社交”，而是一个隐私自持、身份可验、回执可追踪的空间 Agent 市场。
+
 ## IdentityRegistry
 
 | Evidence | Link |

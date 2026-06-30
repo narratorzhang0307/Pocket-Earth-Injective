@@ -257,6 +257,22 @@ assertTrue('remote evidence pack names judge runbook', remoteEvidence.includes('
 assertTrue('remote evidence pack names deliveryChecklist', remoteEvidence.includes('deliveryChecklist'))
 assertTrue('remote evidence pack names public read API manifest', remoteEvidence.includes('publicReadApis'))
 assertTrue('remote evidence pack names public API guard', remoteEvidence.includes('npm run verify:public-apis'))
+for (const phrase of [
+  '## 公开证据如何支撑 Agent Plaza 商业路径',
+  '不走纯社交变现',
+  '不走代币优先',
+  '不走重资本硬件路线',
+  'Agent Plaza 承接收入闭环',
+  'manifest / schema / permissions',
+  'reviewManifest',
+  'toManifest',
+  'INSTALL -> My Agents -> RUN',
+  '长期使用 -> 可信画像 -> Agent 市场',
+  'hardwareBridge.marketBoundary',
+  'get-hardware-bridge-proof',
+]) {
+  assertTrue(`remote evidence pack keeps commercial boundary ${phrase}`, remoteEvidence.includes(phrase))
+}
 assertTrue('remote demo script names registryMintEvents', remoteDemo.includes('registryMintEvents'))
 assertTrue('remote demo script names registryMintSummary', remoteDemo.includes('registryMintSummary'))
 assertTrue('remote demo script names fleet readback', remoteDemo.includes('builderCode=pocket-earth') && remoteDemo.includes('agentId 43'))
