@@ -704,6 +704,10 @@ for (const phrase of [
   'PPT 硬件边界守门',
   '真实 BLE / TTS / 小屏幕物理驱动仍待后续 adapter 接入',
   '硬件收入优先路径',
+  'npm run verify:handshake',
+  'npm run verify:handshake-contract',
+  'agentA/agentB/score/profileHash',
+  'creation/runtime bytecode',
 ]) {
   assertTrue(`remote progress keeps roadmap boundary ${phrase}`, remoteProgress.includes(phrase))
 }

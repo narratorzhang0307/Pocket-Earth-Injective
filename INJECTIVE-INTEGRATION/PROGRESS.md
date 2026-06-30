@@ -7,7 +7,7 @@
 - **公开仓库边界**：当前工作目录为 `Pocket-Earth-Injective`，远端为 `https://github.com/narratorzhang0307/Pocket-Earth-Injective`，自动化只在这个仓库内工作。
 - **ERC-8004 身份**：Frost 主身份 `agentId 43` 已在 Injective testnet 注册，`builderCode = pocket-earth`，Owner 为 `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`。
 - **Agent 身份簇**：`agentId 43-47` 均可通过 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47` 读回。
-- **SocialHandshake**：合约 `0xe5338a162a44a685201e1f6120b1a851949e3aee` 已部署；真实握手交易记录 `agentId 43 <-> 44`、score `88` 与非零公开承诺哈希。
+- **SocialHandshake**：合约 `0xe5338a162a44a685201e1f6120b1a851949e3aee` 已部署；真实握手交易记录 `agentId 43 <-> 44`、score `88` 与非零公开承诺哈希。复验分两层：`npm run verify:handshake` 解码真实握手事件里的 `agentA/agentB/score/profileHash`，`npm run verify:handshake-contract` 核对部署地址、creation/runtime bytecode 与本地 Solidity 源码一致。
 - **公开证据 API**：`/api/injective?tool=get-chain-evidence` 返回 `chainId 1439`、`readOnly: true`、`publicOnly: true`，并包含身份、mint、钱包、握手、`hardwareBridge` 结构化硬件桥、`hardwareBridge.serviceBoundary` 硬件节点服务回执边界、`hardwareBridge.roadmapBoundary` 硬件路线图边界、`marketLandscapeBoundary` 市场边界机器字段、`roadmapSafetyBoundary` 产品/链上路线图安全边界、隐私边界、源码锚点和复验入口；`/api/injective?tool=get-hardware-bridge-proof` 可单独打开 Frost Edge Node 证明卡。
 - **钱包时间线**：`/api/injective?tool=get-wallet-timeline` 从 RPC 读回注册、合约部署、fleet 注册和真实握手的交易顺序，`summary` 汇总 owner、事件数、成功状态、首尾区块/时间。
 - **plaza 产品闭环**：`public-plaza` 负责链上社交发现，`agent-plaza` 负责 agent 市集与安装闭环；`verify:plaza-flow` 固定两者边界。
@@ -22,7 +22,7 @@
 |---|---|---|
 | 身份层 | ERC-8004 `agentId 43` 与 `agentId 43-47` fleet | `npm run verify:agent-proof` / `npm run verify:registry` |
 | 钱包层 | 同一 owner 钱包串起注册、部署、fleet、握手 | `npm run verify:wallet` |
-| 合约层 | SocialHandshake 只记录 agentId、承诺哈希、score、timestamp | `npm run verify:injective` |
+| 合约层 | SocialHandshake 只记录 agentId、承诺哈希、score、timestamp；真实事件和合约字节码可分开复验 | `npm run verify:handshake` / `npm run verify:handshake-contract` / `npm run verify:injective` |
 | API 层 | `get-chain-evidence`、`get-agent-proof`、`list-agents`、`get-wallet-timeline`、`get-hardware-bridge-proof` | `npm run verify:public-apis` |
 | 文档层 | README、集成说明、证据包、录制脚本、60 秒复验入口，以及最终 PPT 逐页覆盖索引 | `npm run verify:github` / `npm run verify:integration-guide` |
 | 产品层 | public-plaza 读链上 agent；agent-plaza 保留安装闭环 | `npm run verify:plaza-flow` / `npm run verify:plaza` |
@@ -52,6 +52,8 @@ npm run verify:positioning
 npm run verify:source
 npm run verify:registry
 npm run verify:wallet
+npm run verify:handshake
+npm run verify:handshake-contract
 npm run verify:plaza-flow
 npm run verify:hardware
 npm run verify:delivery
@@ -63,6 +65,8 @@ npm run verify:demo
 完整链上复验：
 
 ```bash
+npm run verify:handshake
+npm run verify:handshake-contract
 npm run verify:injective
 npm run verify:plaza
 npm run verify:hardware

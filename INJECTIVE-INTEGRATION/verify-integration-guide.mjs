@@ -474,6 +474,10 @@ for (const phrase of [
   'hardwareBridge.roadmapBoundary',
   'roadmapSafetyBoundary',
   '真实 BLE/TTS/display 驱动仍留在可选 adapter 层',
+  'npm run verify:handshake',
+  'npm run verify:handshake-contract',
+  'agentA/agentB/score/profileHash',
+  'creation/runtime bytecode',
 ]) {
   assertTrue(`PROGRESS keeps current alignment: ${phrase}`, progress.includes(phrase))
 }
