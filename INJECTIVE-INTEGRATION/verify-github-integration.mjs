@@ -26,6 +26,7 @@ const forbiddenPositioningSnippets = [
   'com' + 'petition',
   'con' + 'test',
 ].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
+const forbiddenPaymentSnippets = [['x', '402'].join('')]
 const vagueRecordPlace = '它们' + '在地球上的那个地点'
 const vaguePositioningSnippets = ['它们' + '在地球', '钉回' + '它们', '各自' + '在地球上的那个地点']
 
@@ -85,6 +86,13 @@ function assertNoEventPositioning(label, text) {
   }
 }
 
+function assertNoOldPaymentText(label, text) {
+  const normalized = text.toLowerCase()
+  for (const forbidden of forbiddenPaymentSnippets) {
+    assertTrue(`${label} omits old payment route wording`, !normalized.includes(forbidden.toLowerCase()))
+  }
+}
+
 console.log('Git origin boundary')
 git(['fetch', 'origin', 'main', '--quiet'])
 assertEqual('current branch', git(['branch', '--show-current']), 'main')
@@ -118,6 +126,9 @@ const remoteEvidence = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/CHAIN-E
 const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`)
 const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
 const remoteProgress = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/PROGRESS.md`)
+const remotePitchNotes = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/PITCH-NOTES.md`)
+const remotePlan = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/PLAN.md`)
+const remoteResearch = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/RESEARCH.md`)
 const remoteHardware = await fetchText(`${rawBase}/hardware/frost-buddy/README.md`)
 const remoteRaspiReadme = await fetchText(`${rawBase}/hardware/frost-buddy/raspi/README.md`)
 const remotePublicPlaza = await fetchText(`${rawBase}/src/app/components/PublicPlazaPage.tsx`)
@@ -778,6 +789,9 @@ for (const [label, text] of [
   ['remote demo script', remoteDemo],
   ['remote judge quickstart', remoteJudge],
   ['remote progress', remoteProgress],
+  ['remote pitch notes', remotePitchNotes],
+  ['remote plan', remotePlan],
+  ['remote research', remoteResearch],
   ['remote hardware README', remoteHardware],
   ['remote Raspberry Pi README', remoteRaspiReadme],
   ['remote hardware verifier', remoteVerifyHardware],
@@ -787,7 +801,10 @@ for (const [label, text] of [
 ]) {
   assertNoOldRepoText(label, text)
   assertNoEventPositioning(label, text)
+  assertNoOldPaymentText(label, text)
 }
+assertNoEventPositioning('remote integration verifier', remoteVerifyIntegrationGuide)
+assertNoOldPaymentText('remote integration verifier', remoteVerifyIntegrationGuide)
 
 console.log('\nLocal integration config')
 const packageJson = JSON.parse(readFileSync(resolve(projectRoot, 'package.json'), 'utf8'))

@@ -35,6 +35,7 @@ const forbiddenPositioningSnippets = [
   'com' + 'petition',
   'con' + 'test',
 ].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
+const forbiddenPaymentSnippets = [['x', '402'].join('')]
 const vaguePositioningSnippets = [
   String.fromCodePoint(0x672c, 0x9879, 0x76ee),
   '它们' + '在地球',
@@ -93,6 +94,7 @@ assertTrue('README routes hardware services to Agent Plaza service receipts', ro
 assertTrue('README names commercial path boundary explicitly', rootReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('README rejects token-first path explicitly', rootReadme.includes('不走代币优先'))
 assertTrue('README keeps Agent Plaza as commercial center', rootReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
+assertTrue('demo script keeps Agent Plaza optional payment receipt wording', demoScript.includes('Agent Plaza 承接安装、调用、评价和可选付费回执'))
 assertTrue('README maps deck negative coordinates into public API', rootReadme.includes('negativeCoordinates') && rootReadme.includes('PPT 第 34 页反面坐标') && rootReadme.includes('friend.tech / Lens / Farcaster') && rootReadme.includes('Virtuals-style agent token path') && rootReadme.includes('Humane AI Pin / Rabbit r1'))
 assertTrue('README names Profile Chain as Proof of Memory', rootReadme.includes('### 5. Profile Chain / Proof of Memory 路线') && rootReadme.includes('Proof of Memory 证明公开画像来自长期本地知识库'))
 assertTrue('README names FROST Chronicle delivery close explicitly', rootReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
@@ -164,6 +166,9 @@ for (const file of files) {
   const text = readFileSync(file, 'utf8').toLowerCase()
   for (const forbidden of forbiddenPositioningSnippets) {
     if (text.includes(forbidden.toLowerCase())) violations.push(`${label}: ${forbidden}`)
+  }
+  for (const forbidden of forbiddenPaymentSnippets) {
+    if (text.includes(forbidden.toLowerCase())) violations.push(`${label}: old payment route wording`)
   }
   for (const forbidden of vaguePositioningSnippets) {
     if (text.includes(forbidden.toLowerCase())) violations.push(`${label}: ${forbidden}`)

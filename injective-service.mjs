@@ -653,7 +653,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             description: regDesc,
             tags: regTags,
             services: Array.isArray(body.services) ? body.services : [],
-            x402: false,
+            optionalPaymentReceipt: null,
             uri: inlineUri,
           },
           hint: 'dryRun preview only; set INJ_PRIVATE_KEY and confirm:true to write on Injective testnet',
@@ -668,7 +668,6 @@ export async function handleInjective(req, res, url, cfg = {}) {
         description: regDesc,
         tags: regTags,
         services: Array.isArray(body.services) ? body.services : [],
-        x402: false,
         ...(inlineUri ? { uri: inlineUri } : {}),
         dryRun,
       })
