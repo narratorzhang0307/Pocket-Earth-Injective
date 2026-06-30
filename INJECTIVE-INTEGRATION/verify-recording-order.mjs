@@ -197,6 +197,7 @@ assertEqual('recording step 7 path', hardwareProofApi.path, evidence.verificatio
 assertFocusIncludes('recording step 7', hardwareProofApi, 'Frost Edge Node')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'chain_dispatch')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'music_now_playing')
+assertFocusIncludes('recording step 7', hardwareProofApi, 'hardwareBridge.marketBoundary')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'privacyBoundary.hardware')
 const hardwarePayload = await callInjectiveApi(hardwareProofApi.path)
 assertEqual('recording step 7 hardware proof ok', hardwarePayload.ok, true)
@@ -206,6 +207,10 @@ assertEqual('recording step 7 hardware proof publicOnly', hardwarePayload.public
 assertEqual('recording step 7 hardware proof key', hardwarePayload.hardwareBridge?.key, HARDWARE_BRIDGE_PROOF.key)
 assertEqual('recording step 7 hardware proof chain read', hardwarePayload.hardwareBridge?.chainDispatch?.chainRead, HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead)
 assertTrue('recording step 7 hardware proof Pi skills', hardwarePayload.hardwareBridge?.piRouter?.skills?.includes('chain_dispatch'))
+assertEqual('recording step 7 hardware proof market role', hardwarePayload.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
+assertEqual('recording step 7 hardware proof market source', hardwarePayload.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
+assertTrue('recording step 7 hardware proof business path', hardwarePayload.hardwareBridge?.marketBoundary?.businessPath?.includes('Agent Plaza'))
+assertTrue('recording step 7 hardware proof risk line', hardwarePayload.hardwareBridge?.marketBoundary?.riskLine?.includes('No mass-production'))
 assertTrue('recording step 7 hardware proof privacy boundary', hardwarePayload.privacyBoundary?.hardware?.includes('no wallet signing'))
 
 assertEqual('recording step 8 type', plazaSmoke.type, 'command')
