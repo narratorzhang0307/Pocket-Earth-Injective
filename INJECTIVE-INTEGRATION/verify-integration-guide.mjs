@@ -196,6 +196,21 @@ for (const phrase of [
   assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
 }
 
+console.log('\nPlaza demo split guard')
+for (const phrase of [
+  'public-plaza 镜头',
+  '不要把 public-plaza 说成安装市场',
+  'agent-plaza 安装闭环镜头',
+  'manifest / schema / permissions',
+  'Injective chain identity badge',
+  'reviewManifest',
+  'INSTALL',
+  'My Agents',
+  'willEmit',
+]) {
+  assertTrue(`DEMO-SCRIPT names plaza split step: ${phrase}`, demoScript.includes(phrase))
+}
+
 console.log('\nIntegration guide runbook')
 const runbook = getRunbookBlock()
 const numberedSteps = [...runbook.matchAll(/^#\s+(\d+)\.\s+(.+)$/gm)]
