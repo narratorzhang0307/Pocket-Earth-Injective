@@ -106,8 +106,8 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary'],
-    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.serviceBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary'],
+    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'hardware services stay future Agent Plaza receipts', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
     expectedFields: ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'],
@@ -122,8 +122,8 @@ const expectedGuidance = new Map([
     judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
   }],
   ['hardware-bridge-api', {
-    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.piAdapter.actions', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'privacyBoundary.hardware', 'sourceControl'],
-    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'transport-neutral Pi adapter actions', 'prototype and developer-kit market boundary', 'optional physical adapters remain after public actions', 'no wallet signing or raw profile text'],
+    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.piAdapter.actions', 'hardwareBridge.marketBoundary', 'hardwareBridge.serviceBoundary', 'hardwareBridge.roadmapBoundary', 'privacyBoundary.hardware', 'sourceControl'],
+    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'transport-neutral Pi adapter actions', 'prototype and developer-kit market boundary', 'future hardware node services route through Agent Plaza receipts', 'optional physical adapters remain after public actions', 'no wallet signing or raw profile text'],
   }],
 ])
 
@@ -170,6 +170,10 @@ assertListIncludes('chain evidence hardwareBridge Pi adapter actions', chainEvid
 assertListIncludes('chain evidence hardwareBridge privacy boundary', chainEvidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertEqual('chain evidence hardwareBridge market role', chainEvidence.hardwareBridge.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
 assertEqual('chain evidence hardwareBridge market source', chainEvidence.hardwareBridge.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
+assertEqual('chain evidence hardwareBridge service boundary key', chainEvidence.hardwareBridge.serviceBoundary?.key, HARDWARE_BRIDGE_PROOF.serviceBoundary.key)
+assertTrue('chain evidence hardwareBridge service receipt slot', String(chainEvidence.hardwareBridge.serviceBoundary?.futureReceiptSlot || '').includes('hardwareNodeServiceReceipt'))
+assertListIncludes('chain evidence hardwareBridge service allowed services', chainEvidence.hardwareBridge.serviceBoundary?.allowedServices, HARDWARE_BRIDGE_PROOF.serviceBoundary.allowedServices)
+assertTrue('chain evidence hardwareBridge service ties to Agent Plaza', String(chainEvidence.hardwareBridge.serviceBoundary?.agentPlazaTieIn || '').includes('Agent Plaza service receipts'))
 assertEqual('chain evidence hardwareBridge roadmap current', chainEvidence.hardwareBridge.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertListIncludes('chain evidence hardwareBridge roadmap pending adapters', chainEvidence.hardwareBridge.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
 assertTrue('chain evidence hardwareBridge roadmap integration rule', String(chainEvidence.hardwareBridge.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
@@ -280,6 +284,10 @@ assertListIncludes('hardware proof skills', hardwareProof.hardwareBridge?.piRout
 assertListIncludes('hardware proof Pi adapter actions', hardwareProof.hardwareBridge?.piAdapter?.actions, ['state', 'tts', 'display'])
 assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
 assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
+assertEqual('hardware proof service boundary key', hardwareProof.hardwareBridge?.serviceBoundary?.key, HARDWARE_BRIDGE_PROOF.serviceBoundary.key)
+assertTrue('hardware proof service boundary receipt slot', String(hardwareProof.hardwareBridge?.serviceBoundary?.futureReceiptSlot || '').includes('hardwareNodeServiceReceipt'))
+assertListIncludes('hardware proof service forbidden services', hardwareProof.hardwareBridge?.serviceBoundary?.notAllowed, ['wallet signing', 'private profile export', 'mass-production revenue claim'])
+assertTrue('hardware proof service ties to Agent Plaza receipts', String(hardwareProof.hardwareBridge?.serviceBoundary?.agentPlazaTieIn || '').includes('Agent Plaza service receipts'))
 assertEqual('hardware proof roadmap current', hardwareProof.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertListIncludes('hardware proof roadmap pending adapters', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
 assertTrue('hardware proof roadmap integration rule', String(hardwareProof.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))

@@ -155,6 +155,8 @@ assertTrue('remote README names public read flags in network guide', remoteReadm
 assertTrue('remote README puts Frost Edge Node in the one-minute proof ladder', remoteReadme.includes('Frost Edge Node 硬件边界'))
 assertTrue('remote README names hardware proof API in fast proof ladder', remoteReadme.includes('get-hardware-bridge-proof'))
 assertTrue('remote README names hardware market boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.marketBoundary'))
+assertTrue('remote README names hardware service boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.serviceBoundary'))
+assertTrue('remote README names Agent Plaza service receipts for hardware', remoteReadme.includes('Agent Plaza 服务回执'))
 assertTrue('remote README names commercial path boundary', remoteReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
 assertTrue('remote README keeps Agent Plaza commercial center', remoteReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
@@ -370,6 +372,8 @@ for (const phrase of [
   'rejectedPaths',
   'Agent Plaza platform path',
   'hardwareBridge.marketBoundary',
+  'hardwareBridge.serviceBoundary',
+  'hardwareNodeServiceReceipt',
   'get-hardware-bridge-proof',
   '空间留在 Pocket Earth，时间由 Injective 见证',
 ]) {
@@ -522,12 +526,16 @@ for (const phrase of [
   'raw memories never go on-chain',
   'only identity / versions / receipts / selective proofs go on-chain',
   'Frost Edge Node remains a developer-kit / experience layer',
+  'hardwareBridge.serviceBoundary',
+  'hardwareNodeServiceReceipt',
   'roadmapSafetyBoundary',
 ]) {
   assertTrue(`remote progress keeps roadmap boundary ${phrase}`, remoteProgress.includes(phrase))
 }
 assertTrue('remote hardware README names module subject explicitly', remoteHardware.includes('Frost Edge Node 模块先承担三个角色'))
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
+assertTrue('remote hardware README names hardware service boundary explicitly', remoteHardware.includes('硬件节点服务边界'))
+assertTrue('remote hardware README names Agent Plaza service receipt', remoteHardware.includes('Agent Plaza 服务回执'))
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
 assertTrue('remote hardware README omits vague market subject', !remoteHardware.includes('这个判断在 Markdown'))
 assertTrue('remote PWA manifest description names each record explicitly', remoteManifest.description?.includes('每条记录各自对应的真实地点'))

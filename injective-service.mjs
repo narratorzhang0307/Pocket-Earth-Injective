@@ -263,7 +263,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
         reviewPath: [
           { step: 1, label: 'Open Frost Edge Node module', url: HARDWARE_BRIDGE_PROOF.moduleUrl, verifies: 'The hardware bridge is a public-event adapter under the current repository.' },
           { step: 2, label: 'Read Injective fleet source', path: HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead, verifies: 'chain_dispatch is sourced from the public builderCode=pocket-earth fleet.' },
-          { step: 3, label: 'Run hardware smoke', command: HARDWARE_BRIDGE_PROOF.localVerification, verifies: 'JSONL events, the Raspberry Pi skill router, and the transport-neutral Pi adapter keep the public-only boundary.' },
+          { step: 3, label: 'Review hardware service boundary', verifies: 'Future hardware-node services stay as Agent Plaza service receipts, not a hardware-revenue-first path.' },
+          { step: 4, label: 'Run hardware smoke', command: HARDWARE_BRIDGE_PROOF.localVerification, verifies: 'JSONL events, the Raspberry Pi skill router, and the transport-neutral Pi adapter keep the public-only boundary.' },
         ],
         verification: {
           hardwareBridge: 'npm run verify:hardware',
@@ -291,8 +292,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:public-proof',
           purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, hardware bridge, market landscape boundary, roadmap safety boundary, and privacy boundary.',
-          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
-          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
+          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.serviceBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
+          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'hardware services stay future Agent Plaza receipts', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
         },
         {
           key: 'agent-proof-api',
@@ -343,8 +344,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:hardware',
           purpose: 'Returns a focused proof card for the Raspberry Pi / BLE / TTS public-event bridge without private keys or raw profile payloads.',
-          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.piAdapter.actions', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'privacyBoundary.hardware', 'sourceControl'],
-          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'transport-neutral Pi adapter actions', 'prototype and developer-kit market boundary', 'optional physical adapters remain after public actions', 'no wallet signing or raw profile text'],
+          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.piAdapter.actions', 'hardwareBridge.marketBoundary', 'hardwareBridge.serviceBoundary', 'hardwareBridge.roadmapBoundary', 'privacyBoundary.hardware', 'sourceControl'],
+          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'transport-neutral Pi adapter actions', 'prototype and developer-kit market boundary', 'future hardware node services route through Agent Plaza receipts', 'optional physical adapters remain after public actions', 'no wallet signing or raw profile text'],
         },
       ]
       const firstTimelineEvent = TIMELINE_EVENTS[0]
@@ -504,6 +505,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
               'Pi skill router is limited to music_now_playing and chain_dispatch',
               'hardwareBridge.piAdapter exposes state/tts/display actions without binding BLE or TTS drivers into the main app',
               'hardwareBridge.marketBoundary keeps Frost Edge Node framed as prototype and developer-kit endpoint',
+              'hardwareBridge.serviceBoundary routes any future hardware-node service monetization through Agent Plaza service receipts',
               'hardwareBridge.roadmapBoundary keeps BLE/TTS/display drivers optional and removable after the public action contract',
               'privacyBoundary.hardware keeps private keys, raw profile text, and precise locations off device',
             ],

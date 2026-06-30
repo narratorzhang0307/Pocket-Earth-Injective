@@ -157,7 +157,7 @@ SocialHandshake 的部署交易 `0x6048425a...fa722` 由同一测试网钱包创
 | GET | `?tool=get-agent-proof&agentId=43` | 单 agent 证明卡：owner、`builderCode`、registry、mint tx、身份页、钱包页、源码锚点 | 否 |
 | GET | `?tool=get-chain-evidence` | 公开证据包：`registryMintEvents`、`registryMintSummary`、`timeline`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`reviewBrief`、`judgeRunbook`、`reviewLinks`、`reviewChecklist`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist`、`publicReadApis`、`recordingOrder`、`privacyBoundary`、`plazaFlow`、`sourceControl` | 否 |
 | GET | `?tool=get-wallet-timeline` | `{ chainId: 1439, readOnly: true, publicOnly: true, summary, events }`，从 RPC 复验钱包时间线 | 否 |
-| GET | `?tool=get-hardware-bridge-proof` | Frost Edge Node 单页证明卡：`hardwareBridge`、`chainDispatch.chainRead`、Pi 技能白名单、Pi adapter `state/tts/display` 动作、公开 JSONL 隐私边界和源码锚点 | 否 |
+| GET | `?tool=get-hardware-bridge-proof` | Frost Edge Node 单页证明卡：`hardwareBridge`、`chainDispatch.chainRead`、Pi 技能白名单、Pi adapter `state/tts/display` 动作、`hardwareBridge.serviceBoundary` 服务回执边界、公开 JSONL 隐私边界和源码锚点 | 否 |
 | POST | `?tool=register` `{ passport, confirm }` | `{ agentId, txHashes, scanUrl }`；未确认时 dry-run | 真写需 |
 | POST | `?tool=handshake` `{ agentA, agentB, profileHashA, profileHashB, score, confirm }` | `{ txHash }`；未确认时 dry-run | 真写需 |
 
@@ -333,6 +333,18 @@ Pocket Earth App / public-plaza
 | `display` | OLED、e-ink、WebSocket 或 MQTT 面板 | 只展示标题、摘要、公开 `agentIds` 和 Blockscout `scanUrl` |
 
 这条分支把 PPT 第 33 页的“实体节点，不是重资本硬件路线”落成了工程结构：Pocket Earth 主线只负责生成公开事件；Pi adapter 只负责把公开事件翻译成设备动作；真正的 BLE、串口、MQTT、屏幕和音频驱动都在 adapter 之后，随时可替换、可删除、可单独测试。`hardwareBridge.roadmapBoundary` 会把“当前已完成事件桥和 action 合同、后续物理驱动仍是可选 adapter”的边界暴露到公开证据 API；`frost_pi_event_adapter_smoke.py` 会离线验证 action 合同、CLI JSONL 输出和私密哈希拦截。
+
+### 硬件节点服务回执边界
+
+PPT 第 31 页提到“硬件节点服务”可以成为未来分成场景，但这个点必须和第 33-34 页的硬件克制判断同时成立。仓库里用 `hardwareBridge.serviceBoundary` 固定这条线：Frost Edge Node 当前是 physical experience and developer-kit endpoint；未来如果收费，也只能走 Agent Plaza 服务回执，不把硬件本身写成收入优先路径。
+
+| 边界项 | 允许 | 禁止 |
+|---|---|---|
+| 未来回执形态 | `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)` | 绕过 Agent Plaza 的硬件收入承诺 |
+| 可服务内容 | `chain_dispatch` 播报、`music_now_playing` 房间存在感、用户明确同意后的每日记忆/播客摘要 | 私人画像导出、钱包签名、原始照片/票据上传、量产收入预测 |
+| 与 Profile Confidence 的关系 | 只把公开事件结果哈希、用户同意和服务版本作为 L4 外部回执 | 不公开原始记录、不把设备行为当成用户信用评分 |
+
+因此“硬件节点服务”不是新增一条商业主线，而是 Agent Plaza 的一个可选服务类型：先有 manifest / 权限 / 安装，再有公开事件和设备动作，最后才可能有服务回执。
 
 ### Pi 侧技能路由
 

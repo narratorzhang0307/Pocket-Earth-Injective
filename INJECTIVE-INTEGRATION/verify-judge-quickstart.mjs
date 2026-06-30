@@ -111,6 +111,8 @@ for (const snippet of [
   'reviewEntrypoints.hardware-bridge',
   'deliveryChecklist.frost-edge-node',
   'hardwareBridge.marketBoundary',
+  'hardwareBridge.serviceBoundary',
+  'hardwareNodeServiceReceipt',
   'marketLandscapeBoundary',
   'commercialFlywheel',
   'preferredPath',
@@ -290,6 +292,7 @@ for (const snippet of [
   'A free example agent can be reviewed, installed, shown in My Agents, and run',
   'Business center is Agent Plaza',
   'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
+  'future hardware node services stay Agent Plaza service receipts',
   'marketLandscapeBoundary is the machine-readable field',
   'Long-term use -> trusted profile -> Agent Plaza market',
   'Pure social monetization is not the core path',
@@ -410,6 +413,7 @@ assertFocusIncludes('judge step 6', evidence.recordingOrder[5], 'allSucceeded')
 assertFocusIncludes('judge step 6', evidence.recordingOrder[5], `chainId ${INJECTIVE_TESTNET_CHAIN_ID}`)
 assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'Frost Edge Node')
 assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'chain_dispatch')
+assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'hardwareBridge.serviceBoundary')
 assertFocusIncludes('judge step 7', evidence.recordingOrder[6], 'privacyBoundary.hardware')
 assertFocusIncludes('judge step 8', evidence.recordingOrder[7], 'agent-plaza')
 assertFocusIncludes('judge step 8', evidence.recordingOrder[7], 'hardware proof API')

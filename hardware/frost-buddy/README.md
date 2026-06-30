@@ -13,6 +13,7 @@ Frost Edge Node 让 Frost 从屏幕里走到桌面上：music-agent 可以被实
 | 体验差异化 | 有声音、小屏幕、按钮或灯效的 Frost，比网页里的 bot 更容易被用户记住 |
 | 开发套件 | Raspberry Pi / BLE / serial / MQTT / TTS 都可以作为可替换 adapter，先把事件合同跑稳 |
 | 公开事件端点 | 只消费 `music_now_playing` 和 `chain_dispatch`，把 Pocket Earth 与 Injective 的公开证据带到房间里 |
+| Agent Plaza 服务回执前置层 | 如果未来出现硬件节点服务，必须先是公开事件和用户同意，再进入 `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)`，不能绕过 Agent Plaza 单独讲硬件收入 |
 
 ## 硬件原理
 
@@ -123,6 +124,19 @@ PPT 的硬件结论是：实体节点，不是重资本硬件路线。Frost Edge
 1. **为什么选 Raspberry Pi**：Raspberry Pi 官方投资者页披露累计出货超过 6700 万台，说明它是足够成熟的原型与开发板平台；2024 IPO 文件也披露过超过 6000 万台的历史出货。Pocket Earth 用树莓派是为了降低原型风险，不是用这些数字预测硬件销量。
 2. **为什么不把硬件当主收入**：消费级 AI 硬件风险高，Pocket Earth 不把 Frost Buddy 写成量产产品。硬件先服务于 demo、开发套件、房间里的存在感和 agent 体验差异。
 3. **真正的商业主线**：长期使用沉淀可信画像；可信画像进入 Agent Plaza；开发者发布符合空间逻辑的 agent；安装、调用、评价和未来可选付费在 Injective 上留下回执。硬件可以成为某些 agent 的高级端点，但不是平台成立的前提。
+
+### 硬件节点服务边界
+
+`hardwareBridge.serviceBoundary` 把这条商业边界做成公开证据字段：Frost Edge Node 当前只是 physical experience and developer-kit endpoint。未来如果要让硬件节点服务收费，只能作为 Agent Plaza 服务回执出现，例如 `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)`。
+
+| 可以成为硬件节点服务 | 不能成为硬件节点服务 |
+|---|---|
+| `chain_dispatch` 链上见闻播报 | 私人画像导出 |
+| `music_now_playing` 房间存在感 | 钱包签名或支付确认 |
+| 用户明确同意后的每日记忆 / 播客摘要 | 原始照片、票据、心情和精确坐标上传 |
+| 公开事件的设备动作结果哈希 | 量产硬件收入承诺 |
+
+这意味着硬件即使进入收入闭环，也只通过 Agent Plaza 服务回执和 Profile Confidence 回流，不改变“不把硬件当现阶段营收支柱”的判断。
 
 可引用来源：
 

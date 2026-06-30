@@ -188,6 +188,23 @@ export const HARDWARE_BRIDGE_PROOF = {
     businessPath: 'Pocket Earth revenue path stays with trusted profiles and Agent Plaza installs, calls, reviews, and optional payment receipts.',
     riskLine: 'No mass-production, wallet-signing, or hardware revenue projection is claimed by this proof.',
   },
+  serviceBoundary: {
+    key: 'frost-edge-node-service-boundary',
+    currentRole: 'physical experience and developer-kit endpoint for public Pocket Earth events',
+    futureReceiptSlot: 'hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)',
+    allowedServices: [
+      'chain_dispatch narration',
+      'music_now_playing room presence',
+      'daily memory or podcast summary after explicit user opt-in',
+    ],
+    notAllowed: [
+      'private profile export',
+      'wallet signing',
+      'raw photo or ticket upload',
+      'mass-production revenue claim',
+    ],
+    agentPlazaTieIn: 'If hardware node services become monetized, they are sold as Agent Plaza service receipts, not as a hardware-revenue-first path.',
+  },
   roadmapBoundary: {
     current: 'JSONL public-event bridge, Pi skill router, and transport-neutral state/tts/display action adapter are implemented and smoke-tested.',
     pendingAdapters: ['BLE transport', 'local TTS driver', 'display driver', 'MQTT or serial bridge'],
@@ -424,7 +441,7 @@ export const DELIVERY_CHECKLIST = [
     key: 'frost-edge-node',
     requirement: 'Frost Edge Node hardware bridge stays demonstrable and privacy-bounded',
     status: 'ready-prototype',
-    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router and Pi event adapter state/tts/display action contract, without private keys or raw profile data; hardwareBridge.piAdapter, hardwareBridge.marketBoundary, and hardwareBridge.roadmapBoundary keep it framed as a prototype/developer-kit endpoint while BLE/TTS/display drivers stay optional and the business path stays with Agent Plaza installs, calls, reviews, and optional receipts.',
+    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router and Pi event adapter state/tts/display action contract, without private keys or raw profile data; hardwareBridge.piAdapter, hardwareBridge.marketBoundary, hardwareBridge.serviceBoundary, and hardwareBridge.roadmapBoundary keep it framed as a prototype/developer-kit endpoint while BLE/TTS/display drivers stay optional and any future hardware-node service monetization stays inside Agent Plaza service receipts.',
     localCheck: 'npm run verify:hardware',
     linkKey: 'hardware-bridge',
   },

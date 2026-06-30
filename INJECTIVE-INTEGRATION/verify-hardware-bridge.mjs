@@ -111,6 +111,12 @@ assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBo
 assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertTrue('hardware proof market business path', String(hardwareProof.hardwareBridge?.marketBoundary?.businessPath || '').includes('Agent Plaza'))
 assertTrue('hardware proof market risk line', String(hardwareProof.hardwareBridge?.marketBoundary?.riskLine || '').includes('No mass-production'))
+assertEqual('hardware proof service boundary key', hardwareProof.hardwareBridge?.serviceBoundary?.key, HARDWARE_BRIDGE_PROOF.serviceBoundary.key)
+assertTrue('hardware proof service boundary current role', String(hardwareProof.hardwareBridge?.serviceBoundary?.currentRole || '').includes('developer-kit'))
+assertTrue('hardware proof service boundary receipt slot', String(hardwareProof.hardwareBridge?.serviceBoundary?.futureReceiptSlot || '').includes('hardwareNodeServiceReceipt'))
+assertListIncludes('hardware proof service allowed services', hardwareProof.hardwareBridge?.serviceBoundary?.allowedServices, HARDWARE_BRIDGE_PROOF.serviceBoundary.allowedServices)
+assertListIncludes('hardware proof service forbidden services', hardwareProof.hardwareBridge?.serviceBoundary?.notAllowed, ['wallet signing', 'private profile export', 'mass-production revenue claim'])
+assertTrue('hardware proof service ties to Agent Plaza receipts', String(hardwareProof.hardwareBridge?.serviceBoundary?.agentPlazaTieIn || '').includes('Agent Plaza service receipts'))
 assertEqual('hardware proof roadmap current', hardwareProof.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertListIncludes('hardware proof roadmap pending adapters', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
 assertTrue('hardware proof roadmap integration rule', String(hardwareProof.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
@@ -145,6 +151,8 @@ for (const snippet of [
   '开发套件',
   '体验差异化',
   '市场边界',
+  'Agent Plaza 服务回执',
+  'hardwareNodeServiceReceipt',
   'Raspberry Pi 事件适配分支保持解耦',
   '真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层',
   'frost_pi_event_adapter.py',

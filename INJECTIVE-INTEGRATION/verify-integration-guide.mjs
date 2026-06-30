@@ -273,6 +273,8 @@ for (const phrase of [
   'publicOnly: true',
   'get-hardware-bridge-proof',
   'hardwareBridge.marketBoundary',
+  'hardwareBridge.serviceBoundary',
+  'hardwareNodeServiceReceipt',
   'hardwareBridge.roadmapBoundary',
   'marketLandscapeBoundary',
   'roadmapSafetyBoundary',
@@ -291,6 +293,7 @@ for (const phrase of [
 for (const phrase of [
   '硬件证明要当作独立镜头',
   '放在钱包时间线之后、plaza smoke 之前',
+  'hardwareBridge.serviceBoundary',
   'hardwareBridge.roadmapBoundary',
   'roadmapSafetyBoundary',
   'privacyBoundary.hardware',
@@ -314,6 +317,7 @@ for (const phrase of [
   '未来 Profile Checkpoint',
   'Frost Edge Node 只消费公开 JSONL 事件',
   'Agent Plaza 承接安装、调用、评价和可选付费回执',
+  '未来硬件节点服务也只能走 Agent Plaza 服务回执',
   '不走代币优先或重资本硬件路线',
 ]) {
   assertTrue(`DEMO-SCRIPT keeps PPT story spine: ${phrase}`, demoScript.includes(phrase))
@@ -354,6 +358,8 @@ for (const phrase of [
   'raw memories never go on-chain',
   'only identity / versions / receipts / selective proofs go on-chain',
   'Frost Edge Node remains a developer-kit / experience layer',
+  'hardwareBridge.serviceBoundary',
+  'hardwareNodeServiceReceipt',
   'hardwareBridge.roadmapBoundary',
   'roadmapSafetyBoundary',
   '真实 BLE/TTS/display 驱动仍留在可选 adapter 层',
