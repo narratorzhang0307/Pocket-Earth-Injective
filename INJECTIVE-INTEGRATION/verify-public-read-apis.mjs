@@ -104,8 +104,8 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.marketBoundary'],
-    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'current GitHub commit anchor'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary'],
+    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
     expectedFields: ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'],

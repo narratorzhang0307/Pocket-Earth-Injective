@@ -58,8 +58,8 @@ export const INTEGRATION_ALIGNMENT = [
   {
     key: 'agent-physical-world',
     integrationSignal: 'Agent x physical-world product surface',
-    projectSignal: 'Frost Buddy keeps a Raspberry Pi / BLE / TTS event bridge so music-agent events and Injective chain dispatches can be spoken by a physical Frost device.',
-    evidence: 'hardware/frost-buddy emits safe JSONL events and the Pi skill router maps chain_dispatch and music requests without private keys.',
+    projectSignal: 'Frost Buddy keeps a Raspberry Pi / BLE / TTS public-event bridge plus a decoupled Pi adapter so music-agent events and Injective chain dispatches become state/tts/display actions for a physical Frost device.',
+    evidence: 'hardware/frost-buddy emits safe JSONL events; the Pi skill router maps chain_dispatch and music requests; the Pi event adapter outputs state/tts/display actions without private keys.',
     machineCheck: 'npm run verify:hardware',
   },
   {
@@ -251,7 +251,7 @@ export const JUDGE_RUNBOOK = {
         '/api/injective?tool=get-hardware-bridge-proof',
       ],
       verifies: 'The single-agent proof, builder-scoped fleet, RPC wallet timeline, and Frost Edge Node bridge proof are read-only and publicOnly.',
-      focus: ['agent proof card', `builderCode=${BUILDER_CODE}`, 'wallet summary allSucceeded', 'hardwareBridge public JSONL boundary'],
+      focus: ['agent proof card', `builderCode=${BUILDER_CODE}`, 'wallet summary allSucceeded', 'hardwareBridge.piAdapter state/tts/display boundary'],
       localCheck: 'npm run verify:public-apis',
     },
     {
@@ -312,7 +312,7 @@ export const DELIVERY_CHECKLIST = [
     key: 'frost-edge-node',
     requirement: 'Frost Edge Node hardware bridge stays demonstrable and privacy-bounded',
     status: 'ready-prototype',
-    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router, without private keys or raw profile data; hardwareBridge.marketBoundary keeps it framed as a prototype/developer-kit endpoint while the business path stays with Agent Plaza installs, calls, reviews, and optional receipts.',
+    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router and Pi event adapter state/tts/display action contract, without private keys or raw profile data; hardwareBridge.piAdapter and hardwareBridge.marketBoundary keep it framed as a prototype/developer-kit endpoint while the business path stays with Agent Plaza installs, calls, reviews, and optional receipts.',
     localCheck: 'npm run verify:hardware',
     linkKey: 'hardware-bridge',
   },

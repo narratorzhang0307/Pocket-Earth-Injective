@@ -197,6 +197,7 @@ assertEqual('recording step 7 path', hardwareProofApi.path, evidence.verificatio
 assertFocusIncludes('recording step 7', hardwareProofApi, 'Frost Edge Node')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'chain_dispatch')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'music_now_playing')
+assertFocusIncludes('recording step 7', hardwareProofApi, 'hardwareBridge.piAdapter')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'hardwareBridge.marketBoundary')
 assertFocusIncludes('recording step 7', hardwareProofApi, 'privacyBoundary.hardware')
 const hardwarePayload = await callInjectiveApi(hardwareProofApi.path)

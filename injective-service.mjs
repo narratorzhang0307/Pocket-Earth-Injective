@@ -291,8 +291,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:public-proof',
           purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, and privacy boundary.',
-          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.marketBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
-          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'current GitHub commit anchor'],
+          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
+          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'current GitHub commit anchor'],
         },
         {
           key: 'agent-proof-api',
@@ -500,6 +500,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
               'Frost Edge Node proof card shows Raspberry Pi / BLE / TTS public-event bridge',
               'chain_dispatch reads the builderCode=pocket-earth fleet without wallet signing',
               'Pi skill router is limited to music_now_playing and chain_dispatch',
+              'hardwareBridge.piAdapter exposes state/tts/display actions without binding BLE or TTS drivers into the main app',
               'hardwareBridge.marketBoundary keeps Frost Edge Node framed as prototype and developer-kit endpoint',
               'privacyBoundary.hardware keeps private keys, raw profile text, and precise locations off device',
             ],
