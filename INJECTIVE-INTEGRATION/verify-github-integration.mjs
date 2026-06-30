@@ -219,6 +219,22 @@ for (const phrase of [
 ]) {
   assertTrue(`remote README keeps architecture spine ${phrase}`, remoteReadme.includes(phrase))
 }
+for (const phrase of [
+  '链上隐私红线速查',
+  'data:application/json;base64',
+  '不依赖 Pinata / IPFS',
+  'PUBLIC_K=5',
+  'TOPTAGS_CAP=12',
+  'TagCount.n',
+  '只 `emit Handshake` 事件',
+  '不写 storage',
+  'score <= 100',
+  '禁止 `agentA == agentB` 自握手',
+  '服务端 `.env` 私钥',
+  '前端不持密钥',
+]) {
+  assertTrue(`remote README keeps privacy guard ${phrase}`, remoteReadme.includes(phrase))
+}
 assertTrue('remote integration guide names ERC-8004', remoteIntegration.includes('ERC-8004'))
 assertTrue('remote integration guide names wallet timeline', remoteIntegration.includes('get-wallet-timeline'))
 assertTrue('remote integration guide names registryMintEvents', remoteIntegration.includes('registryMintEvents'))

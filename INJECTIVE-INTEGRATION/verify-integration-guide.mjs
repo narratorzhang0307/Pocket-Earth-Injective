@@ -330,6 +330,22 @@ for (const phrase of [
 ]) {
   assertTrue(`README evidence guide includes ${phrase}`, readme.includes(phrase))
 }
+for (const phrase of [
+  '链上隐私红线速查',
+  'data:application/json;base64',
+  '不依赖 Pinata / IPFS',
+  'PUBLIC_K=5',
+  'TOPTAGS_CAP=12',
+  'TagCount.n',
+  '只 `emit Handshake` 事件',
+  '不写 storage',
+  'score <= 100',
+  '禁止 `agentA == agentB` 自握手',
+  '服务端 `.env` 私钥',
+  '前端不持密钥',
+]) {
+  assertTrue(`README evidence guide keeps privacy guard ${phrase}`, readme.includes(phrase))
+}
 
 console.log('\nREADME Injective network integration guide')
 for (const phrase of [
