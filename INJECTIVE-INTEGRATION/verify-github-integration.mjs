@@ -249,6 +249,8 @@ assertTrue('remote integration guide names judge runbook', remoteIntegration.inc
 assertTrue('remote integration guide names public read API manifest', remoteIntegration.includes('publicReadApis'))
 assertTrue('remote integration guide names public API guard', remoteIntegration.includes('npm run verify:public-apis'))
 assertTrue('remote integration guide names integration guide guard', remoteIntegration.includes('npm run verify:integration-guide'))
+assertTrue('remote integration guide names direct handshake verifier', remoteIntegration.includes('npm run verify:handshake'))
+assertTrue('remote integration guide names handshake bytecode verifier', remoteIntegration.includes('npm run verify:handshake-contract'))
 for (const phrase of [
   '## 叙事骨架',
   '## 最终整合版内容映射',

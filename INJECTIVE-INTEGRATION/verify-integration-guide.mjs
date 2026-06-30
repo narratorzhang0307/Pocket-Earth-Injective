@@ -514,6 +514,8 @@ const documentedScripts = [...new Set(
   [...runbook.matchAll(/npm run (verify:[a-z0-9:-]+)/g)].map((match) => match[1]),
 )]
 assertTrue('runbook includes verify:integration-guide', documentedScripts.includes('verify:integration-guide'))
+assertTrue('runbook includes verify:handshake', documentedScripts.includes('verify:handshake'))
+assertTrue('runbook includes verify:handshake-contract', documentedScripts.includes('verify:handshake-contract'))
 assertEqual(
   'package script verify:integration-guide',
   packageJson.scripts?.['verify:integration-guide'],

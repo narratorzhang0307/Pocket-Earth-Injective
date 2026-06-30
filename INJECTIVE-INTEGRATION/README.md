@@ -191,6 +191,8 @@ npm run verify:wallet
 npm run verify:source
 npm run verify:registry
 npm run verify:agent-proof
+npm run verify:handshake
+npm run verify:handshake-contract
 npm run verify:plaza-flow
 npm run verify:nova-alignment
 npm run verify:delivery
