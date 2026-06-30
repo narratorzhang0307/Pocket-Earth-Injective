@@ -12,6 +12,7 @@ import {
   LIVE_DEMO_URL,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
+  ROADMAP_SAFETY_BOUNDARY,
   SOCIAL_HANDSHAKE,
   SOCIAL_HANDSHAKE_PROOF,
   INTEGRATION_REPOSITORY_URL,
@@ -167,8 +168,14 @@ for (const snippet of [
   'Agent Plaza receipts',
   'Profile Confidence',
   'P4 Frost Network',
+  'roadmapSafetyBoundary',
+  'productRoadmap',
+  'chainRoadmap',
+  'alwaysOn',
+  'confirm:true',
   'Raw memories never go on-chain',
   'only identity, versions, receipts, and selective proofs go on-chain',
+  'no hardware wallet signing',
   'Profile Confidence Fast Check',
   'Profile Confidence is not a credit score',
   'not a judgment about a person',
@@ -239,6 +246,24 @@ assertEqual('evidence public read fleet path', evidence.publicReadApis.find((ite
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('evidence public read hardware path', evidence.publicReadApis.find((item) => item.key === 'hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
 assertTrue('quickstart names hardware proof API', quickstart.includes('/api/injective?tool=get-hardware-bridge-proof'))
+assertEqual('evidence roadmap safety key', evidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
+assertTrue('evidence roadmap safety always-on array', Array.isArray(evidence.roadmapSafetyBoundary?.alwaysOn))
+assertTrue(
+  'evidence roadmap safety always-on boundaries match constants',
+  ROADMAP_SAFETY_BOUNDARY.alwaysOn.every((boundary) => evidence.roadmapSafetyBoundary.alwaysOn.includes(boundary)),
+)
+assertTrue(
+  'evidence roadmap safety P2 keeps learned skills declarative',
+  evidence.roadmapSafetyBoundary?.productRoadmap?.some((item) => item.phase === 'P2 self-learning' && item.boundary.includes('never execute arbitrary code')),
+)
+assertTrue(
+  'evidence roadmap safety NOW requires confirm writes',
+  evidence.roadmapSafetyBoundary?.chainRoadmap?.some((item) => item.phase === 'NOW chain identity and handshake' && item.boundary.includes('confirm:true')),
+)
+assertTrue(
+  'evidence roadmap safety P4 keeps hardware from signing',
+  evidence.roadmapSafetyBoundary?.chainRoadmap?.some((item) => item.phase === 'P4 Frost Network' && item.boundary.includes('devices do not sign wallets')),
+)
 for (const snippet of [
   'public-plaza` reads chain identities',
   'agent-plaza` handles manifest review',

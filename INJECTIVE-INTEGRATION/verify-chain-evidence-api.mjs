@@ -19,6 +19,7 @@ import {
   REVIEW_BRIEF,
   REVIEW_CHECKLIST,
   REVIEW_LINKS,
+  ROADMAP_SAFETY_BOUNDARY,
   SOCIAL_HANDSHAKE,
   SOCIAL_HANDSHAKE_PROOF,
   DELIVERY_CHECKLIST,
@@ -93,8 +94,8 @@ assertEqual('public read agent proof API path', publicReadApiByKey.get('agent-pr
 assertEqual('public read fleet API path', publicReadApiByKey.get('agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=47`)
 assertEqual('public read wallet API path', publicReadApiByKey.get('wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('public read hardware API path', publicReadApiByKey.get('hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
-assertListIncludes('public read chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'recordingOrder[].evidenceFocus'])
-assertListIncludes('public read chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract'])
+assertListIncludes('public read chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('public read chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'roadmap safety boundary'])
 assertListIncludes('public read agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'])
 assertListIncludes('public read agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'single-card sourceControl anchor'])
 assertListIncludes('public read fleet expected fields', publicReadApiByKey.get('agent-fleet-api')?.expectedFields, ['agents[].agentId', 'agents[].owner', 'agents[].wallet', 'agents[].builderCode', 'agents[].identityTuple', 'agents[].card', 'agents[44-47].card.tags', 'agents[44-47].card.metadata.builderCode', 'total', 'offset', 'limit', 'sdk'])
@@ -157,6 +158,12 @@ assertEqual('hardware bridge roadmap current', evidence.hardwareBridge.roadmapBo
 assertListIncludes('hardware bridge roadmap pending adapters', evidence.hardwareBridge.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
 assertTrue('hardware bridge roadmap integration rule', String(evidence.hardwareBridge.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
 assertTrue('hardware bridge roadmap P4 framing', String(evidence.hardwareBridge.roadmapBoundary?.p4Framing || '').includes('not a mass-produced revenue product'))
+assertEqual('roadmap safety key', evidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
+assertEqual('roadmap safety product roadmap count', evidence.roadmapSafetyBoundary?.productRoadmap?.length, ROADMAP_SAFETY_BOUNDARY.productRoadmap.length)
+assertEqual('roadmap safety chain roadmap count', evidence.roadmapSafetyBoundary?.chainRoadmap?.length, ROADMAP_SAFETY_BOUNDARY.chainRoadmap.length)
+assertListIncludes('roadmap safety always-on boundaries', evidence.roadmapSafetyBoundary?.alwaysOn, ROADMAP_SAFETY_BOUNDARY.alwaysOn)
+assertTrue('roadmap safety includes P2 no arbitrary code', evidence.roadmapSafetyBoundary?.productRoadmap?.some((item) => item.phase === 'P2 self-learning' && item.boundary.includes('never execute arbitrary code')))
+assertTrue('roadmap safety includes P4 no signing', evidence.roadmapSafetyBoundary?.chainRoadmap?.some((item) => item.phase === 'P4 Frost Network' && item.boundary.includes('devices do not sign wallets')))
 assertTrue('review links array', Array.isArray(evidence.reviewLinks))
 assertEqual('review links count', evidence.reviewLinks.length, REVIEW_LINKS.length)
 assertEqual('review link first url', evidence.reviewLinks[0]?.url, scanUrlForAgent(43))

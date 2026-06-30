@@ -9,6 +9,7 @@ import {
   INJECTIVE_TESTNET_CHAIN_ID,
   PROOF_OWNER,
   REGISTRY_MINT_EVENTS,
+  ROADMAP_SAFETY_BOUNDARY,
   INTEGRATION_REPOSITORY_URL,
   TIMELINE_EVENTS,
   scanUrlForAgent,
@@ -104,8 +105,8 @@ const expectedPaths = new Map([
 ])
 const expectedGuidance = new Map([
   ['chain-evidence-api', {
-    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary'],
-    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'current GitHub commit anchor'],
+    expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'roadmapSafetyBoundary'],
+    judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'roadmap safety boundary', 'current GitHub commit anchor'],
   }],
   ['agent-proof-api', {
     expectedFields: ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'sourceControl'],
@@ -171,6 +172,10 @@ assertEqual('chain evidence hardwareBridge market source', chainEvidence.hardwar
 assertEqual('chain evidence hardwareBridge roadmap current', chainEvidence.hardwareBridge.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertListIncludes('chain evidence hardwareBridge roadmap pending adapters', chainEvidence.hardwareBridge.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
 assertTrue('chain evidence hardwareBridge roadmap integration rule', String(chainEvidence.hardwareBridge.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
+assertEqual('chain evidence roadmap safety key', chainEvidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
+assertListIncludes('chain evidence roadmap safety always-on boundaries', chainEvidence.roadmapSafetyBoundary?.alwaysOn, ROADMAP_SAFETY_BOUNDARY.alwaysOn)
+assertTrue('chain evidence roadmap safety P2 no arbitrary code', chainEvidence.roadmapSafetyBoundary?.productRoadmap?.some((item) => item.phase === 'P2 self-learning' && item.boundary.includes('never execute arbitrary code')))
+assertTrue('chain evidence roadmap safety P4 no signing', chainEvidence.roadmapSafetyBoundary?.chainRoadmap?.some((item) => item.phase === 'P4 Frost Network' && item.boundary.includes('devices do not sign wallets')))
 assertTrue('chain evidence carries agent proof rows', Array.isArray(chainEvidence.agents))
 assertEqual('chain evidence agent proof row count', chainEvidence.agents.length, FLEET_AGENTS.length)
 for (const expected of FLEET_AGENTS) {

@@ -443,6 +443,8 @@ PPT 第 38-39 页有两条路线：一条是 Pocket Earth 产品内核从 P0 到
 
 安全边界保持不变：主动能力只建议不偷改，skill 只走声明式路由不执行任意代码，测试网写链必须服务端私钥、合约地址和 `confirm:true` 同时具备；原始记忆不上链，硬件不签名。
 
+`roadmapSafetyBoundary` 会把这段 Roadmap 固定进 `/api/injective?tool=get-chain-evidence`：`productRoadmap` 对应 P0/P1/P2，`chainRoadmap` 对应 NOW/P1/P2/P3/P4，`alwaysOn` 固定 suggest-only、declarative skills、`confirm:true` writes、no raw memories on-chain、no hardware wallet signing 五条永远有效的安全线。
+
 ## 15. Pocket Earth 收尾交付：现在能打开，不是纸面方案
 
 PPT 第 40-41 页把整套表达收束成一句话：Pocket Earth 不是再做一个 Web3 身份系统，而是补上 AI Social 里最缺的一层——AI 分身公开画像的来源证明。空间记忆仍在 Pocket Earth，时间顺序和公开回执由 Injective 见证。

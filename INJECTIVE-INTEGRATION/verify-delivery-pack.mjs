@@ -9,6 +9,7 @@ import {
   HARDWARE_BRIDGE_PROOF,
   JUDGE_QUICKSTART_URL,
   LIVE_DEMO_URL,
+  ROADMAP_SAFETY_BOUNDARY,
   DELIVERY_CHECKLIST,
   REVIEW_ENTRYPOINTS,
   INTEGRATION_REPOSITORY_URL,
@@ -112,6 +113,21 @@ assertTrue('evidence hardware Pi adapter exposes tts action', evidence.hardwareB
 assertTrue('evidence hardware Pi adapter exposes display action', evidence.hardwareBridge?.piAdapter?.actions?.includes('display'))
 assertEqual('evidence hardware roadmap current', evidence.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertTrue('evidence hardware roadmap keeps optional adapters', String(evidence.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
+assertEqual('evidence roadmap safety key', evidence.roadmapSafetyBoundary?.key, ROADMAP_SAFETY_BOUNDARY.key)
+assertTrue('evidence roadmap safety product roadmap array', Array.isArray(evidence.roadmapSafetyBoundary?.productRoadmap))
+assertTrue('evidence roadmap safety chain roadmap array', Array.isArray(evidence.roadmapSafetyBoundary?.chainRoadmap))
+assertTrue(
+  'evidence roadmap safety always-on boundaries match constants',
+  ROADMAP_SAFETY_BOUNDARY.alwaysOn.every((boundary) => evidence.roadmapSafetyBoundary?.alwaysOn?.includes(boundary)),
+)
+assertTrue(
+  'evidence roadmap safety P2 keeps learned skills declarative',
+  evidence.roadmapSafetyBoundary?.productRoadmap?.some((item) => item.phase === 'P2 self-learning' && item.boundary.includes('never execute arbitrary code')),
+)
+assertTrue(
+  'evidence roadmap safety P4 keeps hardware from signing',
+  evidence.roadmapSafetyBoundary?.chainRoadmap?.some((item) => item.phase === 'P4 Frost Network' && item.boundary.includes('devices do not sign wallets')),
+)
 
 console.log('\nDelivery checklist')
 assertTrue('deliveryChecklist array', Array.isArray(checklist))
@@ -161,6 +177,7 @@ assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATI
 assertTrue('README mentions judgeRunbook', readme.includes('judgeRunbook'))
 assertTrue('CHAIN-EVIDENCE mentions review entrypoints', chainEvidence.includes('reviewEntrypoints'))
 assertTrue('CHAIN-EVIDENCE mentions delivery checklist', chainEvidence.includes('deliveryChecklist'))
+assertTrue('CHAIN-EVIDENCE mentions roadmap safety boundary', chainEvidence.includes('roadmapSafetyBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions judge quickstart', chainEvidence.includes('JUDGE-QUICKSTART.md'))
 assertTrue('CHAIN-EVIDENCE mentions judgeRunbook', chainEvidence.includes('judgeRunbook'))
 assertTrue('CHAIN-EVIDENCE mentions Profile Chain roadmap proof', chainEvidence.includes('## 公开证据如何支撑 Profile Chain 路线图'))
@@ -179,8 +196,10 @@ assertTrue('CHAIN-EVIDENCE maps Frost Network boundary', chainEvidence.includes(
 assertTrue('DEMO-SCRIPT mentions delivery check', demoScript.includes('npm run verify:delivery'))
 assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions judgeRunbook', demoScript.includes('judgeRunbook'))
+assertTrue('DEMO-SCRIPT mentions roadmap safety boundary', demoScript.includes('roadmapSafetyBoundary'))
 assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
 assertTrue('README links hardware bridge', readme.includes('hardware/frost-buddy/'))
+assertTrue('README mentions roadmap safety boundary', readme.includes('roadmapSafetyBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions hardware check', chainEvidence.includes('npm run verify:hardware'))
 
 const publicText = JSON.stringify({ links, checklist })

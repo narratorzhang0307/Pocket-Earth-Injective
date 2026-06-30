@@ -17,6 +17,7 @@ import {
   REGISTRY_MINT_EVENTS,
   REGISTRY_MINT_ZERO_ADDRESS,
   REVIEW_LINKS,
+  ROADMAP_SAFETY_BOUNDARY,
   SOCIAL_HANDSHAKE,
   SOCIAL_HANDSHAKE_PROOF,
   INTEGRATION_REPOSITORY_URL,
@@ -157,6 +158,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'reviewBrief',
   'reviewChecklist',
   'reviewLinks',
+  'roadmapSafetyBoundary',
   'sourceControl',
   'deliveryChecklist',
   'reviewEntrypoints',
@@ -215,6 +217,15 @@ assertListIncludes('hardwareBridge roadmap pending adapters', evidence.hardwareB
 assertTrue('hardwareBridge roadmap integration rule', String(evidence.hardwareBridge.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
 assertTrue('hardwareBridge roadmap P4 framing', String(evidence.hardwareBridge.roadmapBoundary?.p4Framing || '').includes('not a mass-produced revenue product'))
 assertEqual('hardwareBridge local verification', evidence.hardwareBridge.localVerification, 'npm run verify:hardware')
+assertTrue('roadmapSafetyBoundary object', !!evidence.roadmapSafetyBoundary && typeof evidence.roadmapSafetyBoundary === 'object')
+assertEqual('roadmapSafetyBoundary key', evidence.roadmapSafetyBoundary.key, ROADMAP_SAFETY_BOUNDARY.key)
+assertEqual('roadmapSafetyBoundary product roadmap count', evidence.roadmapSafetyBoundary.productRoadmap?.length, ROADMAP_SAFETY_BOUNDARY.productRoadmap.length)
+assertEqual('roadmapSafetyBoundary chain roadmap count', evidence.roadmapSafetyBoundary.chainRoadmap?.length, ROADMAP_SAFETY_BOUNDARY.chainRoadmap.length)
+assertListIncludes('roadmapSafetyBoundary alwaysOn', evidence.roadmapSafetyBoundary.alwaysOn, ROADMAP_SAFETY_BOUNDARY.alwaysOn)
+assertTrue('roadmapSafetyBoundary P2 suggestion boundary', evidence.roadmapSafetyBoundary.productRoadmap?.some((item) => item.phase === 'P2 self-learning' && item.boundary.includes('never execute arbitrary code')))
+assertTrue('roadmapSafetyBoundary NOW write boundary', evidence.roadmapSafetyBoundary.chainRoadmap?.some((item) => item.phase === 'NOW chain identity and handshake' && item.boundary.includes('confirm:true')))
+assertTrue('roadmapSafetyBoundary P4 hardware boundary', evidence.roadmapSafetyBoundary.chainRoadmap?.some((item) => item.phase === 'P4 Frost Network' && item.boundary.includes('devices do not sign wallets')))
+assertEqual('roadmapSafetyBoundary local verification', evidence.roadmapSafetyBoundary.localVerification, ROADMAP_SAFETY_BOUNDARY.localVerification)
 assertTrue('sourceControl object', !!evidence.sourceControl && typeof evidence.sourceControl === 'object')
 assertEqual('sourceControl repository', evidence.sourceControl.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('sourceControl branch', evidence.sourceControl.branch, 'main')
@@ -236,8 +247,8 @@ assertEqual('publicReadApis agent proof verification', publicReadApiByKey.get('a
 assertEqual('publicReadApis fleet verification', publicReadApiByKey.get('agent-fleet-api')?.verification, 'node INJECTIVE-INTEGRATION/verify-api-list-agents.mjs')
 assertEqual('publicReadApis wallet verification', publicReadApiByKey.get('wallet-timeline-api')?.verification, 'npm run verify:wallet')
 assertEqual('publicReadApis hardware verification', publicReadApiByKey.get('hardware-bridge-api')?.verification, 'npm run verify:hardware')
-assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'recordingOrder[].evidenceFocus'])
-assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract'])
+assertListIncludes('publicReadApis chain evidence expected fields', publicReadApiByKey.get('chain-evidence-api')?.expectedFields, ['sourceControl', 'judgeRunbook', 'publicReadApis', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.roadmapBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus'])
+assertListIncludes('publicReadApis chain evidence judge focus', publicReadApiByKey.get('chain-evidence-api')?.judgeFocus, ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'roadmap safety boundary'])
 assertListIncludes('publicReadApis agent proof expected fields', publicReadApiByKey.get('agent-proof-api')?.expectedFields, ['agent.agentId', 'agent.owner', 'agent.builderCode', 'agent.mintTransactionHash', 'reviewPath', 'sourceControl'])
 assertListIncludes('publicReadApis agent proof judge focus', publicReadApiByKey.get('agent-proof-api')?.judgeFocus, ['agentId 43 identity', 'owner wallet match', 'mint transaction from ERC-8004 registry'])
 assertListIncludes('publicReadApis fleet expected fields', publicReadApiByKey.get('agent-fleet-api')?.expectedFields, ['agents[].agentId', 'agents[].owner', 'agents[].wallet', 'agents[].builderCode', 'agents[].identityTuple', 'agents[].card', 'agents[44-47].card.tags', 'agents[44-47].card.metadata.builderCode', 'total', 'offset', 'limit', 'sdk'])

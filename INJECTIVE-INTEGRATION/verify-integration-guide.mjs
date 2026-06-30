@@ -146,6 +146,10 @@ for (const phrase of [
   '记忆合并 / 历史检索',
   'NOW 链上身份与握手',
   'P4 Frost Network',
+  'roadmapSafetyBoundary',
+  'productRoadmap',
+  'chainRoadmap',
+  'alwaysOn',
   'Pocket Earth 收尾交付',
   'AI 分身公开画像的来源证明',
   'FROST Chronicle',
@@ -260,6 +264,7 @@ for (const phrase of [
   'get-hardware-bridge-proof',
   'hardwareBridge.marketBoundary',
   'hardwareBridge.roadmapBoundary',
+  'roadmapSafetyBoundary',
 ]) {
   assertTrue(`README network integration guide includes ${phrase}`, readme.includes(phrase))
 }
@@ -276,6 +281,7 @@ for (const phrase of [
   '硬件证明要当作独立镜头',
   '放在钱包时间线之后、plaza smoke 之前',
   'hardwareBridge.roadmapBoundary',
+  'roadmapSafetyBoundary',
   'privacyBoundary.hardware',
 ]) {
   assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
@@ -334,6 +340,7 @@ for (const phrase of [
   'only identity / versions / receipts / selective proofs go on-chain',
   'Frost Edge Node remains a developer-kit / experience layer',
   'hardwareBridge.roadmapBoundary',
+  'roadmapSafetyBoundary',
   '真实 BLE/TTS/display 驱动仍留在可选 adapter 层',
 ]) {
   assertTrue(`PROGRESS keeps current alignment: ${phrase}`, progress.includes(phrase))

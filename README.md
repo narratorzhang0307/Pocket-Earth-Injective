@@ -72,7 +72,7 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 
 | API | 用途 | 看点 |
 |---|---|---|
-| `get-chain-evidence` | 总证据包 | `registryMintEvents`、`registryMintSummary`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`reviewBrief`、`judgeRunbook`、`publicReadApis`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist`、`sourceControl` |
+| `get-chain-evidence` | 总证据包 | `registryMintEvents`、`registryMintSummary`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`hardwareBridge.roadmapBoundary`、`roadmapSafetyBoundary`、`reviewBrief`、`judgeRunbook`、`publicReadApis`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist`、`sourceControl` |
 | `get-agent-proof&agentId=43` | 单 agent 证明卡 | owner、`builderCode`、registry、mint tx、身份页、钱包页、源码锚点 |
 | `list-agents&builderCode=pocket-earth` | 读回 Pocket Earth 身份簇 | `agentId 43–47`、`sdk/total/offset/limit`、`owner/wallet/identityTuple/builderCode`、data URI 名片、`card.tags`、`card.metadata.builderCode` |
 | `get-wallet-timeline` | RPC 复验钱包时间线 | owner、事件数、全部成功、首尾区块/时间、注册到握手的顺序 |
@@ -87,6 +87,8 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 | P2 | Agent Plaza 回执：安装、调用、评价、可选付费都变成可追踪事件 | agent 必须符合空间对象逻辑，不做泛 AI 工具箱 |
 | P3 | Profile Confidence：时间连续性、来源权重、选择性证明、社交佐证共同加权 | 不做“人好坏”评分，只判断公开画像来源可信度 |
 | P4 | Frost Network：硬件节点、播客摘要、链上见闻播报、agent-to-agent service calls | 硬件先是体验差异化与开发套件，不走重资本路线 |
+
+`roadmapSafetyBoundary` 把这张路线图做成公开证据字段：P2 自学能力只建议不偷改，learned skills 只走声明式路由不执行任意代码；NOW 链上写入必须具备服务端私钥、合约地址和 `confirm:true`；P1-P4 只增加身份、版本、回执和选择性证明，原始记忆与硬件签名能力都不进入公开链上路径。
 
 ### 5.1 最终整合版对照与技术深挖
 

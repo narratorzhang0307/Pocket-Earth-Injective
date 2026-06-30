@@ -197,6 +197,70 @@ export const HARDWARE_BRIDGE_PROOF = {
   localVerification: 'npm run verify:hardware',
 }
 
+export const ROADMAP_SAFETY_BOUNDARY = {
+  key: 'pocket-earth-roadmap-safety-boundary',
+  productRoadmap: [
+    {
+      phase: 'P0 core',
+      status: 'done',
+      proof: 'long-term profile, agent registry, and fingerprint cache are implemented as the product memory base',
+      boundary: 'profile updates remain suggestion-led and do not silently rewrite user records',
+    },
+    {
+      phase: 'P1 compatibility',
+      status: 'done',
+      proof: 'provider compatibility, edge-side pre-classification, capability contracts, and health tracking keep the dual-brain stack observable',
+      boundary: 'provider failure degrades through typed fallbacks instead of blocking the app',
+    },
+    {
+      phase: 'P2 self-learning',
+      status: 'in-progress',
+      proof: 'heartbeat suggestion engine, learned skills with safety gates, and real SSE streaming are already represented in docs and smoke checks',
+      boundary: 'active behavior only suggests; learned skills stay declarative routes and never execute arbitrary code',
+    },
+  ],
+  chainRoadmap: [
+    {
+      phase: 'NOW chain identity and handshake',
+      status: 'live',
+      proof: 'agentId 43-47, wallet timeline, SocialHandshake, publicReadApis, and sourceControl are readable on Injective testnet',
+      boundary: 'testnet writes require server-side private key, contract address, and confirm:true',
+    },
+    {
+      phase: 'P1 Profile Checkpoint',
+      status: 'planned',
+      proof: 'profileHash + version + timestamp checkpoint signed by Frost',
+      boundary: 'raw books, films, music, photos, moods, and precise coordinates never go on-chain',
+    },
+    {
+      phase: 'P2 Agent Plaza receipts',
+      status: 'planned',
+      proof: 'manifest, install, call, review, and optional payment receipts can become public proof types',
+      boundary: 'reviewManifest and toManifest keep permissions inspectable before receipts are emitted',
+    },
+    {
+      phase: 'P3 Profile Confidence',
+      status: 'planned',
+      proof: 'time continuity, source weight, selective proof, and social receipts can raise confidence',
+      boundary: 'confidence measures provenance support, not a moral or financial score',
+    },
+    {
+      phase: 'P4 Frost Network',
+      status: 'future',
+      proof: 'Frost Edge Node already proves public JSONL events, Pi router, and state/tts/display adapter actions',
+      boundary: 'hardware remains a developer-kit and experience layer; devices do not sign wallets or read raw profiles',
+    },
+  ],
+  alwaysOn: [
+    'active behavior only suggests and never silently mutates user records',
+    'learned skills stay declarative routes and do not execute arbitrary code',
+    'testnet writes require server-side private key, contract address, and confirm:true',
+    'raw memories never go on-chain; only identity, versions, receipts, and selective proofs do',
+    'hardware reads public JSONL events only and never signs wallet transactions',
+  ],
+  localVerification: 'npm run verify:integration-guide && npm run verify:judge',
+}
+
 export const REVIEW_ENTRYPOINTS = [
   { key: 'judge-quickstart', label: '60-second judge quickstart', type: 'guide', url: JUDGE_QUICKSTART_URL },
   { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: INTEGRATION_REPOSITORY_URL },
