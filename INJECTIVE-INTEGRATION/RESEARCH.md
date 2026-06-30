@@ -4,12 +4,13 @@
 > 凡带 `file:line` 的均为已 clone 源码逐行核对（commit 见各节），非凭 README/记忆。
 > 副本根：`/Users/zhangcheng/Desktop/Pocket-Earth-Injective`（与线上原项目隔离，全程只读）。
 > 集成笔记根：`/Users/zhangcheng/Desktop/Pocket-Earth-Injective/INJECTIVE-INTEGRATION/`
+> 当前事实源：`README.md`、`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`、`INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md` 和五条只读 API；本文是历史研究材料，SDK 的托管能力只作为可选背景，当前公开交付默认使用 data URI Agent Card。
 
 ---
 
 ## 0. 一句话结论
 
-Pocket Earth 已经有一套「FROST 特使带长期口味画像出门社交、夜里回来给报告」的完整叙事壳（`PublicPlazaPage.tsx`），但缺真实对端。Injective 的 **ERC-8004 agent registry**（`@injective/agent-sdk`，纯 viem）恰好把这个洞补上：每个 agent 是一枚 soulbound 身份 NFT + IPFS Agent Card。集成主线 = **Taste Passport（脱敏画像）→ Agent Card → 注册到 testnet → 读 registry 渲染广场/钉地球 → Nightly Chain Dispatch 报告**。私钥风险压到最后、testnet-only，写操作一律过 Boundary（`validator.ts`）。
+Pocket Earth 已经有一套「FROST 特使带长期口味画像出门社交、夜里回来给报告」的完整叙事壳（`PublicPlazaPage.tsx`），但缺真实对端。Injective 的 **ERC-8004 agent registry**（`@injective/agent-sdk`，纯 viem）恰好把这个洞补上：每个 agent 是一枚 soulbound 身份 NFT + `data:application/json;base64` Agent Card。集成主线 = **Taste Passport（脱敏画像）→ Agent Card → 注册到 testnet → 读 registry 渲染广场/钉地球 → Nightly Chain Dispatch 报告**。私钥风险压到最后、testnet-only，写操作一律过 Boundary（`validator.ts`）。
 
 ---
 
@@ -62,7 +63,7 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 - **ValidationRegistry 在 testnet/mainnet 均为 0x0（未部署）** → 验证类功能不可用。
 - explorer(testnet)=`https://testnet.blockscout.injective.network`；faucet=`https://testnet.faucet.injective.network/`。
 
-### 1.8 Storage（上传 card 到 IPFS，可插拔）
+### 1.8 SDK Storage（可选托管，不是当前公开交付依赖）
 `StorageProvider`：`{ uploadJSON(data,name?):Promise<uri>, uploadFile?(content,filename,mimeType):Promise<uri> }`。内置两个：
 - `PinataStorage({jwt})` — 走 `api.pinata.cloud`，返回 `ipfs://{cid}`（`storage/pinata.ts:34-71`）。
 - `CustomUrlStorage(uri)` — **构造入参是裸字符串不是对象**（`storage/custom-url.ts:3-13`），`uploadJSON` 永远返回该固定 URI（不真上传，适合自托管 card.json，比如挂 Pocket Earth 自己的服务器）。

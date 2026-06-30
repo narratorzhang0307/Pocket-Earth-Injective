@@ -1,6 +1,7 @@
 # PLAN.md — Injective × Pocket Earth 融合方案
 
 > 历史方案文档，已按当前 GitHub 交付和最终版 PPT 口径重写：Frost Passport + Agent Plaza + Nightly Chain Dispatch + Frost Edge Node。
+> 阅读顺序：当前事实以 `README.md`、`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`、`INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md` 和五条只读 API 为准；本文只保留方案推演与 P1/P2 边界，不能替代公开证据包。
 > 目标：把已经落地的 Injective 核心集成、公开核验、后续 P1/P2 边界讲清楚。务实可执行，不为 web3 而 web3。
 
 ---
@@ -82,7 +83,7 @@
 | 内容 | 上链? | 形态 | 依据 |
 |---|---|---|---|
 | 用户足迹文本/照片/心情**原文** | ❌ 不上 | 留端侧 | 隐私原文（书 §3.2 判据2）+ profile.ts:4/:7 红线 |
-| **脱敏口味画像**（top-K tag 字符串） | ✅ 上 | Agent Card `description`（IPFS） | 证明性/关系性小数据，可公开名片 |
+| **脱敏口味画像**（top-K tag 字符串） | ✅ 上 | data URI Agent Card 的公开字段 | 证明性/关系性小数据，可公开名片 |
 | profile **内容指纹** | ✅ 上 | Card 版本号（`profileFingerprint`） | 哈希压缩、不可逆推原文（书 L1504） |
 | **足迹存在性凭证**（"某时钉过某点"） | ✅ 可上 | 哈希 + 时间戳（不上坐标/原文） | 存在性证明（书 L3148），P1+ |
 | **agent 身份** | ✅ 上 | soulbound NFT + identityTuple | 陌生人信任基础（书 L1666） |
@@ -140,7 +141,7 @@ ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport 
 
 **P0 可先无私钥跑通的部分**：P0-1/P0-3/P0-5（只读）/P0-6/P0-7/P0-8 都能用 `dryRun:true` 或纯只读先验通；唯 P0-4 真上链需用户私钥。**所以即使用户密钥未到，也能先把整条链路（含读真实 registry）跑出 Demo。**
 
-**P0 所需依赖**：`npm install @injective/agent-sdk viem`（消费方 package.json `"type":"module"`）；env：`INJ_PRIVATE_KEY`/`INJ_NETWORK=testnet`/`PINATA_JWT`(可选)。
+**P0 所需依赖**：`npm install @injective/agent-sdk viem`（消费方 package.json `"type":"module"`）；env：`INJ_PRIVATE_KEY`/`INJ_NETWORK=testnet`。当前公开交付默认使用 data URI 内联名片，无外部托管依赖；未来卡片变大时再评估可选托管。
 
 ### P1 — 真握手上链
 | 产出物 | 验收 | 依赖 |

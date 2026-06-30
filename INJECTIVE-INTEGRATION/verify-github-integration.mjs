@@ -741,6 +741,13 @@ for (const phrase of [
 ]) {
   assertTrue(`remote progress keeps roadmap boundary ${phrase}`, remoteProgress.includes(phrase))
 }
+assertTrue('remote progress marks PLAN and RESEARCH as historical materials', remoteProgress.includes('`INJECTIVE-INTEGRATION/PLAN.md` / `INJECTIVE-INTEGRATION/RESEARCH.md`') && remoteProgress.includes('历史计划与研究材料'))
+assertTrue('remote progress points historical materials at current evidence source', remoteProgress.includes('当前事实以 `README.md`、`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`、`INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md` 和五条只读 API 为准'))
+assertTrue('remote progress keeps data URI Agent Card as current fact', remoteProgress.includes('data URI Agent Card') && remoteProgress.includes('公开证据包'))
+assertTrue('remote plan declares current evidence source before historical plan text', remotePlan.includes('当前事实以 `README.md`、`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`、`INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md` 和五条只读 API 为准'))
+assertTrue('remote plan uses data URI Agent Card wording', remotePlan.includes('data URI Agent Card') && !remotePlan.includes('Agent Card `description`（IPFS）') && !remotePlan.includes('IPFS Agent Card'))
+assertTrue('remote research declares current evidence source before SDK background', remoteResearch.includes('当前事实源：`README.md`、`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`、`INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md` 和五条只读 API'))
+assertTrue('remote research uses data URI Agent Card wording', remoteResearch.includes('data:application/json;base64') && !remoteResearch.includes('IPFS Agent Card'))
 assertTrue('remote hardware README names module subject explicitly', remoteHardware.includes('Frost Edge Node 模块先承担三个角色'))
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
 assertTrue('remote hardware README names hardware service boundary explicitly', remoteHardware.includes('硬件节点服务边界'))
