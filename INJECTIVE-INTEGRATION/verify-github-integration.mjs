@@ -517,6 +517,8 @@ assertTrue('remote demo script names fleet readback', remoteDemo.includes('build
 assertTrue('remote demo script names wallet timeline API', remoteDemo.includes('get-wallet-timeline') && remoteDemo.includes('chainId 1439'))
 assertTrue('remote demo script names wallet timeline summary', remoteDemo.includes('timelineSummary'))
 assertTrue('remote demo script names direct wallet summary', remoteDemo.includes('get-wallet-timeline` 的 `summary`'))
+assertTrue('remote demo script names direct handshake verifier', remoteDemo.includes('npm run verify:handshake') && remoteDemo.includes('agentA/agentB/score/profileHash'))
+assertTrue('remote demo script names handshake bytecode verifier', remoteDemo.includes('npm run verify:handshake-contract') && remoteDemo.includes('creation/runtime bytecode'))
 assertTrue('remote demo script names judge quickstart entrypoint', remoteDemo.includes('reviewEntrypoints') && remoteDemo.includes('npm run verify:judge'))
 assertTrue('remote demo script names public demo video', remoteDemo.includes('reviewEntrypoints.demo-video') && remoteDemo.includes(DEMO_VIDEO_URL))
 assertTrue('remote demo script names judge runbook', remoteDemo.includes('judgeRunbook'))

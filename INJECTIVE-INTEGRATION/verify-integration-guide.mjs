@@ -417,6 +417,18 @@ for (const phrase of [
   assertTrue(`DEMO-SCRIPT keeps PPT story spine: ${phrase}`, demoScript.includes(phrase))
 }
 
+console.log('\nDemo handshake proof guard')
+for (const phrase of [
+  'npm run verify:handshake',
+  'npm run verify:handshake-contract',
+  '真实握手事件',
+  'agentA/agentB/score/profileHash',
+  'SocialHandshake 部署地址',
+  'creation/runtime bytecode',
+]) {
+  assertTrue(`DEMO-SCRIPT keeps direct handshake proof step: ${phrase}`, demoScript.includes(phrase))
+}
+
 console.log('\nProgress document alignment guard')
 for (const phrase of [
   '## 当前状态（2026-06-30）',
