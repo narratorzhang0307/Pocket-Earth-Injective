@@ -119,6 +119,7 @@ const remoteDemo = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/DEMO-SCRIPT
 const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`)
 const remoteProgress = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/PROGRESS.md`)
 const remoteHardware = await fetchText(`${rawBase}/hardware/frost-buddy/README.md`)
+const remoteRaspiReadme = await fetchText(`${rawBase}/hardware/frost-buddy/raspi/README.md`)
 const remotePublicPlaza = await fetchText(`${rawBase}/src/app/components/PublicPlazaPage.tsx`)
 const remoteUserMarks = await fetchText(`${rawBase}/src/app/data/userMarks.ts`)
 const remoteMapFocus = await fetchText(`${rawBase}/src/app/data/mapFocus.ts`)
@@ -600,6 +601,16 @@ assertTrue('remote hardware verifier locks smoke-tested bridge', remoteVerifyHar
 assertTrue('remote hardware verifier keeps physical adapters pending', remoteVerifyHardware.includes('hardware proof roadmap keeps physical adapters pending'))
 assertTrue('remote hardware verifier checks README physical driver boundary', remoteVerifyHardware.includes('真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层'))
 assertTrue('remote hardware verifier checks removable adapter lane', remoteVerifyHardware.includes('可选、可删、可独立测试'))
+for (const phrase of [
+  'Adapter Contract Matrix',
+  'Upstream JSONL contract',
+  'Pi action contract',
+  'Transport driver',
+  'Main app and Injective API',
+  'hardware boundary from the final deck',
+]) {
+  assertTrue(`remote Raspberry Pi README keeps adapter matrix ${phrase}`, remoteRaspiReadme.includes(phrase))
+}
 assertTrue('remote PWA manifest description names each record explicitly', remoteManifest.description?.includes('每条记录各自对应的真实地点'))
 assertTrue('remote PWA manifest description omits vague pronoun', !remoteManifest.description?.includes(vagueRecordPlace))
 assertTrue('remote index description names explicit destinations', remoteIndexHtml.includes('钉回各自对应的真实地点'))
@@ -639,6 +650,7 @@ for (const [label, text] of [
   ['remote judge quickstart', remoteJudge],
   ['remote progress', remoteProgress],
   ['remote hardware README', remoteHardware],
+  ['remote Raspberry Pi README', remoteRaspiReadme],
   ['remote hardware verifier', remoteVerifyHardware],
   ['remote index HTML', remoteIndexHtml],
   ['remote PWA manifest', remoteManifestText],

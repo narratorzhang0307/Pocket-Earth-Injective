@@ -199,6 +199,12 @@ for (const snippet of [
   'Decoupled Event Adapter Lane',
   'frost_pi_event_adapter.py',
   'transport-neutral device',
+  'Adapter Contract Matrix',
+  'Upstream JSONL contract',
+  'Pi action contract',
+  'Transport driver',
+  'Main app and Injective API',
+  'hardware boundary from the final deck',
 ]) {
   assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
 }

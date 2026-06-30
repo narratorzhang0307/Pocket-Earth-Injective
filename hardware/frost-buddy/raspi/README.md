@@ -56,6 +56,19 @@ The adapter does not import the app, the Injective API service, wallet code, or
 any device daemon. BLE, serial, MQTT, and screen drivers should sit after this
 file and map the emitted actions to physical output.
 
+## Adapter Contract Matrix
+
+| Layer | Owns | Must not own |
+|---|---|---|
+| Upstream JSONL contract | Public `music_now_playing`, `chain_dispatch`, and `buddy_status` envelopes from `frost-hardware-bridge.mjs` | Private profile text, wallet material, raw photos, precise coordinates, or transport-specific device commands |
+| Pi action contract | `state`, `tts`, and `display` actions emitted by `frost_pi_event_adapter.py` | BLE pairing, serial writes, MQTT publish calls, local audio playback, or screen driver lifecycle |
+| Transport driver | Mapping one action to one physical output such as LED, speaker, OLED, e-ink, BLE, serial, or MQTT | Expanding the event schema, reading Pocket Earth app stores, calling the Injective API, or signing transactions |
+| Main app and Injective API | Generating public events, reading chain evidence, and enforcing user confirmation before writes | Depending on a Raspberry Pi process, importing a device daemon, or requiring hardware for the product path |
+
+This matrix is the hardware boundary from the final deck in code form: Pocket
+Earth can run without the Pi lane; the Pi lane can smoke-test without the app;
+and physical drivers can be replaced without changing the public event schema.
+
 ## Boundary
 
 This module is for `Pocket-Earth-Injective` only. If another local daemon later accepts this contract, connect it through a small adapter that consumes either:
