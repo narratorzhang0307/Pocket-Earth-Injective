@@ -208,7 +208,7 @@ for (const phrase of [
   '把地球作为方法',
   'Frost 起源',
   '一条线走完',
-  '三个入口一颗地球',
+  '三入口，一颗地球',
   '端云双脑和长期画像',
   'Frost Buddy',
   'Profile Chain',

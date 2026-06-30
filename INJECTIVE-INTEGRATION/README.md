@@ -13,7 +13,7 @@
 | 把地球作为方法 | 书、影、乐、照片、行程和心情都先落到真实坐标，地球成为统一索引 | 链上不保存原始坐标和私人内容，只证明公开 agent 身份与时间顺序 |
 | Frost 起源 | Frost 不是聊天框，而是会委派子 agent、沉淀画像、替用户出门的数字分身 | `agentId 43` 是 Frost 主身份，`agentId 44-47` 是同一 builderCode 下的公开身份簇 |
 | 一条线走完 | 票根/截图/书影乐 -> 端侧脱敏 -> 钉回地球 -> Frost 带公开名片去社交 | `get-chain-evidence` 串起身份、mint、钱包时间线、握手和 plaza 复验入口 |
-| 三个入口一颗地球 | PHOTOS 看回忆，MY MAP 看全局，AGENTS 负责运行，产出最终都回到地球 | `public-plaza` 读取链上 agent 并钉回地球；`agent-plaza` 保留安装闭环 |
+| 三入口，一颗地球 | PHOTOS 看回忆，地球入口看全局，AGENTS 负责运行，产出最终都回到地球 | `public-plaza` 读取链上 agent 并钉回地球；`agent-plaza` 保留安装闭环 |
 | 端云双脑和长期画像 | 端侧负责挑/找/脱敏，云端负责表达；画像越用越懂你 | Profile Chain 只规划 checkpoint 和回执，不把原始画像、照片、心情或精确坐标上链 |
 | Frost Buddy | music-agent 和链上见闻可以被实体 Frost 播报 | `hardware/frost-buddy/` 只消费公开 JSONL 事件，不接触私钥或画像原文 |
 
@@ -30,7 +30,7 @@
 | 1 | Pocket Earth 是空间知识库 + AI 社交，Injective 提供 ERC-8004 链上身份 | 根 README 的 Injective 核心集成、`chain-proof-data.mjs` | `agentId 43-47`、`builderCode=pocket-earth`、`chainId 1439` |
 | 2 | 独立开发闭环与跨界背景 | 公开仓库只保留“产品可运行、证据可复验”的工程定位；个人背景不作为链上证明字段 | `sourceControl` 只锚当前 GitHub 版本 |
 | 3-5 | 把地球作为方法、Frost 起源、一条线走完 | 根 README 第 1-3 节；`markPlace`、端侧脱敏、书影乐照片行程心情六类对象 | `npm run verify:positioning` |
-| 6-8 | 三入口一颗地球、PHOTOS 三视图 | `userMarks` / `planets` / `geoStickers` store，Mapbox `source.setData()`，照片缩略图/高清分层 | `npm run verify:demo` |
+| 6-8 | 三入口，一颗地球、PHOTOS 三视图 | `userMarks` / `planets` / `geoStickers` store，Mapbox `source.setData()`，照片缩略图/高清分层 | `npm run verify:demo` |
 | 9-13 | 六大落点 agent、JOT、music/travel、COUNCIL、端侧整理 | `open-dj-director`、`radio-24h-director`、travel archive、`src/app/council/`、CLIP / Qwen-VL / REDACT / dHash | `docs/技术难点与解决方案.md` |
 | 14-18 | frost-agent harness、端云双脑、长期画像、skills、trace | Shell / Brain / Selector / Router / Memory / Boundary / Sub-agents；`intentRegistry`、`edgeSafe`、`RunTrace`、`FrostBus`、SSE | `ARCHITECTURE.md`、`npm run verify:positioning` |
 | 19-24 | AI 社交、Agent Personality Provenance、Profile Chain 信任模型 | `recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence L0-L4 | `npm run verify:public-proof` |
