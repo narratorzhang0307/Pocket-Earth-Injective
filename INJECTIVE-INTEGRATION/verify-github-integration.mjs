@@ -154,6 +154,9 @@ assertTrue('remote README names public read flags in network guide', remoteReadm
 assertTrue('remote README puts Frost Edge Node in the one-minute proof ladder', remoteReadme.includes('Frost Edge Node 硬件边界'))
 assertTrue('remote README names hardware proof API in fast proof ladder', remoteReadme.includes('get-hardware-bridge-proof'))
 assertTrue('remote README names hardware market boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.marketBoundary'))
+assertTrue('remote README names commercial path boundary', remoteReadme.includes('### 5.3 商业路径与三条边界'))
+assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
+assertTrue('remote README keeps Agent Plaza commercial center', remoteReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
 for (const phrase of [
   '本地空间知识库',
   '把地球作为方法',
@@ -179,6 +182,9 @@ for (const phrase of [
   'FNV-1a',
   'public-plaza',
   'agent-plaza',
+  '商业路径与三条边界',
+  '不走纯社交变现',
+  '不走重资本硬件路线',
   'hardware/frost-buddy/',
 ]) {
   assertTrue(`remote README keeps architecture spine ${phrase}`, remoteReadme.includes(phrase))
@@ -228,6 +234,11 @@ for (const phrase of [
   'Roblox',
   'Apple',
   'Steamworks',
+  '三条商业边界',
+  '纯社交变现',
+  '代币优先',
+  '硬件收入优先',
+  'Agent Plaza 是商业路径的中心',
   'hardware/frost-buddy/',
   'public-plaza',
   'agent-plaza',

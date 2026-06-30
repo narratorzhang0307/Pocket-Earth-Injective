@@ -75,6 +75,12 @@ for (const phrase of [
   'Apple',
   'Steamworks',
   '不过度承诺',
+  '三条商业边界',
+  '纯社交变现',
+  '代币优先',
+  '硬件收入优先',
+  'Agent Plaza 是商业路径的中心',
+  'manifest / schema / permissions',
   'hardware/frost-buddy/',
 ]) {
   assertTrue(`story spine includes ${phrase}`, guide.includes(phrase))
@@ -156,6 +162,10 @@ for (const phrase of [
   'FrostBus',
   'reviewManifest',
   'FNV-1a',
+  '### 5.3 商业路径与三条边界',
+  '不走纯社交变现',
+  '不走代币优先',
+  '不走重资本硬件路线',
 ]) {
   assertTrue(`README evidence guide includes ${phrase}`, readme.includes(phrase))
 }
