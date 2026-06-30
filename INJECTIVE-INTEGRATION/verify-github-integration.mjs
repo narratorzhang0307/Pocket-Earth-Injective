@@ -441,6 +441,15 @@ for (const phrase of [
   'Frost Edge Node 只消费公开 JSONL 事件',
   'Agent Plaza 承接安装、调用、评价和可选付费回执',
   '不走代币优先或重资本硬件路线',
+  'FROST Chronicle',
+  '画像演化史',
+  '现在就能打开',
+  '不是纸面方案',
+  '公开仓库',
+  'Demo 视频',
+  'Pitch Deck',
+  'Built on Injective',
+  '公开身份、版本、时间线、握手和未来结算回执',
 ]) {
   assertTrue(`remote demo script keeps PPT story spine ${phrase}`, remoteDemo.includes(phrase))
 }
