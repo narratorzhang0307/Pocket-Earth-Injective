@@ -320,6 +320,12 @@ for (const phrase of [
   '真 SSE 流式渲染',
   'NOW 链上身份与握手',
   'Frost Network',
+  'Pocket Earth Roadmap And Safety Boundary Fast Check',
+  'P0 core / P1 compatibility / P2 self-learning',
+  'NOW chain identity and handshake / Profile Checkpoint / Agent Plaza receipts / Profile Confidence / P4 Frost Network',
+  'raw memories never go on-chain',
+  'only identity / versions / receipts / selective proofs go on-chain',
+  'Frost Edge Node remains a developer-kit / experience layer',
 ]) {
   assertTrue(`PROGRESS keeps current alignment: ${phrase}`, progress.includes(phrase))
 }
