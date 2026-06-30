@@ -251,6 +251,20 @@ PPT 第 14-18 页对应的工程底座已经落在 `frost-agent/` 和 `src/app/l
 - **真流式通道**：`/api/frost-llm-stream` 透传 SSE，响应头带 `x-accel-buffering:no`；per-token 只走 `onToken`，不进 FrostBus，避免 token 粒度事件灌爆 ring buffer。
 - **skill 沉淀**：运行时 skill 按识图结构化、落点钉地球、云脑/本地库、记忆/反思分层；开发期 skill 只作为工程约束，不进入用户数据链。
 
+### Skills 能力沉淀与依赖边界
+
+PPT 第 17 页讲“能力沉淀成 skill，agent 只剩一层薄配置”。仓库里的落点是 `src/app/lib/skills/README.md`：领域 agent 不复制读图、脱敏、落点、检索、记忆和反思逻辑，只声明自己需要的字段、噪声词、坐标类型和权限，再调用共享 skill。
+
+| skill 层 | 代表能力 | 工程边界 | 复验入口 |
+|---|---|---|---|
+| 输入到结构化 | `visionRead`、`textExtract`、`visionExtract`、`parseInput`、`browserVision` | `visionExtract = visionRead + textExtract`；原图只进端侧 VL，脱敏文本才进入结构化 | `src/app/lib/skills/README.md`、`docs/技术难点与解决方案.md` |
+| 落点钉地球 | `resolvePlace`、`markPlace` | 地名、坐标、去重、抖散和 `userMarks` 写入集中处理，避免每个 agent 自己写地图 | `verify:positioning` |
+| 云脑与本地库 | `enrichEntity`、`matchCatalog` | 云脑只处理 JSON / RAG 结果；本地库负责归一化、精确匹配和模糊收紧 | `verify:demo` |
+| 端侧记忆与反思 | `keyedStore`、`draftCritic` | IndexedDB、纠错偏好、评分钳、年份和坐标护栏复用，不把长期画像逻辑散进各 agent | `verify:integration-guide` |
+| 内核与开发期 skill | `frost-agent/skills/`、开发期 `SKILL.md` | 内核 skill 只依赖 harness；开发期 skill 是工程 SOP，不进入用户数据链 | `verify:github`、`verify:positioning` |
+
+这层设计解释了 Agent Plaza 为什么不是泛 AI 工具箱：开发者提交的是 `manifest / schema / permissions`，平台审核的是空间逻辑、权限和输出合同；安装后的 agent 复用同一组 skill，最终产物仍要回到地球、公开名片或链上回执。`HUMAN_VOICE` 人声守则也在出口统一清洗，让多 agent 对外仍像同一个 Frost，而不是一堆口径不一的工具按钮。
+
 这套 harness 让 PPT 里的“FROST 是 CEO，每一跳都看得见”不是叙事口号，而是运行页上的 RunTrace、全局 RunDrawer、health 记录和验证脚本共同构成的工程事实。
 
 ## 11. 技术深挖：Agent Plaza 与物理节点入口

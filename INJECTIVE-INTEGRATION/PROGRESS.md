@@ -30,7 +30,7 @@
 ## 当前文档结构
 
 - `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层；`5.1 最终整合版对照与技术深挖` 把 PPT 页段映射到技术落点和复验入口，并补充作者方法来源只作为产品方法解释、链上证明仍以仓库/API/交易为准；`5.3 商业路径与三条边界` 把商业判断收束为“不走纯社交变现 / 不走代币优先 / 不走重资本硬件路线”。
-- `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口，一颗地球 / 端云双脑 / Frost Buddy”，再用 `final-ppt-index` 逐页覆盖 41 页主线；后半部分展开作者方法来源与证据边界、“一条线走完：从票根到链上见闻”、`recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence、FrostBus / RunTrace、SSE `x-accel-buffering:no`、`reviewManifest`、`toManifest`、`agentGeo` / FNV-1a、Frost Edge Node 硬件原理、树莓派市场边界、PPT 第 34 页反面坐标、三条商业边界、外部来源边界、用户痛点与对症解决，以及 PPT 第 40-41 页的 FROST Chronicle / 现在能打开 / 三件交付收尾。
+- `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口，一颗地球 / 端云双脑 / Frost Buddy”，再用 `final-ppt-index` 逐页覆盖 41 页主线；后半部分展开作者方法来源与证据边界、“一条线走完：从票根到链上见闻”、`recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence、FrostBus / RunTrace、SSE `x-accel-buffering:no`、Skills 能力沉淀与依赖边界、`reviewManifest`、`toManifest`、`agentGeo` / FNV-1a、Frost Edge Node 硬件原理、树莓派市场边界、PPT 第 34 页反面坐标、三条商业边界、外部来源边界、用户痛点与对症解决，以及 PPT 第 40-41 页的 FROST Chronicle / 现在能打开 / 三件交付收尾。
 - `INJECTIVE-INTEGRATION/README.md` 的“用户痛点与对症解决”已经把 `散落各处`、`按时间记不牢`、`隐私不敢交`、`整理太费劲` 对应到地球索引、端云双脑、skill 沉淀和链上身份，并固定 `只建议不偷改` 的 Roadmap 安全边界。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
 - `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径，包含 `hardwareBridge`、`reviewEntrypoints.hardware-bridge-api`、`reviewEntrypoints.hardware-bridge`、`deliveryChecklist.frost-edge-node`、`recordingOrder[].evidenceFocus` 的独立 Frost Edge Node 硬件证明 API，以及后续 public-plaza / agent-plaza smoke，让硬件入口不再藏在 plaza 描述里。
@@ -55,7 +55,7 @@ npm run verify:delivery
 npm run verify:demo
 ```
 
-`verify:integration-guide` 现在会固定 `final-ppt-index`、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、`reviewManifest`、FNV-1a、`willEmit`、三条商业边界和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。`verify:positioning` / `verify:github` 会固定 README 的明确标题：`Pocket Earth 是什么` 和 `三入口，一颗地球`，并要求本地与远端 GitHub 的 Frost Edge Node、hardware README、public-plaza UI 明确写出主语，避免再次退回指代不明或 UI 术语化标题。
+`verify:integration-guide` 现在会固定 `final-ppt-index`、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、Skills 能力沉淀与依赖边界、`reviewManifest`、FNV-1a、`willEmit`、三条商业边界和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。`verify:positioning` / `verify:github` 会固定 README 的明确标题：`Pocket Earth 是什么` 和 `三入口，一颗地球`，并要求本地与远端 GitHub 的 Frost Edge Node、hardware README、public-plaza UI 明确写出主语，避免再次退回指代不明或 UI 术语化标题。
 
 完整链上复验：
 
