@@ -34,7 +34,7 @@
 - `INJECTIVE-INTEGRATION/README.md` 的“用户痛点与对症解决”已经把 `散落各处`、`按时间记不牢`、`隐私不敢交`、`整理太费劲` 对应到地球索引、端云双脑、skill 沉淀和链上身份，并固定 `只建议不偷改` 的 Roadmap 安全边界。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
 - `INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`：60 秒只读复验路径，包含 `hardwareBridge`、`reviewEntrypoints.hardware-bridge-api`、`reviewEntrypoints.hardware-bridge`、`deliveryChecklist.frost-edge-node`、`recordingOrder[].evidenceFocus` 的独立 Frost Edge Node 硬件证明 API，以及后续 public-plaza / agent-plaza smoke，让硬件入口不再藏在 plaza 描述里。
-- `INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`：3 分钟以内录制脚本，镜头优先级是 `agentId 43`、钱包页、public-plaza、地球 agent 标记、Nightly Chain Dispatch、隐私边界。
+- `INJECTIVE-INTEGRATION/DEMO-SCRIPT.md`：3 分钟以内录制脚本，镜头优先级是 `agentId 43`、钱包页、public-plaza、地球 agent 标记、Nightly Chain Dispatch、隐私边界；开头新增 `Pocket Earth 30 秒主线讲法`，把用户痛点、地球索引、Injective 公共见证、Frost Edge Node 和 Agent Plaza 商业边界压成录屏口播骨架。
 
 ## 自动化检查
 

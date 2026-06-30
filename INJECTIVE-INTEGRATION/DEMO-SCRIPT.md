@@ -5,6 +5,19 @@
 
 ---
 
+## Pocket Earth 30 秒主线讲法
+
+录屏前先把这四句话背熟，后面的镜头都围绕这条线展开：
+
+| 主线 | 口播重点 | 对应证据 |
+|---|---|---|
+| 用户问题 | 个人记忆散落各处，按时间记不牢，记录沉底，工具不懂你，隐私不敢交。 | README 的“Pocket Earth 是什么”、集成说明的“用户痛点与对症解决” |
+| 产品方法 | Pocket Earth 把真实地点当索引，让书、影、乐、照片、行程和心情回到同一颗地球；Frost-agent 端云双脑负责挑、找、表达和反思。 | 地球入口、六类标记、`frost-agent` harness、RunTrace |
+| Injective 证明 | Injective 负责公共见证：ERC-8004 `agentId 43`、`agentId 43-47` fleet、同钱包时间线、SocialHandshake 和未来 Profile Checkpoint。 | Blockscout、`get-chain-evidence`、`get-agent-proof`、`get-wallet-timeline` |
+| 硬件与商业边界 | Frost Edge Node 只消费公开 JSONL 事件；Agent Plaza 承接安装、调用、评价和可选付费回执；商业路径不走代币优先或重资本硬件路线。 | `get-hardware-bridge-proof`、`agent-plaza`、`reviewManifest`、`Profile Confidence` |
+
+---
+
 ## 分镜表（总 180s，卡在 3 分钟内）
 
 | # | 时长 | 画面 / 操作 | 口播 |

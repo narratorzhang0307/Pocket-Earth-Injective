@@ -223,6 +223,27 @@ for (const phrase of [
   assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
 }
 
+console.log('\nDemo story spine guard')
+for (const phrase of [
+  'Pocket Earth 30 秒主线讲法',
+  '个人记忆散落各处',
+  '按时间记不牢',
+  '工具不懂你',
+  'Pocket Earth 把真实地点当索引',
+  'Frost-agent 端云双脑',
+  'Injective 负责公共见证',
+  'ERC-8004 `agentId 43`',
+  '`agentId 43-47` fleet',
+  '同钱包时间线',
+  'SocialHandshake',
+  '未来 Profile Checkpoint',
+  'Frost Edge Node 只消费公开 JSONL 事件',
+  'Agent Plaza 承接安装、调用、评价和可选付费回执',
+  '不走代币优先或重资本硬件路线',
+]) {
+  assertTrue(`DEMO-SCRIPT keeps PPT story spine: ${phrase}`, demoScript.includes(phrase))
+}
+
 console.log('\nProgress document alignment guard')
 for (const phrase of [
   '## 当前状态（2026-06-30）',

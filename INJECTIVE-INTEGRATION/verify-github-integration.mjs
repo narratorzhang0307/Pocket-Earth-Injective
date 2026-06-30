@@ -304,6 +304,25 @@ assertTrue('remote demo script names expanded positioning guard', remoteDemo.inc
 assertTrue('remote demo script names globe entrance instead of tab', remoteDemo.includes('切到地球入口') && !remoteDemo.includes('切地球 tab'))
 assertTrue('remote demo script keeps 3-minute limit', remoteDemo.includes('≤ 3 分钟') && remoteDemo.includes('180s'))
 for (const phrase of [
+  'Pocket Earth 30 秒主线讲法',
+  '个人记忆散落各处',
+  '按时间记不牢',
+  '工具不懂你',
+  'Pocket Earth 把真实地点当索引',
+  'Frost-agent 端云双脑',
+  'Injective 负责公共见证',
+  'ERC-8004 `agentId 43`',
+  '`agentId 43-47` fleet',
+  '同钱包时间线',
+  'SocialHandshake',
+  '未来 Profile Checkpoint',
+  'Frost Edge Node 只消费公开 JSONL 事件',
+  'Agent Plaza 承接安装、调用、评价和可选付费回执',
+  '不走代币优先或重资本硬件路线',
+]) {
+  assertTrue(`remote demo script keeps PPT story spine ${phrase}`, remoteDemo.includes(phrase))
+}
+for (const phrase of [
   '商业路径一句话',
   'public-plaza` 只讲链上社交发现',
   'agent-plaza` 才讲商业路径',
