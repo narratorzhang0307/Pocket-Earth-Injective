@@ -446,6 +446,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             evidenceFocus: [
               'each key transaction uses the same wallet',
               'registration, deployment, fleet, and handshake transactions are visible',
+              'SocialHandshake deployment transaction and real handshake transaction are both visible',
               'wallet page anchors the owner before opening product APIs',
             ],
           },
@@ -457,6 +458,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             evidenceFocus: [
               'registryMintSummary proves agentId 43-47 were minted from 0x0 to the owner',
               'timelineSummary proves the same owner and successful chain timeline',
+              'handshakeProof points to agentA/agentB/score/profileHash event decode and creation/runtime bytecode checks',
               'sourceControl anchors evidence to the current GitHub commit',
             ],
           },
@@ -491,6 +493,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
               'summary shows owner, eventCount, allSucceeded, and first/last blocks',
               `chainId ${INJECTIVE_TESTNET_CHAIN_ID} confirms Injective testnet timeline`,
               'events replay registration, deployment, fleet, and handshake RPC facts',
+              'real SocialHandshake event decodes agentA/agentB/score/profileHash',
+              'SocialHandshake contract proof checks creation/runtime bytecode against local Solidity source',
               'final event is the real SocialHandshake transaction',
             ],
           },
