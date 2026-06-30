@@ -126,6 +126,7 @@ const remoteMapFocus = await fetchText(`${rawBase}/src/app/data/mapFocus.ts`)
 const remoteMapMarkers = await fetchText(`${rawBase}/src/app/data/mapMarkers.ts`)
 const remoteVerifySpacePlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-space-plaza.mjs`)
 const remoteVerifyPlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza.mjs`)
+const remoteVerifyPlazaFlow = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-flow.mjs`)
 const remoteVerifyPlazaInstall = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-install.mjs`)
 const remoteVerifyForgeRun = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-forge-run.mjs`)
 const remoteAgentPlazaPage = await fetchText(`${rawBase}/src/app/components/AgentPlazaPage.tsx`)
@@ -415,6 +416,9 @@ for (const phrase of [
   'hardwareNodeServiceReceipt',
   'get-hardware-bridge-proof',
   '空间留在 Pocket Earth，时间由 Injective 见证',
+  'domain=地点',
+  'tools=[enrich, geocode, mark_place]',
+  '可重复的浏览器 smoke',
 ]) {
   assertTrue(`remote evidence pack keeps commercial boundary ${phrase}`, remoteEvidence.includes(phrase))
 }
@@ -468,10 +472,19 @@ for (const phrase of [
   'reviewManifest',
   'toManifest',
   'INSTALL -> My Agents -> RUN',
+  'domain=地点',
+  'mark_place',
+  'RUN` 入口',
   'Profile Confidence',
   '不要说成代币优先或硬件收入优先',
 ]) {
   assertTrue(`remote demo script keeps Agent Plaza commercial narration ${phrase}`, remoteDemo.includes(phrase))
+}
+for (const phrase of ['installedCafe.domain ===', 'geoStrategy.includes', 'mark_place', '▶ RUN']) {
+  assertTrue(`remote plaza-flow verifier guards install script ${phrase}`, remoteVerifyPlazaFlow.includes(phrase))
+}
+for (const phrase of ["domain === '地点'", 'geoStrategy.includes', 'tagFields.includes', 'enrich', 'geocode', 'mark_place', '▶ RUN']) {
+  assertTrue(`remote plaza install smoke keeps ${phrase}`, remoteVerifyPlazaInstall.includes(phrase))
 }
 assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.includes('Judge Quickstart'))
 assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))
