@@ -328,6 +328,14 @@ assertTrue('remote evidence pack names public read API manifest', remoteEvidence
 assertTrue('remote evidence pack names public API guard', remoteEvidence.includes('npm run verify:public-apis'))
 for (const phrase of [
   '## 公开证据如何支撑 Agent Plaza 商业路径',
+  '## 公开证据如何支撑 Profile Chain 路线图',
+  'NOW 链上身份与握手',
+  'P1 Profile Checkpoint',
+  'P2 Agent Plaza receipts',
+  'P3 Profile Confidence',
+  'P4 Frost Network',
+  'profileHash + version + timestamp + Frost signature',
+  'Frost Edge Node 保持 developer-kit / experience layer',
   '不走纯社交变现',
   '不走代币优先',
   '不走重资本硬件路线',
@@ -339,6 +347,7 @@ for (const phrase of [
   '长期使用 -> 可信画像 -> Agent 市场',
   'hardwareBridge.marketBoundary',
   'get-hardware-bridge-proof',
+  '空间留在 Pocket Earth，时间由 Injective 见证',
 ]) {
   assertTrue(`remote evidence pack keeps commercial boundary ${phrase}`, remoteEvidence.includes(phrase))
 }

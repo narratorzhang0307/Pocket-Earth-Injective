@@ -49,6 +49,20 @@ The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-ap
 
 这也是本页要把 `plazaFlow` 和 `hardwareBridge` 放在同一个证据层的原因：`public-plaza` 证明 Frost 能读公开链上 agent 并进行可追踪社交，`agent-plaza` 证明符合空间逻辑的 agent 可以被审核、安装和运行，Frost Edge Node 证明同一套公开事件还能被实体节点消费。三者共同支撑的不是“发币社交”，而是一个隐私自持、身份可验、回执可追踪的空间 Agent 市场。
 
+## 公开证据如何支撑 Profile Chain 路线图
+
+最终整合版第 38-40 页把路线图拆成两层：Pocket Earth 先打磨产品内核和端云双脑，再把公开画像的来源证明接到 Injective。当前链上证据已经覆盖 NOW 层，后续 P1-P4 只是在同一条证据链上增加更细的回执类型。
+
+| Profile Chain phase | Current public proof | Next proof boundary |
+|---|---|---|
+| NOW 链上身份与握手 | `agentId 43-47`、`builderCode=pocket-earth`、Blockscout identity pages、同一钱包 `timelineSummary`、真实 SocialHandshake score `88` | 只证明 Frost agent 身份、mint 顺序、owner 钱包和握手事件，不公开原始画像 |
+| P1 Profile Checkpoint | `get-chain-evidence` 已有 `sourceControl`、`publicReadApis`、`privacyBoundary` 和公开 Taste Passport 边界 | 未来只写 `profileHash + version + timestamp + Frost signature`，不写书单、照片、心情或精确坐标 |
+| P2 Agent Plaza receipts | `agent-plaza` 已展示 `manifest / schema / permissions`、`reviewManifest`、`toManifest`、`willEmit` dry-run 和安装回流 | 安装、调用、评价和可选付费回执必须先通过权限审核，再回流 Profile Confidence |
+| P3 Profile Confidence | `handshakeProof`、`registryMintSummary`、`timelineSummary` 和 `reviewChecklist` 已能证明身份连续性、同钱包顺序和公开社交佐证 | 置信度只评估公开画像来源支撑；批量导入、短期快速变脸和随机标签会被降权，不做“人好坏”评分 |
+| P4 Frost Network | `hardwareBridge`、`get-hardware-bridge-proof`、`music_now_playing`、`chain_dispatch` 和 Pi skill router 已证明公开事件可被实体节点消费 | Frost Edge Node 保持 developer-kit / experience layer；设备不签名、不持私钥、不读取原始画像 |
+
+这张表把“空间留在 Pocket Earth，时间由 Injective 见证”落成证据分工：Pocket Earth 负责长期空间记忆和公开画像生成；Injective 负责身份、版本、回执和可选择证明；Frost Edge Node 只把公开事件带回物理空间。
+
 ## IdentityRegistry
 
 | Evidence | Link |
