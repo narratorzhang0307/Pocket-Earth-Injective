@@ -160,6 +160,26 @@ for (const phrase of [
   assertTrue(`README evidence guide includes ${phrase}`, readme.includes(phrase))
 }
 
+console.log('\nREADME Injective network integration guide')
+for (const phrase of [
+  '### 1.1 如何集成 Injective 网络',
+  '本地画像 -> 公开名片 -> ERC-8004 身份 -> 链上事件 -> 产品读回',
+  'buildTastePassport()',
+  'IdentityRegistry',
+  'confirm:true',
+  'get-agent-proof&agentId=43',
+  'list-agents&builderCode=pocket-earth',
+  'get-wallet-timeline',
+  'SocialHandshake',
+  'agentGeo',
+  'readOnly: true',
+  'publicOnly: true',
+  'get-hardware-bridge-proof',
+  'hardwareBridge.marketBoundary',
+]) {
+  assertTrue(`README network integration guide includes ${phrase}`, readme.includes(phrase))
+}
+
 console.log('\nHardware proof recording guard')
 for (const phrase of [
   '/api/injective?tool=get-hardware-bridge-proof',
