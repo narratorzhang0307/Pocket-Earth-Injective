@@ -286,6 +286,19 @@ assertTrue('remote demo script names integration guide guard', remoteDemo.includ
 assertTrue('remote demo script names expanded positioning guard', remoteDemo.includes('README / app / hardware / docs 保持 Injective 核心集成主线'))
 assertTrue('remote demo script names globe entrance instead of tab', remoteDemo.includes('切到地球入口') && !remoteDemo.includes('切地球 tab'))
 assertTrue('remote demo script keeps 3-minute limit', remoteDemo.includes('≤ 3 分钟') && remoteDemo.includes('180s'))
+for (const phrase of [
+  '商业路径一句话',
+  'public-plaza` 只讲链上社交发现',
+  'agent-plaza` 才讲商业路径',
+  '长期使用 -> 可信画像 -> Agent 市场',
+  'reviewManifest',
+  'toManifest',
+  'INSTALL -> My Agents -> RUN',
+  'Profile Confidence',
+  '不要说成代币优先或硬件收入优先',
+]) {
+  assertTrue(`remote demo script keeps Agent Plaza commercial narration ${phrase}`, remoteDemo.includes(phrase))
+}
 assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.includes('Judge Quickstart'))
 assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))
 assertTrue('remote judge quickstart points at chain evidence API', remoteJudge.includes('/api/injective?tool=get-chain-evidence'))
