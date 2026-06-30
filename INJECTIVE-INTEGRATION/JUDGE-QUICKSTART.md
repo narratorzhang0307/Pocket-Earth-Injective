@@ -28,10 +28,20 @@
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, single-agent proof/source anchor, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, a standalone Frost Edge Node hardware proof API, and then the public-plaza / agent-plaza smoke.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
 - `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
+- Agent Plaza is the commercial path boundary: developers publish `manifest / schema / permissions`, Pocket Earth runs `reviewManifest` and `toManifest`, users install with `INSTALL -> My Agents -> RUN`, and future install / call / review / optional paid receipts can flow back into Profile Confidence. This keeps `public-plaza` as chain discovery, `agent-plaza` as installable agent market, and Frost Edge Node as a developer-kit / experience layer rather than the revenue pillar.
 - `reviewEntrypoints.hardware-bridge-api` opens `/api/injective?tool=get-hardware-bridge-proof`, `reviewEntrypoints.hardware-bridge` points to `hardware/frost-buddy/`, and `deliveryChecklist.frost-edge-node` keeps the Raspberry Pi / BLE / TTS bridge reviewable as a privacy-bounded prototype. `hardwareBridge.marketBoundary` keeps Frost Edge Node framed as a prototype and developer-kit endpoint rather than a hardware revenue projection. `npm run verify:hardware` checks `music_now_playing`, Injective `chain_dispatch`, the Pi skill router, and the no-private-key/no-raw-profile boundary.
 - `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, npm script mappings, and README first-minute evidence guide still match the product API.
 - `npm run verify:positioning` checks that README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent files keep the Injective core-integration framing.
 - The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the five judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`, `get-hardware-bridge-proof`) with `chainId 1439`, matching public-only flags, `judgeFocus`, `expectedFields`, and local verification commands. `npm run verify:public-apis` opens all five endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, hardware bridge proof, reviewer guidance, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
+
+## Agent Plaza Commercial Path Fast Check
+
+| Question | What to inspect | Expected answer |
+|---|---|---|
+| Is social discovery separated from the market? | `public-plaza` and `agent-plaza` in the app, plus `plazaFlow` in `/api/injective?tool=get-chain-evidence` | `public-plaza` reads chain identities and SocialHandshake context; `agent-plaza` handles manifest review, installation, and My Agents return path |
+| Is the install loop real enough to show? | `manifest / schema / permissions`, `reviewManifest`, `toManifest`, `INSTALL -> My Agents -> RUN` | A free example agent can be reviewed, installed, shown in My Agents, and run; without key-backed confirmation it stays a `willEmit` dry-run |
+| Why does Injective matter here? | `agentId 43-47`, wallet timeline, SocialHandshake, future Profile Checkpoint path | Developer, agent, install, handshake, review, and optional paid receipts need public identity and ordered receipts |
+| What is the market boundary? | `hardwareBridge.marketBoundary`, `get-hardware-bridge-proof`, `PITCH-NOTES.md` | Business center is Agent Plaza; Frost Edge Node is Raspberry Pi / BLE / TTS developer kit and physical experience, not the current revenue pillar |
 
 ## Review Package
 

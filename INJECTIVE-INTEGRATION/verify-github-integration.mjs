@@ -305,6 +305,21 @@ assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJud
 assertTrue('remote judge quickstart names Frost Edge Node checklist', remoteJudge.includes('deliveryChecklist.frost-edge-node') && remoteJudge.includes('npm run verify:hardware'))
 assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
 assertTrue('remote judge quickstart names plaza split', remoteJudge.includes('public-plaza') && remoteJudge.includes('agent-plaza'))
+for (const phrase of [
+  'Agent Plaza is the commercial path boundary',
+  'Agent Plaza Commercial Path Fast Check',
+  'manifest / schema / permissions',
+  'reviewManifest',
+  'toManifest',
+  'INSTALL -> My Agents -> RUN',
+  'optional paid receipts',
+  'Profile Confidence',
+  'willEmit',
+  'Business center is Agent Plaza',
+  'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
+]) {
+  assertTrue(`remote judge quickstart keeps commercial path ${phrase}`, remoteJudge.includes(phrase))
+}
 assertTrue('remote hardware README names module subject explicitly', remoteHardware.includes('Frost Edge Node 模块先承担三个角色'))
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))

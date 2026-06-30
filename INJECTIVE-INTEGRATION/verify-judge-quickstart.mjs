@@ -125,6 +125,16 @@ for (const snippet of [
   'score `88`',
   'public-plaza',
   'agent-plaza',
+  'Agent Plaza is the commercial path boundary',
+  'manifest / schema / permissions',
+  'reviewManifest',
+  'toManifest',
+  'INSTALL -> My Agents -> RUN',
+  'optional paid receipts',
+  'Profile Confidence',
+  'willEmit',
+  'Agent Plaza Commercial Path Fast Check',
+  'plazaFlow',
   'readOnly',
   'publicOnly',
   '180s',
@@ -186,6 +196,15 @@ assertEqual('evidence public read fleet path', evidence.publicReadApis.find((ite
 assertEqual('evidence public read wallet path', evidence.publicReadApis.find((item) => item.key === 'wallet-timeline-api')?.path, '/api/injective?tool=get-wallet-timeline')
 assertEqual('evidence public read hardware path', evidence.publicReadApis.find((item) => item.key === 'hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
 assertTrue('quickstart names hardware proof API', quickstart.includes('/api/injective?tool=get-hardware-bridge-proof'))
+for (const snippet of [
+  'public-plaza` reads chain identities',
+  'agent-plaza` handles manifest review',
+  'A free example agent can be reviewed, installed, shown in My Agents, and run',
+  'Business center is Agent Plaza',
+  'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
+]) {
+  assertTrue(`quickstart commercial path fast check explains ${snippet}`, quickstart.includes(snippet))
+}
 const readingOrder = quickstart.match(/Use this order in the recording[^\n]+/)?.[0] || ''
 assertTrue('quickstart reading order mentions wallet timeline API', readingOrder.includes('wallet timeline API'))
 assertTrue('quickstart reading order mentions Frost Edge Node hardware proof API', readingOrder.includes('Frost Edge Node hardware proof API'))
