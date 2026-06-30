@@ -47,9 +47,9 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 - 实时：`watchRegistrations(cb=>{agentId,owner,txHash}):()=>void`（实际监听 from=0x0 的 Transfer mint）、`watchDeregistrations(cb)`。
 
 ### 1.6 数据 schema
-- `StatusResult`（`types.ts:212-221`）：`{agentId,name,type,owner,wallet,builderCode,tokenUri,identityTuple}`。链上只存 builderCode/agentType 等 metadata + tokenURI（指向 IPFS card）。
-- `AgentCard`（IPFS JSON，`types.ts:93-129`，ERC-8004 registration-v1）：`type`(固定 eip-8004#registration-v1)、`name`、`description`、`image`、`services[]`、SDK 支付支持布尔字段、`active?`、`actions?`、`supportedTrust?`(['reputation'|'crypto-economic'|'tee-attestation'|'social-graph'])、`tags?`、`metadata:{chain:'injective',chainId,agentType,builderCode,operatorAddress}`。
-- `ServiceEntry={name:ServiceName, endpoint, description?, version?}`（输入可用 `type/url` 别名，SDK 归一化）。**MCP/A2A 是高价值 service，缺这俩在 8004scan 服务分上限 30。**
+- `StatusResult`（`types.ts:212-221`）：`{agentId,name,type,owner,wallet,builderCode,tokenUri,identityTuple}`。链上只存 builderCode/agentType 等 metadata + tokenURI；当前公开交付默认使用 `data:application/json;base64` 内联 Agent Card，避免外部托管依赖。
+- `AgentCard`（ERC-8004 registration-v1 JSON，`types.ts:93-129`）：`type`(固定 eip-8004#registration-v1)、`name`、`description`、`image`、`services[]`、`active?`、`actions?`、`supportedTrust?`(['reputation'|'crypto-economic'|'tee-attestation'|'social-graph'])、`tags?`、`metadata:{chain:'injective',chainId,agentType,builderCode,operatorAddress}`。可选支付能力只作为 Agent Plaza P2 回执槽位，不写成当前已结算收入。
+- `ServiceEntry={name:ServiceName, endpoint, description?, version?}`（输入可用 `type/url` 别名，SDK 归一化）。MCP/A2A 可作为后续 service 类型研究；当前公开核验以 Blockscout、只读 API、data URI 名片和 SocialHandshake 为准。
 
 ### 1.7 网络常量（内置，包根导出 `TESTNET/MAINNET/STAGING/resolveNetworkConfig`，`config.ts`）
 | | TESTNET（默认） | MAINNET |
@@ -96,13 +96,13 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 - 读链上 agent 列表 = `AgentReadClient.discoverAgentIds()/listAgents()/getAgentsByOwner()`，底层 viem `getLogs` 扫 Transfer + `readContract`，实时用 `watchRegistrations`。
 
 ### 2.3 明确不引入
-- **iagent**（`_research/repos/iagent`，Python+Quart）：是「让 AI 下单交易」的，强绑 **OpenAI** function-calling，与 Pocket Earth 的空间记忆和 Frost Passport 目标正交、且违反 **Qwen-only 硬约束**（记忆 `qwen-only-no-deepseek`）。`factory.py` 的 8 类模块（account/auction/authz/bank/exchange/trader/staking/token_factory）仅作 Boundary 校验器命名空间的**蓝本参考**（如 `inj_bank_send`），不引入代码。
+- **iagent**（`_research/repos/iagent`，Python+Quart）：是「让 AI 下单交易」的，强绑 **OpenAI** function-calling，与 Pocket Earth 的空间记忆和 Frost Passport 目标正交、且违反 **Qwen-only 硬约束**（记忆 `qwen-only-no-deepseek`）。`factory.py` 的 8 类模块只作 Boundary 校验器命名空间的蓝本参考，不引入代码，也不把交易动作写进当前 GitHub 交付。
 - **Token Factory**：不发币，用不上。
 - **CosmWasm/Rust**：EVM 路线已够。
 
 ### 2.4 可选侧车（不阻塞主线）
 - **injective-mcp**（InjectiveLabs/mcp-server）：把链上工具暴露给 MCP 客户端。仅当要让 FROST「对话式自主上链」时才挂；后端代码写死三调用直接用 SDK 更轻。
-- **HTTP 402 支付能力**（链上小额支付，ERC-8004 身份的天然搭档）：client 请求收费资源→server 回 402+PAYMENT-REQUIRED 头→client 钱包签 stablecoin 授权重试→server 校验/转 facilitator `/verify`。最小接法：Node 后端用 express/next 中间件包住付费路由；注册时把 SDK 支付支持布尔字段写进 card。**注意 facilitator 默认结算链路需单独确认，是否走 Injective 结算需验证。** → P2 可选。
+- **Agent Plaza 可选服务回执**（链上小额价值转移的后续槽位）：当前 GitHub 交付只证明安装、调用、评价和可选付费回执的公开证据边界，不宣称已完成结算收入。P2 需要先验证 Injective 结算入口、Agent Plaza receipt schema、限额和用户确认流，再把 `optionalPaymentReceipt` 从 dry-run 槽位推进到真实回执。
 
 ---
 
@@ -159,12 +159,12 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 ### 4.4 Boundary = validator.ts（链上写操作复用，内核 validateActions 不改）
 `frost-agent/harness/validator.ts`：
 - suggest-then-validate 注册表：`registerActionValidator(type, fn)`（`:15`），`validateActions` ordered dispatch、未注册类型一律拒绝最小权限。`switch_city` 校验器查 `RADIO_CITIES` 表（`:25-27`）= 链上动作白名单的同构范式。
-- 链上写当新动作注册：`registerActionValidator('inj_agent_register'|'inj_tip'|'inj_bank_send', fn)`，校验器内做金额/地址白名单 + testnet-only + 二次确认 flag。返回 `{ok,reason}` 形状不变（`:10`），router 无感。
+- 链上写当新动作注册：`registerActionValidator('inj_agent_register'|'inj_handshake', fn)`；Agent Plaza 后续服务回执再单独接 receipt validator。校验器内做权限白名单 + testnet-only + 二次确认 flag。返回 `{ok,reason}` 形状不变（`:10`），router 无感。
 - ⚠️ **注意**：validator 现在硬依赖 `RADIO_CITIES`(`:6`)/`RadioAction`(`:7`)，`ValidationResult.valid/rejected` 是 `RadioAction[]`（`:35-36`）、`validateActions(actions: RadioAction[])`（`:40`）。加链上动作前需先扩 `RadioAction` 联合类型或把动作类型放宽成 `{type:string;[k]:unknown}`（注册器入参 `ActionValidator` 已是这个宽类型，`:10`）。
 
 ### 4.5 server.mjs 新增 /api/injective（照搬 travel-mcp / frost-llm 形态）
 `server.mjs`（单文件零依赖生产服务）：
-- 服务端读私钥范式：`const DASHSCOPE_KEY = process.env.DASHSCOPE_API_KEY || ...`（`:33`，密钥永不进前端 bundle）→ 照此 `const INJ_PK = process.env.INJ_PRIVATE_KEY || ''`、`INJ_NETWORK='testnet'`。
+- 服务端读私钥范式：`const DASHSCOPE_KEY = process.env.DASHSCOPE_API_KEY || ...`（`:33`，密钥永不进前端 bundle）→ 照此读取 `INJ_PRIVATE_KEY` 与 `INJ_NETWORK='testnet'`，前端只拿 dry-run 或公开只读结果。
 - 工具分发范式：`handleTravelMcp(req,res,url)` 按 `url.searchParams.get(...)` 分发（`:283`）；`handleFrostLlm`（`:62`）。→ 写 `handleInjective(req,res,url)` 按 `?tool=` 分发 `register/tip/query/list-agents`。
 - 主路由串联（`:388-393`）：`if (p === '/api/injective') return await handleInjective(req,res,url)`（照 `:392`）；`/healthz`（`:393`）加 inj 状态。
 - **dev 侧也要挂**：`vite.config.ts:19-20` 的 `configureServer` 里 `server.middlewares.use('/api/frost-llm', ...)` —— 加同名 `server.middlewares.use('/api/injective', ...)`，否则 dev 模式打不通。**两处都要挂，只挂一处 dev/prod 有一边断。**
@@ -184,9 +184,9 @@ monorepo：真正发布的包在 `packages/sdk/`（npm `@injective/agent-sdk@0.2
 ## 5. 需用户提供（汇总，详见 PROGRESS.md「阻塞:需用户」）
 1. **Injective testnet EVM 私钥**（`0x...`，仅 testnet、勿用主网密钥）→ `INJ_PRIVATE_KEY`，server 端 .env 读、绝不进前端 bundle。同一私钥既当 operator 又当 agent wallet（SDK 仅支持自签绑定）。
 2. 该地址领 **testnet INJ gas**：`https://testnet.faucet.injective.network/`。
-3. （可选）**Pinata JWT**（免费 app.pinata.cloud）→ `PINATA_JWT`，自动把 card 传 IPFS；不想用 IPFS 可改 `CustomUrlStorage` 指向自托管 card.json。
+3. （可选）外部 Agent Card 托管：当前公开交付默认使用 data URI 内联名片；如果未来卡片变大，可再评估 Pinata 或 `CustomUrlStorage`，但它们不是当前演示依赖。
 4. 确认目标网络：集成与 demo 默认先跑 **testnet**（chainId 1439）。
-5. （仅 P2 可选付费回执）确认收款 stablecoin 与 facilitator 是否在 Injective 链结算。
+5. （仅 P2 可选付费回执）先确认 Injective 结算入口、Agent Plaza receipt schema、限额和用户确认流，再推进真实付费回执。
 
 ---
 

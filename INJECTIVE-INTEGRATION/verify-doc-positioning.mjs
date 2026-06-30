@@ -35,7 +35,14 @@ const forbiddenPositioningSnippets = [
   'com' + 'petition',
   'con' + 'test',
 ].map((value) => (Array.isArray(value) ? String.fromCodePoint(...value) : value))
-const forbiddenPaymentSnippets = [['x', '402'].join('')]
+const forbiddenPaymentSnippets = [
+  ['x', '402'].join(''),
+  ['http', '402'].join(' '),
+  ['402', String.fromCodePoint(0x20, 0x652f, 0x4ed8)].join(''),
+  ['payment', 'facilitator'].join(' '),
+  ['bank', 'send'].join(' '),
+  ['inj', 'pk'].join('_'),
+]
 const vaguePositioningSnippets = [
   String.fromCodePoint(0x672c, 0x9879, 0x76ee),
   '它们' + '在地球',
