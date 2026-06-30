@@ -7,6 +7,7 @@ const HASH_A = '0x' + 'a'.repeat(64)
 const HASH_B = '0x' + 'b'.repeat(64)
 const FAKE_PRIVATE_KEY = 'test-only-not-a-real-key'
 const HANDSHAKE_CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
+const OLD_PAYMENT_ROUTE_FIELD = ['x', '402'].join('')
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -18,6 +19,10 @@ function assertEqual(label, actual, expected) {
     throw new Error(`${label} mismatch: expected ${expected}, got ${actual}`)
   }
   console.log(`OK ${label}: ${actual}`)
+}
+
+function assertNoOldPaymentRoute(label, value) {
+  assertTrue(`${label} omits old payment route field`, !JSON.stringify(value).includes(OLD_PAYMENT_ROUTE_FIELD))
 }
 
 async function postInjectiveApi(path, body, cfg = {}) {
@@ -52,6 +57,8 @@ assertEqual('register preview scanUrl', registerPreview.scanUrl, null)
 assertEqual('register preview builderCode', registerPreview.willRegister?.builderCode, 'pocket-earth')
 assertTrue('register preview tags', registerPreview.willRegister?.tags?.includes('injective'))
 assertTrue('register preview data URI card', String(registerPreview.willRegister?.uri || '').startsWith('data:application/json;base64,'))
+assertEqual('register preview optional payment receipt', registerPreview.willRegister?.optionalPaymentReceipt, null)
+assertNoOldPaymentRoute('register preview', registerPreview)
 
 const registerConfirmedNoKey = await postInjectiveApi('/api/injective?tool=register', {
   name: 'Boundary Check',
@@ -62,6 +69,7 @@ const registerConfirmedNoKey = await postInjectiveApi('/api/injective?tool=regis
 console.log('\n/api register confirm:true without key')
 assertEqual('register confirm without key error', registerConfirmedNoKey.error, 'no_private_key')
 assertTrue('register confirm without key has no tx hash', !registerConfirmedNoKey.txHash && !registerConfirmedNoKey.txHashes)
+assertNoOldPaymentRoute('register confirm without key', registerConfirmedNoKey)
 
 const handshakePreview = await postInjectiveApi('/api/injective?tool=handshake', {
   agentA: 43,

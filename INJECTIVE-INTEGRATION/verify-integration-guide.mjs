@@ -285,6 +285,13 @@ for (const phrase of [
 ]) {
   assertTrue(`integration guide documents fleet proof field ${phrase}`, guide.includes(phrase))
 }
+for (const phrase of [
+  'willRegister',
+  'optionalPaymentReceipt: null',
+  '不伪装成已结算',
+]) {
+  assertTrue(`integration guide documents register dry-run boundary ${phrase}`, guide.includes(phrase))
+}
 
 for (const phrase of [
   'sdk/total/offset/limit',

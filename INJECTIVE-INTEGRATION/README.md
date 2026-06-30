@@ -159,7 +159,7 @@ SocialHandshake 的部署交易 `0x6048425a...fa722` 由同一测试网钱包创
 | GET | `?tool=get-chain-evidence` | 公开证据包：`registryMintEvents`、`registryMintSummary`、`timeline`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`reviewBrief`、`judgeRunbook`、`reviewLinks`、`reviewChecklist`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist`、`publicReadApis`、`recordingOrder`、`privacyBoundary`、`plazaFlow`、`sourceControl` | 否 |
 | GET | `?tool=get-wallet-timeline` | `{ chainId: 1439, readOnly: true, publicOnly: true, summary, events }`，从 RPC 复验钱包时间线 | 否 |
 | GET | `?tool=get-hardware-bridge-proof` | Frost Edge Node 单页证明卡：`hardwareBridge`、`chainDispatch.chainRead`、Pi 技能白名单、Pi adapter `state/tts/display` 动作、`hardwareBridge.serviceBoundary` 服务回执边界、公开 JSONL 隐私边界和源码锚点 | 否 |
-| POST | `?tool=register` `{ passport, confirm }` | `{ agentId, txHashes, scanUrl }`；未确认时 dry-run | 真写需 |
+| POST | `?tool=register` `{ passport, confirm }` | `{ agentId, txHashes, scanUrl }`；未确认时 dry-run 返回 `willRegister` 预览和 `optionalPaymentReceipt: null`，只展示可选回执槽位，不伪装成已结算 | 真写需 |
 | POST | `?tool=handshake` `{ agentA, agentB, profileHashA, profileHashB, score, confirm }` | `{ txHash }`；未确认时 dry-run | 真写需 |
 
 五条公开只读入口由 `publicReadApis` 固定：`get-chain-evidence`、`get-agent-proof&agentId=43`、`list-agents&builderCode=pocket-earth`、`get-wallet-timeline`、`get-hardware-bridge-proof`。每条都带 `judgeFocus` 和 `expectedFields`，方便快速复验字段，不需要展开源码。`agent-fleet-api` 的 `expectedFields` 固定 `agents[].owner`、`agents[].wallet`、`agents[].identityTuple`、`agents[].builderCode`、`agents[44-47].card.tags`、`agents[44-47].card.metadata.builderCode`、`total`、`offset`、`limit` 和 `sdk`，让公开名片、分页范围和 builderCode 过滤都能被逐项核对。

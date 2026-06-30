@@ -141,6 +141,7 @@ const remoteVerifyPlazaFlow = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/
 const remoteVerifyPlazaInstall = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-install.mjs`)
 const remoteVerifyDeliveryPack = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-delivery-pack.mjs`)
 const remoteVerifyIntegrationGuide = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-integration-guide.mjs`)
+const remoteVerifyWriteBoundaries = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-api-write-boundaries.mjs`)
 const remoteVerifyForgeRun = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-forge-run.mjs`)
 const remoteTastePassport = await fetchText(`${rawBase}/src/app/lib/injective/passport.ts`)
 const remoteAgentPlazaPage = await fetchText(`${rawBase}/src/app/components/AgentPlazaPage.tsx`)
@@ -460,6 +461,9 @@ for (const phrase of [
 ]) {
   assertTrue(`remote integration verifier keeps privacy guard ${phrase}`, remoteVerifyIntegrationGuide.includes(phrase))
 }
+assertTrue('remote integration guide documents register dry-run optional payment receipt', remoteIntegration.includes('willRegister') && remoteIntegration.includes('optionalPaymentReceipt: null') && remoteIntegration.includes('不伪装成已结算'))
+assertTrue('remote integration verifier checks register dry-run optional payment receipt', remoteVerifyIntegrationGuide.includes('integration guide documents register dry-run boundary') && remoteVerifyIntegrationGuide.includes('optionalPaymentReceipt: null'))
+assertTrue('remote write-boundary verifier checks register dry-run optional payment receipt', remoteVerifyWriteBoundaries.includes('register preview optional payment receipt') && remoteVerifyWriteBoundaries.includes('assertNoOldPaymentRoute'))
 for (const phrase of [
   'const PUBLIC_K = 5',
   'const TOPTAGS_CAP = 12',
@@ -798,6 +802,7 @@ for (const [label, text] of [
   ['remote index HTML', remoteIndexHtml],
   ['remote PWA manifest', remoteManifestText],
   ['remote public-plaza source', remotePublicPlaza],
+  ['remote write-boundary verifier', remoteVerifyWriteBoundaries],
 ]) {
   assertNoOldRepoText(label, text)
   assertNoEventPositioning(label, text)
