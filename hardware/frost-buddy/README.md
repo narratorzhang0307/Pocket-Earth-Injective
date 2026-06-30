@@ -93,6 +93,8 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 
 这条分支不 import Pocket Earth 前端、不 import Injective 服务、不签名、不联网，也不绑定 BLE / serial / MQTT 的具体实现。后续真实设备只需要把 action 映射到自己的传输层；删掉这个 adapter 也不会影响主 app、`public-plaza`、`agent-plaza` 或链上证据 API。
 
+`hardwareBridge.roadmapBoundary` 会把这条边界同步暴露到 `/api/injective?tool=get-chain-evidence` 和 `/api/injective?tool=get-hardware-bridge-proof`：当前已经可复验的是 JSONL 公开事件桥、Pi 技能路由和 `state/tts/display` action 合同；真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层，保持可选、可删、可独立测试。
+
 离线冒烟：
 
 ```bash

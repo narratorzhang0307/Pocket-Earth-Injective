@@ -259,6 +259,7 @@ for (const phrase of [
   'publicOnly: true',
   'get-hardware-bridge-proof',
   'hardwareBridge.marketBoundary',
+  'hardwareBridge.roadmapBoundary',
 ]) {
   assertTrue(`README network integration guide includes ${phrase}`, readme.includes(phrase))
 }
@@ -274,6 +275,7 @@ for (const phrase of [
 for (const phrase of [
   '硬件证明要当作独立镜头',
   '放在钱包时间线之后、plaza smoke 之前',
+  'hardwareBridge.roadmapBoundary',
   'privacyBoundary.hardware',
 ]) {
   assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
@@ -331,6 +333,8 @@ for (const phrase of [
   'raw memories never go on-chain',
   'only identity / versions / receipts / selective proofs go on-chain',
   'Frost Edge Node remains a developer-kit / experience layer',
+  'hardwareBridge.roadmapBoundary',
+  '真实 BLE/TTS/display 驱动仍留在可选 adapter 层',
 ]) {
   assertTrue(`PROGRESS keeps current alignment: ${phrase}`, progress.includes(phrase))
 }

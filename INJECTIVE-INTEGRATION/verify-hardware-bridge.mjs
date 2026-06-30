@@ -111,6 +111,10 @@ assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBo
 assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertTrue('hardware proof market business path', String(hardwareProof.hardwareBridge?.marketBoundary?.businessPath || '').includes('Agent Plaza'))
 assertTrue('hardware proof market risk line', String(hardwareProof.hardwareBridge?.marketBoundary?.riskLine || '').includes('No mass-production'))
+assertEqual('hardware proof roadmap current', hardwareProof.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
+assertListIncludes('hardware proof roadmap pending adapters', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
+assertTrue('hardware proof roadmap integration rule', String(hardwareProof.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
+assertTrue('hardware proof roadmap P4 framing', String(hardwareProof.hardwareBridge?.roadmapBoundary?.p4Framing || '').includes('not a mass-produced revenue product'))
 assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertEqual('hardware proof source repository', hardwareProof.sourceControl?.repository, INTEGRATION_REPOSITORY_URL)
 assertEqual('hardware proof local verification', hardwareProof.verification?.hardwareBridge, 'npm run verify:hardware')
@@ -142,6 +146,7 @@ for (const snippet of [
   '体验差异化',
   '市场边界',
   'Raspberry Pi 事件适配分支保持解耦',
+  '真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层',
   'frost_pi_event_adapter.py',
   'state',
   'tts',

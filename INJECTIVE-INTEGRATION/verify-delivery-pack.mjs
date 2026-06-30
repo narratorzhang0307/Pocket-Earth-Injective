@@ -110,6 +110,8 @@ assertEqual('evidence hardware Pi adapter path', evidence.hardwareBridge?.piAdap
 assertTrue('evidence hardware Pi adapter exposes state action', evidence.hardwareBridge?.piAdapter?.actions?.includes('state'))
 assertTrue('evidence hardware Pi adapter exposes tts action', evidence.hardwareBridge?.piAdapter?.actions?.includes('tts'))
 assertTrue('evidence hardware Pi adapter exposes display action', evidence.hardwareBridge?.piAdapter?.actions?.includes('display'))
+assertEqual('evidence hardware roadmap current', evidence.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
+assertTrue('evidence hardware roadmap keeps optional adapters', String(evidence.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
 
 console.log('\nDelivery checklist')
 assertTrue('deliveryChecklist array', Array.isArray(checklist))
@@ -145,7 +147,9 @@ assertTrue('Frost Edge Node checklist mentions Pi adapter', checklistByKey.get('
 assertTrue('Frost Edge Node checklist mentions adapter actions', checklistByKey.get('frost-edge-node').evidence.includes('state/tts/display'))
 assertTrue('Frost Edge Node checklist mentions piAdapter field', checklistByKey.get('frost-edge-node').evidence.includes('hardwareBridge.piAdapter'))
 assertTrue('Frost Edge Node checklist mentions marketBoundary', checklistByKey.get('frost-edge-node').evidence.includes('hardwareBridge.marketBoundary'))
+assertTrue('Frost Edge Node checklist mentions roadmapBoundary', checklistByKey.get('frost-edge-node').evidence.includes('hardwareBridge.roadmapBoundary'))
 assertTrue('Frost Edge Node checklist mentions developer kit boundary', checklistByKey.get('frost-edge-node').evidence.includes('prototype/developer-kit'))
+assertTrue('Frost Edge Node checklist mentions optional drivers', checklistByKey.get('frost-edge-node').evidence.includes('BLE/TTS/display drivers stay optional'))
 assertTrue('Frost Edge Node checklist keeps Agent Plaza business path', checklistByKey.get('frost-edge-node').evidence.includes('Agent Plaza'))
 assertTrue('Frost Edge Node checklist matches market role', HARDWARE_BRIDGE_PROOF.marketBoundary.role.includes('developer-kit'))
 assertEqual('Frost Edge Node Pi adapter action count', HARDWARE_BRIDGE_PROOF.piAdapter.actions.length, 3)

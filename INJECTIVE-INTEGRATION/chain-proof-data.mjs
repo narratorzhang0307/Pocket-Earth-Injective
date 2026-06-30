@@ -188,6 +188,12 @@ export const HARDWARE_BRIDGE_PROOF = {
     businessPath: 'Pocket Earth revenue path stays with trusted profiles and Agent Plaza installs, calls, reviews, and optional payment receipts.',
     riskLine: 'No mass-production, wallet-signing, or hardware revenue projection is claimed by this proof.',
   },
+  roadmapBoundary: {
+    current: 'JSONL public-event bridge, Pi skill router, and transport-neutral state/tts/display action adapter are implemented and smoke-tested.',
+    pendingAdapters: ['BLE transport', 'local TTS driver', 'display driver', 'MQTT or serial bridge'],
+    integrationRule: 'Physical adapters sit after public actions and remain optional/removable; Pocket Earth main app, public-plaza, agent-plaza, and Injective APIs do not depend on them.',
+    p4Framing: 'P4 Frost Network keeps hardware as a music-agent and chain-dispatch playback node, not a mass-produced revenue product.',
+  },
   localVerification: 'npm run verify:hardware',
 }
 
@@ -312,7 +318,7 @@ export const DELIVERY_CHECKLIST = [
     key: 'frost-edge-node',
     requirement: 'Frost Edge Node hardware bridge stays demonstrable and privacy-bounded',
     status: 'ready-prototype',
-    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router and Pi event adapter state/tts/display action contract, without private keys or raw profile data; hardwareBridge.piAdapter and hardwareBridge.marketBoundary keep it framed as a prototype/developer-kit endpoint while the business path stays with Agent Plaza installs, calls, reviews, and optional receipts.',
+    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router and Pi event adapter state/tts/display action contract, without private keys or raw profile data; hardwareBridge.piAdapter, hardwareBridge.marketBoundary, and hardwareBridge.roadmapBoundary keep it framed as a prototype/developer-kit endpoint while BLE/TTS/display drivers stay optional and the business path stays with Agent Plaza installs, calls, reviews, and optional receipts.',
     localCheck: 'npm run verify:hardware',
     linkKey: 'hardware-bridge',
   },

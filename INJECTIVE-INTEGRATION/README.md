@@ -332,7 +332,7 @@ Pocket Earth App / public-plaza
 | `tts` | 本地 TTS 或音箱播报 | 只读公开 `speak` 文案 |
 | `display` | OLED、e-ink、WebSocket 或 MQTT 面板 | 只展示标题、摘要、公开 `agentIds` 和 Blockscout `scanUrl` |
 
-这条分支把 PPT 第 33 页的“实体节点，不是重资本硬件路线”落成了工程结构：Pocket Earth 主线只负责生成公开事件；Pi adapter 只负责把公开事件翻译成设备动作；真正的 BLE、串口、MQTT、屏幕和音频驱动都在 adapter 之后，随时可替换、可删除、可单独测试。`frost_pi_event_adapter_smoke.py` 会离线验证 action 合同、CLI JSONL 输出和私密哈希拦截。
+这条分支把 PPT 第 33 页的“实体节点，不是重资本硬件路线”落成了工程结构：Pocket Earth 主线只负责生成公开事件；Pi adapter 只负责把公开事件翻译成设备动作；真正的 BLE、串口、MQTT、屏幕和音频驱动都在 adapter 之后，随时可替换、可删除、可单独测试。`hardwareBridge.roadmapBoundary` 会把“当前已完成事件桥和 action 合同、后续物理驱动仍是可选 adapter”的边界暴露到公开证据 API；`frost_pi_event_adapter_smoke.py` 会离线验证 action 合同、CLI JSONL 输出和私密哈希拦截。
 
 ### Pi 侧技能路由
 
