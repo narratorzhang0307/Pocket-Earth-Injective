@@ -129,6 +129,7 @@ const remoteVerifyPlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/veri
 const remoteVerifyPlazaFlow = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-flow.mjs`)
 const remoteVerifyPlazaInstall = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-install.mjs`)
 const remoteVerifyDeliveryPack = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-delivery-pack.mjs`)
+const remoteVerifyIntegrationGuide = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-integration-guide.mjs`)
 const remoteVerifyForgeRun = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-forge-run.mjs`)
 const remoteAgentPlazaPage = await fetchText(`${rawBase}/src/app/components/AgentPlazaPage.tsx`)
 const remotePlazaCatalog = await fetchText(`${rawBase}/src/app/lib/plaza/catalog.ts`)
@@ -363,6 +364,33 @@ for (const phrase of [
   'agent-plaza',
 ]) {
   assertTrue(`remote integration guide keeps story spine ${phrase}`, remoteIntegration.includes(phrase))
+}
+for (const phrase of [
+  'Profile Confidence 分 L0-L4',
+  'L0 是自声明标签',
+  'L1 是本地知识库生成',
+  'L2 是时间连续性',
+  'L3 是选择性证明/Merkle 片段',
+  'L4 是 SocialHandshake、安装、评价等外部回执',
+  '不是 Credit Score',
+  '不判断“人好坏”',
+  '公开画像有多少长期数据支撑',
+  '批量灌入',
+  '随机标签',
+  '短期快速变脸',
+]) {
+  assertTrue(`remote integration guide keeps Profile Confidence guard text ${phrase}`, remoteIntegration.includes(phrase))
+}
+for (const phrase of [
+  'Profile Confidence anti-fraud guard',
+  'profile confidence guard includes',
+  'L0 是自声明标签',
+  'L4 是 SocialHandshake、安装、评价等外部回执',
+  '批量灌入',
+  '随机标签',
+  '短期快速变脸',
+]) {
+  assertTrue(`remote integration verifier keeps Profile Confidence guard ${phrase}`, remoteVerifyIntegrationGuide.includes(phrase))
 }
 assertTrue('remote evidence pack names reviewBrief', remoteEvidence.includes('reviewBrief'))
 assertTrue('remote evidence pack names public demo video', remoteEvidence.includes('reviewEntrypoints.demo-video') && remoteEvidence.includes(DEMO_VIDEO_URL))

@@ -186,6 +186,28 @@ for (const phrase of [
   assertTrue(`story spine includes ${phrase}`, guide.includes(phrase))
 }
 
+console.log('\nProfile Confidence anti-fraud guard')
+for (const phrase of [
+  'Profile Confidence 分 L0-L4',
+  'L0 是自声明标签',
+  'L1 是本地知识库生成',
+  'L2 是时间连续性',
+  'L3 是选择性证明/Merkle 片段',
+  'L4 是 SocialHandshake、安装、评价等外部回执',
+  '不是 Credit Score',
+  '不判断“人好坏”',
+  '公开画像有多少长期数据支撑',
+  '批量灌入',
+  '随机标签',
+  '短期快速变脸',
+  '时间跨度',
+  '来源权重',
+  '稳定性',
+  '社交佐证',
+]) {
+  assertTrue(`profile confidence guard includes ${phrase}`, guide.includes(phrase))
+}
+
 console.log('\nIntegration guide API manifest')
 const serviceRow = guide.split('\n').find((line) => line.includes('| `/api/injective` 服务'))
 assertTrue('implemented capability row exists', Boolean(serviceRow))
