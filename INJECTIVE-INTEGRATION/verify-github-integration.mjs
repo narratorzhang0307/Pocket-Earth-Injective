@@ -462,6 +462,20 @@ for (const phrase of [
   assertTrue(`remote judge quickstart keeps roadmap boundary ${phrase}`, remoteJudge.includes(phrase))
 }
 for (const phrase of [
+  'Profile Confidence Fast Check',
+  'Profile Confidence is not a credit score',
+  'not a judgment about a person',
+  'L0 self-declared',
+  'L1 local memory source',
+  'L2 time continuity',
+  'L3 selective proof',
+  'L4 external corroboration',
+  'bulk imports, random tags, short-term profile jumps',
+  'provenance, not judgment',
+]) {
+  assertTrue(`remote judge quickstart keeps profile confidence ${phrase}`, remoteJudge.includes(phrase))
+}
+for (const phrase of [
   'Pocket Earth Roadmap And Safety Boundary Fast Check',
   'P0 core / P1 compatibility / P2 self-learning',
   'NOW chain identity and handshake / Profile Checkpoint / Agent Plaza receipts / Profile Confidence / P4 Frost Network',

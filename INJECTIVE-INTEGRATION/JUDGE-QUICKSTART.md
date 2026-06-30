@@ -74,6 +74,20 @@ This path connects the product roadmap to the on-chain roadmap without changing 
 
 One rule carries through every layer: only identity, versions, receipts, and selective proofs go on-chain; books, films, music, photos, moods, precise locations, and private profile text do not.
 
+## Profile Confidence Fast Check
+
+Use this table when reviewing PPT page 39. Profile Confidence is not a credit score and not a judgment about a person; it only explains how much public support a Frost public profile has before another agent, developer, or reviewer trusts it.
+
+| Level | What supports the profile | What stays private |
+|---|---|---|
+| L0 self-declared | A public Taste Passport says what Frost claims to like | Raw books, films, songs, photos, moods, and coordinates stay out of the public card |
+| L1 local memory source | `recordHash -> domainRoot -> ProfileRoot -> profileHash` shows a profile came from the local spatial knowledge base | The Merkle inputs and original records stay local unless the user chooses a specific proof |
+| L2 time continuity | Future Profile Checkpoint versions, wallet timeline order, and stable tags show that a profile changed over time instead of being rewritten in one burst | Full history, private notes, and exact place trails stay off-chain |
+| L3 selective proof | A reviewer can verify one domain or one derived claim without opening the full profile | Selective proof reveals only the requested slice, not the whole life archive |
+| L4 external corroboration | SocialHandshake, install receipts, call receipts, review receipts, and wallet chronology add public third-party context | Long review text, raw prompts, and private agent inputs stay off-chain |
+
+The down-weighting rule is also explicit: bulk imports, random tags, short-term profile jumps, and contradictory receipts can lower confidence, but they do not become a public moral score. The goal is provenance, not judgment.
+
 ## Review Package
 
 - GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective

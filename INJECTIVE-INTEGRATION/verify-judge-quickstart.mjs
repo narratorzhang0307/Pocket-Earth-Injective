@@ -70,6 +70,7 @@ for (const snippet of [
   'What This Proves',
   'Agent Plaza Receipt Loop Fast Check',
   'Pocket Earth Roadmap And Safety Boundary Fast Check',
+  'Profile Confidence Fast Check',
   'Review Package',
   'Public Links',
   'Local Commands',
@@ -167,6 +168,17 @@ for (const snippet of [
   'P4 Frost Network',
   'Raw memories never go on-chain',
   'only identity, versions, receipts, and selective proofs go on-chain',
+  'Profile Confidence Fast Check',
+  'Profile Confidence is not a credit score',
+  'not a judgment about a person',
+  'how much public support a Frost public profile has',
+  'L0 self-declared',
+  'L1 local memory source',
+  'L2 time continuity',
+  'L3 selective proof',
+  'L4 external corroboration',
+  'bulk imports, random tags, short-term profile jumps',
+  'provenance, not judgment',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))
 }
@@ -252,6 +264,16 @@ for (const snippet of [
   'Hardware remains a developer-kit / experience layer',
 ]) {
   assertTrue(`quickstart roadmap fast check explains ${snippet}`, quickstart.includes(snippet))
+}
+for (const snippet of [
+  'Raw books, films, songs, photos, moods, and coordinates stay out of the public card',
+  'The Merkle inputs and original records stay local unless the user chooses a specific proof',
+  'Full history, private notes, and exact place trails stay off-chain',
+  'Selective proof reveals only the requested slice, not the whole life archive',
+  'Long review text, raw prompts, and private agent inputs stay off-chain',
+  'do not become a public moral score',
+]) {
+  assertTrue(`quickstart profile confidence fast check explains ${snippet}`, quickstart.includes(snippet))
 }
 const readingOrder = quickstart.match(/Use this order in the recording[^\n]+/)?.[0] || ''
 assertTrue('quickstart reading order mentions wallet timeline API', readingOrder.includes('wallet timeline API'))
