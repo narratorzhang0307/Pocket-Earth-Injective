@@ -6,6 +6,7 @@ import {
   BUILDER_CODE,
   DEMO_VIDEO_LIMIT_SECONDS,
   HARDWARE_BRIDGE_URL,
+  HARDWARE_BRIDGE_PROOF,
   JUDGE_QUICKSTART_URL,
   LIVE_DEMO_URL,
   DELIVERY_CHECKLIST,
@@ -136,6 +137,10 @@ assertTrue('checklist mentions no private keys', checklistByKey.get('public-revi
 assertEqual('Frost Edge Node checklist status', checklistByKey.get('frost-edge-node').status, 'ready-prototype')
 assertEqual('Frost Edge Node checklist local check', checklistByKey.get('frost-edge-node').localCheck, 'npm run verify:hardware')
 assertTrue('Frost Edge Node checklist mentions JSONL', checklistByKey.get('frost-edge-node').evidence.includes('JSONL'))
+assertTrue('Frost Edge Node checklist mentions marketBoundary', checklistByKey.get('frost-edge-node').evidence.includes('hardwareBridge.marketBoundary'))
+assertTrue('Frost Edge Node checklist mentions developer kit boundary', checklistByKey.get('frost-edge-node').evidence.includes('prototype/developer-kit'))
+assertTrue('Frost Edge Node checklist keeps Agent Plaza business path', checklistByKey.get('frost-edge-node').evidence.includes('Agent Plaza'))
+assertTrue('Frost Edge Node checklist matches market role', HARDWARE_BRIDGE_PROOF.marketBoundary.role.includes('developer-kit'))
 
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
 assertTrue('README names Injective core integration', readme.includes('Injective 核心集成'))

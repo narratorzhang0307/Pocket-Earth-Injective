@@ -306,7 +306,7 @@ export const DELIVERY_CHECKLIST = [
     key: 'frost-edge-node',
     requirement: 'Frost Edge Node hardware bridge stays demonstrable and privacy-bounded',
     status: 'ready-prototype',
-    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router, without private keys or raw profile data.',
+    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router, without private keys or raw profile data; hardwareBridge.marketBoundary keeps it framed as a prototype/developer-kit endpoint while the business path stays with Agent Plaza installs, calls, reviews, and optional receipts.',
     localCheck: 'npm run verify:hardware',
     linkKey: 'hardware-bridge',
   },
