@@ -546,6 +546,8 @@ for (const phrase of [
   '同钱包时间线',
   'SocialHandshake',
   '未来 Profile Checkpoint',
+  'Profile Chain / Proof of Memory',
+  '画像版本见证',
   'Frost Edge Node 只消费公开 JSONL 事件',
   'Agent Plaza 承接安装、调用、评价和可选付费回执',
   '不走代币优先或重资本硬件路线',

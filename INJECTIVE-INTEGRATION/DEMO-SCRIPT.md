@@ -13,7 +13,7 @@
 |---|---|---|
 | 用户问题 | 个人记忆散落各处，按时间记不牢，记录沉底，工具不懂你，隐私不敢交。 | README 的“Pocket Earth 是什么”、集成说明的“用户痛点与对症解决” |
 | 产品方法 | Pocket Earth 把真实地点当索引，让书、影、乐、照片、行程和心情回到同一颗地球；Frost-agent 端云双脑负责挑、找、表达和反思。 | 地球入口、六类标记、`frost-agent` harness、RunTrace |
-| Injective 证明 | Injective 负责公共见证：ERC-8004 `agentId 43`、`agentId 43-47` fleet、同钱包时间线、SocialHandshake 和未来 Profile Checkpoint。 | Blockscout、`get-chain-evidence`、`get-agent-proof`、`get-wallet-timeline` |
+| Injective 证明 | Injective 负责公共见证：ERC-8004 `agentId 43`、`agentId 43-47` fleet、同钱包时间线、SocialHandshake、未来 Profile Checkpoint，以及 Profile Chain / Proof of Memory 的画像版本见证。 | Blockscout、`get-chain-evidence`、`get-agent-proof`、`get-wallet-timeline` |
 | 硬件与商业边界 | Frost Edge Node 只消费公开 JSONL 事件；Agent Plaza 承接安装、调用、评价和可选付费回执；未来硬件节点服务也只能走 Agent Plaza 服务回执；商业路径不走代币优先或重资本硬件路线。 | `get-hardware-bridge-proof`、`hardwareBridge.serviceBoundary`、`agent-plaza`、`reviewManifest`、`Profile Confidence` |
 
 ---
@@ -28,7 +28,7 @@
 | 3 钉地球 | 1:30–1:55 | 切到地球入口，蓝紫色 agent 标记点散落球面，点开一个看详情卡 + scanUrl 外链 | 「遇见的每个链上 agent，都被钉到地球上。点开就能跳到该 agent 的链上身份页。社交关系第一次有了地理坐标。」 |
 | 4 夜间报告 | 1:55–2:20 | 广场切「夜间 · 回来报告」，展示一段叙事 + 每个 agent 捎回的一句推荐 | 「夜里 Frost 回来，用人话给你讲今天的链上见闻：遇见了谁、聊了什么、谁替你捎回一句推荐。这段叙事由通义 Qwen 端云协同生成；同一条公开事件也可以交给桌面的 Frost Buddy 原型播报。」 |
 | 5 链上验证 + 隐私 | 2:20–2:50 | 切 blockscout，依次点开：注册 tx、SocialHandshake 合约、一笔真实握手 tx（含 agentA/agentB/score/profileHash） | 「两个 Frost 聊得来，会在链上留一笔可验证的握手——只存身份、名片哈希、相似度、时间戳。隐私铁律：上链的永远只是证明物，你的书影音原文、精确坐标、画像明细，全留在端侧和你自己的服务器。」 |
-| 6 收尾 | 2:50–3:00 | 回地球全景，打出标题 + Injective logo | 「Pocket Earth 现在就能打开，不是纸面方案；FROST Chronicle 是可追溯、不暴露隐私的画像演化史。公开仓库、Demo 视频、Pitch Deck 三件交付，Built on Injective。」 |
+| 6 收尾 | 2:50–3:00 | 回地球全景，打出标题 + Injective logo | 「Pocket Earth 现在就能打开，不是纸面方案；FROST Chronicle / Proof of Memory 是可追溯、不暴露隐私的画像演化史。公开仓库、Demo 视频、Pitch Deck 三件交付，Built on Injective。」 |
 
 ---
 
@@ -43,7 +43,7 @@
 - **地球的 agent 点**：蓝紫色（`#7c5cff`），和音乐绿 / 照片青等其他图层区分；缩放后会自动散开不重叠。
 - **录制前 smoke**：先跑 `npm run verify:duration`，确认分镜总时长仍在 180s 内；再跑 `npm run verify:github`、`npm run verify:positioning` 和 `npm run verify:source`，确认公开 GitHub 仓库、远端 README、证据材料、README / app / hardware / docs 的核心集成定位和 `sourceControl` 都指向当前 `Pocket-Earth-Injective`；再跑 `npm run verify:registry`、`npm run verify:agent-proof`、`npm run verify:wallet`、`npm run verify:handshake` 和 `npm run verify:handshake-contract`，确认身份、mint 事件、单 agent 证明卡、钱包时间线、真实握手事件和 SocialHandshake creation/runtime bytecode 与源码一致；再跑 `npm run verify:public-proof`、`npm run verify:public-apis`、`npm run verify:integration-guide` 和 `npm run verify:hardware`，确认公开证据包、五条只读 API、集成说明、硬件公开事件桥和隐私边界没有漂移；再跑 `npm run verify:brief`、`npm run verify:review`、`npm run verify:review-links`、`npm run verify:recording-order`、`npm run verify:plaza-flow`、`npm run verify:nova-alignment` 和 `npm run verify:delivery`，确认简报、链接、录屏顺序、plaza 分组、Injective 价值映射和交付清单正常；最后跑 `npm run verify:demo` 和 `npm run verify:plaza`。
 - **硬件一句话**：如果录屏里出现实体 Frost Buddy，只说「Frost Edge Node 已有 Raspberry Pi / BLE / TTS 公开事件桥、Pi 侧技能路由和解耦事件适配分支，`music_now_playing` 与 Injective `chain_dispatch` 会先变成 `state` / `tts` / `display` 三类公开动作，再交给实体 Frost 播报；未来若出现硬件节点服务，也通过 `hardwareNodeServiceReceipt` 进入 Agent Plaza 服务回执」；不要说成已量产、可签名或完整硬件闭环。
-- **收尾一句话**：按 PPT 第 40-41 页收束，不要泛泛说“做了一个身份系统”。准确说法是：`FROST Chronicle` 是可追溯、可验证但不暴露隐私的画像演化史；Pocket Earth 现在就能打开；三件交付是公开 GitHub + 完整 README、Demo 视频、Pitch Deck；`Built on Injective` 指公开身份、版本、时间线、握手和未来结算回执能被核对。
+- **收尾一句话**：按 PPT 第 40-41 页收束，不要泛泛说“做了一个身份系统”。准确说法是：`FROST Chronicle / Proof of Memory` 是可追溯、可验证但不暴露隐私的画像演化史；Profile Chain 证明公开画像来自长期本地知识库，而不是临时自我介绍；Pocket Earth 现在就能打开；三件交付是公开 GitHub + 完整 README、Demo 视频、Pitch Deck；`Built on Injective` 指公开身份、版本、时间线、握手和未来结算回执能被核对。
 - **录屏别露**：`.env`、私钥、服务器 IP、终端。只露 App UI + 区块浏览器公开页。
 
 ---
