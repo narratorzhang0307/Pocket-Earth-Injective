@@ -249,6 +249,7 @@ assertTrue('JUDGE-QUICKSTART mentions demo video entrypoint', judgeQuickstart.in
 assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions judgeRunbook', demoScript.includes('judgeRunbook'))
 assertTrue('DEMO-SCRIPT mentions market landscape boundary', demoScript.includes('marketLandscapeBoundary'))
+assertTrue('DEMO-SCRIPT mentions market negative coordinates', demoScript.includes('negativeCoordinates') && demoScript.includes('PPT 第 34 页反面坐标'))
 assertTrue('DEMO-SCRIPT mentions roadmap safety boundary', demoScript.includes('roadmapSafetyBoundary'))
 assertTrue('DEMO-SCRIPT mentions 3-minute limit', demoScript.includes('≤ 3 分钟') && demoScript.includes('180s'))
 assertTrue('DEMO-SCRIPT separates public-plaza from agent-plaza', demoScript.includes('public-plaza` 只讲链上社交发现') && demoScript.includes('agent-plaza` 才讲商业路径'))
