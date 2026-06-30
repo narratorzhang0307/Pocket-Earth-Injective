@@ -206,6 +206,22 @@ for (const phrase of [
   assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
 }
 
+console.log('\nProgress document alignment guard')
+for (const phrase of [
+  '## 当前状态（2026-06-30）',
+  '商业路径边界',
+  '5.3 商业路径与三条边界',
+  '不走纯社交变现 / 不走代币优先 / 不走重资本硬件路线',
+  'Agent Plaza 是安装、调用、评价和可选付费回执的中心',
+  '三条商业边界',
+  'manifest / schema / permissions',
+  'reviewManifest',
+  'toManifest',
+  'willEmit',
+]) {
+  assertTrue(`PROGRESS keeps current alignment: ${phrase}`, progress.includes(phrase))
+}
+
 console.log('\nPlaza demo split guard')
 for (const phrase of [
   'public-plaza 镜头',
