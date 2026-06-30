@@ -14,7 +14,7 @@
 - **Frost Buddy 硬件延展**：`hardware/frost-buddy/` 已整理为 Frost Edge Node 模块说明，覆盖 Raspberry Pi / BLE / TTS 公开事件桥、Pi 侧技能路由、Pi 事件适配分支、music-agent 实体化、`chain_dispatch` 链上见闻播报、市场边界、`hardwareNodeServiceReceipt` 服务回执边界、路线图边界与隐私边界；`frost_pi_event_adapter.py` 把公开 JSONL 拆成 `state` / `tts` / `display` 三类动作，不影响主 app、plaza 或链上 API，真实 BLE/TTS/display 驱动仍留在可选 adapter 层。
 - **PPT 硬件边界守门**：`verify:hardware` 现在会明确固定“事件桥与 Pi adapter 已可离线冒烟、真实 BLE / TTS / 小屏幕物理驱动仍待后续 adapter 接入”这条边界，避免把 Frost Edge Node 写成已量产、已签名或硬件收入优先路径。
 - **商业路径边界**：根 `README.md` 已新增 `5.3 商业路径与三条边界`，明确不走纯社交变现、不走代币优先、不走重资本硬件路线；`marketLandscapeBoundary` 进一步固定 `commercialFlywheel`、`preferredPath`、`rejectedPaths` 和 `differentiation`，让“长期使用 -> 可信画像 -> Agent 市场”成为可机读证据；Agent Plaza 是安装、调用、评价和可选付费回执的中心。
-- **最终整合版覆盖**：根 `README.md` 已新增 `5.1 最终整合版对照与技术深挖`、`5.2 Frost Edge Node：树莓派硬件原理与市场边界`、`5.3 商业路径与三条边界`；`INJECTIVE-INTEGRATION/README.md#final-ppt-index` 已按最终 PPT 41 页建立逐页覆盖索引，并展开 Profile Chain / Proof of Memory、frost-agent harness、Agent Plaza / Frost Buddy、三条商业边界与外部来源边界；PPT 第一页的公开视频 `https://youtu.be/KjmrjTnvVo0` 已固定为 `reviewEntrypoints.demo-video` 与 `deliveryChecklist.demo-video-script`。
+- **最终整合版覆盖**：根 `README.md` 已新增 `5.1 最终整合版对照与技术深挖`、`5.1.1 FROST Chronicle：画像演化史与三件交付`、`5.2 Frost Edge Node：树莓派硬件原理与市场边界`、`5.3 商业路径与三条边界`；`5.1.1` 直接承接 PPT 第 40-41 页的“不是再做一个 Web3 身份系统 / AI 分身公开画像的来源证明 / 现在能打开 / 三件交付 / Built on Injective”；`INJECTIVE-INTEGRATION/README.md#final-ppt-index` 已按最终 PPT 41 页建立逐页覆盖索引，并展开 Profile Chain / Proof of Memory、frost-agent harness、Agent Plaza / Frost Buddy、三条商业边界与外部来源边界；PPT 第一页的公开视频 `https://youtu.be/KjmrjTnvVo0` 已固定为 `reviewEntrypoints.demo-video` 与 `deliveryChecklist.demo-video-script`。
 
 ## 核心证据层
 
@@ -32,7 +32,7 @@
 
 ## 当前文档结构
 
-- `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层；`5.1 最终整合版对照与技术深挖` 把 PPT 页段映射到技术落点和复验入口，并补充作者方法来源只作为产品方法解释、链上证明仍以仓库/API/交易为准；`5.3 商业路径与三条边界` 把商业判断收束为“不走纯社交变现 / 不走代币优先 / 不走重资本硬件路线”，并用 `marketLandscapeBoundary`、`commercialFlywheel`、`preferredPath`、`rejectedPaths` 把市场判断接入公开证据包。
+- `README.md`：对外总览，按空间知识库、frost-agent harness、Frost Passport、Profile Chain、Agent Plaza、Frost Edge Node 分层；`5.1 最终整合版对照与技术深挖` 把 PPT 页段映射到技术落点和复验入口，并补充作者方法来源只作为产品方法解释、链上证明仍以仓库/API/交易为准；`5.1.1 FROST Chronicle：画像演化史与三件交付` 把 PPT 收尾压成四个公开核验点：AI 分身公开画像的来源证明、现在能打开、公开 GitHub + 完整 README / Demo 视频 / Pitch Deck 三件交付、Built on Injective 的公共身份层 / 画像版本见证层 / 未来结算回执层；`5.3 商业路径与三条边界` 把商业判断收束为“不走纯社交变现 / 不走代币优先 / 不走重资本硬件路线”，并用 `marketLandscapeBoundary`、`commercialFlywheel`、`preferredPath`、`rejectedPaths` 把市场判断接入公开证据包。
 - `INJECTIVE-INTEGRATION/README.md`：Injective 核心集成说明，先用叙事骨架对齐“把地球作为方法 / Frost 起源 / 一条线走完 / 三入口，一颗地球 / 端云双脑 / Frost Buddy”，再用 `final-ppt-index` 逐页覆盖 41 页主线；后半部分展开 PPT 第 2 页作者方法来源与证据边界（独立开发闭环、小说作者与叙事训练、建筑/空间背景、文学奖项与内容运营、个人网站与作品入口）、“一条线走完：从票根到链上见闻”、`recordHash -> domainRoot -> ProfileRoot -> profileHash`、`ProfileCheckpoint`、Profile Confidence、FrostBus / RunTrace、SSE `x-accel-buffering:no`、Skills 能力沉淀与依赖边界、skill 三个家目录与“路由器不是仓库”的单向依赖规则、`reviewManifest`、`toManifest`、`agentGeo` / FNV-1a、Frost Edge Node 硬件原理、Pi 事件适配分支、树莓派市场边界、PPT 第 34 页反面坐标、三条商业边界、外部来源边界、用户痛点与对症解决，以及 PPT 第 40-41 页的 FROST Chronicle / 现在能打开 / 三件交付收尾。
 - `INJECTIVE-INTEGRATION/README.md` 的“用户痛点与对症解决”已经把 `散落各处`、`按时间记不牢`、`隐私不敢交`、`整理太费劲` 对应到地球索引、端云双脑、skill 沉淀和链上身份；`Roadmap 与安全边界` 已拆成 `产品演进路线` 与 `链上信誉网络路线` 两张表，区分 P0/P1/P2 自学能力和 NOW/P1/P2/P3/P4 链上信誉网络，并固定 `heartbeat 建议引擎`、`学习型 skill + 安全闸`、`真 SSE 流式渲染`、`只建议不偷改`、`Frost Network` 等最终路线图要点。
 - `INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`：公开证据索引，提供 Blockscout、RPC、API 与本地验证命令。
