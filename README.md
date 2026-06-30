@@ -94,7 +94,7 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 
 | PPT 页段 | README 中的技术落点 | 复验入口 |
 |---|---|---|
-| 1-7 产品方法 / Frost 起源 / 一条线走完 | Pocket Earth 是空间知识库，不是普通聊天框；六类对象用真实坐标组织，`markPlace`、`userMarks`、`planets`、`geoStickers` 与 Mapbox `source.setData()` 负责把碎片实时钉回地球 | `npm run verify:positioning` |
+| 1-7 产品定位 / 作者方法来源 / Frost 起源 / 一条线走完 | Pocket Earth 是空间知识库，不是普通聊天框；作者的独立开发、小说叙事和建筑/空间背景只作为方法来源，公开证据仍以仓库、链上身份和只读 API 为准；六类对象用真实坐标组织，`markPlace`、`userMarks`、`planets`、`geoStickers` 与 Mapbox `source.setData()` 负责把碎片实时钉回地球 | `npm run verify:positioning` |
 | 8-13 PHOTOS / JOT / music / travel / council / 端侧整理 | PHOTOS 三视图、统一记一笔、music-agent 一句话成单、travel 截图脱敏、COUNCIL 法庭、浏览器 CLIP + Qwen-VL 打分共同证明 Pocket Earth 是可运行产品；REDACT、trackId 反查、只读旅行资料源都是确定性边界 | `npm run verify:demo`、`npm run verify:plaza` |
 | 14-18 frost-agent harness | Shell / Brain / Selector / Router / Memory / Boundary / Sub-agents 组成 CEO 委派内核；`intentRegistry`、`registerActionValidator`、`edgeSafe`、`RunTrace`、`FrostBus`、SSE `x-accel-buffering:no` 和 skill 依赖方向把编排变成可观测工程 | [`docs/技术难点与解决方案.md`](docs/技术难点与解决方案.md) |
 | 19-29 Profile Chain | Injective 承担 Agent Personality Provenance：`recordHash -> domainRoot -> ProfileRoot -> profileHash` 只描述公开画像演化；`ProfileCheckpoint(agentId, version, previousProfileHash, newProfileHash, evidenceRoot, timestamp)` 是回执形态；Profile Confidence L0-L4 只评估来源支撑，不评判人 | `npm run verify:public-proof` |

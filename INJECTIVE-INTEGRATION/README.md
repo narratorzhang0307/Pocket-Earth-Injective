@@ -46,6 +46,21 @@
 
 ---
 
+## 作者方法来源与证据边界
+
+PPT 第 2 页的“独立开发者 × 小说作者 × 建筑/空间背景”不是链上证据字段，而是 Pocket Earth 方法论的来源说明。Markdown 里保留这层背景，是为了让读者理解为什么产品会同时选择“地理坐标”“Frost 叙事”“agent harness”和“可复验公开证据”这四件事；真正可核验的仍然是当前仓库、线上 demo、Injective testnet 交易和只读 API。
+
+| 背景线索 | 转译成 Pocket Earth 的方法 | 证据边界 |
+|---|---|---|
+| 独立开发闭环 | 从需求、交互、前后端、云端部署到 agent harness 都能在同一个仓库里复验；GitHub 只证明代码、接口和文档当前可读 | `sourceControl`、`reviewEntrypoints`、`verify:github` |
+| 小说作者与叙事训练 | Frost 不是工具按钮，而是一个会委派、会回望、会把链上见闻写成人话的 AI 分身；这解释了 Frost 起源、Nightly Chain Dispatch 和 FROST Chronicle 的叙事形态 | `DEMO-SCRIPT.md`、`PublicPlazaPage.tsx`、`reviewBrief` |
+| 建筑/空间背景 | 地理坐标不是背景图，而是书、影、乐、照片、行程、心情和 agent 产出的统一索引；“把地球作为方法”来自空间组织经验 | `README.md` 的“Pocket Earth 是什么”、`mapMarkers.ts`、`verify:positioning` |
+| 个人网站与作品入口 | `narratorzhang.com` 只作为作品入口，不能替代链上身份、钱包时间线或公开 API 证明 | `agentId 43`、`get-wallet-timeline`、`get-chain-evidence` |
+
+这条边界避免两种误读：一是把个人经历当作链上证明；二是把 Injective 证据讲成孤立的技术贴片。Pocket Earth 的专业性来自“方法来源可解释，工程证据可复验，私人记忆不上链”三者同时成立。
+
+---
+
 ## 1. 架构主线
 
 | 层 | Pocket Earth 中的角色 | Injective 中的角色 |
