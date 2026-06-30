@@ -125,6 +125,7 @@ const remoteMapFocus = await fetchText(`${rawBase}/src/app/data/mapFocus.ts`)
 const remoteMapMarkers = await fetchText(`${rawBase}/src/app/data/mapMarkers.ts`)
 const remoteVerifySpacePlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-space-plaza.mjs`)
 const remoteVerifyPlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza.mjs`)
+const remoteVerifyHardware = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs`)
 const remoteIndexHtml = await fetchText(`${rawBase}/index.html`)
 const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanifest`)
 const remoteManifest = JSON.parse(remoteManifestText)
@@ -164,6 +165,9 @@ assertTrue('remote README names hardware proof API in fast proof ladder', remote
 assertTrue('remote README names hardware market boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.marketBoundary'))
 assertTrue('remote README names hardware service boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.serviceBoundary'))
 assertTrue('remote README names Agent Plaza service receipts for hardware', remoteReadme.includes('Agent Plaza 服务回执'))
+assertTrue('remote README names hardware smoke boundary', remoteReadme.includes('离线冒烟') && remoteReadme.includes('state/tts/display'))
+assertTrue('remote README keeps physical adapters pending', remoteReadme.includes('真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层'))
+assertTrue('remote README keeps hardware adapter lane removable', remoteReadme.includes('可选、可删、可独立测试'))
 assertTrue('remote README names commercial path boundary', remoteReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
 assertTrue('remote README keeps Agent Plaza commercial center', remoteReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
@@ -555,6 +559,9 @@ for (const phrase of [
   'hardwareBridge.serviceBoundary',
   'hardwareNodeServiceReceipt',
   'roadmapSafetyBoundary',
+  'PPT 硬件边界守门',
+  '真实 BLE / TTS / 小屏幕物理驱动仍待后续 adapter 接入',
+  '硬件收入优先路径',
 ]) {
   assertTrue(`remote progress keeps roadmap boundary ${phrase}`, remoteProgress.includes(phrase))
 }
@@ -562,8 +569,13 @@ assertTrue('remote hardware README names module subject explicitly', remoteHardw
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
 assertTrue('remote hardware README names hardware service boundary explicitly', remoteHardware.includes('硬件节点服务边界'))
 assertTrue('remote hardware README names Agent Plaza service receipt', remoteHardware.includes('Agent Plaza 服务回执'))
+assertTrue('remote hardware README keeps driver boundary', remoteHardware.includes('真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层'))
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
 assertTrue('remote hardware README omits vague market subject', !remoteHardware.includes('这个判断在 Markdown'))
+assertTrue('remote hardware verifier locks smoke-tested bridge', remoteVerifyHardware.includes('hardware proof roadmap current names smoke-tested bridge'))
+assertTrue('remote hardware verifier keeps physical adapters pending', remoteVerifyHardware.includes('hardware proof roadmap keeps physical adapters pending'))
+assertTrue('remote hardware verifier checks README physical driver boundary', remoteVerifyHardware.includes('真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层'))
+assertTrue('remote hardware verifier checks removable adapter lane', remoteVerifyHardware.includes('可选、可删、可独立测试'))
 assertTrue('remote PWA manifest description names each record explicitly', remoteManifest.description?.includes('每条记录各自对应的真实地点'))
 assertTrue('remote PWA manifest description omits vague pronoun', !remoteManifest.description?.includes(vagueRecordPlace))
 assertTrue('remote index description names explicit destinations', remoteIndexHtml.includes('钉回各自对应的真实地点'))
@@ -595,6 +607,7 @@ for (const [label, text] of [
   ['remote judge quickstart', remoteJudge],
   ['remote progress', remoteProgress],
   ['remote hardware README', remoteHardware],
+  ['remote hardware verifier', remoteVerifyHardware],
   ['remote index HTML', remoteIndexHtml],
   ['remote PWA manifest', remoteManifestText],
   ['remote public-plaza source', remotePublicPlaza],
