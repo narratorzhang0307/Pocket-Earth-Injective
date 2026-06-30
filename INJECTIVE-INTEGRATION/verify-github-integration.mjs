@@ -183,6 +183,7 @@ assertTrue('remote README keeps hardware adapter lane removable', remoteReadme.i
 assertTrue('remote README names commercial path boundary', remoteReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
 assertTrue('remote README keeps Agent Plaza commercial center', remoteReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
+assertTrue('remote README maps deck negative coordinates into public API', remoteReadme.includes('negativeCoordinates') && remoteReadme.includes('PPT 第 34 页反面坐标') && remoteReadme.includes('friend.tech / Lens / Farcaster') && remoteReadme.includes('Virtuals-style agent token path') && remoteReadme.includes('Humane AI Pin / Rabbit r1'))
 assertTrue('remote README names FROST Chronicle delivery close', remoteReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
 assertTrue('remote README puts FROST Chronicle in the one-minute proof ladder', remoteReadme.includes('| 7 | **FROST Chronicle 与三件交付**'))
 assertTrue('remote README anchors final deck conclusion to image provenance', remoteReadme.includes('Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库'))

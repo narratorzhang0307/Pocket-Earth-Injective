@@ -257,6 +257,7 @@ assertTrue('DEMO-SCRIPT locks Agent Plaza install narration', demoScript.include
 assertTrue('README links hardware bridge', readme.includes('hardware/frost-buddy/'))
 assertTrue('README mentions market landscape boundary', readme.includes('marketLandscapeBoundary'))
 assertTrue('README mentions Agent Plaza platform path', readme.includes('Agent Plaza platform path'))
+assertTrue('README mentions market negative coordinates', readme.includes('negativeCoordinates') && readme.includes('PPT 第 34 页反面坐标') && readme.includes('friend.tech / Lens / Farcaster') && readme.includes('Humane AI Pin / Rabbit r1'))
 assertTrue('README mentions roadmap safety boundary', readme.includes('roadmapSafetyBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions hardware check', chainEvidence.includes('npm run verify:hardware'))
 
