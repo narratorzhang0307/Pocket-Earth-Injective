@@ -4,6 +4,7 @@ export const INJECTIVE_TESTNET_CHAIN_ID = 1439
 export const BUILDER_CODE = 'pocket-earth'
 export const INTEGRATION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
 export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
+export const DEMO_VIDEO_URL = 'https://youtu.be/KjmrjTnvVo0'
 export const JUDGE_QUICKSTART_URL = `${INTEGRATION_REPOSITORY_URL}/blob/main/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`
 export const HARDWARE_BRIDGE_URL = `${INTEGRATION_REPOSITORY_URL}/tree/main/hardware/frost-buddy`
 export const DEMO_VIDEO_LIMIT_SECONDS = 180
@@ -324,6 +325,7 @@ export const REVIEW_ENTRYPOINTS = [
   { key: 'judge-quickstart', label: '60-second judge quickstart', type: 'guide', url: JUDGE_QUICKSTART_URL },
   { key: 'github-repo', label: 'GitHub repository for review', type: 'repository', url: INTEGRATION_REPOSITORY_URL },
   { key: 'live-demo', label: 'Live demo with demo profile seed', type: 'demo', url: LIVE_DEMO_URL },
+  { key: 'demo-video', label: 'Public demo video under 3 minutes', type: 'video', url: DEMO_VIDEO_URL },
   { key: 'chain-evidence-api', label: 'Public chain evidence API', type: 'api', path: '/api/injective?tool=get-chain-evidence' },
   { key: 'agent-proof-api', label: 'Single-agent proof card for Frost #43', type: 'api', path: '/api/injective?tool=get-agent-proof&agentId=43' },
   { key: 'agent-fleet-api', label: 'Read agentId 43-47 by builderCode', type: 'api', path: `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47` },
@@ -416,10 +418,10 @@ export const DELIVERY_CHECKLIST = [
   {
     key: 'demo-video-script',
     requirement: 'Demo video under 3 minutes that shows core features',
-    status: 'ready-for-recording',
-    evidence: 'DEMO-SCRIPT.md is structured as a <=180-second recording path: agentId 43, wallet, public-plaza, globe markers, nightly dispatch, and privacy proof.',
+    status: 'ready',
+    evidence: 'Public demo video is linked from the evidence package, and DEMO-SCRIPT.md remains a <=180-second recording path: agentId 43, wallet, public-plaza, globe markers, nightly dispatch, Frost Edge Node proof, and privacy proof.',
     localCheck: 'npm run verify:duration',
-    linkKey: 'live-demo',
+    linkKey: 'demo-video',
   },
   {
     key: 'pitch-deck-notes',

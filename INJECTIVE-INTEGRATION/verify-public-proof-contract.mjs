@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
+  DEMO_VIDEO_URL,
   DEMO_VIDEO_LIMIT_SECONDS,
   FLEET_AGENTS,
   HARDWARE_BRIDGE_PROOF,
@@ -310,6 +311,8 @@ assertTextIncludes('integrationAlignment public proof evidence', publicProofAlig
 console.log('\nReview entry points')
 assertEqual('judge quickstart link stays on Injective integration repo', evidence.reviewEntrypoints.find((item) => item.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
 assertEqual('repo link stays on Injective integration repo', evidence.reviewEntrypoints.find((item) => item.key === 'github-repo')?.url, INTEGRATION_REPOSITORY_URL)
+assertEqual('demo video link stays public', evidence.reviewEntrypoints.find((item) => item.key === 'demo-video')?.url, DEMO_VIDEO_URL)
+assertEqual('demo video entrypoint type', evidence.reviewEntrypoints.find((item) => item.key === 'demo-video')?.type, 'video')
 assertEqual('agentId 43 link', evidence.reviewLinks.find((item) => item.key === 'frost-agent-43')?.url, scanUrlForAgent(43))
 assertEqual('owner wallet link', evidence.reviewLinks.find((item) => item.key === 'owner-wallet')?.url, scanUrlForAddress(PROOF_OWNER))
 assertEqual('real handshake link', evidence.reviewLinks.find((item) => item.key === 'real-handshake-tx')?.url, scanUrlForTx(TIMELINE_EVENTS.at(-1).hash))
@@ -470,6 +473,7 @@ const allowedHosts = new Set([
   'investors.raspberrypi.com',
   'pocketearth.throughtheglass.art',
   'testnet.blockscout.injective.network',
+  'youtu.be',
 ])
 for (const { path, value } of flattenStrings(evidence)) {
   if (!value.startsWith('http')) continue

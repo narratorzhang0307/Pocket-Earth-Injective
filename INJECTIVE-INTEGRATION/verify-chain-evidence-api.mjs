@@ -4,6 +4,7 @@ import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
   INTEGRATION_ALIGNMENT,
+  DEMO_VIDEO_URL,
   DEMO_VIDEO_LIMIT_SECONDS,
   EVIDENCE_PRIVACY_BOUNDARY,
   FLEET_AGENTS,
@@ -235,6 +236,8 @@ assertEqual('review entrypoints count', evidence.reviewEntrypoints.length, REVIE
 assertEqual('review link judge quickstart url', evidence.reviewEntrypoints.find((link) => link.key === 'judge-quickstart')?.url, JUDGE_QUICKSTART_URL)
 assertEqual('review link repo url', evidence.reviewEntrypoints.find((link) => link.key === 'github-repo')?.url, REVIEW_ENTRYPOINTS.find((link) => link.key === 'github-repo')?.url)
 assertEqual('review link live demo url', evidence.reviewEntrypoints.find((link) => link.key === 'live-demo')?.url, REVIEW_ENTRYPOINTS.find((link) => link.key === 'live-demo')?.url)
+assertEqual('review link demo video url', evidence.reviewEntrypoints.find((link) => link.key === 'demo-video')?.url, DEMO_VIDEO_URL)
+assertEqual('review link demo video type', evidence.reviewEntrypoints.find((link) => link.key === 'demo-video')?.type, 'video')
 assertEqual('review link chain evidence path', evidence.reviewEntrypoints.find((link) => link.key === 'chain-evidence-api')?.path, '/api/injective?tool=get-chain-evidence')
 assertTrue('delivery checklist array', Array.isArray(evidence.deliveryChecklist))
 assertEqual('delivery checklist count', evidence.deliveryChecklist.length, DELIVERY_CHECKLIST.length)
@@ -243,6 +246,7 @@ assertTrue('delivery checklist includes Injective integration', evidence.deliver
 assertTrue('delivery checklist includes demo script', evidence.deliveryChecklist.some((item) => item.key === 'demo-video-script'))
 assertTrue('delivery checklist includes pitch notes', evidence.deliveryChecklist.some((item) => item.key === 'pitch-deck-notes'))
 assertEqual('delivery checklist demo local check', evidence.deliveryChecklist.find((item) => item.key === 'demo-video-script')?.localCheck, 'npm run verify:duration')
+assertEqual('delivery checklist demo link key', evidence.deliveryChecklist.find((item) => item.key === 'demo-video-script')?.linkKey, 'demo-video')
 assertTrue('privacy boundary on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('privacy boundary off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertEqual('privacy boundary write rule', evidence.privacyBoundary?.writeBoundary, EVIDENCE_PRIVACY_BOUNDARY.writeBoundary)

@@ -112,8 +112,8 @@ Use this table when reviewing PPT pages 40-41. The closing claim is that Pocket 
 | Closing claim | What to inspect | Expected answer |
 |---|---|---|
 | FROST Chronicle is traceable | `get-chain-evidence`, `registryMintSummary`, `timelineSummary`, `handshakeProof`, `publicReadApis` | Frost's public profile history can be followed from ERC-8004 identity, mint events, wallet chronology, SocialHandshake, and read-only APIs |
-| Pocket Earth can be opened now | Live demo `https://pocketearth.throughtheglass.art/?demo`, `npm run verify:demo`, `npm run verify:duration` | The product opens as a browser / PWA demo, and the recording path remains within `180s` |
-| GitHub delivery is anchored | `reviewEntrypoints`, `deliveryChecklist`, README, `DEMO-SCRIPT.md`, `PITCH-NOTES.md`, `sourceControl` | The public repository, complete README, demo path, pitch storyline, and source commit all point to the same current GitHub delivery |
+| Pocket Earth can be opened now | Live demo `https://pocketearth.throughtheglass.art/?demo`, public demo video `https://youtu.be/KjmrjTnvVo0`, `npm run verify:demo`, `npm run verify:duration` | The product opens as a browser / PWA demo, the public video shows the three-minute walkthrough, and the recording path remains within `180s` |
+| GitHub delivery is anchored | `reviewEntrypoints`, `reviewEntrypoints.demo-video`, `deliveryChecklist`, README, `DEMO-SCRIPT.md`, `PITCH-NOTES.md`, `sourceControl` | The public repository, complete README, demo video, demo path, pitch storyline, and source commit all point to the same current GitHub delivery |
 | Built on Injective means public witness | `chainId 1439`, `agentId 43-47`, wallet page, SocialHandshake, future Profile Checkpoint and receipt plan | Injective provides identity, timeline, version, handshake, and future settlement receipts; Pocket Earth keeps raw memories off-chain |
 
 The delivery boundary is intentionally narrow: personal website links can introduce the creator, but they do not replace the public GitHub repo, Injective testnet evidence, live demo, or read-only API proof.
@@ -122,6 +122,7 @@ The delivery boundary is intentionally narrow: personal website links can introd
 
 - GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective
 - Live demo: https://pocketearth.throughtheglass.art/?demo
+- Demo video: https://youtu.be/KjmrjTnvVo0
 - Demo limit: `180s`, guarded by `npm run verify:duration`
 - Source-control guard: `npm run verify:source`
 - Registry mint-event guard: `npm run verify:registry`
@@ -136,6 +137,7 @@ The delivery boundary is intentionally narrow: personal website links can introd
 
 | Evidence | Link |
 |---|---|
+| Public demo video | https://youtu.be/KjmrjTnvVo0 |
 | Frost main identity #43 | https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43 |
 | Owner wallet | https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934 |
 | ERC-8004 IdentityRegistry | https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e |

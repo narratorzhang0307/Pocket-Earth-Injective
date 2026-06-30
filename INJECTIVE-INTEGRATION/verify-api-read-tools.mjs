@@ -1,7 +1,7 @@
 // Verify Pocket Earth's own /api/injective read-only tools against Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-api-read-tools.mjs
 import { handleInjective } from '../injective-service.mjs'
-import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, JUDGE_RUNBOOK, MARKET_LANDSCAPE_BOUNDARY, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, ROADMAP_SAFETY_BOUNDARY, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
+import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_URL, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, JUDGE_RUNBOOK, MARKET_LANDSCAPE_BOUNDARY, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, ROADMAP_SAFETY_BOUNDARY, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, scanUrlForAgent, scanUrlForAddress, scanUrlForRegistry, scanUrlForTx } from './chain-proof-data.mjs'
 
 function assertTrue(label, condition) {
   if (!condition) throw new Error(`${label} failed`)
@@ -206,12 +206,14 @@ assertTrue('evidence review entrypoints array', Array.isArray(evidence.reviewEnt
 assertEqual('evidence review entrypoints count', evidence.reviewEntrypoints.length, REVIEW_ENTRYPOINTS.length)
 assertEqual('evidence integration repo url', evidence.reviewEntrypoints.find((item) => item.key === 'github-repo')?.url, REVIEW_ENTRYPOINTS.find((item) => item.key === 'github-repo')?.url)
 assertEqual('evidence review live demo url', evidence.reviewEntrypoints.find((item) => item.key === 'live-demo')?.url, REVIEW_ENTRYPOINTS.find((item) => item.key === 'live-demo')?.url)
+assertEqual('evidence review demo video url', evidence.reviewEntrypoints.find((item) => item.key === 'demo-video')?.url, DEMO_VIDEO_URL)
 assertEqual('evidence review fleet api', evidence.reviewEntrypoints.find((item) => item.key === 'agent-fleet-api')?.path, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=5&top=47`)
 assertTrue('evidence delivery checklist array', Array.isArray(evidence.deliveryChecklist))
 assertEqual('evidence delivery checklist count', evidence.deliveryChecklist.length, DELIVERY_CHECKLIST.length)
 assertTrue('evidence delivery checklist includes public GitHub', evidence.deliveryChecklist.some((item) => item.key === 'public-github-readme'))
 assertTrue('evidence delivery checklist includes demo script', evidence.deliveryChecklist.some((item) => item.key === 'demo-video-script'))
 assertEqual('evidence demo script local check', evidence.deliveryChecklist.find((item) => item.key === 'demo-video-script')?.localCheck, 'npm run verify:duration')
+assertEqual('evidence demo script link key', evidence.deliveryChecklist.find((item) => item.key === 'demo-video-script')?.linkKey, 'demo-video')
 assertTrue('evidence privacy on-chain list', Array.isArray(evidence.privacyBoundary?.onChain))
 assertTrue('evidence privacy off-chain list', Array.isArray(evidence.privacyBoundary?.offChain))
 assertTrue('evidence privacy mentions ERC-8004 identity', evidence.privacyBoundary.onChain.includes('ERC-8004 agent identity'))

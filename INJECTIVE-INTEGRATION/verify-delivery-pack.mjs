@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
+  DEMO_VIDEO_URL,
   DEMO_VIDEO_LIMIT_SECONDS,
   HARDWARE_BRIDGE_URL,
   HARDWARE_BRIDGE_PROOF,
@@ -47,6 +48,7 @@ const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
 const readme = await readFile('README.md', 'utf8')
 const chainEvidence = await readFile('INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md', 'utf8')
 const demoScript = await readFile('INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', 'utf8')
+const judgeQuickstart = await readFile('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md', 'utf8')
 const evidence = await callEvidenceApi()
 const links = evidence.reviewEntrypoints
 const checklist = evidence.deliveryChecklist
@@ -100,6 +102,9 @@ assertTrue('sourceControl commit is sha or null', evidence.sourceControl?.commit
 assertEqual('live demo url', expectedByKey.get('live-demo').url, LIVE_DEMO_URL)
 assertTrue('live demo url includes demo seed', LIVE_DEMO_URL.endsWith('/?demo'))
 assertTrue('live demo url uses Pocket Earth domain', LIVE_DEMO_URL.startsWith('https://pocketearth.throughtheglass.art/'))
+assertEqual('demo video url', expectedByKey.get('demo-video').url, DEMO_VIDEO_URL)
+assertTrue('demo video url uses youtu.be', DEMO_VIDEO_URL.startsWith('https://youtu.be/'))
+assertEqual('demo video type', expectedByKey.get('demo-video').type, 'video')
 
 assertEqual('chain evidence API path', expectedByKey.get('chain-evidence-api').path, '/api/injective?tool=get-chain-evidence')
 assertEqual('agent proof API path', expectedByKey.get('agent-proof-api').path, '/api/injective?tool=get-agent-proof&agentId=43')
@@ -170,8 +175,10 @@ for (const expected of DELIVERY_CHECKLIST) {
 assertEqual('GitHub checklist status', checklistByKey.get('public-github-readme').status, 'ready')
 assertEqual('GitHub checklist local check', checklistByKey.get('public-github-readme').localCheck, 'npm run verify:github')
 assertEqual('Injective checklist status', checklistByKey.get('injective-integration').status, 'ready')
-assertEqual('Demo checklist status', checklistByKey.get('demo-video-script').status, 'ready-for-recording')
+assertEqual('Demo checklist status', checklistByKey.get('demo-video-script').status, 'ready')
 assertEqual('Demo checklist local check', checklistByKey.get('demo-video-script').localCheck, 'npm run verify:duration')
+assertEqual('Demo checklist link key', checklistByKey.get('demo-video-script').linkKey, 'demo-video')
+assertTrue('Demo checklist evidence mentions public video', checklistByKey.get('demo-video-script').evidence.includes('Public demo video'))
 assertEqual('Pitch checklist status', checklistByKey.get('pitch-deck-notes').status, 'ready-for-deck')
 assertEqual('Pitch checklist local check', checklistByKey.get('pitch-deck-notes').localCheck, 'npm run verify:pitch')
 assertEqual('Public API checklist local check', checklistByKey.get('public-review-apis').localCheck, 'npm run verify:public-proof')
@@ -195,10 +202,12 @@ assertEqual('Frost Edge Node Pi adapter action count', HARDWARE_BRIDGE_PROOF.piA
 assertEqual('Frost Edge Node Pi adapter action contract', HARDWARE_BRIDGE_PROOF.piAdapter.actions.join('/'), 'state/tts/display')
 
 assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
+assertTrue('README mentions public demo video', readme.includes(DEMO_VIDEO_URL))
 assertTrue('README names Injective core integration', readme.includes('Injective 核心集成'))
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))
 assertTrue('README mentions judgeRunbook', readme.includes('judgeRunbook'))
 assertTrue('CHAIN-EVIDENCE mentions review entrypoints', chainEvidence.includes('reviewEntrypoints'))
+assertTrue('CHAIN-EVIDENCE mentions demo video entrypoint', chainEvidence.includes('reviewEntrypoints.demo-video') && chainEvidence.includes(DEMO_VIDEO_URL))
 assertTrue('CHAIN-EVIDENCE mentions delivery checklist', chainEvidence.includes('deliveryChecklist'))
 assertTrue('CHAIN-EVIDENCE mentions market landscape boundary', chainEvidence.includes('marketLandscapeBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions hardware service boundary', chainEvidence.includes('hardwareBridge.serviceBoundary'))
@@ -223,6 +232,8 @@ assertTrue('CHAIN-EVIDENCE maps Profile Confidence', chainEvidence.includes('P3 
 assertTrue('CHAIN-EVIDENCE maps Frost Network boundary', chainEvidence.includes('P4 Frost Network') && chainEvidence.includes('设备不签名、不持私钥、不读取原始画像'))
 assertTrue('CHAIN-EVIDENCE maps machine-readable market field', chainEvidence.includes('preferredPath') && chainEvidence.includes('Agent Plaza platform path'))
 assertTrue('DEMO-SCRIPT mentions delivery check', demoScript.includes('npm run verify:delivery'))
+assertTrue('DEMO-SCRIPT mentions demo video entrypoint', demoScript.includes('reviewEntrypoints.demo-video') && demoScript.includes(DEMO_VIDEO_URL))
+assertTrue('JUDGE-QUICKSTART mentions demo video entrypoint', judgeQuickstart.includes('reviewEntrypoints.demo-video') && judgeQuickstart.includes(DEMO_VIDEO_URL))
 assertTrue('DEMO-SCRIPT mentions judge check', demoScript.includes('npm run verify:judge'))
 assertTrue('DEMO-SCRIPT mentions judgeRunbook', demoScript.includes('judgeRunbook'))
 assertTrue('DEMO-SCRIPT mentions market landscape boundary', demoScript.includes('marketLandscapeBoundary'))

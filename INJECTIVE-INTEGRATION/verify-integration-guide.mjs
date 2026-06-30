@@ -162,6 +162,8 @@ for (const phrase of [
   '三件交付',
   'Built on Injective',
   'pocketearth.throughtheglass.art/?demo',
+  'https://youtu.be/KjmrjTnvVo0',
+  'reviewEntrypoints.demo-video',
   'reviewEntrypoints',
   'deliveryChecklist',
 ]) {

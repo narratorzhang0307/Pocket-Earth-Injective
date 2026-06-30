@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { INJECTIVE_TESTNET_CHAIN_ID, INTEGRATION_REPOSITORY_URL } from './chain-proof-data.mjs'
+import { DEMO_VIDEO_URL, INJECTIVE_TESTNET_CHAIN_ID, INTEGRATION_REPOSITORY_URL } from './chain-proof-data.mjs'
 
 const integrationDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(integrationDir, '..')
@@ -134,6 +134,7 @@ assertTrue('remote README explains agents as panels, not UI tabs', remoteReadme.
 assertTrue('remote README names Frost Edge Node hardware direction explicitly', remoteReadme.includes('Frost Edge Node 硬件方向的商业判断'))
 assertTrue('remote README omits vague hardware direction subject', !remoteReadme.includes('这个硬件方向'))
 assertTrue('remote README names agentId 43', remoteReadme.includes('agentId 43'))
+assertTrue('remote README names public demo video', remoteReadme.includes(DEMO_VIDEO_URL) && remoteReadme.includes('公开视频'))
 assertTrue('remote README points at chain evidence API', remoteReadme.includes('/api/injective?tool=get-chain-evidence'))
 assertTrue('remote README names proof suite', remoteReadme.includes('npm run verify:injective'))
 assertTrue('remote README names public proof guard', remoteReadme.includes('npm run verify:public-proof'))
@@ -325,6 +326,7 @@ for (const phrase of [
   assertTrue(`remote integration guide keeps story spine ${phrase}`, remoteIntegration.includes(phrase))
 }
 assertTrue('remote evidence pack names reviewBrief', remoteEvidence.includes('reviewBrief'))
+assertTrue('remote evidence pack names public demo video', remoteEvidence.includes('reviewEntrypoints.demo-video') && remoteEvidence.includes(DEMO_VIDEO_URL))
 assertTrue('remote evidence pack names registryMintEvents', remoteEvidence.includes('registryMintEvents'))
 assertTrue('remote evidence pack names registryMintSummary', remoteEvidence.includes('registryMintSummary'))
 assertTrue('remote evidence pack names fleet evidence layer', remoteEvidence.includes('| Fleet |') && remoteEvidence.includes('builderCode=pocket-earth'))
@@ -386,6 +388,7 @@ assertTrue('remote demo script names wallet timeline API', remoteDemo.includes('
 assertTrue('remote demo script names wallet timeline summary', remoteDemo.includes('timelineSummary'))
 assertTrue('remote demo script names direct wallet summary', remoteDemo.includes('get-wallet-timeline` 的 `summary`'))
 assertTrue('remote demo script names judge quickstart entrypoint', remoteDemo.includes('reviewEntrypoints') && remoteDemo.includes('npm run verify:judge'))
+assertTrue('remote demo script names public demo video', remoteDemo.includes('reviewEntrypoints.demo-video') && remoteDemo.includes(DEMO_VIDEO_URL))
 assertTrue('remote demo script names judge runbook', remoteDemo.includes('judgeRunbook'))
 assertTrue('remote demo script names public API guard', remoteDemo.includes('npm run verify:public-apis'))
 assertTrue('remote demo script names integration guide guard', remoteDemo.includes('npm run verify:integration-guide'))
@@ -440,6 +443,7 @@ assertTrue('remote judge quickstart names positioning guard', remoteJudge.includ
 assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
 assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
 assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJudge.includes('reviewEntrypoints.hardware-bridge') && remoteJudge.includes('hardware/frost-buddy'))
+assertTrue('remote judge quickstart names public demo video entrypoint', remoteJudge.includes('reviewEntrypoints.demo-video') && remoteJudge.includes(DEMO_VIDEO_URL))
 assertTrue('remote judge quickstart names Frost Edge Node checklist', remoteJudge.includes('deliveryChecklist.frost-edge-node') && remoteJudge.includes('npm run verify:hardware'))
 assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
 assertTrue('remote judge quickstart names plaza split', remoteJudge.includes('public-plaza') && remoteJudge.includes('agent-plaza'))

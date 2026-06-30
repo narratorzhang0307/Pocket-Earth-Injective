@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { handleInjective } from '../injective-service.mjs'
 import {
   BUILDER_CODE,
+  DEMO_VIDEO_URL,
   DEMO_VIDEO_LIMIT_SECONDS,
   HARDWARE_BRIDGE_URL,
   IDENTITY_REGISTRY,
@@ -200,7 +201,10 @@ for (const snippet of [
   'traceable profile history, not a self-introduction',
   'FROST Chronicle is traceable',
   'Pocket Earth can be opened now',
+  'public demo video',
+  DEMO_VIDEO_URL,
   'GitHub delivery is anchored',
+  'reviewEntrypoints.demo-video',
   'Built on Injective means public witness',
   'personal website links can introduce the creator',
 ]) {
@@ -340,7 +344,7 @@ for (const snippet of [
 for (const snippet of [
   "Frost's public profile history can be followed from ERC-8004 identity",
   'The product opens as a browser / PWA demo',
-  'public repository, complete README, demo path, pitch storyline, and source commit',
+  'public repository, complete README, demo video, demo path, pitch storyline, and source commit',
   'Injective provides identity, timeline, version, handshake, and future settlement receipts',
   'public GitHub repo, Injective testnet evidence, live demo, or read-only API proof',
 ]) {
@@ -357,6 +361,8 @@ assertTrue(
 )
 assertTrue('evidence review entrypoints array', Array.isArray(evidence.reviewEntrypoints))
 const reviewEntrypointByKey = new Map(evidence.reviewEntrypoints.map((item) => [item.key, item]))
+assertEqual('evidence demo video entrypoint type', reviewEntrypointByKey.get('demo-video')?.type, 'video')
+assertEqual('evidence demo video entrypoint url', reviewEntrypointByKey.get('demo-video')?.url, DEMO_VIDEO_URL)
 assertEqual('evidence hardware bridge API entrypoint type', reviewEntrypointByKey.get('hardware-bridge-api')?.type, 'api')
 assertEqual('evidence hardware bridge API entrypoint path', reviewEntrypointByKey.get('hardware-bridge-api')?.path, '/api/injective?tool=get-hardware-bridge-proof')
 assertTrue('evidence hardware bridge API entrypoint label', String(reviewEntrypointByKey.get('hardware-bridge-api')?.label || '').includes('Frost Edge Node'))
