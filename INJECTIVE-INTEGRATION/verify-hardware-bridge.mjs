@@ -118,7 +118,9 @@ assertListIncludes('hardware proof service allowed services', hardwareProof.hard
 assertListIncludes('hardware proof service forbidden services', hardwareProof.hardwareBridge?.serviceBoundary?.notAllowed, ['wallet signing', 'private profile export', 'mass-production revenue claim'])
 assertTrue('hardware proof service ties to Agent Plaza receipts', String(hardwareProof.hardwareBridge?.serviceBoundary?.agentPlazaTieIn || '').includes('Agent Plaza service receipts'))
 assertEqual('hardware proof roadmap current', hardwareProof.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
+assertTrue('hardware proof roadmap current names smoke-tested bridge', String(hardwareProof.hardwareBridge?.roadmapBoundary?.current || '').includes('smoke-tested'))
 assertListIncludes('hardware proof roadmap pending adapters', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
+assertListIncludes('hardware proof roadmap keeps physical adapters pending', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, ['BLE transport', 'local TTS driver', 'display driver'])
 assertTrue('hardware proof roadmap integration rule', String(hardwareProof.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
 assertTrue('hardware proof roadmap P4 framing', String(hardwareProof.hardwareBridge?.roadmapBoundary?.p4Framing || '').includes('not a mass-produced revenue product'))
 assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
@@ -171,8 +173,11 @@ for (const snippet of [
   'Raspberry Pi',
   'public-plaza',
   '公开事件',
+  '离线冒烟',
+  '真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层',
   '体验差异化',
   '开发套件',
+  '可选、可删、可独立测试',
 ]) {
   assertTrue(`root README keeps hardware summary ${snippet}`, rootReadme.includes(snippet))
 }

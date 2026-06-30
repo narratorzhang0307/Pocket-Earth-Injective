@@ -12,6 +12,7 @@
 - **钱包时间线**：`/api/injective?tool=get-wallet-timeline` 从 RPC 读回注册、合约部署、fleet 注册和真实握手的交易顺序，`summary` 汇总 owner、事件数、成功状态、首尾区块/时间。
 - **plaza 产品闭环**：`public-plaza` 负责链上社交发现，`agent-plaza` 负责 agent 市集与安装闭环；`verify:plaza-flow` 固定两者边界。
 - **Frost Buddy 硬件延展**：`hardware/frost-buddy/` 已整理为 Frost Edge Node 模块说明，覆盖 Raspberry Pi / BLE / TTS 公开事件桥、Pi 侧技能路由、Pi 事件适配分支、music-agent 实体化、`chain_dispatch` 链上见闻播报、市场边界、`hardwareNodeServiceReceipt` 服务回执边界、路线图边界与隐私边界；`frost_pi_event_adapter.py` 把公开 JSONL 拆成 `state` / `tts` / `display` 三类动作，不影响主 app、plaza 或链上 API，真实 BLE/TTS/display 驱动仍留在可选 adapter 层。
+- **PPT 硬件边界守门**：`verify:hardware` 现在会明确固定“事件桥与 Pi adapter 已可离线冒烟、真实 BLE / TTS / 小屏幕物理驱动仍待后续 adapter 接入”这条边界，避免把 Frost Edge Node 写成已量产、已签名或硬件收入优先路径。
 - **商业路径边界**：根 `README.md` 已新增 `5.3 商业路径与三条边界`，明确不走纯社交变现、不走代币优先、不走重资本硬件路线；`marketLandscapeBoundary` 进一步固定 `commercialFlywheel`、`preferredPath`、`rejectedPaths` 和 `differentiation`，让“长期使用 -> 可信画像 -> Agent 市场”成为可机读证据；Agent Plaza 是安装、调用、评价和可选付费回执的中心。
 - **最终整合版覆盖**：根 `README.md` 已新增 `5.1 最终整合版对照与技术深挖`、`5.2 Frost Edge Node：树莓派硬件原理与市场边界`、`5.3 商业路径与三条边界`；`INJECTIVE-INTEGRATION/README.md#final-ppt-index` 已按最终 PPT 41 页建立逐页覆盖索引，并展开 Profile Chain / Proof of Memory、frost-agent harness、Agent Plaza / Frost Buddy、三条商业边界与外部来源边界；PPT 第一页的公开视频 `https://youtu.be/KjmrjTnvVo0` 已固定为 `reviewEntrypoints.demo-video` 与 `deliveryChecklist.demo-video-script`。
 
