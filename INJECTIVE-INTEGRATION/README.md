@@ -263,6 +263,16 @@ PPT 第 17 页讲“能力沉淀成 skill，agent 只剩一层薄配置”。仓
 | 端侧记忆与反思 | `keyedStore`、`draftCritic` | IndexedDB、纠错偏好、评分钳、年份和坐标护栏复用，不把长期画像逻辑散进各 agent | `verify:integration-guide` |
 | 内核与开发期 skill | `frost-agent/skills/`、开发期 `SKILL.md` | 内核 skill 只依赖 harness；开发期 skill 是工程 SOP，不进入用户数据链 | `verify:github`、`verify:positioning` |
 
+PPT 第 17 页的另一层重点是依赖方向：skill README 明确写成“路由器不是仓库”，只记录能力、调用方和依赖，不把业务数据塞进 skill 目录。三个家目录必须单向分层：
+
+| 家目录 | 依赖方向 | 为什么这样分 |
+|---|---|---|
+| `src/app/lib/skills/` | app 层 skill 可以依赖 `userMarks`、`geoStickers`、catalog 和画像等 app 数据 | 电影、书、旅行、照片、造物主等领域 agent 只传 `schema / 噪声词 / keyPath / geo.kind`，新增 agent 零改 skill 主体 |
+| `frost-agent/skills/` | 内核层 skill 只依赖 harness，不反向 import app；`curatePlaylist` 是典型例子 | open-dj-director 只是薄壳，任何 agent 想排歌单都复用同一内核 skill，不复制选曲逻辑 |
+| 开发期 `SKILL.md` | 只作为工程 SOP、部署和验证约束，不进入用户数据链 | 开发自动化可以守住边界，但不能成为产品运行时依赖 |
+
+后端选择同样被收口：`edgeSafe` 和 provider adapter 把 MNN / ollama / stub 包成同一契约，MNN(Arm SME2) 或本机 ollama 只影响后端选择，不要求前端和领域 agent 改写流程。这就是“一处实现，处处可调”的工程含义。
+
 这层设计解释了 Agent Plaza 为什么不是泛 AI 工具箱：开发者提交的是 `manifest / schema / permissions`，平台审核的是空间逻辑、权限和输出合同；安装后的 agent 复用同一组 skill，最终产物仍要回到地球、公开名片或链上回执。`HUMAN_VOICE` 人声守则也在出口统一清洗，让多 agent 对外仍像同一个 Frost，而不是一堆口径不一的工具按钮。
 
 这套 harness 让 PPT 里的“FROST 是 CEO，每一跳都看得见”不是叙事口号，而是运行页上的 RunTrace、全局 RunDrawer、health 记录和验证脚本共同构成的工程事实。
