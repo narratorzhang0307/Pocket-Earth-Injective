@@ -107,6 +107,19 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 | 32-35 商业判断 / 硬件节点 / 差异化 | 商业路径不是先发币，而是长期使用 -> 可信画像 -> Agent 市场；Roblox、Apple、Steam 只作为平台模式参考并保留官方来源；Frost Buddy 是 Raspberry Pi / BLE / TTS 轻量实体节点，不写成重资本硬件路线 | `npm run verify:pitch`、`npm run verify:hardware` |
 | 36-41 痛点 / 创新 / 路线图 / 结论 | P0/P1/P2 与 Profile Chain NOW/P1/P2/P3/P4 对齐：当前已完成链上身份、钱包时间线和握手；下一步是 checkpoint、Agent Plaza 回执、Profile Confidence 与硬件公开事件播报 | `npm run verify:integration-guide`、`npm run verify:delivery` |
 
+#### 5.1.1 FROST Chronicle：画像演化史与三件交付
+
+最终 PPT 第 40-41 页的收尾不是“再做一个 Web3 身份系统”，而是把 Pocket Earth 的链上价值压成一句话：**Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库；空间留在 Pocket Earth，时间由 Injective 见证。**
+
+| PPT 收尾主张 | GitHub 里怎么落地 | 可复验入口 |
+|---|---|---|
+| **FROST Chronicle** | FROST Chronicle 是一条可追溯、可验证、但不暴露隐私的画像演化史；它记录 `profileHash`、版本、时间戳、来源权重和回执，不上传书影音原文、照片、心情或精确坐标 | `ProfileCheckpoint` 路线、`roadmapSafetyBoundary`、`npm run verify:public-proof` |
+| **现在能打开** | 线上产品已经可以打开：`https://pocketearth.throughtheglass.art/?demo`；手机 Safari 可添加到主屏幕，PWA 与云端 Qwen 体验可录屏演示 | 在线体验、`reviewEntrypoints.live-demo`、`npm run verify:delivery` |
+| **三件交付** | 公开 GitHub + 完整 README、Demo 视频、Pitch Deck 是同一套交付；个人网站 `narratorzhang.com` 只作为作品入口，不承担链上证据 | `reviewEntrypoints.demo-video`、`deliveryChecklist`、`npm run verify:github` |
+| **Built on Injective** | Injective 承担公共身份层、画像版本见证层和未来结算回执层：`agentId 43`、`agentId 43-47`、钱包时间线、SocialHandshake、未来 Agent Plaza 回执都能公开核对 | Blockscout、`get-wallet-timeline`、`get-chain-evidence` |
+
+所以根 README 的阅读顺序应该很清楚：先确认 Pocket Earth 是能打开的空间知识库，再核对 Frost 的 ERC-8004 身份和钱包时间线，最后看 Profile Chain / FROST Chronicle 如何把长期画像变成可验证、可选择证明、但不暴露隐私的公共轨迹。
+
 ### 5.2 Frost Edge Node：树莓派硬件原理与市场边界
 
 Frost Edge Node 是 Pocket Earth 的实体节点原型：手机和网页继续负责空间知识库、端侧 Selector、长期画像和权限边界；Injective 负责 Frost identity、Profile Checkpoint、SocialHandshake 和公开回执；Raspberry Pi 只消费公开事件，把 music-agent 的当前播放和 public-plaza 的链上见闻变成房间里的声音、小屏幕或 BLE 状态。

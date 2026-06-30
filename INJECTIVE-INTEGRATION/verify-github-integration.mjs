@@ -175,6 +175,11 @@ assertTrue('remote README keeps hardware adapter lane removable', remoteReadme.i
 assertTrue('remote README names commercial path boundary', remoteReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
 assertTrue('remote README keeps Agent Plaza commercial center', remoteReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
+assertTrue('remote README names FROST Chronicle delivery close', remoteReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
+assertTrue('remote README anchors final deck conclusion to image provenance', remoteReadme.includes('Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库'))
+assertTrue('remote README says the product can open now', remoteReadme.includes('现在能打开') && remoteReadme.includes('https://pocketearth.throughtheglass.art/?demo'))
+assertTrue('remote README names the three delivery artifacts', remoteReadme.includes('公开 GitHub + 完整 README、Demo 视频、Pitch Deck'))
+assertTrue('remote README names Built on Injective proof layers', remoteReadme.includes('Built on Injective') && remoteReadme.includes('公共身份层、画像版本见证层和未来结算回执层'))
 for (const phrase of [
   '本地空间知识库',
   '把地球作为方法',
