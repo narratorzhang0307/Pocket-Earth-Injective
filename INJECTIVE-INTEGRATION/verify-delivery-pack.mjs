@@ -132,6 +132,13 @@ assertEqual('evidence market landscape preferred path', evidence.marketLandscape
 assertTrue('evidence market landscape names manifest review', String(evidence.marketLandscapeBoundary?.preferredPath?.proof || '').includes('manifest review'))
 assertTrue('evidence market landscape names willEmit dry-run', String(evidence.marketLandscapeBoundary?.preferredPath?.proof || '').includes('willEmit'))
 assertTrue(
+  'evidence market landscape negative coordinates match constants',
+  MARKET_LANDSCAPE_BOUNDARY.negativeCoordinates.every((item) => evidence.marketLandscapeBoundary?.negativeCoordinates?.some((actual) => actual.key === item.key)),
+)
+assertTrue('evidence market landscape pure-social coordinate cites public-plaza', evidence.marketLandscapeBoundary?.negativeCoordinates?.some((item) => item.key === 'pure-social' && item.examples?.includes('friend.tech') && item.pocketEarthBoundary.includes('public-plaza')))
+assertTrue('evidence market landscape token-first coordinate cites Agent Plaza', evidence.marketLandscapeBoundary?.negativeCoordinates?.some((item) => item.key === 'token-first-agent-market' && item.examples?.includes('Virtuals-style agent token path') && item.pocketEarthBoundary.includes('Agent Plaza')))
+assertTrue('evidence market landscape hardware-first coordinate cites Frost Edge Node', evidence.marketLandscapeBoundary?.negativeCoordinates?.some((item) => item.key === 'consumer-ai-hardware-first' && item.examples?.includes('Rabbit r1') && item.pocketEarthBoundary.includes('Frost Edge Node')))
+assertTrue(
   'evidence market landscape rejected paths match constants',
   MARKET_LANDSCAPE_BOUNDARY.rejectedPaths.every((item) => evidence.marketLandscapeBoundary?.rejectedPaths?.some((actual) => actual.key === item.key)),
 )
@@ -213,6 +220,8 @@ assertTrue('CHAIN-EVIDENCE mentions market landscape boundary', chainEvidence.in
 assertTrue('CHAIN-EVIDENCE mentions hardware service boundary', chainEvidence.includes('hardwareBridge.serviceBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions hardware node service receipt', chainEvidence.includes('hardwareNodeServiceReceipt'))
 assertTrue('CHAIN-EVIDENCE mentions commercial flywheel', chainEvidence.includes('commercialFlywheel'))
+assertTrue('CHAIN-EVIDENCE mentions negative coordinates', chainEvidence.includes('negativeCoordinates'))
+assertTrue('CHAIN-EVIDENCE names deck negative examples', chainEvidence.includes('friend.tech / Lens / Farcaster') && chainEvidence.includes('Virtuals-style agent token path') && chainEvidence.includes('Humane AI Pin / Rabbit r1'))
 assertTrue('CHAIN-EVIDENCE mentions rejected paths', chainEvidence.includes('rejectedPaths'))
 assertTrue('CHAIN-EVIDENCE mentions roadmap safety boundary', chainEvidence.includes('roadmapSafetyBoundary'))
 assertTrue('CHAIN-EVIDENCE mentions judge quickstart', chainEvidence.includes('JUDGE-QUICKSTART.md'))

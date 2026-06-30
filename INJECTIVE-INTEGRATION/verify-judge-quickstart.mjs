@@ -272,6 +272,13 @@ assertTrue(
 assertEqual('evidence market landscape preferred path', evidence.marketLandscapeBoundary?.preferredPath?.label, MARKET_LANDSCAPE_BOUNDARY.preferredPath.label)
 assertTrue('evidence market landscape names willEmit dry-run', String(evidence.marketLandscapeBoundary?.preferredPath?.proof || '').includes('willEmit'))
 assertTrue(
+  'evidence market landscape negative coordinates match constants',
+  MARKET_LANDSCAPE_BOUNDARY.negativeCoordinates.every((item) => evidence.marketLandscapeBoundary?.negativeCoordinates?.some((actual) => actual.key === item.key)),
+)
+assertTrue('evidence market landscape pure-social coordinate cites public-plaza', evidence.marketLandscapeBoundary?.negativeCoordinates?.some((item) => item.key === 'pure-social' && item.examples?.includes('friend.tech') && item.pocketEarthBoundary.includes('public-plaza')))
+assertTrue('evidence market landscape token-first coordinate cites Agent Plaza', evidence.marketLandscapeBoundary?.negativeCoordinates?.some((item) => item.key === 'token-first-agent-market' && item.examples?.includes('Virtuals-style agent token path') && item.pocketEarthBoundary.includes('Agent Plaza')))
+assertTrue('evidence market landscape hardware-first coordinate cites Frost Edge Node', evidence.marketLandscapeBoundary?.negativeCoordinates?.some((item) => item.key === 'consumer-ai-hardware-first' && item.examples?.includes('Rabbit r1') && item.pocketEarthBoundary.includes('Frost Edge Node')))
+assertTrue(
   'evidence market landscape rejected paths match constants',
   MARKET_LANDSCAPE_BOUNDARY.rejectedPaths.every((item) => evidence.marketLandscapeBoundary?.rejectedPaths?.some((actual) => actual.key === item.key)),
 )

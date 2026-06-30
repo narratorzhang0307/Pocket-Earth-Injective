@@ -231,6 +231,26 @@ export const MARKET_LANDSCAPE_BOUNDARY = {
     precedentBoundary: 'Roblox, Apple, and Steam are cited only as mature creator/distribution platform precedents, not as Pocket Earth revenue claims.',
     machineCheck: 'npm run verify:pitch && npm run verify:plaza-flow',
   },
+  negativeCoordinates: [
+    {
+      key: 'pure-social',
+      examples: ['friend.tech', 'Lens', 'Farcaster'],
+      risk: 'stranger social monetization alone does not prove durable agent utility',
+      pocketEarthBoundary: 'public-plaza is a discovery and handshake loop; durable value stays with long-term spatial memory and trusted profile provenance',
+    },
+    {
+      key: 'token-first-agent-market',
+      examples: ['Virtuals-style agent token path'],
+      risk: 'token issuance and trading fees can overshadow whether the agent is useful',
+      pocketEarthBoundary: 'Injective is used first for identity, profile versions, receipts, and public proof; optional settlement belongs after Agent Plaza install/call/review loops',
+    },
+    {
+      key: 'consumer-ai-hardware-first',
+      examples: ['Humane AI Pin', 'Rabbit r1'],
+      risk: 'consumer AI hardware can turn into a capital, supply-chain, support, and retention burden before product pull is proven',
+      pocketEarthBoundary: 'Frost Edge Node stays a Raspberry Pi / BLE / TTS developer-kit and physical-experience endpoint, with services routed through Agent Plaza receipts',
+    },
+  ],
   rejectedPaths: [
     {
       key: 'pure-social-monetization',

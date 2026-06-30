@@ -53,7 +53,7 @@ The public demo video is fixed in the evidence package as `reviewEntrypoints.dem
 
 `hardwareBridge.serviceBoundary` 补上 PPT 第 31 页“硬件节点服务”的工程边界：如果未来硬件节点服务收费，只能使用 `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)` 这类 Agent Plaza 服务回执。允许的服务是 `chain_dispatch` 播报、`music_now_playing` 房间存在感、用户明确同意后的每日记忆或播客摘要；禁止私人画像导出、钱包签名、原始照片/票据上传和量产收入承诺。
 
-`marketLandscapeBoundary` 是这段商业判断的机器可读版本：`commercialFlywheel` 固定长期使用、可信公开画像、Agent Plaza 供给、安装/调用/评价/可选付费回执和留存反哺；`preferredPath.label` 固定为 `Agent Plaza platform path`；`rejectedPaths` 固定纯社交变现、代币优先和硬件收入优先三条反面路径；`differentiation` 固定端侧隐私、真实坐标知识库、ERC-8004 公开身份和平台抽成兼容的 Agent Plaza。审阅者可以直接在 `/api/injective?tool=get-chain-evidence` 中展开这个字段，而不需要从段落里猜商业主线。
+`marketLandscapeBoundary` 是这段商业判断的机器可读版本：`commercialFlywheel` 固定长期使用、可信公开画像、Agent Plaza 供给、安装/调用/评价/可选付费回执和留存反哺；`preferredPath.label` 固定为 `Agent Plaza platform path`；`negativeCoordinates` 把 PPT 第 34 页的 `friend.tech / Lens / Farcaster`、`Virtuals-style agent token path`、`Humane AI Pin / Rabbit r1` 三组反面坐标写成风险与边界；`rejectedPaths` 固定纯社交变现、代币优先和硬件收入优先三条反面路径；`differentiation` 固定端侧隐私、真实坐标知识库、ERC-8004 公开身份和平台抽成兼容的 Agent Plaza。审阅者可以直接在 `/api/injective?tool=get-chain-evidence` 中展开这个字段，而不需要从段落里猜商业主线。
 
 ## Agent Plaza 回执如何形成收入闭环
 

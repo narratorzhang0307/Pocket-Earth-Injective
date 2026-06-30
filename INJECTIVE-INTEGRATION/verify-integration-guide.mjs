@@ -436,6 +436,7 @@ for (const phrase of [
   '市场边界机器字段',
   'marketLandscapeBoundary',
   'commercialFlywheel',
+  'negativeCoordinates',
   'rejectedPaths',
   '5.1.1 FROST Chronicle：画像演化史与三件交付',
   'AI 分身公开画像的来源证明',

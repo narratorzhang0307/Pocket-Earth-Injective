@@ -13,7 +13,7 @@
 - **plaza 产品闭环**：`public-plaza` 负责链上社交发现，`agent-plaza` 负责 agent 市集与安装闭环；`verify:plaza-flow` 固定两者边界。
 - **Frost Buddy 硬件延展**：`hardware/frost-buddy/` 已整理为 Frost Edge Node 模块说明，覆盖 Raspberry Pi / BLE / TTS 公开事件桥、Pi 侧技能路由、Pi 事件适配分支、music-agent 实体化、`chain_dispatch` 链上见闻播报、市场边界、`hardwareNodeServiceReceipt` 服务回执边界、路线图边界与隐私边界；`frost_pi_event_adapter.py` 把公开 JSONL 拆成 `state` / `tts` / `display` 三类动作，不影响主 app、plaza 或链上 API，真实 BLE/TTS/display 驱动仍留在可选 adapter 层。
 - **PPT 硬件边界守门**：`verify:hardware` 现在会明确固定“事件桥与 Pi adapter 已可离线冒烟、真实 BLE / TTS / 小屏幕物理驱动仍待后续 adapter 接入”这条边界，避免把 Frost Edge Node 写成已量产、已签名或硬件收入优先路径。
-- **商业路径边界**：根 `README.md` 已新增 `5.3 商业路径与三条边界`，明确不走纯社交变现、不走代币优先、不走重资本硬件路线；`marketLandscapeBoundary` 进一步固定 `commercialFlywheel`、`preferredPath`、`rejectedPaths` 和 `differentiation`，让“长期使用 -> 可信画像 -> Agent 市场”成为可机读证据；Agent Plaza 是安装、调用、评价和可选付费回执的中心。
+- **商业路径边界**：根 `README.md` 已新增 `5.3 商业路径与三条边界`，明确不走纯社交变现、不走代币优先、不走重资本硬件路线；`marketLandscapeBoundary` 进一步固定 `commercialFlywheel`、`preferredPath`、`negativeCoordinates`、`rejectedPaths` 和 `differentiation`，让“长期使用 -> 可信画像 -> Agent 市场”成为可机读证据；Agent Plaza 是安装、调用、评价和可选付费回执的中心。
 - **最终整合版覆盖**：根 `README.md` 已新增 `5.1 最终整合版对照与技术深挖`、`5.1.1 FROST Chronicle：画像演化史与三件交付`、`5.2 Frost Edge Node：树莓派硬件原理与市场边界`、`5.3 商业路径与三条边界`；`5.1.1` 直接承接 PPT 第 40-41 页的“不是再做一个 Web3 身份系统 / AI 分身公开画像的来源证明 / 现在能打开 / 三件交付 / Built on Injective”；`INJECTIVE-INTEGRATION/README.md#final-ppt-index` 已按最终 PPT 41 页建立逐页覆盖索引，并展开 Profile Chain / Proof of Memory、frost-agent harness、Agent Plaza / Frost Buddy、三条商业边界与外部来源边界；PPT 第一页的公开视频 `https://youtu.be/KjmrjTnvVo0` 已固定为 `reviewEntrypoints.demo-video` 与 `deliveryChecklist.demo-video-script`。
 
 ## 核心证据层
@@ -27,7 +27,7 @@
 | 文档层 | README、集成说明、证据包、录制脚本、60 秒复验入口，以及最终 PPT 逐页覆盖索引 | `npm run verify:github` / `npm run verify:integration-guide` |
 | 产品层 | public-plaza 读链上 agent；agent-plaza 保留安装闭环 | `npm run verify:plaza-flow` / `npm run verify:plaza` |
 | 硬件层 | JSONL 公开事件桥 + Pi 技能路由 + Pi 事件适配分支 + `hardwareBridge.serviceBoundary` + `hardwareBridge.roadmapBoundary` + Frost Edge Node 文档锚点 | `npm run verify:hardware` |
-| 市场边界层 | `marketLandscapeBoundary` 固定 `commercialFlywheel`、`Agent Plaza platform path`、`rejectedPaths` 和四项差异化；商业主线是 Agent Plaza，不是纯社交、代币优先或硬件收入优先 | `npm run verify:public-proof` / `npm run verify:public-apis` |
+| 市场边界层 | `marketLandscapeBoundary` 固定 `commercialFlywheel`、`Agent Plaza platform path`、`negativeCoordinates`、`rejectedPaths` 和四项差异化；商业主线是 Agent Plaza，不是纯社交、代币优先或硬件收入优先 | `npm run verify:public-proof` / `npm run verify:public-apis` |
 | 路线图安全层 | `roadmapSafetyBoundary` 固定 P0/P1/P2 产品路线和 NOW/P1/P2/P3/P4 链上路线：只建议不偷改、声明式 skill、不无确认写链、原始记忆不上链、硬件不签名 | `npm run verify:public-proof` / `npm run verify:judge` |
 
 ## 当前文档结构
