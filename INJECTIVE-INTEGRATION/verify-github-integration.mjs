@@ -601,6 +601,8 @@ assertTrue('remote judge quickstart names integration guide guard', remoteJudge.
 assertTrue('remote judge quickstart names positioning guard', remoteJudge.includes('npm run verify:positioning'))
 assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
 assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
+assertTrue('remote judge quickstart names direct handshake verifier', remoteJudge.includes('npm run verify:handshake') && remoteJudge.includes('agentA/agentB/score/profileHash'))
+assertTrue('remote judge quickstart names handshake bytecode verifier', remoteJudge.includes('npm run verify:handshake-contract') && remoteJudge.includes('creation/runtime bytecode'))
 assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJudge.includes('reviewEntrypoints.hardware-bridge') && remoteJudge.includes('hardware/frost-buddy'))
 assertTrue('remote judge quickstart names public demo video entrypoint', remoteJudge.includes('reviewEntrypoints.demo-video') && remoteJudge.includes(DEMO_VIDEO_URL))
 assertTrue('remote judge quickstart names Frost Edge Node checklist', remoteJudge.includes('deliveryChecklist.frost-edge-node') && remoteJudge.includes('npm run verify:hardware'))

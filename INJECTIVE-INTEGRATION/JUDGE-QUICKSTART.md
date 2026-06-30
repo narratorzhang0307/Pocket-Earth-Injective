@@ -13,7 +13,9 @@
 7. Open the Frost Edge Node proof card: `/api/injective?tool=get-hardware-bridge-proof`, starting from `hardwareBridge.chainDispatch`, `piRouter.skills`, `piAdapter.actions`, `hardwareBridge.marketBoundary`, `hardwareBridge.serviceBoundary`, `hardwareBridge.roadmapBoundary`, and `privacyBoundary.hardware`
 8. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
 9. Check the ERC-8004 mint events locally: `npm run verify:registry`
-10. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:integration-guide && npm run verify:positioning && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:hardware && npm run verify:demo`
+10. Check the real SocialHandshake event locally: `npm run verify:handshake`. This decodes the real transaction and confirms `agentA/agentB/score/profileHash` without reading private profile text.
+11. Check the SocialHandshake contract bytecode locally: `npm run verify:handshake-contract`. This verifies the deploy address, creation/runtime bytecode, and local Solidity source consistency.
+12. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:integration-guide && npm run verify:positioning && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:handshake && npm run verify:handshake-contract && npm run verify:hardware && npm run verify:demo`
 
 ## What This Proves
 
@@ -25,6 +27,7 @@
 - ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
 - The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns `chainId 1439` plus its own `summary` so reviewers can confirm the Injective testnet, event count, all-succeeded status, and first/last block/time before reading every event row.
 - `handshakeProof` summarizes the real `agentId 43 <-> 44` SocialHandshake transaction with score `88`, contract/transaction Blockscout links, timestamp, block number, public commitment policy, and the local verifier command.
+- `npm run verify:handshake` decodes the real SocialHandshake event and checks `agentA/agentB/score/profileHash`; `npm run verify:handshake-contract` checks the deployed address plus creation/runtime bytecode against the local Solidity source.
 - `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, single-agent proof/source anchor, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, a standalone Frost Edge Node hardware proof API, and then the public-plaza / agent-plaza smoke.
 - `roadmapSafetyBoundary` makes the roadmap reviewable from the same API: P2 self-learning is suggest-only, learned skills are declarative routes, testnet writes require `confirm:true`, raw memories never go on-chain, and Frost Edge Node hardware never signs wallets.
 - `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
@@ -127,6 +130,8 @@ The delivery boundary is intentionally narrow: personal website links can introd
 - Source-control guard: `npm run verify:source`
 - Registry mint-event guard: `npm run verify:registry`
 - Single-agent proof guard: `npm run verify:agent-proof`
+- SocialHandshake event guard: `npm run verify:handshake`
+- SocialHandshake bytecode guard: `npm run verify:handshake-contract`
 - Frost Edge Node hardware guard: `npm run verify:hardware`
 - Integration-guide guard: `npm run verify:integration-guide`
 - Positioning guard: `npm run verify:positioning`
@@ -161,6 +166,8 @@ npm run verify:positioning
 npm run verify:source
 npm run verify:registry
 npm run verify:agent-proof
+npm run verify:handshake
+npm run verify:handshake-contract
 npm run verify:hardware
 npm run verify:recording-order
 npm run verify:injective
