@@ -82,6 +82,23 @@ for (const phrase of [
   'Agent Plaza 是商业路径的中心',
   'manifest / schema / permissions',
   'hardware/frost-buddy/',
+  '用户痛点与对症解决',
+  '个人记忆缺一根',
+  '散落各处',
+  '按时间记不牢',
+  '记完就沉底',
+  '工具不懂你',
+  '隐私不敢交',
+  '整理太费劲',
+  '地球作索引',
+  '端云双脑 + 链上身份',
+  '能力沉淀 skill',
+  '越用越懂你',
+  '2124 部影',
+  '1055 本书',
+  '619 位艺人',
+  '536 张照片',
+  '只建议不偷改',
 ]) {
   assertTrue(`story spine includes ${phrase}`, guide.includes(phrase))
 }
@@ -218,6 +235,11 @@ for (const phrase of [
   'reviewManifest',
   'toManifest',
   'willEmit',
+  '用户痛点与对症解决',
+  '散落各处',
+  '按时间记不牢',
+  '隐私不敢交',
+  '只建议不偷改',
 ]) {
   assertTrue(`PROGRESS keeps current alignment: ${phrase}`, progress.includes(phrase))
 }
