@@ -34,9 +34,35 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 
 No network, wallet, daemon, BLE device, or GitHub token is required.
 
+## Decoupled Event Adapter Lane
+
+`frost_pi_event_adapter.py` is the optional hardware branch after the JSONL
+contract. It reads public Frost Buddy events and emits transport-neutral device
+actions:
+
+| Action | Intended hardware | Public fields used |
+|---|---|---|
+| `state` | LED, expression, tiny status screen | `state`, `priority`, `kind` |
+| `tts` | local TTS, speaker, BLE audio trigger | `speak` |
+| `display` | OLED, e-ink, web panel, MQTT dashboard | `title`, `body`, public `agentIds`, public `scanUrl` |
+
+Run the adapter smoke:
+
+```bash
+python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
+```
+
+The adapter does not import the app, the Injective API service, wallet code, or
+any device daemon. BLE, serial, MQTT, and screen drivers should sit after this
+file and map the emitted actions to physical output.
+
 ## Boundary
 
 This module is for `Pocket-Earth-Injective` only. If another local daemon later accepts this contract, connect it through a small adapter that consumes either:
 
 - canonical commands such as `下一首`, or
 - JSONL events such as `chain_dispatch`.
+
+For physical output, prefer consuming adapter actions instead of expanding the
+event envelope. That keeps Raspberry Pi experiments removable and keeps the
+Pocket Earth main path independent from hardware transport choices.

@@ -81,6 +81,26 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 
 冒烟不需要网络、钱包、daemon、BLE 设备或 GitHub token。校验重点是：skill 名称唯一、关键词路由稳定、云脑幻觉 skill 会被拒绝、公开事件能 JSONL 往返、私钥/secret/env/profile-hash 形态会被拦下。
 
+### 4. Raspberry Pi 事件适配分支保持解耦
+
+`raspi/frost_pi_event_adapter.py` 是单独的 Pi 侧 adapter lane：输入只接受 `frost-hardware-bridge.mjs` 产出的公开 JSONL envelope，输出只生成三类 transport-neutral action。
+
+| action | 给谁用 | 说明 |
+|---|---|---|
+| `state` | LED、表情、小屏幕状态机 | `busy` / `attention` / `idle` 等状态，不包含业务私密数据 |
+| `tts` | 本地 TTS 或蓝牙音箱 | 只读取 `speak` 公开播报文案 |
+| `display` | OLED、e-ink、WebSocket 面板 | 展示标题、摘要、公开 `agentIds` 与 Blockscout `scanUrl` |
+
+这条分支不 import Pocket Earth 前端、不 import Injective 服务、不签名、不联网，也不绑定 BLE / serial / MQTT 的具体实现。后续真实设备只需要把 action 映射到自己的传输层；删掉这个 adapter 也不会影响主 app、`public-plaza`、`agent-plaza` 或链上证据 API。
+
+离线冒烟：
+
+```bash
+python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
+```
+
+完整硬件快检 `npm run verify:hardware` 会同时跑技能路由和事件适配分支，防止硬件叙事停留在 Markdown。
+
 ## 与 Injective 的关系
 
 Frost Edge Node 不直接写链。Injective 仍然通过服务端 API 与证据包连接：

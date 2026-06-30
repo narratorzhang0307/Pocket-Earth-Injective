@@ -157,7 +157,7 @@ SocialHandshake 的部署交易 `0x6048425a...fa722` 由同一测试网钱包创
 | GET | `?tool=get-agent-proof&agentId=43` | 单 agent 证明卡：owner、`builderCode`、registry、mint tx、身份页、钱包页、源码锚点 | 否 |
 | GET | `?tool=get-chain-evidence` | 公开证据包：`registryMintEvents`、`registryMintSummary`、`timeline`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`reviewBrief`、`judgeRunbook`、`reviewLinks`、`reviewChecklist`、`integrationAlignment`、`reviewEntrypoints`、`deliveryChecklist`、`publicReadApis`、`recordingOrder`、`privacyBoundary`、`plazaFlow`、`sourceControl` | 否 |
 | GET | `?tool=get-wallet-timeline` | `{ chainId: 1439, readOnly: true, publicOnly: true, summary, events }`，从 RPC 复验钱包时间线 | 否 |
-| GET | `?tool=get-hardware-bridge-proof` | Frost Edge Node 单页证明卡：`hardwareBridge`、`chainDispatch.chainRead`、Pi 技能白名单、公开 JSONL 隐私边界和源码锚点 | 否 |
+| GET | `?tool=get-hardware-bridge-proof` | Frost Edge Node 单页证明卡：`hardwareBridge`、`chainDispatch.chainRead`、Pi 技能白名单、Pi adapter `state/tts/display` 动作、公开 JSONL 隐私边界和源码锚点 | 否 |
 | POST | `?tool=register` `{ passport, confirm }` | `{ agentId, txHashes, scanUrl }`；未确认时 dry-run | 真写需 |
 | POST | `?tool=handshake` `{ agentA, agentB, profileHashA, profileHashB, score, confirm }` | `{ txHash }`；未确认时 dry-run | 真写需 |
 
@@ -322,6 +322,18 @@ Pocket Earth App / public-plaza
 
 这个合同让设备端足够简单：Pi 只需要读取一行 JSON，决定表情状态、TTS 文案、屏幕标题和外链；Pi 不需要理解 ERC-8004 合约、钱包签名、Profile Chain，也不需要知道用户完整画像。
 
+### Pi 事件适配分支
+
+`hardware/frost-buddy/raspi/frost_pi_event_adapter.py` 是新增的解耦 adapter lane。它不 import 前端、不 import `injective-service.mjs`、不联网、不绑定 BLE / serial / MQTT；输入只接受公开 JSONL envelope，输出只生成三类设备动作。
+
+| 设备动作 | 物理含义 | 隐私边界 |
+|---|---|---|
+| `state` | LED、表情或小屏幕状态：`busy`、`attention`、`idle` | 只读事件状态和优先级 |
+| `tts` | 本地 TTS 或音箱播报 | 只读公开 `speak` 文案 |
+| `display` | OLED、e-ink、WebSocket 或 MQTT 面板 | 只展示标题、摘要、公开 `agentIds` 和 Blockscout `scanUrl` |
+
+这条分支把 PPT 第 33 页的“实体节点，不是重资本硬件路线”落成了工程结构：Pocket Earth 主线只负责生成公开事件；Pi adapter 只负责把公开事件翻译成设备动作；真正的 BLE、串口、MQTT、屏幕和音频驱动都在 adapter 之后，随时可替换、可删除、可单独测试。`frost_pi_event_adapter_smoke.py` 会离线验证 action 合同、CLI JSONL 输出和私密哈希拦截。
+
 ### Pi 侧技能路由
 
 `hardware/frost-buddy/raspi/frost_pi_skill_agent.py` 借鉴的是“白名单技能路由”模式，而不是复制任何旧仓库 daemon。Pi 侧先把松散语音归一化到有限 skill：
@@ -351,7 +363,7 @@ Pocket Earth App / public-plaza
 |---|---|
 | 公开 `music_now_playing` 文案、公开 `chain_dispatch` 文案、agentId、Blockscout 链接、设备表情状态 | 私钥、助记词、server env、原始画像、照片、心情、精确坐标、`profileHashA/B` 原文、`bytes32` 承诺值 |
 | 白名单音乐命令，例如“下一首”“暂停”“重播” | 任意代码执行、任意 URL 抓取、任意支付动作 |
-| 可选 adapter 输出：BLE、serial、MQTT、本地 TTS、小屏幕 | 钱包签名、链上写入、Agent Plaza 安装确认 |
+| 可选 adapter 输出：`state`、`tts`、`display`，再接 BLE、serial、MQTT、本地 TTS、小屏幕 | 钱包签名、链上写入、Agent Plaza 安装确认 |
 
 写链仍然只在服务端 `suggest -> confirm -> sign` 路径里发生；硬件只负责读公开事件和播报，不负责签名和决策。
 

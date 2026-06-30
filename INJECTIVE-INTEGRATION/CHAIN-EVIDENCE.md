@@ -73,7 +73,7 @@ The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-ap
 | P1 Profile Checkpoint | `get-chain-evidence` 已有 `sourceControl`、`publicReadApis`、`privacyBoundary` 和公开 Taste Passport 边界 | 未来只写 `profileHash + version + timestamp + Frost signature`，不写书单、照片、心情或精确坐标 |
 | P2 Agent Plaza receipts | `agent-plaza` 已展示 `manifest / schema / permissions`、`reviewManifest`、`toManifest`、`willEmit` dry-run 和安装回流 | 安装、调用、评价和可选付费回执必须先通过权限审核，再回流 Profile Confidence |
 | P3 Profile Confidence | `handshakeProof`、`registryMintSummary`、`timelineSummary` 和 `reviewChecklist` 已能证明身份连续性、同钱包顺序和公开社交佐证 | 置信度只评估公开画像来源支撑；批量导入、短期快速变脸和随机标签会被降权，不做“人好坏”评分 |
-| P4 Frost Network | `hardwareBridge`、`get-hardware-bridge-proof`、`music_now_playing`、`chain_dispatch` 和 Pi skill router 已证明公开事件可被实体节点消费 | Frost Edge Node 保持 developer-kit / experience layer；设备不签名、不持私钥、不读取原始画像 |
+| P4 Frost Network | `hardwareBridge`、`get-hardware-bridge-proof`、`music_now_playing`、`chain_dispatch`、Pi skill router 和 Pi adapter `state/tts/display` 已证明公开事件可被实体节点消费 | Frost Edge Node 保持 developer-kit / experience layer；设备不签名、不持私钥、不读取原始画像 |
 
 这张表把“空间留在 Pocket Earth，时间由 Injective 见证”落成证据分工：Pocket Earth 负责长期空间记忆和公开画像生成；Injective 负责身份、版本、回执和可选择证明；Frost Edge Node 只把公开事件带回物理空间。
 
@@ -174,7 +174,7 @@ The verification suite keeps the evidence readable and reproducible:
 | `npm run verify:wallet` | RPC-backed wallet timeline and successful receipt order |
 | `npm run verify:recording-order` | followable order from Blockscout to API to plaza smoke |
 | `npm run verify:plaza-flow` | public-plaza as chain discovery; agent-plaza as marketplace/install loop |
-| `npm run verify:hardware` | Frost Edge Node JSONL bridge, Pi skill router, and public-only hardware boundary |
+| `npm run verify:hardware` | Frost Edge Node JSONL bridge, Pi skill router, Pi event adapter, and public-only hardware boundary |
 | `npm run verify:nova-alignment` | AI social, Injective execution, hardware extension, and privacy-first proof mapping |
 | `npm run verify:delivery` | live demo, API entrypoints, quickstart, GitHub, and delivery checklist |
 
@@ -227,6 +227,6 @@ This read-only proof suite verifies:
 - dry-run boundaries for write tools without key-backed confirmation
 - ERC-8004 registry mint events, transaction hashes, and `registryMintSummary`
 - wallet evidence chain, RPC transaction/block timeline, deployed contract bytecode, handshake hash derivation, calldata, event, and public Blockscout links
-- Frost Buddy hardware bridge events and the Raspberry Pi skill router stay public-only and contain no private keys, secret env names, raw profile text, or profile hashes
+- Frost Buddy hardware bridge events, the Raspberry Pi skill router, and the Pi event adapter stay public-only and contain no private keys, secret env names, raw profile text, or profile hashes
 
 Note: `8004scan.io` does not index Injective testnet, so the public demo uses Injective Blockscout links above.

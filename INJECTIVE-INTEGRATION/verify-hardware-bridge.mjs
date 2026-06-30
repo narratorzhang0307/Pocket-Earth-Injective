@@ -104,6 +104,9 @@ assertEqual('hardware proof chain read', hardwareProof.hardwareBridge?.chainDisp
 assertEqual('hardware proof scanUrl', hardwareProof.hardwareBridge?.chainDispatch?.scanUrl, scanUrlForRegistry())
 assertEqual('hardware proof agent ids', hardwareProof.hardwareBridge?.chainDispatch?.agentIds?.join(','), FLEET_AGENT_IDS.join(','))
 assertListIncludes('hardware proof Pi skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertEqual('hardware proof Pi adapter path', hardwareProof.hardwareBridge?.piAdapter?.modulePath, 'hardware/frost-buddy/raspi/frost_pi_event_adapter.py')
+assertListIncludes('hardware proof Pi adapter actions', hardwareProof.hardwareBridge?.piAdapter?.actions, ['state', 'tts', 'display'])
+assertTrue('hardware proof Pi adapter boundary', String(hardwareProof.hardwareBridge?.piAdapter?.boundary || '').includes('transport-neutral adapter lane'))
 assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
 assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertTrue('hardware proof market business path', String(hardwareProof.hardwareBridge?.marketBoundary?.businessPath || '').includes('Agent Plaza'))
@@ -118,6 +121,8 @@ const rootReadme = readFileSync('README.md', 'utf8')
 const integrationReadme = readFileSync('INJECTIVE-INTEGRATION/README.md', 'utf8')
 const hardwareReadme = readFileSync('hardware/frost-buddy/README.md', 'utf8')
 const raspiReadme = readFileSync('hardware/frost-buddy/raspi/README.md', 'utf8')
+const piAdapter = readFileSync('hardware/frost-buddy/raspi/frost_pi_event_adapter.py', 'utf8')
+const piAdapterSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py', 'utf8')
 
 for (const snippet of [
   'Frost Edge Node',
@@ -136,6 +141,11 @@ for (const snippet of [
   '开发套件',
   '体验差异化',
   '市场边界',
+  'Raspberry Pi 事件适配分支保持解耦',
+  'frost_pi_event_adapter.py',
+  'state',
+  'tts',
+  'display',
   'Raspberry Pi',
   '隐私与安全边界',
   'https://investors.raspberrypi.com/',
@@ -168,12 +178,40 @@ for (const snippet of [
   'Raspberry Pi edge',
   'skill registry',
   'JSONL events such as `chain_dispatch`',
+  'Decoupled Event Adapter Lane',
+  'frost_pi_event_adapter.py',
+  'transport-neutral device',
 ]) {
   assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
+}
+
+for (const snippet of [
+  'Transport-neutral Raspberry Pi adapter',
+  'SAFE_EVENT_KEYS',
+  'SAFE_ACTION_KEYS',
+  'ALLOWED_ACTION_TYPES',
+  'event_to_actions',
+  'local-tts',
+  'display',
+  'sourceKind',
+]) {
+  assertTrue(`Pi adapter keeps decoupled action contract ${snippet}`, piAdapter.includes(snippet))
+}
+
+for (const snippet of [
+  'music-now-playing.sample.json',
+  'chain-dispatch.sample.json',
+  'state/tts/display',
+  'CLI should emit three action lines',
+]) {
+  assertTrue(`Pi adapter smoke covers ${snippet}`, piAdapterSmoke.includes(snippet))
 }
 
 console.log('\nRaspberry Pi skill router smoke')
 const python = process.env.PYTHON || 'python3'
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi event adapter smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nOK Frost Buddy hardware bridge can carry music-agent and Injective chain-dispatch events safely.')

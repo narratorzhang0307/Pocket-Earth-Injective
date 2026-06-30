@@ -168,6 +168,12 @@ export const HARDWARE_BRIDGE_PROOF = {
     skills: ['next_track', 'prev_track', 'pause', 'replay', 'volume_up', 'volume_down', 'music_now_playing', 'chain_dispatch', 'help'],
     smoke: 'python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py',
   },
+  piAdapter: {
+    modulePath: 'hardware/frost-buddy/raspi/frost_pi_event_adapter.py',
+    actions: ['state', 'tts', 'display'],
+    smoke: 'python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py',
+    boundary: 'transport-neutral adapter lane: BLE, serial, MQTT, display, and local TTS sit after public actions, not inside the Pocket Earth main path',
+  },
   privacyBoundary: [
     'no private keys',
     'no wallet signing',

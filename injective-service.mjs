@@ -263,7 +263,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
         reviewPath: [
           { step: 1, label: 'Open Frost Edge Node module', url: HARDWARE_BRIDGE_PROOF.moduleUrl, verifies: 'The hardware bridge is a public-event adapter under the current repository.' },
           { step: 2, label: 'Read Injective fleet source', path: HARDWARE_BRIDGE_PROOF.chainDispatch.chainRead, verifies: 'chain_dispatch is sourced from the public builderCode=pocket-earth fleet.' },
-          { step: 3, label: 'Run hardware smoke', command: HARDWARE_BRIDGE_PROOF.localVerification, verifies: 'JSONL events and the Raspberry Pi skill router keep the public-only boundary.' },
+          { step: 3, label: 'Run hardware smoke', command: HARDWARE_BRIDGE_PROOF.localVerification, verifies: 'JSONL events, the Raspberry Pi skill router, and the transport-neutral Pi adapter keep the public-only boundary.' },
         ],
         verification: {
           hardwareBridge: 'npm run verify:hardware',
@@ -343,8 +343,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:hardware',
           purpose: 'Returns a focused proof card for the Raspberry Pi / BLE / TTS public-event bridge without private keys or raw profile payloads.',
-          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'],
-          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'prototype and developer-kit market boundary', 'no wallet signing or raw profile text'],
+          expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.piAdapter.actions', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'],
+          judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'transport-neutral Pi adapter actions', 'prototype and developer-kit market boundary', 'no wallet signing or raw profile text'],
         },
       ]
       const firstTimelineEvent = TIMELINE_EVENTS[0]

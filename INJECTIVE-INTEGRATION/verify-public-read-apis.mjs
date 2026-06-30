@@ -120,8 +120,8 @@ const expectedGuidance = new Map([
     judgeFocus: ['same owner wallet', 'all receipts succeeded', 'first and last block range', 'registration to real handshake sequence'],
   }],
   ['hardware-bridge-api', {
-    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'],
-    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'prototype and developer-kit market boundary', 'no wallet signing or raw profile text'],
+    expectedFields: ['hardwareBridge.key', 'hardwareBridge.eventKinds', 'hardwareBridge.chainDispatch.chainRead', 'hardwareBridge.piRouter.skills', 'hardwareBridge.piAdapter.actions', 'hardwareBridge.marketBoundary', 'privacyBoundary.hardware', 'sourceControl'],
+    judgeFocus: ['Frost Edge Node public-event bridge', 'music_now_playing and chain_dispatch only', `builderCode=${BUILDER_CODE} chain read`, 'transport-neutral Pi adapter actions', 'prototype and developer-kit market boundary', 'no wallet signing or raw profile text'],
   }],
 ])
 
@@ -164,6 +164,7 @@ assertListIncludes('chain evidence hardwareBridge eventKinds', chainEvidence.har
 assertEqual('chain evidence hardwareBridge builderCode', chainEvidence.hardwareBridge.chainDispatch?.builderCode, BUILDER_CODE)
 assertEqual('chain evidence hardwareBridge scanUrl', chainEvidence.hardwareBridge.chainDispatch?.scanUrl, scanUrlForRegistry())
 assertEqual('chain evidence hardwareBridge local verification', chainEvidence.hardwareBridge.localVerification, 'npm run verify:hardware')
+assertListIncludes('chain evidence hardwareBridge Pi adapter actions', chainEvidence.hardwareBridge.piAdapter?.actions, ['state', 'tts', 'display'])
 assertListIncludes('chain evidence hardwareBridge privacy boundary', chainEvidence.hardwareBridge.privacyBoundary, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
 assertEqual('chain evidence hardwareBridge market role', chainEvidence.hardwareBridge.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
 assertEqual('chain evidence hardwareBridge market source', chainEvidence.hardwareBridge.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
@@ -254,6 +255,7 @@ assertListIncludes('hardware proof eventKinds', hardwareProof.hardwareBridge?.ev
 assertEqual('hardware proof chain source', hardwareProof.hardwareBridge?.chainDispatch?.source, 'injective-public-plaza')
 assertEqual('hardware proof chainRead', hardwareProof.hardwareBridge?.chainDispatch?.chainRead, `/api/injective?tool=list-agents&builderCode=${BUILDER_CODE}&limit=${FLEET_AGENTS.length}&top=${topAgentId}`)
 assertListIncludes('hardware proof skills', hardwareProof.hardwareBridge?.piRouter?.skills, ['music_now_playing', 'chain_dispatch'])
+assertListIncludes('hardware proof Pi adapter actions', hardwareProof.hardwareBridge?.piAdapter?.actions, ['state', 'tts', 'display'])
 assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
 assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
