@@ -49,6 +49,20 @@ The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-ap
 
 这也是本页要把 `plazaFlow` 和 `hardwareBridge` 放在同一个证据层的原因：`public-plaza` 证明 Frost 能读公开链上 agent 并进行可追踪社交，`agent-plaza` 证明符合空间逻辑的 agent 可以被审核、安装和运行，Frost Edge Node 证明同一套公开事件还能被实体节点消费。三者共同支撑的不是“发币社交”，而是一个隐私自持、身份可验、回执可追踪的空间 Agent 市场。
 
+## Agent Plaza 回执如何形成收入闭环
+
+最终整合版第 32 页把商业飞轮写成“长期使用 -> 画像可信 -> Agent 市场”。在当前仓库里，这条飞轮还不伪装成已经发生的收入，而是先落成可审核、可安装、可复验的回执槽位：只有 agent 通过 `manifest / schema / permissions` 审核，并能被用户从 `INSTALL -> My Agents -> RUN` 跑通，未来才有资格进入订阅、单次调用或平台抽成路径。
+
+| Receipt stage | Current evidence | Future Injective receipt shape |
+|---|---|---|
+| 开发者发布 | `agent-plaza` 展示 `manifest / schema / permissions`；`reviewManifest` 拒绝未知字段、危险 URL、可执行代码和越界权限；`toManifest` 只做白名单转译 | `manifestReceipt(agentId, manifestHash, publisher, timestamp)`，只证明 manifest 版本和发布者，不写入 agent 源码或用户数据 |
+| 用户安装 | `INSTALL -> My Agents -> RUN` 证明安装后能回到产品运行；`plazaFlow` 固定 public-plaza 与 agent-plaza 分工 | `installReceipt(agentId, manifestHash, userConsentHash, timestamp)`，只证明用户同意了某个公开 manifest 版本 |
+| agent 调用 | `willEmit` dry-run 说明未来会发什么事件；`RunTrace` 和 `reviewChecklist` 保留调用可观测入口 | `callReceipt(agentId, runId, capability, resultHash, timestamp)`，只证明一次能力调用和公开结果摘要，不公开原始输入 |
+| 用户评价 | `Profile Confidence` 已把外部回执列为 L4 佐证；当前只用 SocialHandshake、mint 顺序和钱包时间线作为公开证据 | `reviewReceipt(agentId, ratingBucket, reasonHash, timestamp)`，只记录分桶评价和原因摘要哈希，不公开长文本评价原文 |
+| 可选付费 | 文档只把订阅 / 单次调用 / 平台抽成写成未来路径，当前不把它们伪装成已结算收入 | `paymentReceipt(agentId, planOrCallId, settlementRef, timestamp)`，必须在显式确认后产生，并与身份、安装和调用回执分层 |
+
+这张表把“平台抽成”拆成工程上可追踪的五类回执：先证明 agent 合规，再证明用户安装，再证明调用发生，再证明评价来源，最后才是可选付费。Injective 的角色是见证这些公开回执的顺序和版本；Pocket Earth 的角色仍是保存空间记忆、执行 agent、保护原始画像。
+
 ## 公开证据如何支撑 Profile Chain 路线图
 
 最终整合版第 38-40 页把路线图拆成两层：Pocket Earth 先打磨产品内核和端云双脑，再把公开画像的来源证明接到 Injective。当前链上证据已经覆盖 NOW 层，后续 P1-P4 只是在同一条证据链上增加更细的回执类型。

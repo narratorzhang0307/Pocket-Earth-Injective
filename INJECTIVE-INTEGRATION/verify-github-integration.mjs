@@ -328,7 +328,14 @@ assertTrue('remote evidence pack names public read API manifest', remoteEvidence
 assertTrue('remote evidence pack names public API guard', remoteEvidence.includes('npm run verify:public-apis'))
 for (const phrase of [
   '## 公开证据如何支撑 Agent Plaza 商业路径',
+  '## Agent Plaza 回执如何形成收入闭环',
   '## 公开证据如何支撑 Profile Chain 路线图',
+  'manifestReceipt(agentId, manifestHash, publisher, timestamp)',
+  'installReceipt(agentId, manifestHash, userConsentHash, timestamp)',
+  'callReceipt(agentId, runId, capability, resultHash, timestamp)',
+  'reviewReceipt(agentId, ratingBucket, reasonHash, timestamp)',
+  'paymentReceipt(agentId, planOrCallId, settlementRef, timestamp)',
+  '订阅、单次调用或平台抽成路径',
   'NOW 链上身份与握手',
   'P1 Profile Checkpoint',
   'P2 Agent Plaza receipts',
