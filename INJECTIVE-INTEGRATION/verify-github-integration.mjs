@@ -172,6 +172,7 @@ assertTrue('remote README names full network integration path', remoteReadme.inc
 assertTrue('remote README names Taste Passport builder in network guide', remoteReadme.includes('buildTastePassport()'))
 assertTrue('remote README names write confirmation boundary in network guide', remoteReadme.includes('confirm:true'))
 assertTrue('remote README names public read flags in network guide', remoteReadme.includes('readOnly: true') && remoteReadme.includes('publicOnly: true'))
+assertTrue('remote README one-minute proof ladder names seven layers', remoteReadme.includes('按下面七层看') && !remoteReadme.includes('按下面六层看'))
 assertTrue('remote README puts Frost Edge Node in the one-minute proof ladder', remoteReadme.includes('Frost Edge Node 硬件边界'))
 assertTrue('remote README names hardware proof API in fast proof ladder', remoteReadme.includes('get-hardware-bridge-proof'))
 assertTrue('remote README names hardware market boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.marketBoundary'))

@@ -83,6 +83,7 @@ assertTrue('README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.
 assertTrue('README names linkage by agent output and globe entrance', rootReadme.includes('### 6.1 Agent 产出 ⇄ 地球入口实时联动'))
 assertTrue('README explains agents as panels, not UI tabs', rootReadme.includes('双面板结构') && rootReadme.includes('数据层（左侧）') && rootReadme.includes('对话层（右侧）'))
 assertTrue('demo script names globe entrance instead of tab', demoScript.includes('切到地球入口'))
+assertTrue('README one-minute proof ladder names seven layers', rootReadme.includes('按下面七层看') && !rootReadme.includes('按下面六层看'))
 assertTrue('README names Frost Edge Node hardware direction explicitly', rootReadme.includes('Frost Edge Node 硬件方向的商业判断'))
 assertTrue('README puts Frost Edge Node in the one-minute proof ladder', rootReadme.includes('Frost Edge Node 硬件边界'))
 assertTrue('README names hardware proof API in fast proof ladder', rootReadme.includes('get-hardware-bridge-proof'))
