@@ -80,6 +80,7 @@ assertTrue('README intro names explicit real destinations', rootReadme.includes(
 assertTrue('README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(rootReadme))
 assertTrue('README uses product-first three-entry heading', rootReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.test(rootReadme))
+assertTrue('README names linkage by agent output and globe entrance', rootReadme.includes('### 6.1 Agent 产出 ⇄ 地球入口实时联动'))
 assertTrue('README explains agents as panels, not UI tabs', rootReadme.includes('双面板结构') && rootReadme.includes('数据层（左侧）') && rootReadme.includes('对话层（右侧）'))
 assertTrue('demo script names globe entrance instead of tab', demoScript.includes('切到地球入口'))
 assertTrue('README names Frost Edge Node hardware direction explicitly', rootReadme.includes('Frost Edge Node 硬件方向的商业判断'))
@@ -119,6 +120,14 @@ const explicitPublicDocSnippets = [
   ['README.md', '双 Tab 容器'],
   ['README.md', '通用双 Tab'],
   ['README.md', '两 tab 联动'],
+  ['README.md', 'tab1 ⇄ tab2'],
+  ['README.md', 'MyMapTab 合并'],
+  ['src/app/data/userMarks.ts', 'tab1 地球'],
+  ['src/app/data/mapFocus.ts', '地球 tab'],
+  ['src/app/data/mapFocus.ts', 'earth tab'],
+  ['src/app/data/mapMarkers.ts', '切回地球 tab'],
+  ['INJECTIVE-INTEGRATION/verify-space-plaza.mjs', 'Agents tab'],
+  ['INJECTIVE-INTEGRATION/verify-plaza.mjs', 'Agents tab'],
   ['INJECTIVE-INTEGRATION/README.md', '证明它不是单页概念图'],
   ['INJECTIVE-INTEGRATION/README.md', '它会串起公开证据包'],
   ['INJECTIVE-INTEGRATION/DEMO-SCRIPT.md', '切地球 tab'],

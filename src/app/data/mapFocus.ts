@@ -1,6 +1,6 @@
 // 跨组件「飞到某坐标」通道：记一笔/各 agent 钉完后，让地图自动飞过去并放大到「便签/卡片展开可见」的尺度，
-// 免去用户手动切地球 tab + 手动转地球 + 手动放大才看得到刚钉的点。仿 geoStickers 的 subscribe 写法、零依赖。
-// pending：给地图组件「挂载/切回 earth tab」时消费（用户钉完切过来才看到地图的情形）；
+// 免去用户手动切到地球入口 + 手动转地球 + 手动放大才看得到刚钉的点。仿 geoStickers 的 subscribe 写法、零依赖。
+// pending：给地图组件「挂载/切回地球入口」时消费（用户钉完切过来才看到地图的情形）；
 // subs：给已挂载可见的地图组件实时响应。
 export interface MapFocusReq { lng: number; lat: number; zoom: number }
 

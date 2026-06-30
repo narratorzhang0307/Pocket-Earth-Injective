@@ -57,7 +57,7 @@ npm run verify:delivery
 npm run verify:demo
 ```
 
-`verify:integration-guide` 现在会固定 `final-ppt-index`、PPT 第 2 页作者方法来源细项、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、Skills 能力沉淀与依赖边界、`路由器不是仓库`、三个家目录、`curatePlaylist`、`MNN / ollama / stub`、`reviewManifest`、FNV-1a、`willEmit`、`产品演进路线`、`链上信誉网络路线`、`P2 自学`、`NOW 链上身份与握手`、三条商业边界和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。`verify:positioning` / `verify:github` 会固定 README 的明确标题：`Pocket Earth 是什么` 和 `三入口，一颗地球`，并要求本地与远端 GitHub 的 Frost Edge Node、hardware README、public-plaza UI 明确写出主语，避免再次退回指代不明或 UI 术语化标题。
+`verify:integration-guide` 现在会固定 `final-ppt-index`、PPT 第 2 页作者方法来源细项、Agent Personality Provenance、Proof of Memory、`ProfileCheckpoint`、FrostBus、RunTrace、Skills 能力沉淀与依赖边界、`路由器不是仓库`、三个家目录、`curatePlaylist`、`MNN / ollama / stub`、`reviewManifest`、FNV-1a、`willEmit`、`产品演进路线`、`链上信誉网络路线`、`P2 自学`、`NOW 链上身份与握手`、三条商业边界和外部来源边界，防止最终整合版的技术深度在后续文档修改中被改丢。`verify:positioning` / `verify:github` 会固定 README 的明确标题：`Pocket Earth 是什么`、`三入口，一颗地球` 和 `Agent 产出 ⇄ 地球入口实时联动`，并要求本地与远端 GitHub 的 Frost Edge Node、hardware README、public-plaza UI、地图联动注释和 plaza 验证脚本都写出明确主语，避免再次退回指代不明或 UI 术语化标题。
 
 完整链上复验：
 

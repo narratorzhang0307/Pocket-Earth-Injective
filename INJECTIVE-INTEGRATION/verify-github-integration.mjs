@@ -120,6 +120,11 @@ const remoteJudge = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/JUDGE-QUIC
 const remoteProgress = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/PROGRESS.md`)
 const remoteHardware = await fetchText(`${rawBase}/hardware/frost-buddy/README.md`)
 const remotePublicPlaza = await fetchText(`${rawBase}/src/app/components/PublicPlazaPage.tsx`)
+const remoteUserMarks = await fetchText(`${rawBase}/src/app/data/userMarks.ts`)
+const remoteMapFocus = await fetchText(`${rawBase}/src/app/data/mapFocus.ts`)
+const remoteMapMarkers = await fetchText(`${rawBase}/src/app/data/mapMarkers.ts`)
+const remoteVerifySpacePlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-space-plaza.mjs`)
+const remoteVerifyPlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza.mjs`)
 const remoteIndexHtml = await fetchText(`${rawBase}/index.html`)
 const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanifest`)
 const remoteManifest = JSON.parse(remoteManifestText)
@@ -130,6 +135,7 @@ assertTrue('remote README intro names explicit real destinations', remoteReadme.
 assertTrue('remote README omits ambiguous product heading', !/^## 一、.{0,2}是什么$/m.test(remoteReadme))
 assertTrue('remote README names product-first three-entry heading', remoteReadme.includes('## 二、三入口，一颗地球'))
 assertTrue('remote README omits UI-jargon three-tab heading', !/^## 二、.{0,4}Tab$/m.test(remoteReadme))
+assertTrue('remote README names linkage by agent output and globe entrance', remoteReadme.includes('### 6.1 Agent 产出 ⇄ 地球入口实时联动'))
 assertTrue('remote README explains agents as panels, not UI tabs', remoteReadme.includes('双面板结构') && remoteReadme.includes('数据层（左侧）') && remoteReadme.includes('对话层（右侧）'))
 assertTrue('remote README names Frost Edge Node hardware direction explicitly', remoteReadme.includes('Frost Edge Node 硬件方向的商业判断'))
 assertTrue('remote README omits vague hardware direction subject', !remoteReadme.includes('这个硬件方向'))
@@ -564,6 +570,23 @@ assertTrue('remote index description names explicit destinations', remoteIndexHt
 assertTrue('remote index description omits vague pronoun', !remoteIndexHtml.includes(vagueRecordPlace))
 assertTrue('remote public-plaza source names Frost as the actor', remotePublicPlaza.includes('Frost 替你去广场') && remotePublicPlaza.includes('Frost 带出的名片'))
 assertTrue('remote public-plaza source omits vague agent actor', !remotePublicPlaza.includes('它替你去广场') && !remotePublicPlaza.includes('它带出的名片'))
+assertTrue('remote userMarks comment names globe entrance and agent panels', remoteUserMarks.includes('地球入口 ⇄ 各 agent 面板联动的底座'))
+assertTrue('remote mapFocus comment names globe entrance', remoteMapFocus.includes('切到地球入口') && remoteMapFocus.includes('切回地球入口'))
+assertTrue('remote mapMarkers comment names globe entrance', remoteMapMarkers.includes('切回地球入口重新 import'))
+assertTrue('remote space plaza verifier names Agents entrance', remoteVerifySpacePlaza.includes('AGENTS 入口') && remoteVerifySpacePlaza.includes('Agents entry not found'))
+assertTrue('remote plaza verifier names Agents entrance', remoteVerifyPlaza.includes('点 Agents 入口') && remoteVerifyPlaza.includes('Agents entry not found'))
+for (const [label, text, forbidden] of [
+  ['remote README', remoteReadme, 'tab1 ⇄ tab2'],
+  ['remote README', remoteReadme, 'MyMapTab 合并'],
+  ['remote userMarks', remoteUserMarks, 'tab1 地球'],
+  ['remote mapFocus', remoteMapFocus, '地球 tab'],
+  ['remote mapFocus', remoteMapFocus, 'earth tab'],
+  ['remote mapMarkers', remoteMapMarkers, '切回地球 tab'],
+  ['remote space plaza verifier', remoteVerifySpacePlaza, 'Agents tab'],
+  ['remote plaza verifier', remoteVerifyPlaza, 'Agents tab'],
+]) {
+  assertTrue(`${label} omits ambiguous UI wording ${forbidden}`, !text.includes(forbidden))
+}
 for (const [label, text] of [
   ['remote README', remoteReadme],
   ['remote integration guide', remoteIntegration],

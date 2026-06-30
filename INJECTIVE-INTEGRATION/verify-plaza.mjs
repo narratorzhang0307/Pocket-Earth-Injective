@@ -53,9 +53,9 @@ try {
   await page.screenshot({ path: OUT + '/inj_1_earth.png' })
 
   const clickedAgents = await clickText('Agents')
-  console.log('点 Agents tab:', clickedAgents)
-  expect(clickedAgents, 'Agents tab not found')
-  await sleep(3000) // 等 MusicAgentsTab 懒加载完成
+  console.log('点 Agents 入口:', clickedAgents)
+  expect(clickedAgents, 'Agents entry not found')
+  await sleep(3000) // 等 Agents 面板懒加载完成
   await page.screenshot({ path: OUT + '/inj_2_agents.png' })
 
   // 点 public-plaza 卡片的 RUN 按钮（进广场）

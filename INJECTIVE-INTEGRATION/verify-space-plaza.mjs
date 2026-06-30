@@ -1,4 +1,4 @@
-// 无人值守验证空间 Agent 广场：进 AGENTS tab → 点 agent-plaza 入口 → 断言关键文案/链上徽章/筛选器 + 截图 + 抓 console 报错。
+// 无人值守验证空间 Agent 广场：进 AGENTS 入口 → 点 agent-plaza 入口 → 断言关键文案/链上徽章/筛选器 + 截图 + 抓 console 报错。
 // 用法：副本 dev 跑在 5173 → node INJECTIVE-INTEGRATION/verify-space-plaza.mjs
 import puppeteer from 'puppeteer-core'
 const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -36,9 +36,9 @@ try {
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 30000 })
   await sleep(1800)
   const clickedAgents = await clickText('Agents')
-  console.log('点 Agents tab:', clickedAgents)
-  expect(clickedAgents, 'Agents tab not found')
-  await sleep(2600) // 等 MusicAgentsTab 懒加载
+  console.log('点 Agents 入口:', clickedAgents)
+  expect(clickedAgents, 'Agents entry not found')
+  await sleep(2600) // 等 Agents 面板懒加载
   const clickedPlaza = await clickText('空间 agent 广场') || await clickText('agent-plaza')
   console.log('点 agent-plaza 入口:', clickedPlaza)
   expect(clickedPlaza, 'agent-plaza entry not found')
