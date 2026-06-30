@@ -95,7 +95,7 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 
 ### 5.1 最终整合版对照与技术深挖
 
-最终 PPT 的 41 页已经收束成两层 Markdown：根 README 讲清产品主线、链上证据和复验入口；完整逐页索引与工程展开见 [`INJECTIVE-INTEGRATION/README.md`](INJECTIVE-INTEGRATION/README.md#final-ppt-index)。快速核对时按下面这张表看：
+最终 PPT 的 41 页已经收束成两层 Markdown：根 README 讲清产品主线、链上证据和复验入口；完整逐页索引、作者方法来源细项与工程展开见 [`INJECTIVE-INTEGRATION/README.md`](INJECTIVE-INTEGRATION/README.md#final-ppt-index)。快速核对时按下面这张表看：
 
 | PPT 页段 | README 中的技术落点 | 复验入口 |
 |---|---|---|
