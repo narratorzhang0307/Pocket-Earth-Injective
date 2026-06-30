@@ -1,4 +1,4 @@
-// 验证「添加 agent」闭环：进 agent-plaza → 点咖啡地图 INSTALL → 真进 customAgents → 切回 AGENTS tab 可见。
+// 验证「添加 agent」闭环：进 agent-plaza → 点咖啡地图 INSTALL → 真进 customAgents → 切回 AGENTS 入口可见。
 import puppeteer from 'puppeteer-core'
 const CHROME = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const BASE_URL = process.env.PLAZA_BASE_URL || 'http://localhost:5173/?demo'
@@ -33,8 +33,8 @@ try {
   await page.evaluate(() => localStorage.removeItem('pe.customAgents.v1'))
   await sleep(1800)
   const clickedAgents = await clickText('Agents')
-  console.log('点 Agents tab:', clickedAgents)
-  expect(clickedAgents, 'Agents tab not found')
+  console.log('点 Agents 入口:', clickedAgents)
+  expect(clickedAgents, 'Agents entry not found')
   await sleep(2600)
   const clickedPlaza = await clickText('空间 agent 广场')
   console.log('点 PLAZA·agent-plaza:', clickedPlaza)
@@ -75,13 +75,13 @@ try {
   expect(Array.isArray(custom), 'customAgents storage is not an array')
   expect(custom.some((a) => a.name === '咖啡地图'), '咖啡地图 was not installed into customAgents')
   await page.screenshot({ path: '/tmp/plaza_install.png', fullPage: true })
-  // 返回 AGENTS tab（顶部第一个 button = 返回钮）
+  // 返回 AGENTS 入口（顶部第一个 button = 返回钮）
   await page.evaluate(() => { const b = document.querySelector('button'); if (b) b.click() })
   await sleep(1600)
   const txt = await page.evaluate(() => document.body.innerText.replace(/\n{2,}/g, '\n').slice(0, 1400))
   expect(txt.includes('我的 AGENT'), 'custom agent section missing after returning to AGENTS')
   expect(txt.includes('咖啡地图'), 'installed cafe-map missing after returning to AGENTS')
-  console.log('\n=== 切回 AGENTS tab 顶部所见 ===\n' + txt)
+  console.log('\n=== 切回 AGENTS 入口顶部所见 ===\n' + txt)
   await page.screenshot({ path: '/tmp/agents_after.png', fullPage: true })
   expect(errs.length === 0, 'console/page errors:\n' + errs.join('\n'))
   console.log('\n=== pageerror === ✅ 无')

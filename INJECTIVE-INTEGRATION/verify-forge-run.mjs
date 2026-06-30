@@ -23,7 +23,7 @@ try {
     if (btn) btn.click()
   })
   await sleep(1000)
-  await page.evaluate(() => { const b = document.querySelector('button'); if (b) b.click() })  // 返回 AGENTS tab
+  await page.evaluate(() => { const b = document.querySelector('button'); if (b) b.click() })  // 返回 AGENTS 入口
   await sleep(1600)
   // 点「我的 AGENT」区添加来的观鸟地图卡（整卡是 button）
   console.log('点我的 AGENT·观鸟地图:', await clickText('观鸟地图'))

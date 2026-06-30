@@ -1,4 +1,4 @@
-// 空间 Agent 广场（前瞻）—— AGENTS tab 从「功能列表」长成「有边界·有审核·有分发·有支付」的 agent 平台。
+// 空间 Agent 广场（前瞻）—— AGENTS 入口从「功能列表」长成「有边界·有审核·有分发·有支付」的 agent 平台。
 // 每张卡把上架 agent 必须声明的五要素摆出来：① 空间对象 ② 权限 ③ 端/云 ④ Injective 链上身份 ⑤ 是否付费。
 // 真 agent（旅行/音乐/电影/读书/照片）OPEN 直达真运行页（复用 onRun=runSkill），让前瞻广场立刻可信；
 // 前瞻例（观鸟/播客/链上见闻）免费的 INSTALL 只切本地态、不真装载远程代码（PWA 跑第三方代码=安全黑洞），
@@ -96,12 +96,12 @@ function match(a: SpaceAgent, f: Filter): boolean {
 }
 
 export default function AgentPlazaPage({ onBack, onRun }: Props) {
-  // 已装 = 控制台里已有同名 agent（订阅 customAgents，与 AGENTS tab 实时同步）
+  // 已装 = 控制台里已有同名 agent（订阅 customAgents，与 AGENTS 入口实时同步）
   const [installedNames, setInstalledNames] = useState<Set<string>>(() => new Set(getCustomAgents().map((c) => c.name)));
   useEffect(() => subscribeCustomAgents(() => setInstalledNames(new Set(getCustomAgents().map((c) => c.name)))), []);
   const [filter, setFilter] = useState<Filter>('all');
 
-  // 添加 = 过安全闸 installAgent，真的进控制台「我的 AGENT」（切回 AGENTS tab 即可见）
+  // 添加 = 过安全闸 installAgent，真的进控制台「我的 AGENT」（切回 AGENTS 入口即可见）
   const install = (a: SpaceAgent) => {
     const { review } = installAgent(toManifest(a));
     if (!review.ok) console.warn('[plaza] 安装失败：', a.name, review.reasons);   // 防未来改 catalog 触发静默失败

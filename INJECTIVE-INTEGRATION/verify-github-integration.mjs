@@ -125,6 +125,10 @@ const remoteMapFocus = await fetchText(`${rawBase}/src/app/data/mapFocus.ts`)
 const remoteMapMarkers = await fetchText(`${rawBase}/src/app/data/mapMarkers.ts`)
 const remoteVerifySpacePlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-space-plaza.mjs`)
 const remoteVerifyPlaza = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza.mjs`)
+const remoteVerifyPlazaInstall = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-plaza-install.mjs`)
+const remoteVerifyForgeRun = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-forge-run.mjs`)
+const remoteAgentPlazaPage = await fetchText(`${rawBase}/src/app/components/AgentPlazaPage.tsx`)
+const remotePlazaCatalog = await fetchText(`${rawBase}/src/app/lib/plaza/catalog.ts`)
 const remoteVerifyHardware = await fetchText(`${rawBase}/INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs`)
 const remoteIndexHtml = await fetchText(`${rawBase}/index.html`)
 const remoteManifestText = await fetchText(`${rawBase}/public/manifest.webmanifest`)
@@ -587,6 +591,10 @@ assertTrue('remote mapFocus comment names globe entrance', remoteMapFocus.includ
 assertTrue('remote mapMarkers comment names globe entrance', remoteMapMarkers.includes('切回地球入口重新 import'))
 assertTrue('remote space plaza verifier names Agents entrance', remoteVerifySpacePlaza.includes('AGENTS 入口') && remoteVerifySpacePlaza.includes('Agents entry not found'))
 assertTrue('remote plaza verifier names Agents entrance', remoteVerifyPlaza.includes('点 Agents 入口') && remoteVerifyPlaza.includes('Agents entry not found'))
+assertTrue('remote plaza install verifier names Agents entrance', remoteVerifyPlazaInstall.includes('点 Agents 入口') && remoteVerifyPlazaInstall.includes('Agents entry not found'))
+assertTrue('remote forge run verifier names Agents entrance', remoteVerifyForgeRun.includes('返回 AGENTS 入口'))
+assertTrue('remote Agent Plaza source names Agents entrance', remoteAgentPlazaPage.includes('AGENTS 入口') && remoteAgentPlazaPage.includes('切回 AGENTS 入口即可见'))
+assertTrue('remote plaza catalog names Agents entrance', remotePlazaCatalog.includes('进 AGENTS 入口的') && remotePlazaCatalog.includes('点添加即进 AGENTS 入口'))
 for (const [label, text, forbidden] of [
   ['remote README', remoteReadme, 'tab1 ⇄ tab2'],
   ['remote README', remoteReadme, 'MyMapTab 合并'],
@@ -596,6 +604,10 @@ for (const [label, text, forbidden] of [
   ['remote mapMarkers', remoteMapMarkers, '切回地球 tab'],
   ['remote space plaza verifier', remoteVerifySpacePlaza, 'Agents tab'],
   ['remote plaza verifier', remoteVerifyPlaza, 'Agents tab'],
+  ['remote plaza install verifier', remoteVerifyPlazaInstall, 'Agents tab'],
+  ['remote forge run verifier', remoteVerifyForgeRun, 'AGENTS tab'],
+  ['remote Agent Plaza source', remoteAgentPlazaPage, 'AGENTS tab'],
+  ['remote plaza catalog', remotePlazaCatalog, 'AGENTS tab'],
 ]) {
   assertTrue(`${label} omits ambiguous UI wording ${forbidden}`, !text.includes(forbidden))
 }

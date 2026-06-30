@@ -4,7 +4,7 @@ import type { SpaceAgent } from './spaceAgent';
 const INJ_EXPLORER = 'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e';
 
 // 空间 Agent 广场货架。
-// featured = 可「添加」的前瞻 agent（免费的点添加 → installAgent → 进 AGENTS tab 的「我的 AGENT」）；
+// featured = 可「添加」的前瞻 agent（免费的点添加 → installAgent → 进 AGENTS 入口的「我的 AGENT」）；
 // installed = 已上架的真 agent（OPEN 直达真页，让广场不空壳）。
 // runTarget 必须是 MusicAgentsTab 的 RUN_BY_NAME 真实 key（'music-agent' 等）。
 export const SPACE_AGENTS: SpaceAgent[] = [
@@ -30,7 +30,7 @@ export const SPACE_AGENTS: SpaceAgent[] = [
     runtime: 'cloud', onChain: { network: 'injective', label: 'Injective testnet', explorerUrl: INJ_EXPLORER },
     pricing: { model: 'one-time', price: '5 INJ', comingSoon: true }, group: 'featured', reviewed: true,
   },
-  // ——— 精选 · 几个免费 agent（演示「添加」闭环：点添加即进 AGENTS tab）———
+  // ——— 精选 · 几个免费 agent（演示「添加」闭环：点添加即进 AGENTS 入口）———
   {
     id: 'cafe-map', name: '咖啡地图', tagline: '把喝过的咖啡馆钉到它的门牌', publisher: 'Pocket Earth 官方', emoji: '☕', color: '#8a5a2b',
     spaceObject: 'place', permissions: { scopes: ['location'], tools: ['enrich', 'geocode', 'mark_place'] },
