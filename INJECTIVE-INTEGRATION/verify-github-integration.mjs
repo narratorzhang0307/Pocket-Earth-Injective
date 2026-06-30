@@ -146,6 +146,9 @@ assertTrue('remote README names wallet timeline API', remoteReadme.includes('get
 assertTrue('remote README names judge quickstart', remoteReadme.includes('60 秒核验路径') || remoteReadme.includes('JUDGE-QUICKSTART.md'))
 assertTrue('remote README names judge runbook', remoteReadme.includes('judgeRunbook'))
 assertTrue('remote README names public read API manifest', remoteReadme.includes('publicReadApis'))
+assertTrue('remote README puts Frost Edge Node in the one-minute proof ladder', remoteReadme.includes('Frost Edge Node 硬件边界'))
+assertTrue('remote README names hardware proof API in fast proof ladder', remoteReadme.includes('get-hardware-bridge-proof'))
+assertTrue('remote README names hardware market boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.marketBoundary'))
 for (const phrase of [
   '本地空间知识库',
   '把地球作为方法',
