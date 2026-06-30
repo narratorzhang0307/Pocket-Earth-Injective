@@ -68,6 +68,7 @@ for (const snippet of [
   '# Judge Quickstart',
   '60-Second Path',
   'What This Proves',
+  'Agent Plaza Receipt Loop Fast Check',
   'Pocket Earth Roadmap And Safety Boundary Fast Check',
   'Review Package',
   'Public Links',
@@ -135,7 +136,15 @@ for (const snippet of [
   'Profile Confidence',
   'willEmit',
   'Agent Plaza Commercial Path Fast Check',
+  'Agent Plaza Receipt Loop Fast Check',
   'plazaFlow',
+  'manifestReceipt(agentId, manifestHash, publisher, timestamp)',
+  'installReceipt(agentId, manifestHash, userConsentHash, timestamp)',
+  'callReceipt(agentId, runId, capability, resultHash, timestamp)',
+  'reviewReceipt(agentId, ratingBucket, reasonHash, timestamp)',
+  'paymentReceipt(agentId, planOrCallId, settlementRef, timestamp)',
+  'The repository does not claim paid revenue is already settled',
+  'first validate the manifest',
   'readOnly',
   'publicOnly',
   '180s',
@@ -217,6 +226,20 @@ for (const snippet of [
   'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
 ]) {
   assertTrue(`quickstart commercial path fast check explains ${snippet}`, quickstart.includes(snippet))
+}
+for (const snippet of [
+  'Developer publish',
+  'User install',
+  'Agent call',
+  'User review',
+  'Optional payment',
+  'proves a reviewed manifest version',
+  'proves consent to a public manifest',
+  'proves a capability ran without exposing raw input',
+  'proves a bucketed review without publishing long-form text',
+  'stays separate from identity, install, and call receipts',
+]) {
+  assertTrue(`quickstart receipt loop fast check explains ${snippet}`, quickstart.includes(snippet))
 }
 for (const snippet of [
   'Long-term profile, agent registry, and fingerprint cache',

@@ -43,6 +43,20 @@
 | Why does Injective matter here? | `agentId 43-47`, wallet timeline, SocialHandshake, future Profile Checkpoint path | Developer, agent, install, handshake, review, and optional paid receipts need public identity and ordered receipts |
 | What is the market boundary? | `hardwareBridge.marketBoundary`, `get-hardware-bridge-proof`, `PITCH-NOTES.md` | Business center is Agent Plaza; Frost Edge Node is Raspberry Pi / BLE / TTS developer kit and physical experience, not the current revenue pillar |
 
+## Agent Plaza Receipt Loop Fast Check
+
+Use this table when reviewing the business loop from PPT pages 30-32. The repository does not claim paid revenue is already settled; it shows the public receipt slots that make a future Agent Plaza market auditable.
+
+| Receipt slot | Current proof to inspect | Future public receipt |
+|---|---|---|
+| Developer publish | `manifest / schema / permissions`, `reviewManifest`, `toManifest`, DANGER scan | `manifestReceipt(agentId, manifestHash, publisher, timestamp)` proves a reviewed manifest version |
+| User install | `INSTALL -> My Agents -> RUN`, `plazaFlow`, `recordingOrder[].evidenceFocus` | `installReceipt(agentId, manifestHash, userConsentHash, timestamp)` proves consent to a public manifest |
+| Agent call | `willEmit` dry-run, `RunTrace`, `reviewChecklist` | `callReceipt(agentId, runId, capability, resultHash, timestamp)` proves a capability ran without exposing raw input |
+| User review | Profile Confidence L4, SocialHandshake, wallet timeline | `reviewReceipt(agentId, ratingBucket, reasonHash, timestamp)` proves a bucketed review without publishing long-form text |
+| Optional payment | Future subscription / one-time call / platform fee path | `paymentReceipt(agentId, planOrCallId, settlementRef, timestamp)` stays separate from identity, install, and call receipts |
+
+The order matters: first validate the manifest, then prove the install, then prove the call, then attach a review, and only then add an optional payment receipt. This keeps Agent Plaza as the business loop while Injective stays the public identity, version, and receipt layer.
+
 ## Pocket Earth Roadmap And Safety Boundary Fast Check
 
 This path connects the product roadmap to the on-chain roadmap without changing the privacy model:
