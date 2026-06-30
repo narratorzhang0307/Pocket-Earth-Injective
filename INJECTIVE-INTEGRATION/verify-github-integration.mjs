@@ -563,6 +563,7 @@ for (const phrase of [
 ]) {
   assertTrue(`remote demo script keeps PPT story spine ${phrase}`, remoteDemo.includes(phrase))
 }
+assertTrue('remote demo script omits unsupported x402 settlement wording', !remoteDemo.includes('x402'))
 for (const phrase of [
   '商业路径一句话',
   'public-plaza` 只讲链上社交发现',

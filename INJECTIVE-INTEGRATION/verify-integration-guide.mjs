@@ -419,6 +419,7 @@ for (const phrase of [
 ]) {
   assertTrue(`DEMO-SCRIPT keeps PPT story spine: ${phrase}`, demoScript.includes(phrase))
 }
+assertTrue('DEMO-SCRIPT omits unsupported x402 settlement wording', !demoScript.includes('x402'))
 
 console.log('\nDemo handshake proof guard')
 for (const phrase of [

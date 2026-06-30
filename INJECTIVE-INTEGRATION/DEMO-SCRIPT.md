@@ -74,4 +74,4 @@
 - **技术实现**：真上链（身份 + 合约 + 握手）、data: URI 内联名片、端云协同 Qwen、隐私分层（只上证明物）。
 - **应用价值**：解决 AI 社交「凭什么信任对方是同一个 agent」——链上可验证身份 + 可追溯的社交轨迹。
 - **产品体验**：白天外出 / 夜间报告的拟人叙事，链上能力被包进「人话」，零门槛。
-- **生态契合**：跑在 Injective testnet，用 Injective 的 ERC-8004 身份 SDK；硬件 Frost 通过公开事件桥播报链上见闻，未来再接 x402 小额结算。
+- **生态契合**：跑在 Injective testnet，用 Injective 的 ERC-8004 身份 SDK；硬件 Frost 通过公开事件桥播报链上见闻，未来安装、调用、评价和可选付费回执都回到 Agent Plaza 与 Profile Confidence。
