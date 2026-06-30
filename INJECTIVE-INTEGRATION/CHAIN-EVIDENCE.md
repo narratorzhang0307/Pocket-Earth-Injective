@@ -76,7 +76,7 @@ The core smoke path is: `npm run verify:public-proof`, `npm run verify:public-ap
 | P3 Profile Confidence | `handshakeProof`、`registryMintSummary`、`timelineSummary` 和 `reviewChecklist` 已能证明身份连续性、同钱包顺序和公开社交佐证 | 置信度只评估公开画像来源支撑；批量导入、短期快速变脸和随机标签会被降权，不做“人好坏”评分 |
 | P4 Frost Network | `hardwareBridge`、`get-hardware-bridge-proof`、`music_now_playing`、`chain_dispatch`、Pi skill router、Pi adapter `state/tts/display` 和 `roadmapSafetyBoundary` 已证明公开事件可被实体节点消费 | Frost Edge Node 保持 developer-kit / experience layer；设备不签名、不持私钥、不读取原始画像 |
 
-这张表把“空间留在 Pocket Earth，时间由 Injective 见证”落成证据分工：Pocket Earth 负责长期空间记忆和公开画像生成；Injective 负责身份、版本、回执和可选择证明；Frost Edge Node 只把公开事件带回物理空间。`roadmapSafetyBoundary` 进一步把 PPT 第 38-39 页的安全线压成机器可读字段：主动能力只建议不偷改，skill 只走声明式路由，测试网写入必须 `confirm:true`，硬件不签名。
+这张表把“空间留在 Pocket Earth，时间由 Injective 见证”落成证据分工：Pocket Earth 负责长期空间记忆和公开画像生成；Injective 负责身份、版本、回执和可选择证明；Frost Edge Node 只把公开事件带回物理空间。`roadmapSafetyBoundary` 进一步把 PPT 第 38-39 页的安全线压成机器可读字段：`productRoadmap` 对应 P0/P1/P2 产品演进，`chainRoadmap` 对应 NOW/P1/P2/P3/P4 链上信誉网络，`alwaysOn` 固定主动能力只建议不偷改、skill 只走声明式路由、测试网写入必须 `confirm:true`、原始记忆不上链、硬件不签名。
 
 ## IdentityRegistry
 
