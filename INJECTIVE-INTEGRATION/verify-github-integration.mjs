@@ -476,6 +476,18 @@ for (const phrase of [
   assertTrue(`remote judge quickstart keeps profile confidence ${phrase}`, remoteJudge.includes(phrase))
 }
 for (const phrase of [
+  'FROST Chronicle Delivery Fast Check',
+  'Pocket Earth is already openable',
+  'traceable profile history, not a self-introduction',
+  'FROST Chronicle is traceable',
+  'Pocket Earth can be opened now',
+  'GitHub delivery is anchored',
+  'Built on Injective means public witness',
+  'public GitHub repo, Injective testnet evidence, live demo, or read-only API proof',
+]) {
+  assertTrue(`remote judge quickstart keeps delivery close ${phrase}`, remoteJudge.includes(phrase))
+}
+for (const phrase of [
   'Pocket Earth Roadmap And Safety Boundary Fast Check',
   'P0 core / P1 compatibility / P2 self-learning',
   'NOW chain identity and handshake / Profile Checkpoint / Agent Plaza receipts / Profile Confidence / P4 Frost Network',

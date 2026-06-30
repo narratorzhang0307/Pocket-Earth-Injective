@@ -71,6 +71,7 @@ for (const snippet of [
   'Agent Plaza Receipt Loop Fast Check',
   'Pocket Earth Roadmap And Safety Boundary Fast Check',
   'Profile Confidence Fast Check',
+  'FROST Chronicle Delivery Fast Check',
   'Review Package',
   'Public Links',
   'Local Commands',
@@ -179,6 +180,14 @@ for (const snippet of [
   'L4 external corroboration',
   'bulk imports, random tags, short-term profile jumps',
   'provenance, not judgment',
+  'FROST Chronicle Delivery Fast Check',
+  'Pocket Earth is already openable',
+  'traceable profile history, not a self-introduction',
+  'FROST Chronicle is traceable',
+  'Pocket Earth can be opened now',
+  'GitHub delivery is anchored',
+  'Built on Injective means public witness',
+  'personal website links can introduce the creator',
 ]) {
   assertTrue(`quickstart explains ${snippet}`, quickstart.includes(snippet))
 }
@@ -274,6 +283,15 @@ for (const snippet of [
   'do not become a public moral score',
 ]) {
   assertTrue(`quickstart profile confidence fast check explains ${snippet}`, quickstart.includes(snippet))
+}
+for (const snippet of [
+  "Frost's public profile history can be followed from ERC-8004 identity",
+  'The product opens as a browser / PWA demo',
+  'public repository, complete README, demo path, pitch storyline, and source commit',
+  'Injective provides identity, timeline, version, handshake, and future settlement receipts',
+  'public GitHub repo, Injective testnet evidence, live demo, or read-only API proof',
+]) {
+  assertTrue(`quickstart delivery fast check explains ${snippet}`, quickstart.includes(snippet))
 }
 const readingOrder = quickstart.match(/Use this order in the recording[^\n]+/)?.[0] || ''
 assertTrue('quickstart reading order mentions wallet timeline API', readingOrder.includes('wallet timeline API'))

@@ -88,6 +88,19 @@ Use this table when reviewing PPT page 39. Profile Confidence is not a credit sc
 
 The down-weighting rule is also explicit: bulk imports, random tags, short-term profile jumps, and contradictory receipts can lower confidence, but they do not become a public moral score. The goal is provenance, not judgment.
 
+## FROST Chronicle Delivery Fast Check
+
+Use this table when reviewing PPT pages 40-41. The closing claim is that Pocket Earth is already openable and that FROST Chronicle is a traceable profile history, not a self-introduction.
+
+| Closing claim | What to inspect | Expected answer |
+|---|---|---|
+| FROST Chronicle is traceable | `get-chain-evidence`, `registryMintSummary`, `timelineSummary`, `handshakeProof`, `publicReadApis` | Frost's public profile history can be followed from ERC-8004 identity, mint events, wallet chronology, SocialHandshake, and read-only APIs |
+| Pocket Earth can be opened now | Live demo `https://pocketearth.throughtheglass.art/?demo`, `npm run verify:demo`, `npm run verify:duration` | The product opens as a browser / PWA demo, and the recording path remains within `180s` |
+| GitHub delivery is anchored | `reviewEntrypoints`, `deliveryChecklist`, README, `DEMO-SCRIPT.md`, `PITCH-NOTES.md`, `sourceControl` | The public repository, complete README, demo path, pitch storyline, and source commit all point to the same current GitHub delivery |
+| Built on Injective means public witness | `chainId 1439`, `agentId 43-47`, wallet page, SocialHandshake, future Profile Checkpoint and receipt plan | Injective provides identity, timeline, version, handshake, and future settlement receipts; Pocket Earth keeps raw memories off-chain |
+
+The delivery boundary is intentionally narrow: personal website links can introduce the creator, but they do not replace the public GitHub repo, Injective testnet evidence, live demo, or read-only API proof.
+
 ## Review Package
 
 - GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective
