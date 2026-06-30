@@ -360,3 +360,17 @@ PPT 第 36-38 页讲的是产品为什么成立：个人记忆缺一根能把一
 P0/P1 已经完成长期画像、注册表化、fingerprint 缓存、provider 兼容层、端侧预分类、能力契约和 health 追踪；P2 正在把 heartbeat 建议、学习型 skill、安全闸和流式渲染磨稳。链上阶段已经完成 `agentId 43-47`、Blockscout 证明、钱包时间线和 SocialHandshake 真事件；下一步才是 Profile Checkpoint、Agent Plaza 回执和 Profile Confidence。
 
 安全边界保持不变：主动能力只建议不偷改，skill 只走声明式路由不执行任意代码，测试网写链必须服务端私钥、合约地址和 `confirm:true` 同时具备；原始记忆不上链，硬件不签名。
+
+## 15. Pocket Earth 收尾交付：现在能打开，不是纸面方案
+
+PPT 第 40-41 页把整套表达收束成一句话：Pocket Earth 不是再做一个 Web3 身份系统，而是补上 AI Social 里最缺的一层——AI 分身公开画像的来源证明。空间记忆仍在 Pocket Earth，时间顺序和公开回执由 Injective 见证。
+
+| 收尾主张 | GitHub 中的落点 | 复验方式 |
+|---|---|---|
+| Pocket Earth 证明画像来源 | 公开 Taste Passport 来自长期本地空间知识库；`recordHash -> domainRoot -> ProfileRoot -> profileHash` 只描述画像演化，不泄露原文 | `npm run verify:public-proof`、`npm run verify:integration-guide` |
+| Injective 承担公共见证层 | ERC-8004 `agentId 43`、`agentId 43-47`、钱包时间线、SocialHandshake 和未来 Profile Checkpoint 都有公开入口 | `npm run verify:injective`、`npm run verify:wallet` |
+| FROST Chronicle 是可追溯画像史 | 证据包把身份、mint、钱包、握手、publicReadApis、deliveryChecklist 串成一条公开核验路径 | `/api/injective?tool=get-chain-evidence`、`npm run verify:delivery` |
+| 现在能打开 | Live Demo 是 `https://pocketearth.throughtheglass.art/?demo`，手机浏览器可添加到主屏幕；GitHub README、集成说明、录制脚本和 60 秒核验入口都在当前仓库 | `npm run verify:github`、`npm run verify:demo` |
+| 三件交付 | 公开 GitHub + 完整 README、Demo 视频路径、最终 Pitch Deck 主线都映射到本仓库文档；个人站只作为作品入口，不作为链上证据 | `reviewEntrypoints`、`deliveryChecklist`、`JUDGE-QUICKSTART.md` |
+
+这也是 `Built on Injective` 的准确含义：Injective 不替 Pocket Earth 保存人生，也不替 Frost 编造人格；Injective 只提供可公开核对的身份、版本、时间线、握手和未来结算回执。Pocket Earth 负责把世界钉回真实坐标，Injective 负责让 Frost 的公开身份和画像演化经得起复验。

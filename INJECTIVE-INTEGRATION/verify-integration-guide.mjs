@@ -106,6 +106,15 @@ for (const phrase of [
   '619 位艺人',
   '536 张照片',
   '只建议不偷改',
+  'Pocket Earth 收尾交付',
+  'AI 分身公开画像的来源证明',
+  'FROST Chronicle',
+  '现在能打开',
+  '三件交付',
+  'Built on Injective',
+  'pocketearth.throughtheglass.art/?demo',
+  'reviewEntrypoints',
+  'deliveryChecklist',
 ]) {
   assertTrue(`story spine includes ${phrase}`, guide.includes(phrase))
 }
