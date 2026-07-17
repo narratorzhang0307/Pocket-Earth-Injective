@@ -217,3 +217,21 @@ textarea,
 select {
   font-size: 12px;
 }
+
+/* 键盘操作时给出明确的高对比焦点；鼠标/触屏点击不会留下多余描边。 */
+:where(button, a, input, textarea, select):focus-visible {
+  outline: 3px solid #00ff88;
+  outline-offset: 2px;
+}
+
+/* 尊重系统的“减少动态效果”设置，保留状态变化但移除持续晃动与滚动动画。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

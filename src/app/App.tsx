@@ -23,10 +23,24 @@ const MusicAgentsTab = lazyRetry(() => import('./components/MusicAgentsTab'));
 
 type Tab = 'photos' | 'earth' | 'agents';
 
-// chunk 加载时的占位（与 app 同底色，中间一颗呼吸的绿色像素块）
+// chunk 加载时保留品牌与加载语义，避免慢网下出现一块无法判断状态的空白画布。
 const TabFallback = () => (
-  <div className="w-full h-full bg-[#EAEAEA] flex items-center justify-center">
-    <div className="w-3 h-3 bg-[#00ff88] border border-black animate-pulse" />
+  <div
+    className="w-full h-full bg-[#EAEAEA] flex flex-col items-center justify-center gap-5 px-8 text-center"
+    role="status"
+    aria-live="polite"
+    aria-label="Pocket Earth 正在载入"
+  >
+    <div className="relative grid h-16 w-16 place-items-center rounded-full border-[3px] border-black bg-black shadow-[4px_4px_0_#00ff88]">
+      <Globe className="h-8 w-8 text-[#00ff88] animate-pulse" strokeWidth={2.5} aria-hidden="true" />
+      <span className="absolute -right-1 -top-1 h-3 w-3 border-2 border-black bg-[#ff00c8]" />
+    </div>
+    <div>
+      <p className="font-pixel text-[10px] leading-5 tracking-[0.18em] text-black">POCKET EARTH</p>
+      <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-black/60">
+        Loading private + public layers
+      </p>
+    </div>
   </div>
 );
 
@@ -94,39 +108,53 @@ export default function App() {
       <div
         className="absolute bottom-0 left-0 right-0 bg-[#EAEAEA] border-t-2 border-black z-30 pt-2"
         style={{ paddingBottom: standalone ? 'max(20px, env(safe-area-inset-bottom))' : '20px' }}
+        role="navigation"
+        aria-label="Pocket Earth 主导航"
       >
         <div className="flex h-[60px] items-center justify-between px-6">
           <button
+            type="button"
             onClick={() => setActiveTab('photos')}
-            className={`flex flex-col items-center gap-1.5 transition-all w-20 ${
-              activeTab === 'photos' ? 'text-[#00aa55]' : 'text-black/65 hover:text-black'
+            aria-label="打开私人照片与记忆"
+            aria-pressed={activeTab === 'photos'}
+            className={`flex min-h-14 w-20 flex-col items-center justify-center gap-1 border-2 transition-[color,background-color,box-shadow,transform] ${
+              activeTab === 'photos'
+                ? 'border-black bg-white text-[#007b45] shadow-[2px_2px_0_#000] -translate-y-0.5'
+                : 'border-transparent text-black/65 hover:bg-white/60 hover:text-black active:translate-y-0.5'
             }`}
           >
-            <Image className="w-6 h-6" strokeWidth={2.5} />
+            <Image className="w-6 h-6" strokeWidth={2.5} aria-hidden="true" />
             <span className="text-[8px] font-pixel uppercase tracking-widest">Photos</span>
           </button>
 
           <div className="flex flex-col items-center">
             <button
+              type="button"
               onClick={() => setActiveTab('earth')}
+              aria-label="打开地球：私人地图与公共地球"
+              aria-pressed={activeTab === 'earth'}
               className={`w-[60px] h-[60px] rounded-full border-[3px] border-black flex items-center justify-center transition-all bg-black ${
                 activeTab === 'earth'
                   ? 'shadow-[inset_0_0_15px_rgba(0,255,136,0.35)] translate-y-1'
                   : 'shadow-[0_4px_0_#000] hover:-translate-y-0.5 hover:shadow-[0_5px_0_#000] active:translate-y-1 active:shadow-[0_0_0_#000]'
               }`}
-              title="地球"
             >
-              <Globe className="w-7 h-7 text-[#00ff88]" strokeWidth={2.5} />
+              <Globe className="w-7 h-7 text-[#00ff88]" strokeWidth={2.5} aria-hidden="true" />
             </button>
           </div>
 
           <button
+            type="button"
             onClick={() => setActiveTab('agents')}
-            className={`flex flex-col items-center gap-1.5 transition-all w-20 ${
-              activeTab === 'agents' ? 'text-[#00aa55]' : 'text-black/65 hover:text-black'
+            aria-label="打开智能体"
+            aria-pressed={activeTab === 'agents'}
+            className={`flex min-h-14 w-20 flex-col items-center justify-center gap-1 border-2 transition-[color,background-color,box-shadow,transform] ${
+              activeTab === 'agents'
+                ? 'border-black bg-white text-[#007b45] shadow-[2px_2px_0_#000] -translate-y-0.5'
+                : 'border-transparent text-black/65 hover:bg-white/60 hover:text-black active:translate-y-0.5'
             }`}
           >
-            <Sparkles className="w-6 h-6" strokeWidth={2.5} />
+            <Sparkles className="w-6 h-6" strokeWidth={2.5} aria-hidden="true" />
             <span className="text-[8px] font-pixel uppercase tracking-widest">Agents</span>
           </button>
         </div>
