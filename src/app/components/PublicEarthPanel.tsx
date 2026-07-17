@@ -151,7 +151,7 @@ export default function PublicEarthPanel() {
       <div className="flex items-start gap-2">
         <div className="w-9 h-9 border-2 border-black bg-black text-white flex items-center justify-center shrink-0"><Globe2 className="w-5 h-5" strokeWidth={2.2} /></div>
         <div className="min-w-0 flex-1">
-          <div className="font-pixel text-[11px] tracking-wider">PUBLIC EARTH</div>
+          <div className="font-pixel text-[11px] tracking-wider">PUBLIC EARTH · INJECTIVE</div>
           <div className="text-[9px] text-black/50 mt-0.5">口袋地球装记忆 · 公共地球住分身</div>
         </div>
         {data && <span className={`font-pixel text-[7px] border-2 border-black px-1.5 py-1 ${data.live ? 'bg-[#315e4b] text-white' : 'bg-[#e2c26e]'}`}>

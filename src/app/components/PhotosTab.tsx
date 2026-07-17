@@ -30,7 +30,7 @@ export default function PhotosTab() {
     <div className="h-full flex flex-col bg-[#EAEAEA] font-sans relative overflow-hidden">
       {/* 顶栏状态 */}
       <div className="flex justify-center items-center h-[30px] px-4 border-b-2 border-black bg-[#EAEAEA] shrink-0">
-        <div className="font-pixel text-[10.4px] uppercase tracking-widest leading-none">POCKET EARTH</div>
+        <div className="font-pixel text-[9px] uppercase tracking-[0.14em] leading-none">POCKET EARTH ON INJECTIVE</div>
       </div>
 
       {/* 标题 */}

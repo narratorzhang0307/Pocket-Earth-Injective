@@ -570,7 +570,7 @@ export default function MyMapTab(_props: MyMapTabProps) {
     <div className="flex flex-col h-full bg-[#EAEAEA] font-sans relative overflow-hidden">
       {/* Top Bar Status */}
       <div className="flex justify-center items-center h-[30px] px-4 border-b-2 border-black bg-[#EAEAEA]">
-        <div className="font-pixel text-[10.4px] uppercase tracking-widest leading-none">POCKET EARTH</div>
+        <div className="font-pixel text-[9px] uppercase tracking-[0.14em] leading-none">POCKET EARTH ON INJECTIVE</div>
       </div>
 
       {/* Header Area */}
