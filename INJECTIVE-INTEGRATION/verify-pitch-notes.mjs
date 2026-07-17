@@ -127,6 +127,10 @@ for (const snippet of [
   '渲染在端上，内容在包里，指纹在链上',
   '一主题一棵子树、一天一个总根',
   'AI 时代的可验证 RSS',
+  'Frost 不是吉祥物，是产品本身',
+  '统一的方头像素轮廓',
+  '用户主动公开的脱敏标签',
+  '仍是赛后路线',
 ]) {
   assertTrue(`pitch Public Earth story mentions ${snippet}`, pitch.includes(snippet))
 }
