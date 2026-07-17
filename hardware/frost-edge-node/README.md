@@ -44,7 +44,7 @@ FROST_FEED_TOKEN=<token> python3 frost_pocket_consumer.py \
 |---|---|
 | HW-00 基线保护 | DONE（见 docs/hw00-baseline.md；sunset-radio 四个已改文件列入保护名单，未触碰） |
 | HW-01 consumer sidecar | DONE（15/15 冒烟通过，evidence 见 smoke 输出） |
-| HW-02 action→Whisplay 映射 | TODO（`frost_pocket_pi_drivers.py`，只经 sunset-radio 公开本地接口） |
+| HW-02 action→Whisplay 映射 | 代码 DONE（`frost_pocket_pi_drivers.py`，16/16 冒烟通过；display→pi-state 字幕卡 / tts→dialog 门控+marker+pi-tts→espeak 兜底 / state→daemon LED 瞬闪；绝不抢 Whisplay 前台），真机验证 TODO；集成配方见 `docs/sunset-radio-integration-recon.md` |
 | HW-03 Pocket Earth 换皮 | TODO |
 | HW-04 systemd 部署 | 模板 DONE，真机安装 TODO |
 | HW-05 离线/热点降级 | 消费器侧 DONE（--file 重放），Pi 侧 TODO |
