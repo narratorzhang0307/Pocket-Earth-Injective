@@ -39,6 +39,10 @@ try {
   console.log('点 Agents 入口:', clickedAgents)
   expect(clickedAgents, 'Agents entry not found')
   await sleep(2600) // 等 Agents 面板懒加载
+  const clickedPrivateAgents = await clickText('MY AGENTS')
+  console.log('切 MY AGENTS:', clickedPrivateAgents)
+  expect(clickedPrivateAgents, 'MY AGENTS scope not found')
+  await sleep(500)
   const clickedPlaza = await clickText('空间 agent 广场') || await clickText('agent-plaza')
   console.log('点 agent-plaza 入口:', clickedPlaza)
   expect(clickedPlaza, 'agent-plaza entry not found')

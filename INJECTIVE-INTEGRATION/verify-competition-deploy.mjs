@@ -30,7 +30,7 @@ for (const required of ['injective-service.mjs', 'frost-feed-service.mjs', 'know
 assert.ok(files.ecosystem.includes("name: 'pocket-earth-injective'"))
 assert.ok(files.ecosystem.includes("name: 'pocket-earth-injective-knowledge'"))
 assert.ok(files.ecosystem.includes("API_PORT: '3018'"))
-assert.ok(files.ecosystem.includes("KNOWLEDGE_TOPICS: 'ai,finance,science,climate,culture'"))
+assert.ok(files.ecosystem.includes("KNOWLEDGE_TOPICS: 'ai,technology,finance,climate,science,health,culture,policy'"))
 assert.equal(files.runtimePackage.dependencies['@injective/agent-sdk'], 'file:vendor/injective-agent-sdk')
 assert.equal(files.runtimePackage.dependencies.bech32, '2.0.0')
 assert.equal(files.runtimePackage.dependencies.viem, '~2.47.6')

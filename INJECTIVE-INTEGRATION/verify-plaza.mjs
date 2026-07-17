@@ -56,6 +56,10 @@ try {
   console.log('点 Agents 入口:', clickedAgents)
   expect(clickedAgents, 'Agents entry not found')
   await sleep(3000) // 等 Agents 面板懒加载完成
+  const clickedPrivateAgents = await clickText('MY AGENTS')
+  console.log('切 MY AGENTS:', clickedPrivateAgents)
+  expect(clickedPrivateAgents, 'MY AGENTS scope not found')
+  await sleep(500)
   await page.screenshot({ path: OUT + '/inj_2_agents.png' })
 
   // 点 public-plaza 卡片的 RUN 按钮（进广场）
