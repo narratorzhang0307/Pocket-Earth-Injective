@@ -3,7 +3,7 @@ import { handleInjective } from '../injective-service.mjs'
 import { IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID } from './chain-proof-data.mjs'
 import { PUBLIC_EARTH_DEPLOYMENT, publicEarthResidences } from './public-earth-data.mjs'
 
-function callApi() {
+function callApi(tool = 'get-public-earth') {
   return new Promise((resolve, reject) => {
     let statusCode = 0
     let body = ''
@@ -14,7 +14,7 @@ function callApi() {
         try { resolve({ statusCode, payload: JSON.parse(body) }) } catch (error) { reject(error) }
       },
     }
-    handleInjective({ method: 'GET' }, res, new URL('http://localhost/api/injective?tool=get-public-earth'), { network: 'testnet' }).catch(reject)
+    handleInjective({ method: 'GET' }, res, new URL(`http://localhost/api/injective?tool=${tool}`), { network: 'testnet' }).catch(reject)
   })
 }
 
@@ -51,5 +51,12 @@ collectKeys(payload)
 for (const forbidden of ['privateKey', 'INJ_PRIVATE_KEY', 'latitude', 'longitude', 'realAddress', 'price', 'auction']) {
   assert.ok(!payloadKeys.includes(forbidden.toLowerCase()), `public API leaks forbidden field ${forbidden}`)
 }
+
+const evidenceResponse = await callApi('get-chain-evidence')
+assert.equal(evidenceResponse.statusCode, 200)
+assert.equal(evidenceResponse.payload.publicEarth.contractAddress.toLowerCase(), PUBLIC_EARTH_DEPLOYMENT.contractAddress.toLowerCase())
+assert.equal(evidenceResponse.payload.publicEarth.evidenceApi, '/api/injective?tool=get-public-earth')
+assert.equal(evidenceResponse.payload.publicEarth.residences.length, 5)
+assert.equal(evidenceResponse.payload.verification.publicEarthLive, 'npm run verify:public-earth-live')
 
 console.log(`OK get-public-earth returns ${payload.residences.length} live Injective residences with verified public card hashes.`)

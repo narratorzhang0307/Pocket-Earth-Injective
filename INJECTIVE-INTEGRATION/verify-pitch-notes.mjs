@@ -80,6 +80,11 @@ for (const snippet of [
   'public-plaza',
   'Nightly Chain Dispatch',
   'Daily Knowledge Chronicle',
+  'Public Earth',
+  'PublicEarthRegistry',
+  '0xac7cbe6ee92298487d4349b54e2b2c876232ee1b',
+  '/api/injective?tool=get-public-earth',
+  '/api/knowledge?tool=pack&date=2026-07-17',
   'revision 2',
   'Microsoft Foundry',
   'npm run verify:injective',
@@ -107,17 +112,23 @@ assertTrue('hardware bridge README exists', existsSync(resolve('hardware/frost-b
 assertTrue('raspi skill router exists', existsSync(resolve('hardware/frost-buddy/raspi/frost_pi_skill_agent.py')))
 assertTrue('raspi smoke exists', existsSync(resolve('hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py')))
 
-console.log('\nRoadmap boundary anchors')
+console.log('\nPublic Earth product anchors')
 for (const snippet of [
   'FROST 身份卡',
-  'Agent Earth',
-  'AgentEarthRegistry',
+  'Public Earth',
+  '地球为骨、卡为皮',
+  'PE-03-0043',
+  '当前已实现',
   '不是现实地址',
   '不是虚拟土地',
-  '本周只作为 Roadmap，不进入主 Demo',
+  '不设置稀有度',
+  '公共知识的可携带层',
+  'inclusion proof',
 ]) {
-  assertTrue(`pitch roadmap boundary mentions ${snippet}`, pitch.includes(snippet))
+  assertTrue(`pitch Public Earth story mentions ${snippet}`, pitch.includes(snippet))
 }
+assertTrue('pitch no longer calls Public Earth a roadmap', !pitch.includes('本周只作为 Roadmap，不进入主 Demo'))
+assertTrue('chain evidence exposes Public Earth', evidence.publicEarth?.contractAddress?.toLowerCase() === '0xac7cbe6ee92298487d4349b54e2b2c876232ee1b' && evidence.publicEarth?.residences?.length === 5)
 
 console.log('\nDelivery contract wiring')
 assertEqual('verify:pitch script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')

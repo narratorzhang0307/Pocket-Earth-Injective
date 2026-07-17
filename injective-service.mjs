@@ -396,6 +396,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const agentProofApi = '/api/injective?tool=get-agent-proof&agentId=43'
       const walletTimelineApi = '/api/injective?tool=get-wallet-timeline'
       const hardwareBridgeApi = '/api/injective?tool=get-hardware-bridge-proof'
+      const publicEarthApi = '/api/injective?tool=get-public-earth'
       const publicReadApis = [
         {
           key: 'chain-evidence-api',
@@ -406,9 +407,9 @@ export async function handleInjective(req, res, url, cfg = {}) {
           readOnly: true,
           publicOnly: true,
           verification: 'npm run verify:public-proof',
-          purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, hardware bridge, market landscape boundary, roadmap safety boundary, and privacy boundary.',
-          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.serviceBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
-          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'hardware services stay future Agent Plaza receipts', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
+          purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, Public Earth deployment, hardware bridge, and privacy boundary.',
+          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'publicEarth', 'publicEarth.residences', 'hardwareBridge', 'hardwareBridge.piAdapter', 'privacyBoundary'],
+          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'Public Earth contract and five doorplates', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'current GitHub commit anchor'],
         },
         {
           key: 'agent-proof-api',
@@ -497,6 +498,29 @@ export async function handleInjective(req, res, url, cfg = {}) {
         handshakeContract: SOCIAL_HANDSHAKE,
         handshakeScanUrl: scanUrlForAddress(SOCIAL_HANDSHAKE),
         handshakeProof: SOCIAL_HANDSHAKE_PROOF,
+        publicEarth: {
+          contractAddress: PUBLIC_EARTH_DEPLOYMENT.contractAddress,
+          deploymentTransactionHash: PUBLIC_EARTH_DEPLOYMENT.deploymentTransactionHash,
+          contractScanUrl: PUBLIC_EARTH_DEPLOYMENT.contractScanUrl,
+          deploymentScanUrl: PUBLIC_EARTH_DEPLOYMENT.deploymentScanUrl,
+          identityRegistry: IDENTITY_REGISTRY,
+          evidenceApi: publicEarthApi,
+          boundary: PUBLIC_EARTH_DEPLOYMENT.boundary,
+          residences: publicEarthResidences().map((residence) => ({
+            agentId: residence.agentId,
+            zone: residence.zone,
+            doorplate: residence.doorplate,
+            cardHash: residence.cardHash,
+            revision: 1,
+            scanUrl: PUBLIC_EARTH_DEPLOYMENT.residences.find((item) => item.agentId === residence.agentId)?.scanUrl ?? null,
+          })),
+          verification: {
+            contract: 'npm run verify:public-earth-contract',
+            live: 'npm run verify:public-earth-live',
+            api: 'npm run verify:public-earth-api',
+            ui: 'npm run verify:public-earth-ui',
+          },
+        },
         hardwareBridge: HARDWARE_BRIDGE_PROOF,
         marketLandscapeBoundary: MARKET_LANDSCAPE_BOUNDARY,
         roadmapSafetyBoundary: ROADMAP_SAFETY_BOUNDARY,
@@ -575,6 +599,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
               'timelineSummary proves the same owner and successful chain timeline',
               'handshakeProof points to agentA/agentB/score/profileHash event decode and creation/runtime bytecode checks',
               'sourceControl anchors evidence to the current GitHub commit',
+              'publicEarth points to the deployed registry, five doorplates, and card commitments',
             ],
           },
           {
@@ -596,7 +621,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
             evidenceFocus: [
               `builderCode=${BUILDER_CODE} filters agentId 43-47 from Injective`,
               'public data URI cards are returned without private keys',
-              'agent-plaza can install from the same fleet later',
+              'Public Earth resolves the same fleet into symbolic doorplates and identity cards',
             ],
           },
           {
@@ -669,6 +694,11 @@ export async function handleInjective(req, res, url, cfg = {}) {
           listAgentsApi,
           walletTimelineApi,
           hardwareBridgeApi,
+          publicEarthApi,
+          publicEarthContract: 'npm run verify:public-earth-contract',
+          publicEarthLive: 'npm run verify:public-earth-live',
+          publicEarthApiCheck: 'npm run verify:public-earth-api',
+          publicEarthUi: 'npm run verify:public-earth-ui',
         },
       })
     }

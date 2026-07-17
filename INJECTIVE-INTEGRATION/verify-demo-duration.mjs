@@ -57,6 +57,9 @@ assertTrue('chain identity appears in first minute', scriptText.includes('agentI
 assertTrue('wallet evidence appears before product demo', scriptText.includes('钱包页') || scriptText.includes('钱包'))
 assertTrue('public-plaza is in the main product segment', scriptText.includes('public-plaza'))
 assertTrue('globe marker segment is present', scriptText.includes('蓝紫色 agent 标记') || scriptText.includes('钉到地球'))
+assertTrue('Public Earth is a main demo segment', scriptText.includes('公共地球') && scriptText.includes('PE-03-0043'))
+assertTrue('identity card view is shown without game economics', scriptText.includes('身份卡') && scriptText.includes('不设稀有度'))
+assertTrue('downloadable knowledge pack is a main demo segment', scriptText.includes('下载验证包') && scriptText.includes('Merkle'))
 assertTrue('nightly chain dispatch segment is present', scriptText.includes('夜间') && scriptText.includes('链上见闻'))
 assertTrue('privacy proof segment is present', scriptText.includes('隐私') && (demoScript.includes('永不上链') || scriptText.includes('证明物')))
 assertTrue('closing names Frost Chronicle', demoScript.includes('FROST Chronicle') && demoScript.includes('画像演化史'))
@@ -65,6 +68,8 @@ assertTrue('closing names three delivery artifacts', demoScript.includes('公开
 assertTrue('closing defines Built on Injective accurately', demoScript.includes('Built on Injective') && demoScript.includes('Injective 让身份、版次、时间线与握手可以被任何人独立核对'))
 assertTrue('fleet API proof names live chain discovery', demoScript.includes('list-agents&builderCode=pocket-earth&limit=5&top=47') && demoScript.includes('agentId 43–47'))
 assertTrue('knowledge API proof names current daily edition', demoScript.includes('/api/knowledge?tool=today&topic=ai') && demoScript.includes('Chronicle revision 2'))
+assertTrue('Public Earth API proof names current chain residences', demoScript.includes('/api/injective?tool=get-public-earth') && demoScript.includes('Public Earth Registry'))
+assertTrue('knowledge pack API is reproducible', demoScript.includes('/api/knowledge?tool=pack&date=2026-07-17'))
 assertTrue('hardware proof names current public bridge', demoScript.includes('/api/injective?tool=get-hardware-bridge-proof') && demoScript.includes('公开 JSONL 事件'))
 
 const forbidden = ['INJ_PRIVATE_KEY', 'privateKey', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']
