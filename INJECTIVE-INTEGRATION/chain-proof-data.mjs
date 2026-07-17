@@ -3,7 +3,7 @@ export const INJECTIVE_TESTNET_CHAIN_ID = 1439
 
 export const BUILDER_CODE = 'pocket-earth'
 export const INTEGRATION_REPOSITORY_URL = 'https://github.com/narratorzhang0307/Pocket-Earth-Injective'
-export const LIVE_DEMO_URL = 'https://pocketearth.throughtheglass.art/?demo'
+export const LIVE_DEMO_URL = 'https://pocketearth-injective.throughtheglass.art/?demo'
 export const DEMO_VIDEO_URL = 'https://youtu.be/KjmrjTnvVo0'
 export const JUDGE_QUICKSTART_URL = `${INTEGRATION_REPOSITORY_URL}/blob/main/INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md`
 export const HARDWARE_BRIDGE_URL = `${INTEGRATION_REPOSITORY_URL}/tree/main/hardware/frost-buddy`

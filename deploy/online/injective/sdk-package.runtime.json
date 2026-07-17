@@ -1,0 +1,17 @@
+{
+  "name": "@injective/agent-sdk",
+  "version": "0.2.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "bech32": "2.0.0"
+  },
+  "peerDependencies": {
+    "viem": "~2.47.6"
+  }
+}

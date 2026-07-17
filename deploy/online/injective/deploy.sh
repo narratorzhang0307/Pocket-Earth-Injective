@@ -50,7 +50,7 @@ cp \
   "$STAGE/INJECTIVE-INTEGRATION/"
 cp deploy/online/injective/package.runtime.json "$STAGE/package.json"
 cp deploy/online/injective/ecosystem.config.cjs "$STAGE/ecosystem.config.cjs"
-cp INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk/package.json "$STAGE/vendor/injective-agent-sdk/package.json"
+cp deploy/online/injective/sdk-package.runtime.json "$STAGE/vendor/injective-agent-sdk/package.json"
 cp -R INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk/dist "$STAGE/vendor/injective-agent-sdk/dist"
 
 "${SSH[@]}" "$REMOTE" "test -f $APP_DIR/.env"
@@ -62,7 +62,7 @@ fi
 
 echo "==> 上传独立运行包（保留 .env / node_modules / var）..."
 "${SSH[@]}" "$REMOTE" "mkdir -p $APP_DIR"
-rsync -az --delete \
+rsync -az --delete --no-owner --no-group \
   --exclude='.env' \
   --exclude='node_modules/' \
   --exclude='var/' \

@@ -78,7 +78,7 @@ Frost 是产品角色而不是附加吉祥物：App、身份卡、PPT 与 Frost 
 ## Review Package
 
 - GitHub: https://github.com/narratorzhang0307/Pocket-Earth-Injective
-- Live demo: https://pocketearth.throughtheglass.art/?demo
+- Live demo: https://pocketearth-injective.throughtheglass.art/?demo
 - Demo video (`reviewEntrypoints.demo-video`): https://youtu.be/KjmrjTnvVo0
 - Public evidence API: `/api/injective?tool=get-chain-evidence`
 - Public Earth API: `/api/injective?tool=get-public-earth`

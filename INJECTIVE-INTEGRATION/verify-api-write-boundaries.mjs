@@ -45,7 +45,7 @@ const registerPreview = await postInjectiveApi('/api/injective?tool=register', {
     description: 'Dry-run boundary check for Pocket Earth on Injective',
     topTags: ['boundary', 'injective'],
   },
-  services: [{ name: 'MCP', endpoint: 'https://pocketearth.throughtheglass.art' }],
+  services: [{ name: 'MCP', endpoint: 'https://pocketearth-injective.throughtheglass.art' }],
 })
 
 console.log('\n/api register without key or confirm')

@@ -1,6 +1,6 @@
 # Pocket Earth · 口袋地球
 
-## 🌍 在线体验 → **https://pocketearth.throughtheglass.art**
+## 🌍 在线体验 → **https://pocketearth-injective.throughtheglass.art**
 
 公开视频：**https://youtu.be/KjmrjTnvVo0**。如果只想快速判断完整体验，先看视频，再按下面的证据入口复验链上身份、钱包时间线和公开 API。
 
@@ -124,7 +124,7 @@ Pocket Earth 的 Injective 集成按“本地画像 -> 公开名片 -> ERC-8004 
 | PPT 收尾主张 | GitHub 里怎么落地 | 可复验入口 |
 |---|---|---|
 | **FROST Chronicle** | FROST Chronicle 是一条可追溯、可验证、但不暴露隐私的画像演化史；它记录 `profileHash`、版本、时间戳、来源权重和回执，不上传书影音原文、照片、心情或精确坐标 | `ProfileCheckpoint` 路线、`roadmapSafetyBoundary`、`npm run verify:public-proof` |
-| **现在能打开** | 线上产品已经可以打开：`https://pocketearth.throughtheglass.art/?demo`；手机 Safari 可添加到主屏幕，PWA 与云端 Qwen 体验可录屏演示 | 在线体验、`reviewEntrypoints.live-demo`、`npm run verify:delivery` |
+| **现在能打开** | 线上产品已经可以打开：`https://pocketearth-injective.throughtheglass.art/?demo`；手机 Safari 可添加到主屏幕，PWA 与云端 Qwen 体验可录屏演示 | 在线体验、`reviewEntrypoints.live-demo`、`npm run verify:delivery` |
 | **三件交付** | 公开 GitHub + 完整 README、Demo 视频、Pitch Deck 是同一套交付；个人网站 `narratorzhang.com` 只作为作品入口，不承担链上证据 | `reviewEntrypoints.demo-video`、`deliveryChecklist`、`npm run verify:github` |
 | **Built on Injective** | Injective 承担公共身份层、画像版本见证层和未来结算回执层：`agentId 43`、`agentId 43-47`、钱包时间线、SocialHandshake、未来 Agent Plaza 回执都能公开核对 | Blockscout、`get-wallet-timeline`、`get-chain-evidence` |
 
@@ -584,7 +584,7 @@ PEM=/path/to/key.pem REMOTE=root@<服务器IP> ./deploy/online/deploy.sh
 
 ### 4. 在线体验
 
-Pocket Earth 已部署上线：**https://pocketearth.throughtheglass.art**
+Pocket Earth 已部署上线：**https://pocketearth-injective.throughtheglass.art**
 
 HTTP 自动跳 HTTPS、证书自动续期；手机浏览器打开最贴合（430×932 手机框），可「添加到主屏幕」当 PWA 用。云脑（通义 Qwen）实跑；端侧本就跑在真机 / 本机，线上 Web demo 走逐级降级。
 

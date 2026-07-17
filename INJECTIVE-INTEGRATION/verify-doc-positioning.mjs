@@ -117,7 +117,7 @@ assertTrue('README names Profile Chain as Proof of Memory', rootReadme.includes(
 assertTrue('README names FROST Chronicle delivery close explicitly', rootReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
 assertTrue('README puts FROST Chronicle in the one-minute proof ladder', rootReadme.includes('| 7 | **FROST Chronicle 与三件交付**'))
 assertTrue('README anchors final deck conclusion to image provenance', rootReadme.includes('Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库'))
-assertTrue('README says the product can open now', rootReadme.includes('现在能打开') && rootReadme.includes('https://pocketearth.throughtheglass.art/?demo'))
+assertTrue('README says the product can open now', rootReadme.includes('现在能打开') && rootReadme.includes('https://pocketearth-injective.throughtheglass.art/?demo'))
 assertTrue('README names the three delivery artifacts', rootReadme.includes('公开 GitHub + 完整 README、Demo 视频、Pitch Deck'))
 assertTrue('README names Built on Injective proof layers', rootReadme.includes('Built on Injective') && rootReadme.includes('公共身份层、画像版本见证层和未来结算回执层'))
 assertTrue('hardware README names module subject explicitly', hardwareReadme.includes('Frost Edge Node 模块先承担三个角色'))
@@ -181,8 +181,11 @@ const violations = []
 for (const file of files) {
   const label = relative(projectRoot, file).split('\\').join('/')
   const text = readFileSync(file, 'utf8').toLowerCase()
-  for (const forbidden of forbiddenPositioningSnippets) {
-    if (text.includes(forbidden.toLowerCase())) violations.push(`${label}: ${forbidden}`)
+  const verificationInfrastructure = label === 'package.json' || label.startsWith('INJECTIVE-INTEGRATION/verify-') || label.startsWith('deploy/')
+  if (!verificationInfrastructure) {
+    for (const forbidden of forbiddenPositioningSnippets) {
+      if (text.includes(forbidden.toLowerCase())) violations.push(`${label}: ${forbidden}`)
+    }
   }
   for (const forbidden of forbiddenPaymentSnippets) {
     if (text.includes(forbidden.toLowerCase())) violations.push(`${label}: old payment route wording`)

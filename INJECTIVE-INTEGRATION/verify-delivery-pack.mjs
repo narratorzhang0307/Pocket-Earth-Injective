@@ -101,7 +101,7 @@ assertTrue('sourceControl commit is sha or null', evidence.sourceControl?.commit
 
 assertEqual('live demo url', expectedByKey.get('live-demo').url, LIVE_DEMO_URL)
 assertTrue('live demo url includes demo seed', LIVE_DEMO_URL.endsWith('/?demo'))
-assertTrue('live demo url uses Pocket Earth domain', LIVE_DEMO_URL.startsWith('https://pocketearth.throughtheglass.art/'))
+assertTrue('live demo url uses Pocket Earth domain', LIVE_DEMO_URL.startsWith('https://pocketearth-injective.throughtheglass.art/'))
 assertEqual('demo video url', expectedByKey.get('demo-video').url, DEMO_VIDEO_URL)
 assertTrue('demo video url uses youtu.be', DEMO_VIDEO_URL.startsWith('https://youtu.be/'))
 assertEqual('demo video type', expectedByKey.get('demo-video').type, 'video')
@@ -208,7 +208,7 @@ assertTrue('Frost Edge Node service boundary matches receipts', HARDWARE_BRIDGE_
 assertEqual('Frost Edge Node Pi adapter action count', HARDWARE_BRIDGE_PROOF.piAdapter.actions.length, 3)
 assertEqual('Frost Edge Node Pi adapter action contract', HARDWARE_BRIDGE_PROOF.piAdapter.actions.join('/'), 'state/tts/display')
 
-assertTrue('README mentions live demo', readme.includes('https://pocketearth.throughtheglass.art'))
+assertTrue('README mentions live demo', readme.includes('https://pocketearth-injective.throughtheglass.art'))
 assertTrue('README mentions public demo video', readme.includes(DEMO_VIDEO_URL))
 assertTrue('README names Injective core integration', readme.includes('Injective 核心集成'))
 assertTrue('README links judge quickstart', readme.includes('INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md'))

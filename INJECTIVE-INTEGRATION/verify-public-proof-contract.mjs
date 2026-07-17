@@ -483,7 +483,7 @@ console.log('\nPublic URL guard')
 const allowedHosts = new Set([
   'github.com',
   'investors.raspberrypi.com',
-  'pocketearth.throughtheglass.art',
+  'pocketearth-injective.throughtheglass.art',
   'testnet.blockscout.injective.network',
   'youtu.be',
 ])

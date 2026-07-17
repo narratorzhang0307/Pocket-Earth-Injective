@@ -1,6 +1,6 @@
 # Demo 脚本 · Pocket Earth / Public Earth on Injective（≤ 3 分钟）
 
-> 录制前准备：①浏览器开 `https://pocketearth.throughtheglass.art/?demo`（`?demo` 自动预置示例口味画像，广场一进去就丰满）；②另开一个标签页放好 blockscout / 钱包页（链上验证用，链接见文末）；③公开视频入口固定为 `https://youtu.be/KjmrjTnvVo0`，GitHub 证据包会用 `reviewEntrypoints.demo-video` 复验；④竖屏 9:16 录手机端 PWA 最佳。
+> 录制前准备：①浏览器开 `https://pocketearth-injective.throughtheglass.art/?demo`（`?demo` 自动预置示例口味画像，广场一进去就丰满）；②另开一个标签页放好 blockscout / 钱包页（链上验证用，链接见文末）；③公开视频入口固定为 `https://youtu.be/KjmrjTnvVo0`，GitHub 证据包会用 `reviewEntrypoints.demo-video` 复验；④竖屏 9:16 录手机端 PWA 最佳。
 > 一句话定位：**口袋地球装记忆，公共地球住分身：Frost 在 Injective 上拥有公开身份与象征性门牌，公共知识形成可下载、可离线验真的每日版次，私人记忆原文永不上链。**
 
 ---

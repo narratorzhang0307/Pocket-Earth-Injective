@@ -208,7 +208,7 @@ assertTrue('remote README names Profile Chain as Proof of Memory', remoteReadme.
 assertTrue('remote README names FROST Chronicle delivery close', remoteReadme.includes('#### 5.1.1 FROST Chronicle：画像演化史与三件交付'))
 assertTrue('remote README puts FROST Chronicle in the one-minute proof ladder', remoteReadme.includes('| 7 | **FROST Chronicle 与三件交付**'))
 assertTrue('remote README anchors final deck conclusion to image provenance', remoteReadme.includes('Pocket Earth 证明这个 agent 的公开画像来自长期本地知识库'))
-assertTrue('remote README says the product can open now', remoteReadme.includes('现在能打开') && remoteReadme.includes('https://pocketearth.throughtheglass.art/?demo'))
+assertTrue('remote README says the product can open now', remoteReadme.includes('现在能打开') && remoteReadme.includes('https://pocketearth-injective.throughtheglass.art/?demo'))
 assertTrue('remote README names the three delivery artifacts', remoteReadme.includes('公开 GitHub + 完整 README、Demo 视频、Pitch Deck'))
 assertTrue('remote README names Built on Injective proof layers', remoteReadme.includes('Built on Injective') && remoteReadme.includes('公共身份层、画像版本见证层和未来结算回执层'))
 for (const phrase of [
@@ -402,7 +402,7 @@ for (const phrase of [
   '现在能打开',
   '三件交付',
   'Built on Injective',
-  'pocketearth.throughtheglass.art/?demo',
+  'pocketearth-injective.throughtheglass.art/?demo',
   'reviewEntrypoints',
   'deliveryChecklist',
   'public-plaza',

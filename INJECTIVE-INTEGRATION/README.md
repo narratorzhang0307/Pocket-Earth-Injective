@@ -491,7 +491,7 @@ PPT 第 40-41 页把整套表达收束成一句话：Pocket Earth 不是再做�
 | Pocket Earth 证明画像来源 | 公开 Taste Passport 来自长期本地空间知识库；`recordHash -> domainRoot -> ProfileRoot -> profileHash` 只描述画像演化，不泄露原文 | `npm run verify:public-proof`、`npm run verify:integration-guide` |
 | Injective 承担公共见证层 | ERC-8004 `agentId 43`、`agentId 43-47`、钱包时间线、SocialHandshake 和未来 Profile Checkpoint 都有公开入口 | `npm run verify:injective`、`npm run verify:wallet` |
 | FROST Chronicle 是可追溯画像史 | 证据包把身份、mint、钱包、握手、publicReadApis、deliveryChecklist 串成一条公开核验路径 | `/api/injective?tool=get-chain-evidence`、`npm run verify:delivery` |
-| 现在能打开 | Live Demo 是 `https://pocketearth.throughtheglass.art/?demo`，手机浏览器可添加到主屏幕；GitHub README、集成说明、录制脚本和 60 秒核验入口都在当前仓库 | `npm run verify:github`、`npm run verify:demo` |
+| 现在能打开 | Live Demo 是 `https://pocketearth-injective.throughtheglass.art/?demo`，手机浏览器可添加到主屏幕；GitHub README、集成说明、录制脚本和 60 秒核验入口都在当前仓库 | `npm run verify:github`、`npm run verify:demo` |
 | 三件交付 | 公开 GitHub + 完整 README、公开视频 `https://youtu.be/KjmrjTnvVo0`、最终 Pitch Deck 主线都映射到本仓库文档；个人站只作为作品入口，不作为链上证据 | `reviewEntrypoints.demo-video`、`deliveryChecklist.demo-video-script`、`JUDGE-QUICKSTART.md` |
 
 这也是 `Built on Injective` 的准确含义：Injective 不替 Pocket Earth 保存人生，也不替 Frost 编造人格；Injective 只提供可公开核对的身份、版本、时间线、握手和未来结算回执。Pocket Earth 负责把世界钉回真实坐标，Injective 负责让 Frost 的公开身份和画像演化经得起复验。
