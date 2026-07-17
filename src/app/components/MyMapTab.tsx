@@ -92,6 +92,7 @@ function resolveDetail(id: string, kind: MarkerKind, label: string): MarkerDetai
 
 interface MyMapTabProps {
   onViewInAR?: () => void;
+  embedded?: boolean;
 }
 
 // 标定点：固定到西湖周边真实经纬度（WGS84，源自 OpenStreetMap / Wikidata）。
@@ -133,7 +134,7 @@ function centralAngleDeg(a: [number, number], b: [number, number]) {
   return Math.acos(Math.max(-1, Math.min(1, cosc))) / r;
 }
 
-export default function MyMapTab(_props: MyMapTabProps) {
+export default function MyMapTab({ embedded = false }: MyMapTabProps) {
   const annotations = ANNOTATIONS;
 
   const [map, setMap] = useState<mapboxgl.Map | null>(null);
@@ -569,9 +570,11 @@ export default function MyMapTab(_props: MyMapTabProps) {
   return (
     <div className="flex flex-col h-full bg-[#EAEAEA] font-sans relative overflow-hidden">
       {/* Top Bar Status */}
-      <div className="flex justify-center items-center h-[30px] px-4 border-b-2 border-black bg-[#EAEAEA]">
-        <div className="font-pixel text-[9px] uppercase tracking-[0.14em] leading-none">POCKET EARTH ON INJECTIVE</div>
-      </div>
+      {!embedded && (
+        <div className="flex justify-center items-center h-[30px] px-4 border-b-2 border-black bg-[#EAEAEA]">
+          <div className="font-pixel text-[9px] uppercase tracking-[0.14em] leading-none">POCKET EARTH ON INJECTIVE</div>
+        </div>
+      )}
 
       {/* Header Area */}
       <div className="px-4 py-4 border-b-2 border-black bg-white">
