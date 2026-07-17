@@ -42,6 +42,7 @@
     "verify:knowledge-ui": "node INJECTIVE-INTEGRATION/verify-knowledge-ui.mjs",
     "verify:public-earth-contract": "node INJECTIVE-INTEGRATION/verify-public-earth-contract.mjs",
     "verify:public-earth-live": "node INJECTIVE-INTEGRATION/verify-public-earth-live.mjs",
+    "verify:public-earth-api": "node INJECTIVE-INTEGRATION/verify-public-earth-api.mjs",
     "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs"
   },
   "dependencies": {

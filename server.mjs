@@ -46,7 +46,7 @@ const EDGE_WANT = (process.env.EDGE_BACKEND || 'stub').toLowerCase() // 云上�
 // Injective 链上 agent 身份（仅 testnet；私钥服务端 .env 读，绝不进前端 bundle）
 const INJ_PK = process.env.INJ_PRIVATE_KEY || ''
 const INJ_NETWORK = process.env.INJ_NETWORK || 'testnet'
-const INJ_CFG = { privateKey: INJ_PK, network: INJ_NETWORK, pinataJwt: process.env.PINATA_JWT || '', cardUrl: process.env.INJ_CARD_URL || '', handshakeContract: process.env.INJ_HANDSHAKE_CONTRACT || '', rpcUrl: process.env.INJ_RPC_URL || '' }
+const INJ_CFG = { privateKey: INJ_PK, network: INJ_NETWORK, pinataJwt: process.env.PINATA_JWT || '', cardUrl: process.env.INJ_CARD_URL || '', handshakeContract: process.env.INJ_HANDSHAKE_CONTRACT || '', publicEarthContract: process.env.INJ_PUBLIC_EARTH_CONTRACT || '', rpcUrl: process.env.INJ_RPC_URL || '' }
 const FROST_FEED_TOKEN = process.env.FROST_FEED_TOKEN || ''
 const FROST_FEED = createFrostFeed({ token: FROST_FEED_TOKEN, injectiveConfig: INJ_CFG })
 const DAILY_KNOWLEDGE = createDailyKnowledgeService({ env: process.env })

@@ -11,6 +11,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { BUILDER_CODE, INTEGRATION_ALIGNMENT, DEMO_VIDEO_LIMIT_SECONDS, EVIDENCE_PRIVACY_BOUNDARY, FLEET_AGENTS, HARDWARE_BRIDGE_PROOF, IDENTITY_REGISTRY, INJECTIVE_TESTNET_CHAIN_ID, INJECTIVE_TESTNET_RPC, JUDGE_RUNBOOK, MARKET_LANDSCAPE_BOUNDARY, PLAZA_DEMO_FLOW, PROOF_OWNER, REGISTRY_MINT_EVENTS, REGISTRY_MINT_ZERO_ADDRESS, REVIEW_BRIEF, REVIEW_CHECKLIST, REVIEW_LINKS, ROADMAP_SAFETY_BOUNDARY, SOCIAL_HANDSHAKE, SOCIAL_HANDSHAKE_PROOF, DELIVERY_CHECKLIST, REVIEW_ENTRYPOINTS, INTEGRATION_REPOSITORY_URL, TIMELINE_EVENTS, sameAddress, scanUrlForAddress, scanUrlForAgent, scanUrlForRegistry, scanUrlForTx } from './INJECTIVE-INTEGRATION/chain-proof-data.mjs'
+import { PUBLIC_EARTH_DEPLOYMENT, PUBLIC_EARTH_MANIFEST, publicEarthResidences } from './INJECTIVE-INTEGRATION/public-earth-data.mjs'
 
 let _sdk = null, _sdkTried = false
 async function getSDK() {
@@ -126,6 +127,115 @@ function mergeAgentCache(fresh, maxAgeMs = 60000) {
   return [...merged.values()].sort((x, y) => Number(y.agentId) - Number(x.agentId))
 }
 
+let _publicEarthCache = null
+async function getPublicEarthState(cfg, network) {
+  const now = Date.now()
+  if (_publicEarthCache && now - _publicEarthCache.at < 30000) return _publicEarthCache.value
+  const expectedResidences = publicEarthResidences()
+  const contractAddress = cfg.publicEarthContract || PUBLIC_EARTH_DEPLOYMENT.contractAddress
+  const { createPublicClient, defineChain, http, parseAbi } = await import('viem')
+  const abi = parseAbi([
+    'function identityRegistry() view returns (address)',
+    'function residences(uint256 agentId) view returns (uint16 zone, int32 x, int32 y, bytes32 cardHash, uint32 revision, uint64 updatedAt)',
+  ])
+  const rpcCandidates = [...new Set([
+    cfg.rpcUrl,
+    INJECTIVE_TESTNET_RPC,
+    'https://k8s.testnet.json-rpc.injective.network/',
+  ].filter(Boolean))]
+  let liveState = null
+  let lastError = null
+  for (const rpcUrl of rpcCandidates) {
+    try {
+      const chain = defineChain({
+        id: network === 'mainnet' ? 1776 : INJECTIVE_TESTNET_CHAIN_ID,
+        name: network === 'mainnet' ? 'Injective' : 'Injective EVM Testnet',
+        nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 },
+        rpcUrls: { default: { http: [rpcUrl] } },
+        testnet: network !== 'mainnet',
+      })
+      const client = createPublicClient({ chain, transport: http(rpcUrl) })
+      const [identityRegistry, states] = await Promise.all([
+        client.readContract({ address: contractAddress, abi, functionName: 'identityRegistry' }),
+        Promise.all(expectedResidences.map((item) => client.readContract({
+          address: contractAddress,
+          abi,
+          functionName: 'residences',
+          args: [BigInt(item.agentId)],
+        }))),
+      ])
+      if (!sameAddress(identityRegistry, IDENTITY_REGISTRY)) throw new Error('public_earth_identity_registry_mismatch')
+      liveState = { states, rpcUrl }
+      break
+    } catch (error) { lastError = error }
+  }
+
+  const residences = expectedResidences.map((expected, index) => {
+    const proof = PUBLIC_EARTH_DEPLOYMENT.residences.find((item) => item.agentId === expected.agentId)
+    const state = liveState?.states[index]
+    const chainState = state ? {
+      zone: Number(state[0]),
+      x: Number(state[1]),
+      y: Number(state[2]),
+      cardHash: state[3],
+      revision: Number(state[4]),
+      updatedAt: Number(state[5]),
+    } : {
+      zone: proof.zone,
+      x: proof.x,
+      y: proof.y,
+      cardHash: proof.cardHash,
+      revision: 1,
+      updatedAt: null,
+    }
+    return {
+      agentId: expected.agentId,
+      displayName: expected.displayName,
+      doorplate: expected.doorplate,
+      publicTraits: expected.publicTraits,
+      cardVersion: expected.cardVersion,
+      zone: chainState.zone,
+      zoneInfo: PUBLIC_EARTH_MANIFEST.zones.find((zone) => zone.id === chainState.zone),
+      x: chainState.x,
+      y: chainState.y,
+      cardHash: chainState.cardHash,
+      expectedCardHash: expected.cardHash,
+      cardHashMatches: normalizeBytes32(chainState.cardHash) === normalizeBytes32(expected.cardHash),
+      revision: chainState.revision,
+      updatedAt: chainState.updatedAt,
+      identityScanUrl: scanUrlForAgent(expected.agentId),
+      residenceTransactionHash: proof.transactionHash,
+      residenceScanUrl: proof.scanUrl,
+    }
+  })
+  const value = {
+    ok: true,
+    network,
+    chainId: network === 'mainnet' ? 1776 : INJECTIVE_TESTNET_CHAIN_ID,
+    readOnly: true,
+    publicOnly: true,
+    live: !!liveState,
+    evidenceSource: liveState ? 'injective-rpc' : 'committed-injective-public-proof',
+    ...(liveState ? { rpcUrl: liveState.rpcUrl } : { liveReadError: String(lastError?.message || 'rpc_unavailable') }),
+    contract: {
+      address: contractAddress,
+      identityRegistry: IDENTITY_REGISTRY,
+      deploymentTransactionHash: PUBLIC_EARTH_DEPLOYMENT.deploymentTransactionHash,
+      deploymentScanUrl: PUBLIC_EARTH_DEPLOYMENT.deploymentScanUrl,
+      scanUrl: PUBLIC_EARTH_DEPLOYMENT.contractScanUrl,
+    },
+    boundary: PUBLIC_EARTH_DEPLOYMENT.boundary,
+    zones: PUBLIC_EARTH_MANIFEST.zones,
+    residences,
+    verification: {
+      contract: 'npm run verify:public-earth-contract',
+      live: 'npm run verify:public-earth-live',
+    },
+  }
+  _publicEarthCache = { at: now, value }
+  return value
+}
+
 /** /api/injective 分发。cfg = { privateKey, network, pinataJwt, cardUrl }（来自 server.mjs 的 env）。 */
 export async function handleInjective(req, res, url, cfg = {}) {
   const tool = url.searchParams.get('tool') || ''
@@ -186,6 +296,11 @@ export async function handleInjective(req, res, url, cfg = {}) {
       if (builderCodeFilter) agents = agents.filter((a) => String(a?.builderCode || '').toLowerCase() === builderCodeFilter)
       agents = agents.slice(0, limit)
       return json(res, { agents, total: agents.length, offset, limit, ...(builderCodeFilter ? { builderCode: builderCodeFilter } : {}), sdk: true })
+    }
+
+    // —— 只读：公共地球空间身份（链上门牌 + 公开卡面哈希；无需私钥）——
+    if (tool === 'get-public-earth') {
+      return json(res, await getPublicEarthState(cfg, network))
     }
 
     // —— 只读：查单个 agent 状态 ——

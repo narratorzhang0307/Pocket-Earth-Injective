@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { keccak256, stringToHex } from 'viem'
 
 export const PUBLIC_EARTH_MANIFEST = JSON.parse(readFileSync(new URL('./public-earth-manifest.json', import.meta.url), 'utf8'))
+export const PUBLIC_EARTH_DEPLOYMENT = JSON.parse(readFileSync(new URL('./public-earth-deployment.json', import.meta.url), 'utf8'))
 
 export function buildPublicEarthCard(residence) {
   return {
