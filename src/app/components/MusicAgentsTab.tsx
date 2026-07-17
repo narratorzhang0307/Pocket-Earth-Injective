@@ -14,6 +14,7 @@ import OnDeviceBrainPanel from './OnDeviceBrainPanel';
 import AgentForgePage from './AgentForgePage';
 import AgentPlazaPage from './AgentPlazaPage';
 import UniversalCaptureRunPage from './UniversalCaptureRunPage';
+import DailyKnowledgePage from './DailyKnowledgePage';
 import { getCustomAgents, subscribeCustomAgents, type AgentManifest } from '../lib/agent';
 import { getLearnedSkills, subscribeSkills, type LearnedSkill } from '../../../frost-agent/harness/skillForge';
 import { startHeartbeat } from '../../../frost-agent/harness/heartbeat';
@@ -35,6 +36,7 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
       { name: 'photos-agent', role: '端侧整理相册，高价值照片钉地球', status: '契约就位' },
       { name: 'travel-agent', role: '按喜好端侧规划行程，完成即钉地球', status: '契约就位' },
       { name: 'jot-agent', role: '一句话/截图 → frost 判书·影·行程·心情 → 钉到对应图层；记心情还能回望', status: '可运行' },
+      { name: 'daily-knowledge', role: '筛选 AI / 金融知识，核验来源并生成 Injective 每日知识版次', status: '可运行' },
     ],
   },
   {
@@ -49,18 +51,19 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
     sub: 'agent 广场 · 前瞻',
     items: [
       { name: 'public-plaza', role: '代理社交：带画像去公共广场遇见口味相近的人、链上握手，夜里回来报告', status: '可运行' },
-      { name: 'agent-plaza', role: '空间 agent 广场：装免费 / 付费 agent，开发者按五要素发布，可链上交易', status: '可运行' },
+      { name: 'agent-plaza', role: '空间 agent 广场：创建、发布、审核并安装符合空间逻辑的 agent', status: '可运行' },
     ],
   },
 ];
 
 
-type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | null;
+type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | 'knowledge' | null;
 const RUN_BY_NAME: Record<string, Running> = {
   'music-agent': 'music', 'movies-agent': 'movies',
   'books-agent': 'books', 'photos-agent': 'photos', 'travel-agent': 'travel',
   'council-room': 'council', 'jot-agent': 'jot',
   'public-plaza': 'plaza', 'agent-plaza': 'spaceplaza',
+  'daily-knowledge': 'knowledge',
 };
 // FROST 总 agent 可直达的「非 agent」hero 入口（不计入上面 AGENTS 计数）：造物主 AGENT-FORGE。
 // 让 FROST 的快捷入口能像调子 agent 一样把活派给它（route A：显式委派）。
@@ -91,6 +94,7 @@ export default function MusicAgentsTab() {
   if (running === 'agentforge') return <AgentForgePage onBack={() => { setRunning(null); setForgeRunId(undefined); }} initialRunId={forgeRunId} />;
   if (running === 'spaceplaza') return <AgentPlazaPage onBack={() => setRunning(null)} onRun={runSkill} />;
   if (running === 'jot') return <UniversalCaptureRunPage onBack={() => setRunning(null)} />;
+  if (running === 'knowledge') return <DailyKnowledgePage onBack={() => setRunning(null)} />;
 
   return (
     <div className="h-full flex flex-col bg-[#EAEAEA] font-sans">

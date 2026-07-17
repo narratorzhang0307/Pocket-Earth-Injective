@@ -5,9 +5,9 @@
 import type { AgentTool, AgentManifest, GeoStrategy } from '../agent/manifest';
 
 /** ① 空间对象（审核闸：必须能落到地球某类对象上 = 符合空间逻辑，杂七杂八的 agent 进不来） */
-export type SpaceObjectKind = 'sighting' | 'place' | 'route' | 'event' | 'media' | 'onchain';
+export type SpaceObjectKind = 'sighting' | 'place' | 'route' | 'event' | 'media' | 'knowledge' | 'onchain';
 export const SPACE_OBJECT_LABEL: Record<SpaceObjectKind, string> = {
-  sighting: '观测点', place: '地点', route: '路线', event: '事件', media: '媒介落点', onchain: '链上对象',
+  sighting: '观测点', place: '地点', route: '路线', event: '事件', media: '媒介落点', knowledge: '知识版次', onchain: '链上对象',
 };
 
 /** ② 权限 = 用户看得懂的数据访问域（与 manifest 的物理 tools 白名单分两栏并存，最小授权） */
@@ -62,7 +62,7 @@ export function pricingLabel(p: Pricing): { text: string; paid: boolean } {
 // 空间对象 → 落点策略（复用 manifest 的 GeoStrategy 枚举），安装后让 agent 知道往哪钉。
 const GEO_BY_OBJECT: Record<SpaceObjectKind, GeoStrategy[]> = {
   sighting: ['visited'], place: ['origin', 'story'], route: ['visited'],
-  event: ['story'], media: ['story', 'made'], onchain: ['manual'],
+  event: ['story'], media: ['story', 'made'], knowledge: ['manual'], onchain: ['manual'],
 };
 
 /** 把广场 agent 转成可安装的声明式 manifest（喂给 lib/agent 的 installAgent 过安全闸）。

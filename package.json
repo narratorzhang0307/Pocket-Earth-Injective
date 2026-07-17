@@ -32,7 +32,14 @@
     "verify:delivery": "node INJECTIVE-INTEGRATION/verify-delivery-pack.mjs",
     "verify:injective": "node INJECTIVE-INTEGRATION/verify-chain-proof.mjs",
     "verify:hardware": "node INJECTIVE-INTEGRATION/verify-hardware-bridge.mjs",
-    "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs"
+    "verify:plaza": "node INJECTIVE-INTEGRATION/verify-plaza-suite.mjs",
+    "verify:frost-feed": "node INJECTIVE-INTEGRATION/verify-frost-feed.mjs",
+    "verify:foundry-provider": "node INJECTIVE-INTEGRATION/verify-foundry-provider.mjs",
+    "verify:chronicle-kernel": "node INJECTIVE-INTEGRATION/verify-chronicle-kernel.mjs",
+    "verify:knowledge-api": "node INJECTIVE-INTEGRATION/verify-knowledge-api.mjs",
+    "verify:chronicle-contract": "node INJECTIVE-INTEGRATION/verify-chronicle-contract.mjs",
+    "verify:chronicle-live": "node INJECTIVE-INTEGRATION/verify-chronicle-live.mjs",
+    "verify:knowledge-ui": "node INJECTIVE-INTEGRATION/verify-knowledge-ui.mjs"
   },
   "dependencies": {
     "@injective/agent-sdk": "file:INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk",

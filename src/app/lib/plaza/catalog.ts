@@ -2,6 +2,7 @@ import type { SpaceAgent } from './spaceAgent';
 
 // 「链上见闻 agent」的链上身份指向 Injective testnet 上真实部署的 ERC-8004 IdentityRegistry（blockscout 可查，非示意）。
 const INJ_EXPLORER = 'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e';
+const CHRONICLE_EXPLORER = 'https://testnet.blockscout.injective.network/address/0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25';
 
 // 空间 Agent 广场货架。
 // featured = 可「添加」的前瞻 agent（免费的点添加 → installAgent → 进 AGENTS 入口的「我的 AGENT」）；
@@ -9,6 +10,12 @@ const INJ_EXPLORER = 'https://testnet.blockscout.injective.network/token/0x8004A
 // runTarget 必须是 MusicAgentsTab 的 RUN_BY_NAME 真实 key（'music-agent' 等）。
 export const SPACE_AGENTS: SpaceAgent[] = [
   // ——— 精选 · 口播点名的前瞻例 ———
+  {
+    id: 'daily-knowledge', name: '每日知识策展', tagline: '筛选 AI / 金融知识 → 核验来源 → 生成每日可验证版次', publisher: 'Pocket Earth 官方', emoji: '◈', color: '#2357d9',
+    spaceObject: 'knowledge', permissions: { scopes: ['network'], tools: ['enrich'] },
+    runtime: 'cloud', onChain: { network: 'injective', label: 'Injective testnet', explorerUrl: CHRONICLE_EXPLORER },
+    pricing: { model: 'free' }, group: 'featured', reviewed: true, runTarget: 'daily-knowledge',
+  },
   {
     id: 'birding-map', name: '观鸟地图', tagline: '拍鸟照本机识种 → 钉到观测坐标', publisher: 'Pocket Earth 官方', emoji: '🐦', color: '#2e8b57',
     spaceObject: 'sighting', permissions: { scopes: ['location', 'photos'], tools: ['edge_tag', 'geocode', 'mark_place'] },
