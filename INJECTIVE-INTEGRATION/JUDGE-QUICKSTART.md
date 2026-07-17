@@ -1,180 +1,100 @@
 # Judge Quickstart · Pocket Earth on Injective
 
-> One-page review path. Everything here is public, read-only, and testnet-scoped; no secrets or raw Pocket Earth profile data are needed.
+> 一页、只读、测试网范围的核验路径。无需任何密钥，也不读取 Pocket Earth 私人记忆。
 
 ## 60-Second Path
 
-1. Open Frost main identity `agentId 43`: https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
-2. Open the owner wallet timeline: https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934
-3. Read the public evidence API: `/api/injective?tool=get-chain-evidence`, especially `judgeRunbook`, `publicReadApis[].judgeFocus`, `publicReadApis[].expectedFields`, `hardwareBridge`, `hardwareBridge.serviceBoundary`, `hardwareBridge.roadmapBoundary`, `marketLandscapeBoundary`, `commercialFlywheel`, `preferredPath`, `rejectedPaths`, `roadmapSafetyBoundary`, `reviewEntrypoints.hardware-bridge-api`, `reviewEntrypoints.hardware-bridge`, `deliveryChecklist.frost-edge-node`, `agents[].proofApi`, `registryMintEvents`, `registryMintSummary`, the wallet `timeline` `from` / `expectedStatus` fields, `timelineSummary`, `handshakeProof`, `recordingOrder[].evidenceFocus`, and the `registry-mint-events` checklist item
-4. Open the single-agent proof card: `/api/injective?tool=get-agent-proof&agentId=43`
-5. Read the builder-scoped fleet: `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`. Start from the top-level `sdk`, `total`, `offset`, `limit`; then inspect each `agents[]` row for `owner`, `wallet`, `identityTuple`, `builderCode`. For `agentId 44-47`, the attached public data URI card fields should include `card.tags` and `card.metadata.builderCode`, without raw private profile text.
-6. Read the RPC-backed wallet timeline: `/api/injective?tool=get-wallet-timeline`, starting from its `summary` and `chainId 1439`
-7. Open the Frost Edge Node proof card: `/api/injective?tool=get-hardware-bridge-proof`, starting from `hardwareBridge.chainDispatch`, `piRouter.skills`, `piAdapter.actions`, `hardwareBridge.marketBoundary`, `hardwareBridge.serviceBoundary`, `hardwareBridge.roadmapBoundary`, and `privacyBoundary.hardware`
-8. Check the API `sourceControl` field: it should point to the public GitHub repo, `main`, and the current commit URL.
-9. Check the ERC-8004 mint events locally: `npm run verify:registry`
-10. Check the real SocialHandshake event locally: `npm run verify:handshake`. This decodes the real transaction and confirms `agentA/agentB/score/profileHash` without reading private profile text.
-11. Check the SocialHandshake contract bytecode locally: `npm run verify:handshake-contract`. This verifies the deploy address, creation/runtime bytecode, and local Solidity source consistency.
-12. Run the local smoke: `npm run verify:judge && npm run verify:wallet && npm run verify:public-apis && npm run verify:integration-guide && npm run verify:positioning && npm run verify:source && npm run verify:registry && npm run verify:agent-proof && npm run verify:handshake && npm run verify:handshake-contract && npm run verify:hardware && npm run verify:demo`
+1. 打开 Frost 主身份 `agentId 43`：https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43
+2. 打开 Daily Knowledge Chronicle 合约： https://testnet.blockscout.injective.network/address/0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25
+3. 打开 2026-07-17 revision 2 交易： https://testnet.blockscout.injective.network/tx/0x19364a91b7adb1a8eb8daace6fe644d3a901b5a18a575d954c641de7bdf296c7
+4. 读取今日知识：`/api/knowledge?tool=today&topic=ai`，从 `records[0].commitment.recordHash` 进入 `/api/knowledge?tool=proof&recordHash=...`。
+5. 读取 Frost 身份证据：`/api/injective?tool=get-agent-proof&agentId=43`；读取完整 fleet：`/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47`。
+6. 读取硬件事件证明：`/api/injective?tool=get-hardware-bridge-proof`；软件 feed 使用 `GET /api/frost-feed?limit=1&after=<cursor>`，并要求 Bearer token。
+7. 查看仓库与当前 `main`：https://github.com/narratorzhang0307/Pocket-Earth-Injective
 
 ## What This Proves
 
-- `agentId 43-47` are Pocket Earth Frost identities on Injective testnet with `builderCode = pocket-earth`.
-- `judgeRunbook` embeds the same 60-second path in the product API: identity page, owner wallet, evidence API, public read API suite, and `npm run verify:demo`.
-- Each `agents[]` row in the public evidence API now includes a `proofApi`; `npm run verify:agent-proof` opens those single-agent cards for `agentId 43-47`.
-- The builder-scoped fleet API proves the same identities can be read back by `builderCode=pocket-earth`: top-level `sdk`, `total`, `offset`, `limit` confirm the query shape; `agents[]` exposes `owner`, `wallet`, `identityTuple`, `builderCode`; `agentId 44-47` expose only `card.tags` and `card.metadata.builderCode` as public data URI card fields.
-- The same `agentId 43-47` identities are backed by ERC-8004 Registry `Transfer(0x0 -> owner, tokenId)` mint events, and `registryMintSummary` condenses the agentId range, same-owner check, zero-address mint check, first/last block, and `npm run verify:registry` command.
-- ERC-8004 `agentId 43` belongs to wallet `0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934`.
-- The public evidence `timeline` shows the same wallet as transaction `from` and `expectedStatus: success`; `timelineSummary` condenses the owner, event count, first/last blocks, first/last timestamps, and RPC verification path before the wallet timeline rechecks receipts and blocks. The wallet timeline also returns `chainId 1439` plus its own `summary` so reviewers can confirm the Injective testnet, event count, all-succeeded status, and first/last block/time before reading every event row.
-- `handshakeProof` summarizes the real `agentId 43 <-> 44` SocialHandshake transaction with score `88`, contract/transaction Blockscout links, timestamp, block number, public commitment policy, and the local verifier command.
-- `npm run verify:handshake` decodes the real SocialHandshake event and checks `agentA/agentB/score/profileHash`; `npm run verify:handshake-contract` checks the deployed address plus creation/runtime bytecode against the local Solidity source.
-- `recordingOrder[].evidenceFocus` names the exact proof to look for at each recording step: owner, single-agent proof/source anchor, `builderCode=pocket-earth`, Registry mint summary, wallet timeline, real SocialHandshake `agentA/agentB/score/profileHash` decode, SocialHandshake `creation/runtime bytecode` check, a standalone Frost Edge Node hardware proof API, and then the public-plaza / agent-plaza smoke.
-- `roadmapSafetyBoundary` makes the roadmap reviewable from the same API: P2 self-learning is suggest-only, learned skills are declarative routes, testnet writes require `confirm:true`, raw memories never go on-chain, and Frost Edge Node hardware never signs wallets.
-- `SocialHandshake` records a real `agentId 43 <-> 44` handshake with score `88` and public commitments.
-- `public-plaza` is the chain social discovery loop; `agent-plaza` is the marketplace/install loop.
-- Agent Plaza is the commercial path boundary: developers publish `manifest / schema / permissions`, Pocket Earth runs `reviewManifest` and `toManifest`, users install with `INSTALL -> My Agents -> RUN`, and future install / call / review / optional paid receipts can flow back into Profile Confidence. This keeps `public-plaza` as chain discovery, `agent-plaza` as installable agent market, and Frost Edge Node as a developer-kit / experience layer rather than the revenue pillar.
-- `marketLandscapeBoundary` is the machine-readable field for the same market thesis: `commercialFlywheel` keeps Long-term use -> trusted profile -> Agent Plaza market visible, `preferredPath` fixes `Agent Plaza platform path`, and `rejectedPaths` states that Pure social monetization is not the core path, Token-first is not the product strategy, and Hardware revenue first is not the current strategy.
-- `reviewEntrypoints.hardware-bridge-api` opens `/api/injective?tool=get-hardware-bridge-proof`, `reviewEntrypoints.hardware-bridge` points to `hardware/frost-buddy/`, and `deliveryChecklist.frost-edge-node` keeps the Raspberry Pi / BLE / TTS bridge reviewable as a privacy-bounded prototype. `hardwareBridge.marketBoundary` keeps Frost Edge Node framed as a prototype and developer-kit endpoint rather than a hardware revenue projection, `hardwareBridge.serviceBoundary` routes any future hardware-node service monetization into `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)` and Agent Plaza service receipts, while `hardwareBridge.roadmapBoundary` keeps BLE/TTS/display drivers optional after the public action contract. `npm run verify:hardware` checks `music_now_playing`, Injective `chain_dispatch`, the Pi skill router, the Pi event adapter's `state/tts/display` actions, and the no-private-key/no-raw-profile boundary.
-- `npm run verify:integration-guide` checks that the integration guide's API table, runbook order, npm script mappings, and README first-minute evidence guide still match the product API.
-- `npm run verify:positioning` checks that README, integration docs, key service code, app source, hardware bridge, docs, and frost-agent files keep the Injective core-integration framing.
-- The evidence API is `readOnly` and `publicOnly`; its `publicReadApis` manifest lists the five judge-safe GET endpoints (`get-chain-evidence`, `get-agent-proof`, `list-agents`, `get-wallet-timeline`, `get-hardware-bridge-proof`) with `chainId 1439`, matching public-only flags, `judgeFocus`, `expectedFields`, and local verification commands. `npm run verify:public-apis` opens all five endpoints through the product API and checks the manifest, source anchor, single-agent proof card, fleet, wallet timeline, hardware bridge proof, reviewer guidance, and public-only leak guard. Raw books, films, music, photos, moods, precise locations, and secret keys stay off-chain.
+- `agentId 43-47` 是 Injective testnet 上可公开核验的 Pocket Earth Frost 身份，`builderCode=pocket-earth`。
+- IdentityRegistry 身份可以转让；Pocket Earth 只把它描述为持久、公开可验证、可审计的 Agent 身份，不把身份转让等同于信誉继承。
+- `DailyKnowledgeChronicle` 是实际部署的 Injective EVM 智能合约；同一天的知识版次已经从 revision 1 演进到 revision 2，旧 root 作为 `previousEditionRoot` 保留。
+- Daily Knowledge Curator 的 AI 与金融卡保存官方来源、verdict、truthScore、recordHash 和 Merkle proof；OFFLINE 卡明确标成策展样例。
+- Agent Forge/Plaza 已形成“创建—审核—发布—安装—运行”的产品闭环，并用空间对象、最小权限、端/云位置、链上身份约束上架范围。
+- Frost Edge Node 只消费 `music_now_playing` 与 `chain_dispatch` 公开 JSONL 事件；设备动作限制为 `state`、`tts`、`display`，不持私钥、不签钱包、不读取私人画像原文或精确坐标。
+- Microsoft Foundry Model Router 适配器已进入统一 provider 层；是否在台上表述为真实接入，只取决于 `verify:foundry-provider` 是否拥有真实成功响应。
 
-## Agent Plaza Commercial Path Fast Check
+## Injective Proof Matrix
 
-| Question | What to inspect | Expected answer |
+| 证明 | 公开入口 | 本地守门 |
 |---|---|---|
-| Is social discovery separated from the market? | `public-plaza` and `agent-plaza` in the app, plus `plazaFlow` in `/api/injective?tool=get-chain-evidence` | `public-plaza` reads chain identities and SocialHandshake context; `agent-plaza` handles manifest review, installation, and My Agents return path |
-| Is the install loop real enough to show? | `manifest / schema / permissions`, `reviewManifest`, `toManifest`, `INSTALL -> My Agents -> RUN` | A free example agent can be reviewed, installed, shown in My Agents, and run; without key-backed confirmation it stays a `willEmit` dry-run |
-| Why does Injective matter here? | `agentId 43-47`, wallet timeline, SocialHandshake, future Profile Checkpoint path | Developer, agent, install, handshake, review, and optional paid receipts need public identity and ordered receipts |
-| What is the market boundary? | `hardwareBridge.marketBoundary`, `hardwareBridge.serviceBoundary`, `get-hardware-bridge-proof`, `PITCH-NOTES.md` | Business center is Agent Plaza; Frost Edge Node is Raspberry Pi / BLE / TTS developer kit and physical experience, not the current revenue pillar; future hardware node services stay Agent Plaza service receipts |
+| Frost #43 身份 | `get-agent-proof&agentId=43` + Blockscout instance | `npm run verify:agent-proof` |
+| Frost #43–47 fleet | `list-agents&builderCode=pocket-earth&limit=5&top=47` | `npm run verify:registry` |
+| SocialHandshake | `0xe5338a162a44a685201e1f6120b1a851949e3aee` | `npm run verify:handshake` |
+| Chronicle 合约 | `0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25` | `npm run verify:chronicle-contract` |
+| 知识版次 revision 2 | tx `0x19364…296c7` | `npm run verify:chronicle-live` |
+| 记录 inclusion proof | `/api/knowledge?tool=proof&recordHash=...` | `npm run verify:knowledge-api` |
+| Frost Edge Node feed | `/api/frost-feed` | `npm run verify:frost-feed` |
 
-## Market Landscape Boundary Fast Check
+## Agent Platform Fast Check
 
-Use this table when reviewing PPT pages 32-35 and the API field `marketLandscapeBoundary`. The purpose is to separate the preferred commercial path from the three paths Pocket Earth does not claim.
+1. 在 Pocket Earth 打开 `AGENTS`，运行 `agent-forge`，用一句话生成声明式 manifest。
+2. 打开 `agent-plaza`，检查卡片的空间对象、权限、端/云位置与 Injective 徽章。
+3. 运行 `daily-knowledge`，切换 AI / 金融，打开来源链接，点击“验证记录”，再打开 revision 2 explorer。
+4. `public-plaza` 负责从 Injective 发现真实 Agent；`agent-plaza` 负责审核、发布、安装和运行，二者职责分开。
 
-In plain API terms, marketLandscapeBoundary is the machine-readable field for this commercial boundary, so reviewers can verify the same thesis from the API instead of relying on narrative copy.
+## Daily Knowledge Chronicle Fast Check
 
-| Field | What to inspect | Expected answer |
-|---|---|---|
-| `commercialFlywheel` | `/api/injective?tool=get-chain-evidence` | Long-term use -> trusted profile -> Agent Plaza market, then install / call / review / optional payment receipts improve both supply and retention |
-| `preferredPath` | `Agent Plaza platform path`, `agent-plaza`, `verify:plaza-flow` | The preferred path is a platform path: manifest review, `INSTALL`, My Agents return, and `willEmit` dry-run are already demonstrable |
-| `rejectedPaths` | pure social, token-first, hardware revenue first entries | Pure social monetization is not the core path; Token-first is not the product strategy; Hardware revenue first is not the current strategy |
-| `differentiation` | README and integration guide | On-device privacy, real-coordinate knowledge base, ERC-8004 identity, and platform-take-rate-compatible Agent Plaza all appear together |
+| 字段 | 期望值 |
+|---|---|
+| network | `Injective EVM Testnet` |
+| chainId | `1439` |
+| contract | `0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25` |
+| day | `20260717` |
+| revision | `2` |
+| factCount | `2` |
+| editionRoot | `0x6e62dcc3fe00495d15d2a7600a5dff6a9f396b85f641fd5316ff69b8327491da` |
+| previousEditionRoot | `0x90e20c7b3e2e4c96e1dd4404cba79e815fc9d19e22fb751f43e9cd57d4a5e601` |
 
-## Agent Plaza Receipt Loop Fast Check
+## Frost Edge Node Fast Check
 
-Use this table when reviewing the business loop from PPT pages 30-32. The repository does not claim paid revenue is already settled; it shows the public receipt slots that make a future Agent Plaza market auditable.
+- 合同版本：`pocket-earth.frost-event/v0.1.0`。
+- 传输：JSONL over authenticated HTTP feed；opaque cursor 防重播。
+- `chain_dispatch` 的 agentIds 来自服务端实时 Injective 读链，speak 由服务端模板生成。
+- Pi consumer 与 Pocket Earth 主 App 解耦；无主服务时可用 fixture 开发和演示。
+- 硬件只把公开事件带回房间，私人记忆仍留在用户自己的设备。
 
-| Receipt slot | Current proof to inspect | Future public receipt |
-|---|---|---|
-| Developer publish | `manifest / schema / permissions`, `reviewManifest`, `toManifest`, DANGER scan | `manifestReceipt(agentId, manifestHash, publisher, timestamp)` proves a reviewed manifest version |
-| User install | `INSTALL -> My Agents -> RUN`, `plazaFlow`, `recordingOrder[].evidenceFocus` | `installReceipt(agentId, manifestHash, userConsentHash, timestamp)` proves consent to a public manifest |
-| Agent call | `willEmit` dry-run, `RunTrace`, `reviewChecklist` | `callReceipt(agentId, runId, capability, resultHash, timestamp)` proves a capability ran without exposing raw input |
-| User review | Profile Confidence L4, SocialHandshake, wallet timeline | `reviewReceipt(agentId, ratingBucket, reasonHash, timestamp)` proves a bucketed review without publishing long-form text |
-| Optional payment | Future subscription / one-time call / platform fee path | `paymentReceipt(agentId, planOrCallId, settlementRef, timestamp)` stays separate from identity, install, and call receipts |
+## FROST Identity Card Roadmap
 
-The order matters: first validate the manifest, then prove the install, then prove the call, then attach a review, and only then add an optional payment receipt. This keeps Agent Plaza as the business loop while Injective stays the public identity, version, and receipt layer.
-
-## Pocket Earth Roadmap And Safety Boundary Fast Check
-
-This path connects the product roadmap to the on-chain roadmap without changing the privacy model:
-
-| Roadmap layer | Current proof | Next boundary |
-|---|---|---|
-| P0 core | Long-term profile, agent registry, and fingerprint cache make Pocket Earth more useful over time | Local profile stays local; public proof starts from derived cards, not raw memories |
-| P1 compatibility | Provider compatibility, edge-side pre-classification, capability contracts, and health tracking make the local/cloud brain observable | Model providers can be swapped without changing the chain identity surface |
-| P2 self-learning | Heartbeat suggestion engine, learning skills with safety gates, and real SSE streaming are in progress | Active behavior only suggests; declarative skill routes do not execute arbitrary code |
-| NOW chain identity and handshake | ERC-8004 `agentId 43-47`, Blockscout proof, wallet timeline, and SocialHandshake are already public | Testnet writes are scoped to identity, mints, and handshake receipts |
-| P1 Profile Checkpoint | Future profileHash + version + timestamp checkpoint signed by Frost | Raw memories never go on-chain |
-| P2 Agent Plaza receipts | Future install / call / review / optional paid receipts from Agent Plaza | `reviewManifest` and `toManifest` keep permissions inspectable before receipts exist |
-| P3 Profile Confidence | Time continuity, source weighting, selective proof, and social corroboration | Bulk imports and suspicious jumps can be down-weighted instead of trusted blindly |
-| P4 Frost Network | Frost Edge Node, podcast summaries, chain dispatch narration, and agent-to-agent service calls | Hardware remains a developer-kit / experience layer until the software market loop is proven; hardware node services must use Agent Plaza service receipts |
-
-One rule carries through every layer: only identity, versions, receipts, and selective proofs go on-chain; books, films, music, photos, moods, precise locations, and private profile text do not.
-
-The same boundary is machine-readable in `roadmapSafetyBoundary`: `productRoadmap` covers P0/P1/P2, `chainRoadmap` covers NOW/P1/P2/P3/P4, and `alwaysOn` fixes suggest-only behavior, declarative skills, `confirm:true` writes, no raw memories on-chain, and no hardware wallet signing.
-
-## Profile Confidence Fast Check
-
-Use this table when reviewing PPT page 39. Profile Confidence is not a credit score and not a judgment about a person; it only explains how much public support a Frost public profile has before another agent, developer, or reviewer trusts it.
-
-| Level | What supports the profile | What stays private |
-|---|---|---|
-| L0 self-declared | A public Taste Passport says what Frost claims to like | Raw books, films, songs, photos, moods, and coordinates stay out of the public card |
-| L1 local memory source | `recordHash -> domainRoot -> ProfileRoot -> profileHash` shows a profile came from the local spatial knowledge base | The Merkle inputs and original records stay local unless the user chooses a specific proof |
-| L2 time continuity | Future Profile Checkpoint versions, wallet timeline order, and stable tags show that a profile changed over time instead of being rewritten in one burst | Full history, private notes, and exact place trails stay off-chain |
-| L3 selective proof | A reviewer can verify one domain or one derived claim without opening the full profile | Selective proof reveals only the requested slice, not the whole life archive |
-| L4 external corroboration | SocialHandshake, install receipts, call receipts, review receipts, and wallet chronology add public third-party context | Long review text, raw prompts, and private agent inputs stay off-chain |
-
-The down-weighting rule is also explicit: bulk imports, random tags, short-term profile jumps, and contradictory receipts can lower confidence, but they do not become a public moral score. The goal is provenance, not judgment.
-
-## FROST Chronicle Delivery Fast Check
-
-Use this table when reviewing PPT pages 40-41. The closing claim is that Pocket Earth is already openable and that FROST Chronicle is a traceable profile history, not a self-introduction.
-
-| Closing claim | What to inspect | Expected answer |
-|---|---|---|
-| FROST Chronicle is traceable | `get-chain-evidence`, `registryMintSummary`, `timelineSummary`, `handshakeProof`, `publicReadApis` | Frost's public profile history can be followed from ERC-8004 identity, mint events, wallet chronology, SocialHandshake, and read-only APIs |
-| Pocket Earth can be opened now | Live demo `https://pocketearth.throughtheglass.art/?demo`, public demo video `https://youtu.be/KjmrjTnvVo0`, `npm run verify:demo`, `npm run verify:duration` | The product opens as a browser / PWA demo, the public video shows the three-minute walkthrough, and the recording path remains within `180s` |
-| GitHub delivery is anchored | `reviewEntrypoints`, `reviewEntrypoints.demo-video`, `deliveryChecklist`, README, `DEMO-SCRIPT.md`, `PITCH-NOTES.md`, `sourceControl` | The public repository, complete README, demo video, demo path, pitch storyline, and source commit all point to the same current GitHub delivery |
-| Built on Injective means public witness | `chainId 1439`, `agentId 43-47`, wallet page, SocialHandshake, future Profile Checkpoint and receipt plan | Injective provides identity, timeline, version, handshake, and future settlement receipts; Pocket Earth keeps raw memories off-chain |
-
-The delivery boundary is intentionally narrow: personal website links can introduce the creator, but they do not replace the public GitHub repo, Injective testnet evidence, live demo, or read-only API proof.
+每个 FROST 可以拥有一张可视化 Agent 身份卡：卡面是形象，卡背是 agentId、能力版本、知识贡献与服务历史；卡牌属性只随可验证行为演进。Frost Edge Node 读取同一身份后加载头像、颜色、声音和技能包，因此卡、软件和硬件是同一个 Agent 的三个表面。
 
 ## Review Package
 
-- GitHub repository: https://github.com/narratorzhang0307/Pocket-Earth-Injective
+- GitHub: https://github.com/narratorzhang0307/Pocket-Earth-Injective
 - Live demo: https://pocketearth.throughtheglass.art/?demo
-- Demo video: https://youtu.be/KjmrjTnvVo0
-- Demo limit: `180s`, guarded by `npm run verify:duration`
-- Source-control guard: `npm run verify:source`
-- Registry mint-event guard: `npm run verify:registry`
-- Single-agent proof guard: `npm run verify:agent-proof`
-- SocialHandshake event guard: `npm run verify:handshake`
-- SocialHandshake bytecode guard: `npm run verify:handshake-contract`
-- Frost Edge Node hardware guard: `npm run verify:hardware`
-- Integration-guide guard: `npm run verify:integration-guide`
-- Positioning guard: `npm run verify:positioning`
-- Pitch notes guard: `npm run verify:pitch`
-- Judge quickstart guard: `npm run verify:judge`
-
-## Public Links
-
-| Evidence | Link |
-|---|---|
-| Public demo video | https://youtu.be/KjmrjTnvVo0 |
-| Frost main identity #43 | https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e/instance/43 |
-| Owner wallet | https://testnet.blockscout.injective.network/address/0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934 |
-| ERC-8004 IdentityRegistry | https://testnet.blockscout.injective.network/address/0x8004A818BFB912233c491871b3d84c89A494BD9e |
-| SocialHandshake contract | https://testnet.blockscout.injective.network/address/0xe5338a162a44a685201e1f6120b1a851949e3aee |
-| Frost registration tx | https://testnet.blockscout.injective.network/tx/0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554 |
-| SocialHandshake deploy tx | https://testnet.blockscout.injective.network/tx/0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722 |
-| Real handshake tx | https://testnet.blockscout.injective.network/tx/0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6 |
-| Frost Edge Node hardware bridge | https://github.com/narratorzhang0307/Pocket-Earth-Injective/tree/main/hardware/frost-buddy |
+- Demo video (`reviewEntrypoints.demo-video`): https://youtu.be/KjmrjTnvVo0
+- Public evidence API: `/api/injective?tool=get-chain-evidence`
+- Daily knowledge API: `/api/knowledge?tool=today&topic=ai`
+- Hardware proof API (`reviewEntrypoints.hardware-bridge`): `/api/injective?tool=get-hardware-bridge-proof`
 
 ## Local Commands
 
 ```bash
-npm run verify:github
-npm run verify:duration
+npm run build
 npm run verify:judge
-npm run verify:demo
-npm run verify:wallet
-npm run verify:public-apis
-npm run verify:integration-guide
-npm run verify:positioning
-npm run verify:source
-npm run verify:registry
 npm run verify:agent-proof
+npm run verify:registry
 npm run verify:handshake
-npm run verify:handshake-contract
+npm run verify:chronicle-contract
+npm run verify:chronicle-live
+npm run verify:knowledge-api
+npm run verify:knowledge-ui
+npm run verify:frost-feed
+npm run verify:foundry-provider
 npm run verify:hardware
-npm run verify:recording-order
 npm run verify:injective
-npm run verify:plaza
-npm run verify:pitch
 ```
 
 ## Demo Reading Order
 
-Use this order in the recording or in a live judge walkthrough: `agentId 43` page -> owner wallet -> public evidence API -> single-agent proof API -> builderCode fleet API -> wallet timeline API -> Frost Edge Node hardware proof API -> `public-plaza` chain discovery -> `agent-plaza` install loop.
+地球私人记忆 → Agent Forge/Plaza → Daily Knowledge Curator → Merkle proof → Chronicle revision 2 → Frost #43 身份 → Frost Edge Node 链上见闻。
+
+一条边界贯穿全部演示：链上放公开身份与知识版次，端侧留私人生活。
