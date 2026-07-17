@@ -15,7 +15,9 @@ try {
     now: new Date('2026-07-17T00:00:00.000Z'),
   })
   assert.equal(manifest.schema, 'pocket-earth-knowledge-worker/v1')
+  assert.equal(manifest.state, 'complete')
   assert.equal(manifest.summary.requested, 5)
+  assert.equal(manifest.summary.pending, 0)
   assert.equal(manifest.summary.failed, 0)
   assert.equal(manifest.summary.ready, 2)
   assert.equal(manifest.summary.skipped, 3)
@@ -24,6 +26,7 @@ try {
 
   const status = JSON.parse(await readFile(join(outputDir, 'status.json'), 'utf8'))
   assert.equal(status.date, '2026-07-17')
+  assert.equal(status.state, 'complete')
   for (const topic of PUBLIC_TOPIC_KEYS) {
     const snapshot = JSON.parse(await readFile(join(outputDir, '2026-07-17', `${topic}.json`), 'utf8'))
     assert.equal(snapshot.topic, topic)

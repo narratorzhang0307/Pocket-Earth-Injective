@@ -82,11 +82,12 @@ export async function searchNewsEvidence(query, { limit = 8, signal, fetchImpl =
   const clean = String(query || '').replace(/\s+/g, ' ').trim().slice(0, 320)
   if (!clean) return []
   const encoded = encodeURIComponent(clean)
+  const requestSignal = signal || AbortSignal.timeout(12000)
   const urls = [
     { url: `https://news.google.com/rss/search?q=${encoded}&hl=en-US&gl=US&ceid=US:en`, parser: parseGoogleNewsRss },
     { url: `https://www.bing.com/news/search?q=${encoded}&format=rss&mkt=en-US&setlang=en-US`, parser: parseBingNewsRss },
   ]
-  const settled = await Promise.allSettled(urls.map((item) => fetchFeed(item.url, item.parser, limit, signal, fetchImpl)))
+  const settled = await Promise.allSettled(urls.map((item) => fetchFeed(item.url, item.parser, limit, requestSignal, fetchImpl)))
   const merged = settled.flatMap((item) => item.status === 'fulfilled' ? item.value : [])
   if (!merged.length) throw new Error('public_news_unavailable')
   return dedupeSources(merged, limit)

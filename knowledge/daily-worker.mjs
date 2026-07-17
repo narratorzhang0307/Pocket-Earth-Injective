@@ -60,6 +60,28 @@ export async function runKnowledgeCycle({
   await mkdir(dateDir, { recursive: true, mode: 0o700 })
   const startedAt = now.toISOString()
   const results = []
+  const chainPolicy = {
+    automaticWrite: false,
+    nextStep: 'review snapshots, then run the explicit Chronicle commit command',
+    reason: 'a scheduled public-data worker must never hold or use the Injective signer',
+  }
+  const makeManifest = (state, completedAt = null) => ({
+    schema: WORKER_SCHEMA,
+    state,
+    date: runDate,
+    startedAt,
+    completedAt,
+    topics: results,
+    summary: {
+      requested: requestedTopics.length,
+      ready: results.filter((item) => item.status === 'ready').length,
+      skipped: results.filter((item) => item.status === 'skipped').length,
+      failed: results.filter((item) => item.status === 'failed').length,
+      pending: requestedTopics.length - results.length,
+    },
+    chainPolicy,
+  })
+  await atomicJson(resolve(outputDir, 'status.json'), makeManifest('running'))
 
   for (const topic of requestedTopics) {
     const topicStartedAt = new Date().toISOString()
@@ -100,27 +122,11 @@ export async function runKnowledgeCycle({
         completedAt: new Date().toISOString(),
       })
     }
+    await atomicJson(resolve(outputDir, 'status.json'), makeManifest('running'))
   }
 
   const completedAt = new Date().toISOString()
-  const manifest = {
-    schema: WORKER_SCHEMA,
-    date: runDate,
-    startedAt,
-    completedAt,
-    topics: results,
-    summary: {
-      requested: results.length,
-      ready: results.filter((item) => item.status === 'ready').length,
-      skipped: results.filter((item) => item.status === 'skipped').length,
-      failed: results.filter((item) => item.status === 'failed').length,
-    },
-    chainPolicy: {
-      automaticWrite: false,
-      nextStep: 'review snapshots, then run the explicit Chronicle commit command',
-      reason: 'a scheduled public-data worker must never hold or use the Injective signer',
-    },
-  }
+  const manifest = makeManifest('complete', completedAt)
   await atomicJson(resolve(dateDir, 'manifest.json'), manifest)
   await atomicJson(resolve(outputDir, 'status.json'), manifest)
   return manifest
