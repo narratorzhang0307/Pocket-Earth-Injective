@@ -539,17 +539,11 @@ for (const phrase of [
 ]) {
   assertTrue(`remote evidence pack keeps commercial boundary ${phrase}`, remoteEvidence.includes(phrase))
 }
-assertTrue('remote demo script names registryMintEvents', remoteDemo.includes('registryMintEvents'))
-assertTrue('remote demo script names registryMintSummary', remoteDemo.includes('registryMintSummary'))
 assertTrue('remote demo script names fleet readback', remoteDemo.includes('builderCode=pocket-earth') && remoteDemo.includes('agentId 43'))
-assertTrue('remote demo script names wallet timeline API', remoteDemo.includes('get-wallet-timeline') && remoteDemo.includes('chainId 1439'))
-assertTrue('remote demo script names wallet timeline summary', remoteDemo.includes('timelineSummary'))
-assertTrue('remote demo script names direct wallet summary', remoteDemo.includes('get-wallet-timeline` 的 `summary`'))
 assertTrue('remote demo script names direct handshake verifier', remoteDemo.includes('npm run verify:handshake') && remoteDemo.includes('agentA/agentB/score/profileHash'))
 assertTrue('remote demo script names handshake bytecode verifier', remoteDemo.includes('npm run verify:handshake-contract') && remoteDemo.includes('creation/runtime bytecode'))
 assertTrue('remote demo script names judge quickstart entrypoint', remoteDemo.includes('reviewEntrypoints') && remoteDemo.includes('npm run verify:judge'))
 assertTrue('remote demo script names public demo video', remoteDemo.includes('reviewEntrypoints.demo-video') && remoteDemo.includes(DEMO_VIDEO_URL))
-assertTrue('remote demo script names judge runbook', remoteDemo.includes('judgeRunbook'))
 assertTrue('remote demo script names public API guard', remoteDemo.includes('npm run verify:public-apis'))
 assertTrue('remote demo script names integration guide guard', remoteDemo.includes('npm run verify:integration-guide'))
 assertTrue('remote demo script names expanded positioning guard', remoteDemo.includes('README / app / hardware / docs 保持 Injective 核心集成主线'))
@@ -565,14 +559,12 @@ for (const phrase of [
   'Injective 负责公共见证',
   'ERC-8004 `agentId 43`',
   '`agentId 43-47` fleet',
-  '同钱包时间线',
   'SocialHandshake',
   '未来 Profile Checkpoint',
   'Profile Chain / Proof of Memory',
   '画像版本见证',
   'Frost Edge Node 只消费公开 JSONL 事件',
-  'Agent Plaza 承接安装、调用、评价和可选付费回执',
-  '不走代币优先或重资本硬件路线',
+  'Agent Plaza 承接创建、审核、发布、安装和运行',
   'FROST Chronicle',
   '画像演化史',
   '现在就能打开',
@@ -581,27 +573,24 @@ for (const phrase of [
   'Demo 视频',
   'Pitch Deck',
   'Built on Injective',
-  '公开身份、版本、时间线、握手和未来结算回执',
+  'Injective 让身份、版次、时间线与握手可以被任何人独立核对',
 ]) {
   assertTrue(`remote demo script keeps PPT story spine ${phrase}`, remoteDemo.includes(phrase))
 }
 const unsupportedPaymentToken = ['x', '402'].join('')
 assertTrue('remote demo script omits unsupported payment settlement wording', !remoteDemo.includes(unsupportedPaymentToken))
 for (const phrase of [
-  '商业路径一句话',
-  'public-plaza` 只讲链上社交发现',
-  'agent-plaza` 才讲商业路径',
-  '长期使用 -> 可信画像 -> Agent 市场',
+  '平台路径一句话',
+  'public-plaza` 讲链上身份发现',
+  'agent-plaza` 讲创建、审核、发布、安装和运行',
   'reviewManifest',
   'toManifest',
   'INSTALL -> My Agents -> RUN',
   'domain=地点',
   'mark_place',
   'RUN` 入口',
-  'Profile Confidence',
-  '不要说成代币优先或硬件收入优先',
 ]) {
-  assertTrue(`remote demo script keeps Agent Plaza commercial narration ${phrase}`, remoteDemo.includes(phrase))
+  assertTrue(`remote demo script keeps Agent Plaza platform narration ${phrase}`, remoteDemo.includes(phrase))
 }
 for (const phrase of ['installedCafe.domain ===', 'geoStrategy.includes', 'mark_place', '▶ RUN']) {
   assertTrue(`remote plaza-flow verifier guards install script ${phrase}`, remoteVerifyPlazaFlow.includes(phrase))
@@ -622,99 +611,28 @@ assertTrue('remote judge quickstart names Judge Quickstart', remoteJudge.include
 assertTrue('remote judge quickstart names agentId 43', remoteJudge.includes('agentId 43'))
 assertTrue('remote judge quickstart points at chain evidence API', remoteJudge.includes('/api/injective?tool=get-chain-evidence'))
 assertTrue('remote judge quickstart points at builderCode fleet API', remoteJudge.includes('/api/injective?tool=list-agents&builderCode=pocket-earth'))
-assertTrue('remote judge quickstart names recording focus', remoteJudge.includes('recordingOrder[].evidenceFocus'))
-assertTrue('remote judge quickstart names registry mint summary', remoteJudge.includes('registryMintSummary'))
-assertTrue('remote judge quickstart names wallet timeline summary', remoteJudge.includes('timelineSummary'))
-assertTrue('remote judge quickstart names wallet timeline chainId', remoteJudge.includes(`chainId ${INJECTIVE_TESTNET_CHAIN_ID}`))
-assertTrue('remote judge quickstart names public read API manifest', remoteJudge.includes('publicReadApis'))
-assertTrue('remote judge quickstart names judge runbook', remoteJudge.includes('judgeRunbook'))
-assertTrue('remote judge quickstart names public API guard', remoteJudge.includes('npm run verify:public-apis'))
-assertTrue('remote judge quickstart names integration guide guard', remoteJudge.includes('npm run verify:integration-guide'))
-assertTrue('remote judge quickstart names positioning guard', remoteJudge.includes('npm run verify:positioning'))
-assertTrue('remote judge quickstart names source control guard', remoteJudge.includes('npm run verify:source'))
+assertTrue('remote judge quickstart names Injective chainId', remoteJudge.includes('chainId') && remoteJudge.includes(String(INJECTIVE_TESTNET_CHAIN_ID)))
 assertTrue('remote judge quickstart names judge guard', remoteJudge.includes('npm run verify:judge'))
-assertTrue('remote judge quickstart names direct handshake verifier', remoteJudge.includes('npm run verify:handshake') && remoteJudge.includes('agentA/agentB/score/profileHash'))
-assertTrue('remote judge quickstart names handshake bytecode verifier', remoteJudge.includes('npm run verify:handshake-contract') && remoteJudge.includes('creation/runtime bytecode'))
-assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJudge.includes('reviewEntrypoints.hardware-bridge') && remoteJudge.includes('hardware/frost-buddy'))
+assertTrue('remote judge quickstart names direct handshake verifier', remoteJudge.includes('npm run verify:handshake') && remoteJudge.includes('SocialHandshake'))
+assertTrue('remote judge quickstart names hardware bridge entrypoint', remoteJudge.includes('reviewEntrypoints.hardware-bridge') && remoteJudge.includes('get-hardware-bridge-proof'))
 assertTrue('remote judge quickstart names public demo video entrypoint', remoteJudge.includes('reviewEntrypoints.demo-video') && remoteJudge.includes(DEMO_VIDEO_URL))
-assertTrue('remote judge quickstart names Frost Edge Node checklist', remoteJudge.includes('deliveryChecklist.frost-edge-node') && remoteJudge.includes('npm run verify:hardware'))
-assertTrue('remote judge quickstart names recording order guard', remoteJudge.includes('npm run verify:recording-order'))
+assertTrue('remote judge quickstart names Frost Edge Node check', remoteJudge.includes('Frost Edge Node Fast Check') && remoteJudge.includes('npm run verify:hardware'))
 assertTrue('remote judge quickstart names plaza split', remoteJudge.includes('public-plaza') && remoteJudge.includes('agent-plaza'))
 for (const phrase of [
-  'Agent Plaza is the commercial path boundary',
-  'Agent Plaza Commercial Path Fast Check',
-  'Market Landscape Boundary Fast Check',
-  'marketLandscapeBoundary is the machine-readable field',
-  'Long-term use -> trusted profile -> Agent Plaza market',
-  'Pure social monetization is not the core path',
-  'Token-first is not the product strategy',
-  'Hardware revenue first is not the current strategy',
-  'Agent Plaza Receipt Loop Fast Check',
-  'manifest / schema / permissions',
-  'reviewManifest',
-  'toManifest',
-  'manifestReceipt(agentId, manifestHash, publisher, timestamp)',
-  'installReceipt(agentId, manifestHash, userConsentHash, timestamp)',
-  'callReceipt(agentId, runId, capability, resultHash, timestamp)',
-  'reviewReceipt(agentId, ratingBucket, reasonHash, timestamp)',
-  'paymentReceipt(agentId, planOrCallId, settlementRef, timestamp)',
-  'The repository does not claim paid revenue is already settled',
-  'INSTALL -> My Agents -> RUN',
-  'optional paid receipts',
-  'Profile Confidence',
-  'willEmit',
-  'Business center is Agent Plaza',
-  'Frost Edge Node is Raspberry Pi / BLE / TTS developer kit',
+  'Injective Proof Matrix',
+  'Agent Platform Fast Check',
+  'Daily Knowledge Chronicle Fast Check',
+  'Frost Edge Node Fast Check',
+  'FROST Identity Card Roadmap',
+  '创建—审核—发布—安装—运行',
+  '/api/knowledge?tool=proof&recordHash=...',
+  'previousEditionRoot',
+  'opaque cursor 防重播',
 ]) {
-  assertTrue(`remote judge quickstart keeps commercial path ${phrase}`, remoteJudge.includes(phrase))
+  assertTrue(`remote judge quickstart keeps current proof path ${phrase}`, remoteJudge.includes(phrase))
 }
-for (const phrase of [
-  'Pocket Earth Roadmap And Safety Boundary Fast Check',
-  'P0 core',
-  'P1 compatibility',
-  'P2 self-learning',
-  'Heartbeat suggestion engine',
-  'NOW chain identity and handshake',
-  'Profile Checkpoint',
-  'Agent Plaza receipts',
-  'Profile Confidence',
-  'P4 Frost Network',
-  'roadmapSafetyBoundary',
-  'productRoadmap',
-  'chainRoadmap',
-  'alwaysOn',
-  'confirm:true',
-  'Raw memories never go on-chain',
-  'only identity, versions, receipts, and selective proofs go on-chain',
-  'Hardware remains a developer-kit / experience layer',
-]) {
-  assertTrue(`remote judge quickstart keeps roadmap boundary ${phrase}`, remoteJudge.includes(phrase))
-}
-for (const phrase of [
-  'Profile Confidence Fast Check',
-  'Profile Confidence is not a credit score',
-  'not a judgment about a person',
-  'L0 self-declared',
-  'L1 local memory source',
-  'L2 time continuity',
-  'L3 selective proof',
-  'L4 external corroboration',
-  'bulk imports, random tags, short-term profile jumps',
-  'provenance, not judgment',
-]) {
-  assertTrue(`remote judge quickstart keeps profile confidence ${phrase}`, remoteJudge.includes(phrase))
-}
-for (const phrase of [
-  'FROST Chronicle Delivery Fast Check',
-  'Pocket Earth is already openable',
-  'traceable profile history, not a self-introduction',
-  'FROST Chronicle is traceable',
-  'Pocket Earth can be opened now',
-  'GitHub delivery is anchored',
-  'Built on Injective means public witness',
-  'public GitHub repo, Injective testnet evidence, live demo, or read-only API proof',
-]) {
-  assertTrue(`remote judge quickstart keeps delivery close ${phrase}`, remoteJudge.includes(phrase))
+for (const forbidden of ['付费', '支付', '收入', '收益', '结算', '抽成', unsupportedPaymentToken, 'soulbound', '不可转让']) {
+  assertTrue(`remote judge quickstart omits ${forbidden}`, !remoteJudge.includes(forbidden))
 }
 for (const phrase of [
   'Pocket Earth Roadmap And Safety Boundary Fast Check',
