@@ -15,6 +15,7 @@ module.exports = {
       cwd: __dirname,
       env: {
         NODE_ENV: 'production',
+        KNOWLEDGE_WORKER_DAEMON: '1',
         KNOWLEDGE_TOPICS: 'ai,finance,science,climate,culture',
         KNOWLEDGE_DATA_DIR: 'var/knowledge',
         KNOWLEDGE_RUN_HOUR_UTC: '0',

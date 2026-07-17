@@ -171,7 +171,8 @@ async function main() {
   }
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+const directRun = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+if (directRun || process.env.KNOWLEDGE_WORKER_DAEMON === '1') {
   main().catch((error) => {
     process.stderr.write(`knowledge_worker_failed:${String(error?.message || error)}\n`)
     process.exitCode = 1
