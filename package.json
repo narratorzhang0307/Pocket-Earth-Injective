@@ -40,7 +40,8 @@
     "verify:chronicle-contract": "node INJECTIVE-INTEGRATION/verify-chronicle-contract.mjs",
     "verify:chronicle-live": "node INJECTIVE-INTEGRATION/verify-chronicle-live.mjs",
     "verify:knowledge-ui": "node INJECTIVE-INTEGRATION/verify-knowledge-ui.mjs",
-    "verify:public-earth-contract": "node INJECTIVE-INTEGRATION/verify-public-earth-contract.mjs"
+    "verify:public-earth-contract": "node INJECTIVE-INTEGRATION/verify-public-earth-contract.mjs",
+    "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs"
   },
   "dependencies": {
     "@injective/agent-sdk": "file:INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk",
