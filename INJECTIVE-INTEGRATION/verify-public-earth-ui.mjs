@@ -22,7 +22,7 @@ assert.ok(plaza.includes('<PublicEarthPanel />'), 'public-plaza must render Publ
 assert.ok(plaza.includes('链上分身的空间身份与公共广场'))
 assert.ok(plaza.includes('私人记忆与现实地址始终留在端侧'))
 for (const forbidden of ['BUY', 'PRICE', 'RARE', 'LEGENDARY', '开卡包', '拍卖', '虚拟土地']) {
-  assert.ok(!panel.toUpperCase().includes(forbidden.toUpperCase()), `PublicEarthPanel contains forbidden competition wording ${forbidden}`)
+  assert.ok(!panel.toUpperCase().includes(forbidden.toUpperCase()), `PublicEarthPanel contains forbidden audience-facing wording ${forbidden}`)
 }
 
 console.log('OK Public Earth UI keeps Earth as the spatial layer, cards as the identity layer, and economic/virtual-land framing out.')

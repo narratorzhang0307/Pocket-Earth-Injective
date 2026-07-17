@@ -150,6 +150,7 @@ assertSetEqual('top-level keys', Object.keys(evidence), [
   'ownerScanUrl',
   'plazaFlow',
   'privacyBoundary',
+  'publicEarth',
   'publicOnly',
   'publicReadApis',
   'readOnly',

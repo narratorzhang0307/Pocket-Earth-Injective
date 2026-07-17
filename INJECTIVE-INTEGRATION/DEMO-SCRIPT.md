@@ -13,8 +13,10 @@
 |---|---|---|
 | 用户问题 | 个人记忆散落各处，按时间记不牢，记录沉底，工具不懂你，隐私不敢交。 | README 的“Pocket Earth 是什么”、集成说明的“用户痛点与对症解决” |
 | 产品方法 | Pocket Earth 把真实地点当索引，让书、影、乐、照片、行程和心情回到同一颗地球；Frost-agent 端云双脑负责挑、找、表达和反思。 | 地球入口、六类标记、`frost-agent` harness、RunTrace |
-| Injective 证明 | Injective 负责公共见证：ERC-8004 `agentId 43`、`agentId 43-47` fleet、Public Earth 门牌、SocialHandshake 与 Daily Knowledge Chronicle 版次根。 | Blockscout、`get-chain-evidence`、`get-public-earth`、`get-agent-proof`、知识验证包 |
+| Injective 证明 | Injective 负责公共见证：ERC-8004 `agentId 43`、`agentId 43-47` fleet、同钱包时间线、Public Earth 门牌、SocialHandshake 与 Daily Knowledge Chronicle 版次根。 | Blockscout、`get-chain-evidence`、`get-public-earth`、`get-agent-proof`、知识验证包 |
 | 硬件与平台边界 | Frost Edge Node 只消费公开 JSONL 事件；Agent Plaza 承接创建、审核、发布、安装和运行；硬件只把公开事件带进物理空间，不持私钥、不签钱包、不读取私人画像。 | `get-hardware-bridge-proof`、`agent-plaza`、`reviewManifest`、`privacyBoundary.hardware` |
+
+未来 Profile Checkpoint 只作为选择性证明的延伸方向；Profile Chain / Proof of Memory 是画像版本见证的长期方向。本轮“每日版次”只指已经部署的 Daily Knowledge Chronicle，不把前两者说成已经部署。
 
 ---
 
@@ -33,6 +35,7 @@
 ---
 
 ## 操作要点（别卡壳）
+- **回主场**：从 Blockscout 或 API 返回产品时先切到地球入口，再进入 Agents；不要把入口说成一个普通 Tab。
 - **进广场**：底部 `AGENTS`（右下角 ✦）→ 卡片列表往下滑到 `PLAZA` 区 → 点 `public-plaza` 卡的 `▶ RUN`。
 - **public-plaza 镜头**：只展示链上社交发现与 Public Earth。画面重点是 `builderCode=pocket-earth` 读回 `agentId 43–47`、蓝紫色地球标记、门牌、身份卡哈希和 Nightly Chain Dispatch；不要把 public-plaza 说成安装市场。
 - **agent-plaza 安装闭环镜头**：如果要补平台闭环，回到 `PLAZA` 区打开 `agent-plaza`，选一个示例（如 cafe-map / graffiti-map / heritage-walk），依次露出 `manifest / schema / permissions`、Injective chain identity badge、`reviewManifest` 安全闸，再点 `INSTALL`，回 `My Agents` 看到该 agent 并点 `RUN`。这条镜头证明“安装即运行”，不是链上社交发现；`npm run verify:plaza` 会复验安装后的 cafe-map 仍保留 `domain=地点`、`mark_place` 工具和 `RUN` 入口；没有 testnet 私钥、合约地址和 `confirm:true` 时，只展示 `willEmit` dry-run，不把它说成已经发生的链上事件。

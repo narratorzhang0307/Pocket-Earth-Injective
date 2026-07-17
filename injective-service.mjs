@@ -408,8 +408,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
           publicOnly: true,
           verification: 'npm run verify:public-proof',
           purpose: 'Returns the judge-facing evidence bundle, sourceControl anchor, mint events, wallet timeline summary, Public Earth deployment, hardware bridge, and privacy boundary.',
-          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'publicEarth', 'publicEarth.residences', 'hardwareBridge', 'hardwareBridge.piAdapter', 'privacyBoundary'],
-          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'Public Earth contract and five doorplates', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'current GitHub commit anchor'],
+          expectedFields: ['sourceControl', 'judgeRunbook', 'publicReadApis', 'agents[].proofApi', 'registryMintSummary', 'timelineSummary', 'handshakeProof', 'publicEarth', 'publicEarth.residences', 'hardwareBridge', 'hardwareBridge.piAdapter', 'hardwareBridge.marketBoundary', 'hardwareBridge.serviceBoundary', 'hardwareBridge.roadmapBoundary', 'marketLandscapeBoundary', 'roadmapSafetyBoundary', 'recordingOrder[].evidenceFocus', 'privacyBoundary'],
+          judgeFocus: ['chainId 1439 and publicOnly flags', 'same owner wallet across timeline', 'ERC-8004 mint summary for agentId 43-47', 'Public Earth contract and five doorplates', 'real SocialHandshake proof', 'Frost Edge Node Pi adapter action contract', 'hardware services stay future Agent Plaza receipts', 'Agent Plaza market boundary', 'roadmap safety boundary', 'current GitHub commit anchor'],
         },
         {
           key: 'agent-proof-api',
