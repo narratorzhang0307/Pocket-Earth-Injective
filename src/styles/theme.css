@@ -218,6 +218,20 @@ select {
   font-size: 12px;
 }
 
+/*
+ * 普通浏览器中的手机画布：窄屏贴合真实视口；桌面端为外层 16px 留白预留尺寸。
+ * 这样 tab 切换不会因 32px 隐性页面滚动而把顶部品牌条裁掉。
+ */
+.pocket-earth-shell {
+  width: min(430px, 100vw, calc(100dvh * 430 / 932));
+}
+
+@media (min-width: 480px) {
+  .pocket-earth-shell {
+    width: min(430px, calc(100vw - 32px), calc((100dvh - 32px) * 430 / 932));
+  }
+}
+
 /* 键盘操作时给出明确的高对比焦点；鼠标/触屏点击不会留下多余描边。 */
 :where(button, a, input, textarea, select):focus-visible {
   outline: 3px solid #00ff88;

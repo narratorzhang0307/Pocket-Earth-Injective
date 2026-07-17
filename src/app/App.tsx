@@ -217,10 +217,10 @@ export default function App() {
 
   // 普通浏览器（线上 PWA 默认）：430×932 手机框，等比自适应
   return (
-    <div className="min-h-screen w-full bg-[#dcdcdc] flex items-center justify-center p-4 overflow-auto">
+    <div className="min-h-[100dvh] w-full bg-[#dcdcdc] flex items-center justify-center p-0 min-[480px]:p-4 overflow-hidden">
       <div
-        className="relative shrink-0 bg-[#EAEAEA] overflow-hidden shadow-2xl flex flex-col"
-        style={{ width: 'min(430px, 100vw, calc(100dvh * 430 / 932))', aspectRatio: '430 / 932' }}
+        className="pocket-earth-shell relative shrink-0 bg-[#EAEAEA] overflow-hidden shadow-2xl flex flex-col"
+        style={{ aspectRatio: '430 / 932' }}
       >
         {content}
       </div>
