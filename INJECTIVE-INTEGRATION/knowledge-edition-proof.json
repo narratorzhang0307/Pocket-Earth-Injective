@@ -1,0 +1,74 @@
+{
+  "schema": "pocket-earth-daily-knowledge-proof/v1",
+  "network": "Injective EVM Testnet",
+  "chainId": 1439,
+  "publisher": "0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934",
+  "contractAddress": "0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25",
+  "date": "2026-07-17",
+  "day": 20260717,
+  "revision": 1,
+  "factCount": 2,
+  "factsRoot": "0xca1eff773d590abdba71b6f825aa32d2cdcdf7d96d3a2f6d62d571cceb9a431f",
+  "manifestHash": "0xe302d5908a83de3b82627e2bc6670d6ea6d504ea593e1e07260dda89e32d349d",
+  "policyRoot": "0x0338ab99fcbc04ca34636f398ff0af55f2e7463990d02075638a96609a942444",
+  "previousEditionRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "editionRoot": "0x90e20c7b3e2e4c96e1dd4404cba79e815fc9d19e22fb751f43e9cd57d4a5e601",
+  "transactionHash": "0xbefc3debc10c4bea157d635b76b55f49601f9909058cbdd03d9f33ba46fe7959",
+  "blockNumber": "133816863",
+  "scanUrl": "https://testnet.blockscout.injective.network/tx/0xbefc3debc10c4bea157d635b76b55f49601f9909058cbdd03d9f33ba46fe7959",
+  "committedAt": "2026-07-17T11:32:56.000Z",
+  "records": [
+    {
+      "id": "pk_ai_20260717",
+      "topic": "ai",
+      "mode": "offline",
+      "claim": "Microsoft Foundry Model Router 可以作为单一模型端点部署，并为每次提示选择合适的底层对话模型。",
+      "verdict": "supported",
+      "truthScore": 86,
+      "recordHash": "0x4baa33ef3e23ed245e9b34f56c61675a3fad76764daeb6e0ae5cd06ed4511467",
+      "proof": [
+        "0xe0493e61ddf04763796b66213dfb48378863bece98a6d3b37f964145015e8eb1"
+      ],
+      "sources": [
+        {
+          "title": "How to use model router for Microsoft Foundry",
+          "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/model-router",
+          "publisher": "Microsoft Learn",
+          "publishedAt": "2026-04-01"
+        },
+        {
+          "title": "Model router for Microsoft Foundry concepts",
+          "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router",
+          "publisher": "Microsoft Learn",
+          "publishedAt": "2026-06-01"
+        }
+      ]
+    },
+    {
+      "id": "pk_finance_20260717",
+      "topic": "finance",
+      "mode": "offline",
+      "claim": "Injective 官方信息显示，x402 按请求付费的 Agent 支付机制已经在 Injective 主网上线。",
+      "verdict": "supported",
+      "truthScore": 86,
+      "recordHash": "0xe0493e61ddf04763796b66213dfb48378863bece98a6d3b37f964145015e8eb1",
+      "proof": [
+        "0x4baa33ef3e23ed245e9b34f56c61675a3fad76764daeb6e0ae5cd06ed4511467"
+      ],
+      "sources": [
+        {
+          "title": "What Is x402? AI Agent Payments, Live on Injective",
+          "url": "https://injective.com/blog/x402",
+          "publisher": "Injective",
+          "publishedAt": "2026-06-08"
+        },
+        {
+          "title": "Injective Agents: The Platform for Autonomous AI Trading Agents",
+          "url": "https://injective.com/blog/injective-agents-the-platform-for-autonomous-ai-trading-agents",
+          "publisher": "Injective",
+          "publishedAt": "2026-05-01"
+        }
+      ]
+    }
+  ]
+}

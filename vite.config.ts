@@ -4,18 +4,21 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { frostEdge } from './frost-agent/edge/viteEdge'
 import { unsplashProxy } from './frost-agent/planet/viteUnsplash'
-import { buildProviderRequest } from './frost-agent/provider-compat'
 // @ts-expect-error — injective-service.mjs 是纯 JS ESM 服务模块（无 .d.ts），与 prod server.mjs 共用同一套 handler
 import { handleInjective } from './injective-service.mjs'
+// @ts-expect-error — server-only ESM runtime，dev/prod 共用，密钥不会进入前端 bundle
+import { buildLlmRequest, getLlmProviders } from './frost-agent/provider-compat/runtime.mjs'
+// @ts-expect-error — server-only ESM feed handler，dev/prod 共用
+import { createFrostFeed } from './frost-feed-service.mjs'
+// @ts-expect-error — server-only FactAtlas adapter，dev/prod 共用
+import { createDailyKnowledgeService } from './knowledge/daily-service.mjs'
 
 // LLM 代理：dev 中间件，把 /api/frost-llm 转给云脑。
-// 云脑只用通义 Qwen（DashScope）。
-// 请求体由 provider-compat 单入口拼（换/加模型只改那层）；密钥只在服务端（从 .env 读），
+// Microsoft Foundry Model Router 优先，通义 Qwen（DashScope）自动回落。
+// 请求体由 provider-compat runtime 单入口拼；密钥只在服务端（从 .env 读），
 // 永不进前端 bundle；无 key / 出错时返回空串，各子 agent 自动回退到规则 fallback。
 function frostLlm(env: Record<string, string>): Plugin {
-  const KEY = env.DASHSCOPE_API_KEY || env.QWEN_API_KEY || ''
-  const provider = 'dashscope'
-  const MODEL = env.QWEN_MODEL || 'qwen-plus'
+  const providers = getLlmProviders(env)
   return {
     name: 'frost-llm-proxy',
     configureServer(server) {
@@ -30,19 +33,66 @@ function frostLlm(env: Record<string, string>): Plugin {
             res.end(JSON.stringify(obj))
           }
           try {
-            if (!KEY) return send({ text: '', error: 'no_key' })
+            if (!providers.length) return send({ text: '', error: 'no_key', providers: [] })
             const { prompt, system, json, search } = JSON.parse(body || '{}')
             const messages: { role: string; content: string }[] = []
             if (system) messages.push({ role: 'system', content: system })
             messages.push({ role: 'user', content: prompt })
-            const pr = buildProviderRequest(provider, { messages, json, model: MODEL, search: !!search }, KEY)
-            const r = await fetch(pr.url, { method: 'POST', headers: pr.headers, body: JSON.stringify(pr.body) })
-            if (!r.ok) { res.writeHead(r.status, { 'content-type': 'application/json' }); res.end(JSON.stringify({ text: '', error: 'upstream_' + r.status })); return }   // 透传上游 429/5xx（send 写死 200，故直接写状态码）：客户端 withRetry 才能据 r.ok 重试
-            const data = await r.json()
-            send({ text: data?.choices?.[0]?.message?.content || '' })
+            let lastStatus = 502
+            for (let index = 0; index < providers.length; index++) {
+              const provider = providers[index]
+              const startedAt = Date.now()
+              try {
+                const pr = buildLlmRequest(provider, { messages, json, search: !!search })
+                const r = await fetch(pr.url, { method: 'POST', headers: pr.headers, body: JSON.stringify(pr.body) })
+                if (!r.ok) { lastStatus = r.status; continue }
+                const data = await r.json()
+                return send({ text: data?.choices?.[0]?.message?.content || '', provider: provider.name, model: data?.model || provider.model, durationMs: Date.now() - startedAt, fallback: index > 0 })
+              } catch { lastStatus = 502 }
+            }
+            res.writeHead(lastStatus, { 'content-type': 'application/json' })
+            res.end(JSON.stringify({ text: '', error: 'upstream_' + lastStatus }))
           } catch (e) {
             send({ text: '', error: String(e) })
           }
+        })
+      })
+    },
+  }
+}
+
+// Frost Edge Node dev feed：和生产服务共用 token/cursor/JSONL 语义。
+function frostFeedProxy(env: Record<string, string>): Plugin {
+  const feed = createFrostFeed({
+    token: env.FROST_FEED_TOKEN || '',
+    injectiveConfig: { privateKey: '', network: env.INJ_NETWORK || 'testnet', rpcUrl: env.INJ_RPC_URL || '' },
+  })
+  return {
+    name: 'frost-feed-proxy',
+    configureServer(server) {
+      server.middlewares.use('/api/frost-feed', (req, res) => {
+        const url = new URL(req.url || '/', 'http://localhost')
+        Promise.resolve(feed.handle(req, res, url)).catch(() => {
+          res.statusCode = 500
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify({ error: 'feed_error' }))
+        })
+      })
+    },
+  }
+}
+
+function knowledgeProxy(env: Record<string, string>): Plugin {
+  const service = createDailyKnowledgeService({ env })
+  return {
+    name: 'daily-knowledge-proxy',
+    configureServer(server) {
+      server.middlewares.use('/api/knowledge', (req, res) => {
+        const url = new URL(req.url || '/', 'http://localhost')
+        Promise.resolve(service.handle(req, res, url)).catch(() => {
+          res.statusCode = 500
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify({ error: 'knowledge_service_error' }))
         })
       })
     },
@@ -91,7 +141,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    plugins: [react(), tailwindcss(), frostLlm(env), frostEdge(env), unsplashProxy(env), injectiveProxy(env)],
+    plugins: [react(), tailwindcss(), frostLlm(env), frostEdge(env), unsplashProxy(env), injectiveProxy(env), frostFeedProxy(env), knowledgeProxy(env)],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),

@@ -11,6 +11,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { gzipSync, brotliCompressSync, constants as zlibConstants } from 'node:zlib'
 import { handleInjective } from './injective-service.mjs'
+import { createFrostFeed } from './frost-feed-service.mjs'
+import { buildLlmRequest, getLlmProviders, publicProviderState } from './frost-agent/provider-compat/runtime.mjs'
+import { createDailyKnowledgeService } from './knowledge/daily-service.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const DIST = path.join(__dirname, 'dist')
@@ -30,14 +33,10 @@ const DIST = path.join(__dirname, 'dist')
 })()
 
 const PORT = Number(process.env.API_PORT || process.env.PORT || 3008)
-// 云脑：通义 Qwen（DashScope · OpenAI 兼容）；无 key 时无云脑，各 agent 自动走规则兜底。
-const DASHSCOPE_KEY = process.env.DASHSCOPE_API_KEY || process.env.QWEN_API_KEY || ''
-const QWEN_MODEL = process.env.QWEN_MODEL || 'qwen-plus'
-const DASHSCOPE_BASE = process.env.DASHSCOPE_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1'
-// 现役云脑：通义 Qwen（DashScope）；无 key 则 LLM=null。
-const LLM = DASHSCOPE_KEY
-  ? { name: 'qwen', key: DASHSCOPE_KEY, url: `${DASHSCOPE_BASE}/chat/completions`, model: QWEN_MODEL }
-  : null
+// 云脑：Microsoft Foundry Model Router 优先，Qwen/DashScope 自动回落。
+// 两种 provider 共用 runtime；无任何 key 时 agent 继续走原有规则兜底。
+const LLM_PROVIDERS = getLlmProviders(process.env)
+const LLM = LLM_PROVIDERS[0] || null
 const UNSPLASH_KEY = process.env.UNSPLASH_ACCESS_KEY || ''
 const OLLAMA = process.env.OLLAMA_URL || 'http://localhost:11434'
 const EDGE_MODEL = process.env.EDGE_MODEL || 'qwen3:0.6b'
@@ -48,6 +47,9 @@ const EDGE_WANT = (process.env.EDGE_BACKEND || 'stub').toLowerCase() // 云上�
 const INJ_PK = process.env.INJ_PRIVATE_KEY || ''
 const INJ_NETWORK = process.env.INJ_NETWORK || 'testnet'
 const INJ_CFG = { privateKey: INJ_PK, network: INJ_NETWORK, pinataJwt: process.env.PINATA_JWT || '', cardUrl: process.env.INJ_CARD_URL || '', handshakeContract: process.env.INJ_HANDSHAKE_CONTRACT || '', rpcUrl: process.env.INJ_RPC_URL || '' }
+const FROST_FEED_TOKEN = process.env.FROST_FEED_TOKEN || ''
+const FROST_FEED = createFrostFeed({ token: FROST_FEED_TOKEN, injectiveConfig: INJ_CFG })
+const DAILY_KNOWLEDGE = createDailyKnowledgeService({ env: process.env })
 
 // ——————————————————— 工具 ———————————————————
 function sendJSON(res, obj, code = 200) {
@@ -63,31 +65,41 @@ function readBody(req) {
   })
 }
 
-// ——————————————————— /api/frost-llm（通义 Qwen 云脑） ———————————————————
+async function openLlmRequest(input) {
+  let lastStatus = 502
+  for (let index = 0; index < LLM_PROVIDERS.length; index++) {
+    const provider = LLM_PROVIDERS[index]
+    const startedAt = Date.now()
+    try {
+      const request = buildLlmRequest(provider, input)
+      const response = await fetch(request.url, { method: 'POST', headers: request.headers, body: JSON.stringify(request.body) })
+      if (response.ok) return { response, provider, fallback: index > 0, durationMs: Date.now() - startedAt }
+      lastStatus = response.status
+    } catch { lastStatus = 502 }
+  }
+  return { response: null, provider: null, fallback: false, durationMs: 0, status: lastStatus }
+}
+
+// ——————————————————— /api/frost-llm（Foundry Model Router → Qwen fallback） ———————————————————
 async function handleFrostLlm(req, res) {
   if (req.method !== 'POST') { res.statusCode = 405; res.end(); return }
   const raw = await readBody(req)
   try {
-    if (!LLM) return sendJSON(res, { text: '', error: 'no_key' })
+    if (!LLM_PROVIDERS.length) return sendJSON(res, { text: '', error: 'no_key', providers: [] })
     const { prompt, system, json, search } = JSON.parse(raw || '{}')
     const messages = []
     if (system) messages.push({ role: 'system', content: system })
     messages.push({ role: 'user', content: prompt })
-    const r = await fetch(LLM.url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: `Bearer ${LLM.key}` },
-      body: JSON.stringify({
-        model: LLM.model,
-        messages,
-        temperature: json ? 0 : 0.7, // 结构化/路由类求确定性；对话类保留创造性
-        ...(json ? { response_format: { type: 'json_object' } } : {}),
-        // 联网搜索：仅 Qwen(DashScope) 支持 enable_search，供「建图」研究流水线取真实数据。
-        ...(search && LLM.name === 'qwen' ? { enable_search: true } : {}),
-      }),
+    const opened = await openLlmRequest({ messages, json, search })
+    if (!opened.response) return sendJSON(res, { text: '', error: 'upstream_' + opened.status }, opened.status)
+    const data = await opened.response.json()
+    sendJSON(res, {
+      text: data?.choices?.[0]?.message?.content || '',
+      provider: opened.provider.name,
+      model: data?.model || opened.provider.model,
+      durationMs: opened.durationMs,
+      fallback: opened.fallback,
     })
-    if (!r.ok) return sendJSON(res, { text: '', error: 'upstream_' + r.status }, r.status)   // 透传上游 Qwen 的 429/5xx：客户端 enrichJSON 的 withRetry 才能据 r.ok 重试瞬时故障（否则恒 200+空串、重试形同虚设）
-    const data = await r.json()
-    sendJSON(res, { text: data?.choices?.[0]?.message?.content || '' })
   } catch (e) {
     sendJSON(res, { text: '', error: String(e) })
   }
@@ -101,17 +113,14 @@ async function handleFrostLlmStream(req, res) {
   res.writeHead(200, { 'content-type': 'text/event-stream; charset=utf-8', 'cache-control': 'no-cache', connection: 'keep-alive', 'x-accel-buffering': 'no' })
   const sse = (obj) => res.write(`data: ${JSON.stringify(obj)}\n\n`)
   try {
-    if (!LLM) { sse({ done: true, error: 'no_key' }); res.end(); return }
+    if (!LLM_PROVIDERS.length) { sse({ done: true, error: 'no_key' }); res.end(); return }
     const { prompt, system } = JSON.parse(raw || '{}')
     const messages = []
     if (system) messages.push({ role: 'system', content: system })
     messages.push({ role: 'user', content: prompt })
-    const r = await fetch(LLM.url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: `Bearer ${LLM.key}` },
-      body: JSON.stringify({ model: LLM.model, messages, temperature: 0.7, stream: true }),
-    })
-    if (!r.ok || !r.body) { sse({ done: true, error: 'http_' + r.status }); res.end(); return }
+    const opened = await openLlmRequest({ messages, stream: true })
+    const r = opened.response
+    if (!r || !r.body) { sse({ done: true, error: 'http_' + (opened.status || 502) }); res.end(); return }
     const reader = r.body.getReader()
     const dec = new TextDecoder()
     let buf = ''
@@ -125,11 +134,11 @@ async function handleFrostLlmStream(req, res) {
         const t = line.trim()
         if (!t.startsWith('data:')) continue
         const payload = t.slice(5).trim()
-        if (payload === '[DONE]') { sse({ done: true }); res.end(); return }
+        if (payload === '[DONE]') { sse({ done: true, provider: opened.provider.name, model: opened.provider.model, durationMs: opened.durationMs, fallback: opened.fallback }); res.end(); return }
         try { const tok = JSON.parse(payload)?.choices?.[0]?.delta?.content; if (tok) sse({ token: tok }) } catch { /* 跳过非 JSON 行 */ }
       }
     }
-    sse({ done: true }); res.end()
+    sse({ done: true, provider: opened.provider.name, model: opened.provider.model, durationMs: opened.durationMs, fallback: opened.fallback }); res.end()
   } catch (e) {
     try { sse({ done: true, error: String(e) }); res.end() } catch { /* 连接已断 */ }
   }
@@ -396,12 +405,14 @@ const server = http.createServer(async (req, res) => {
     if (p === '/api/unsplash') return await handleUnsplash(req, res, url)
     if (p === '/api/travel-mcp') return await handleTravelMcp(req, res, url)
     if (p === '/api/injective') return await handleInjective(req, res, url, INJ_CFG)
-    if (p === '/healthz') return sendJSON(res, { ok: true, edge: EDGE_WANT, llm: LLM ? LLM.name : 'off', model: LLM ? LLM.model : '', travelMcp: 'osm+openmeteo', injective: INJ_PK ? `${INJ_NETWORK}:key-set` : `${INJ_NETWORK}:read-only` })
+    if (p === '/api/frost-feed') return await FROST_FEED.handle(req, res, url)
+    if (p === '/api/knowledge') return await DAILY_KNOWLEDGE.handle(req, res, url)
+    if (p === '/healthz') return sendJSON(res, { ok: true, edge: EDGE_WANT, llm: LLM ? LLM.name : 'off', model: LLM ? LLM.model : '', providers: publicProviderState(LLM_PROVIDERS), frostFeed: FROST_FEED_TOKEN ? 'token-set' : 'off', travelMcp: 'osm+openmeteo', injective: INJ_PK ? `${INJ_NETWORK}:key-set` : `${INJ_NETWORK}:read-only` })
     return await serveStatic(req, res, p)
   } catch (e) {
     res.writeHead(500); res.end('server error')
   }
 })
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`[pocket-earth] 监听 :${PORT}  llm=${LLM ? LLM.name + '/' + LLM.model : 'off'}  edge=${EDGE_WANT}  unsplash=${UNSPLASH_KEY ? 'on' : 'off'}`)
+  console.log(`[pocket-earth] 监听 :${PORT}  llm=${LLM ? LLM.name + '/' + LLM.model : 'off'}  edge=${EDGE_WANT}  feed=${FROST_FEED_TOKEN ? 'on' : 'off'}  unsplash=${UNSPLASH_KEY ? 'on' : 'off'}`)
 })

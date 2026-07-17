@@ -1,0 +1,13 @@
+{
+  "schema": "pocket-earth-chronicle-deployment/v1",
+  "network": "Injective EVM Testnet",
+  "chainId": 1439,
+  "publisher": "0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934",
+  "contractAddress": "0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25",
+  "deploymentTransactionHash": "0x0f13a8a06c6c9e5af5d779b1b04c00cd2489a7ef3f8ac749630c4c39e1c7b0cd",
+  "blockNumber": "133816703",
+  "scanUrl": "https://testnet.blockscout.injective.network/tx/0x0f13a8a06c6c9e5af5d779b1b04c00cd2489a7ef3f8ac749630c4c39e1c7b0cd",
+  "contractScanUrl": "https://testnet.blockscout.injective.network/address/0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25",
+  "deployedAt": "2026-07-17T11:30:44.000Z",
+  "source": "INJECTIVE-INTEGRATION/contracts/DailyKnowledgeChronicle.sol"
+}
