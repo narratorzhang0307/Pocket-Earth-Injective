@@ -8,7 +8,7 @@
 
 ## 0. 一句话方案
 
-把 Pocket Earth 已有的「FROST 特使带长期口味画像出门社交、夜里回报告」叙事，**用 Injective ERC-8004 agent registry 接上真实对端**：用户的脱敏口味画像（Taste Passport）注册成链上 Agent Card（一枚 soulbound 身份 NFT），公共广场从「示意邻居」升级为「读链上真实 agent」，地图上钉出这些 agent 点，每晚 FROST 跑一趟把「在链上遇见了谁、收到什么」折成 Nightly Chain Dispatch 报告（可推到桌面硬件 Frost 播报）。**隐私原文永不上链，只上脱敏画像 + 哈希 + 时间戳；所有写操作过 Boundary；testnet-only。**
+把 Pocket Earth 已有的「FROST 特使带长期口味画像出门社交、夜里回报告」叙事，**用 Injective ERC-8004 agent registry 接上真实对端**：用户的脱敏口味画像（Taste Passport）注册成持久、公开可验证、可审计的链上 Agent Card 身份，公共广场从「示意邻居」升级为「读链上真实 agent」，地图上钉出这些 agent 点，每晚 FROST 跑一趟把「在链上遇见了谁、收到什么」折成 Nightly Chain Dispatch 报告（可推到桌面硬件 Frost 播报）。**隐私原文永不上链，只上脱敏画像 + 哈希 + 时间戳；所有写操作过 Boundary；testnet-only。**
 
 ---
 
@@ -46,7 +46,7 @@
 │                                                                                               │
 │   @injective/agent-sdk (纯 viem)                                                              │
 │   ├─ AgentClient.register({name,type,builderCode,wallet,description=Passport,services})       │
-│   │     → soulbound 身份 NFT · agentId · identityTuple(eip155:1439:registry:id) · scanUrl     │
+│   │     → 可公开验证的身份记录 · agentId · identityTuple(eip155:1439:registry:id) · scanUrl  │
 │   │     → Agent Card JSON 默认 data:application/json;base64 内联；可选托管只作为后续扩展       │
 │   ├─ AgentReadClient.listAgents()/getAgentsByOwner()/getReputation()/watchRegistrations()     │
 │   │     → 广场真实邻居 + 地图 agent 点 + Nightly Dispatch 素材                                  │
@@ -86,7 +86,7 @@
 | **脱敏口味画像**（top-K tag 字符串） | ✅ 上 | data URI Agent Card 的公开字段 | 证明性/关系性小数据，可公开名片 |
 | profile **内容指纹** | ✅ 上 | Card 版本号（`profileFingerprint`） | 哈希压缩、不可逆推原文（书 L1504） |
 | **足迹存在性凭证**（"某时钉过某点"） | ✅ 可上 | 哈希 + 时间戳（不上坐标/原文） | 存在性证明（书 L3148），P1+ |
-| **agent 身份** | ✅ 上 | soulbound NFT + identityTuple | 陌生人信任基础（书 L1666） |
+| **agent 身份** | ✅ 上 | ERC-8004 identity + identityTuple | 陌生人信任基础（书 L1666）；当前 Registry 身份可转让 |
 | **跨 agent 握手/声誉** | ✅ 上 | SocialHandshake 事件 + 安装/评价等外部回执 | 多方协作共识结果（书 §3.4①②③） |
 | **可选付费回执** | ✅ 上(P2) | Agent Plaza service receipt / optional settlement receipt | 价值转移（书 L1668） |
 | 地图渲染/心情回望/记忆装配 | ❌ 不上 | 端侧 | 高频低价值，上链=效率流失伪需求（书 L1772） |
@@ -166,7 +166,7 @@ ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport 
 > 主线：「Pocket Earth 让你的口味长出一个**链上分身**，替你在 Injective 上社交。」
 
 - **第 1 幕（0:00-0:30）出门前**：展示 Pocket Earth 地球 + 用户已有足迹（电影/书/旅行点）。旁白：「这些是你的足迹，原文永远只在你端上。但你的**口味气质**可以做成一张脱敏名片。」点开 Taste Passport，显示一句话气质 + top tags（无原文）。
-- **第 2 幕（0:30-1:10）注册上链**：点「让 FROST 出门」→ Boundary 弹「testnet-only，确认注册？」→ 服务端签名 → 几秒后弹出 `scanUrl`，打开 Injective Blockscout 看到这枚真实的 soulbound 身份 NFT + Agent Card（data URI 名片）。旁白：「这是一枚**不可转让的身份 NFT**，链上从此有了你的口味分身。」
+- **第 2 幕（0:30-1:10）注册上链**：点「让 FROST 出门」→ Boundary 弹「testnet-only，确认注册？」→ 服务端签名 → 几秒后弹出 `scanUrl`，打开 Injective Blockscout 看到真实的 ERC-8004 身份记录 + Agent Card（data URI 名片）。旁白：「这是 FROST 持久、公开可验证、可审计的链上身份，#43 从此可以被任何人独立核对。」
 - **第 3 幕（1:10-1:50）广场遇见真人**：进 Agent Plaza，邻居不再是示意——是 `listAgents` 读来的**链上真实 agent**。FrostBuddy 特使站在中间，按口味交集算相似度，高亮匹配。旁白：「广场里的每个人，都是链上真实注册的 agent。」
 - **第 4 幕（1:50-2:30）钉到地球**：切回地球，这些 agent 被钉成新一类点（agent 色），点开详情卡有 scanUrl 外链。旁白：「链上社交不是一个列表，它落在你最熟悉的地球上。」
 - **第 5 幕（2:30-3:00）夜归报告**：触发 Nightly Chain Dispatch，FROST 折出一段「今夜我在 Injective 上遇见 3 个口味相近的 agent」叙事，App 内播；（若硬件就位）桌面 Frost Buddy 同步滚动 + celebrate 态撒粒。旁白：「FROST 替你跑了一夜，回来告诉你遇见了谁——这就是 Pocket Earth × Injective。」
@@ -177,11 +177,11 @@ ChatGPT 方案 7 功能：Injective Connect / Frost Agent Card / Taste Passport 
 
 ## 7. Pitch 要点（对齐评估 5 维）
 
-- **创新**：把「个人口味画像」做成**链上 soulbound 身份 + 脱敏名片**，让 AI agent 之间按口味社交——不是又一个交易 bot，而是 ERC-8004 身份层在「记忆/探索」场景的原创落地。地球作为链上社交的可视化载体是独有辨识度。
+- **创新**：把「个人口味画像」做成**可公开验证的链上身份 + 脱敏名片**，让 AI agent 之间按口味社交——不是又一个交易 bot，而是 ERC-8004 身份层在「记忆/探索」场景的原创落地。地球作为链上社交的可视化载体是独有辨识度。
 - **技术**：纯 viem 最小依赖、ERC-8004 标准、data URI 内联 Agent Card、profileFingerprint 当版本键、suggest-then-validate Boundary 包链上写、服务端密钥隔离、dryRun 可验证。架构图清晰、有 file:line 级集成点。
 - **应用价值**：解决「agent 社交缺真实可信对端」的真问题；隐私友好（原文不上链）；声誉系统给陌生 agent 协作提供信任基础。
 - **用户体验**：零新 UI 学习成本（长在既有 PublicPlazaPage / 地球上）；FROST 特使 + 夜间报告的情感化叙事；硬件 Frost 让链上事件「看得见摸得着」。
-- **生态契合**：用 Injective 官方 Agent SDK + ERC-8004 registry + testnet，未来可接 Agent Plaza 服务回执、MCP 侧车；soulbound 身份 + 声誉正是 Injective agent 生态的基础设施使用方。
+- **生态契合**：用 Injective 官方 Agent SDK + ERC-8004 registry + testnet，未来可接 Agent Plaza 服务记录、MCP 侧车；公开可验证的身份与可追溯服务历史正是 Injective agent 生态的基础设施使用方。当前 Registry 身份可转让，历史信誉不自动等于新运营者信誉。
 
 ---
 

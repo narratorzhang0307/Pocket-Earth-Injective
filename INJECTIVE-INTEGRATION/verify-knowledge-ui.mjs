@@ -14,7 +14,7 @@ const checks = [
   ['Injective anchor link is rendered from API', page.includes('data.edition.anchor.scanUrl') && page.includes('INJECTIVE 已锚定')],
   ['agent console routes to knowledge page', tab.includes("'daily-knowledge': 'knowledge'") && tab.includes('<DailyKnowledgePage')],
   ['plaza card links real Chronicle contract', catalog.includes('0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25') && catalog.includes("runTarget: 'daily-knowledge'")],
-  ['competition plaza UI has no payment pitch', !/(付费|支付|结算|售价|创作者收入)/.test(plaza) && !/(付费|支付|结算|售价|创作者收入)/.test(tab)],
+  ['final plaza UI has no payment pitch', !/(付费|支付|结算|售价|创作者收入)/.test(plaza) && !/(付费|支付|结算|售价|创作者收入)/.test(tab)],
 ]
 
 let failed = false

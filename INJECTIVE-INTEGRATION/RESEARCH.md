@@ -10,7 +10,7 @@
 
 ## 0. 一句话结论
 
-Pocket Earth 已经有一套「FROST 特使带长期口味画像出门社交、夜里回来给报告」的完整叙事壳（`PublicPlazaPage.tsx`），但缺真实对端。Injective 的 **ERC-8004 agent registry**（`@injective/agent-sdk`，纯 viem）恰好把这个洞补上：每个 agent 是一枚 soulbound 身份 NFT + `data:application/json;base64` Agent Card。集成主线 = **Taste Passport（脱敏画像）→ Agent Card → 注册到 testnet → 读 registry 渲染广场/钉地球 → Nightly Chain Dispatch 报告**。私钥风险压到最后、testnet-only，写操作一律过 Boundary（`validator.ts`）。
+Pocket Earth 已经有一套「FROST 特使带长期口味画像出门社交、夜里回来给报告」的完整叙事壳（`PublicPlazaPage.tsx`），但缺真实对端。Injective 的 **ERC-8004 agent registry**（`@injective/agent-sdk`，纯 viem）恰好把这个洞补上：每个 agent 拥有持久、公开可验证、可审计的 ERC-8004 身份记录 + `data:application/json;base64` Agent Card。当前 IdentityRegistry 已通过 `transferFrom` 只读模拟确认身份可以转让。集成主线 = **Taste Passport（脱敏画像）→ Agent Card → 注册到 testnet → 读 registry 渲染广场/钉地球 → Nightly Chain Dispatch 报告**。私钥风险压到最后、testnet-only，写操作一律过 Boundary（`validator.ts`）。
 
 ---
 
