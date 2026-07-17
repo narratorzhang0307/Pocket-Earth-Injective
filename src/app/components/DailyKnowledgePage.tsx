@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle, Check, ChevronLeft, Database, Download, ExternalLink,
   Link2, LoaderCircle, RadioTower, RefreshCw, ShieldCheck,
@@ -16,15 +16,15 @@ interface ProofResult {
   verified: boolean;
 }
 
-const TOPICS: { key: KnowledgeTopic; label: string; subtitle: string }[] = [
-  { key: 'ai', label: 'AI', subtitle: '模型与产品' },
-  { key: 'technology', label: '科技', subtitle: '芯片与机器人' },
-  { key: 'finance', label: '金融', subtitle: '链上与市场' },
-  { key: 'climate', label: '气候', subtitle: '能源与环境' },
-  { key: 'science', label: '科学', subtitle: '研究与发现' },
-  { key: 'health', label: '健康', subtitle: '医学与生命' },
-  { key: 'culture', label: '文化', subtitle: '城市与遗产' },
-  { key: 'policy', label: '政策', subtitle: '社会与制度' },
+const TOPICS: { key: KnowledgeTopic; label: string; subtitle: string; color: string }[] = [
+  { key: 'ai', label: 'AI', subtitle: '模型产品', color: '#7CFF6B' },
+  { key: 'technology', label: '科技', subtitle: '芯片机器', color: '#7c5cff' },
+  { key: 'finance', label: '金融', subtitle: '市场监管', color: '#f4c542' },
+  { key: 'climate', label: '气候', subtitle: '能源环境', color: '#35d4c7' },
+  { key: 'science', label: '科学', subtitle: '研究发现', color: '#ff5ca8' },
+  { key: 'health', label: '健康', subtitle: '医学生命', color: '#ff756d' },
+  { key: 'culture', label: '文化', subtitle: '城市遗产', color: '#d3c0ff' },
+  { key: 'policy', label: '政策', subtitle: '社会制度', color: '#b8d2ff' },
 ];
 
 const VERDICTS: Record<KnowledgeVerdict, { label: string; color: string }> = {
@@ -128,9 +128,11 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
   const [data, setData] = useState<DailyKnowledgeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollRef.current?.scrollTo({ top: 0 });
     const controller = new AbortController();
     setLoading(true);
     setError(false);
@@ -149,12 +151,12 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [topic]);
+  }, [topic, reloadKey]);
 
   return (
     <div className="h-full flex flex-col font-sans overflow-hidden bg-[#EAEAEA]">
       <header className="flex items-center gap-2 px-3 py-2.5 border-b-2 border-black bg-white shrink-0">
-        <button onClick={onBack} className="w-8 h-8 border-2 border-black bg-white flex items-center justify-center shadow-[1px_1px_0_#000] active:translate-y-px">
+        <button type="button" onClick={onBack} aria-label="返回上一层" className="w-9 h-9 border-2 border-black bg-white flex items-center justify-center shadow-[1px_1px_0_#000] active:translate-y-px">
           <ChevronLeft className="w-4 h-4" strokeWidth={3} />
         </button>
         <div className="flex-1 min-w-0">
@@ -167,39 +169,40 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
       <div className="bg-black text-[#7CFF6B] px-3 py-2 border-b-2 border-black shrink-0">
         <div className="font-pixel text-[8px] flex items-center justify-between tracking-wider">
           <span>PUBLIC KNOWLEDGE</span>
-          <span className="text-white/35">PRIVATE MEMORY STAYS LOCAL</span>
+          <span className="text-white/60">PRIVATE MEMORY STAYS LOCAL</span>
         </div>
       </div>
 
-      <main className="flex-1 overflow-y-auto px-3 py-3 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-3" data-testid="daily-knowledge-scroll">
-        <section className="relative overflow-hidden border-2 border-black bg-[#e7efff] p-3 shadow-[2px_2px_0_#000]">
+      <main ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-3" data-testid="daily-knowledge-scroll">
+        <section className="relative overflow-hidden border-2 border-black bg-[#e7efff] p-2.5 shadow-[2px_2px_0_#000]">
           <div className="absolute -right-5 -top-6 h-20 w-20 rounded-full border-2 border-black/15 bg-white/45" />
           <div className="relative font-pixel text-[9px] tracking-wider">今天值得留下什么？</div>
           <p className="relative text-[10px] text-black/65 leading-[1.55] mt-1.5 pr-5">Agent 筛选公共信息、交叉核验来源并生成每日知识版次；Injective 保存确定性的版次锚点，不上传你的私人记忆。</p>
         </section>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-4 gap-1.5" aria-label="公共知识领域">
           {TOPICS.map((item) => (
             <button key={item.key} onClick={() => setTopic(item.key)} aria-pressed={topic === item.key}
-              className={`min-h-14 border-2 border-black p-2 text-left active:translate-y-px ${topic === item.key ? 'bg-[#2357d9] text-white shadow-[2px_2px_0_#000]' : 'bg-white text-black'}`}>
-              <span className="block font-pixel text-[9px]">{item.label}</span>
-              <span className={`block text-[8px] mt-1 ${topic === item.key ? 'text-white/65' : 'text-black/45'}`}>{item.subtitle}</span>
+              className={`relative min-h-14 overflow-hidden border-2 border-black px-1.5 pb-1.5 pt-2.5 text-left active:translate-y-px ${topic === item.key ? 'bg-black text-white shadow-[2px_2px_0_#000]' : 'bg-white text-black'}`}>
+              <span className="absolute inset-x-0 top-0 h-1" style={{ background: item.color }} />
+              <span className="block font-pixel text-[8px]">{item.label}</span>
+              <span className={`block text-[7px] mt-1 leading-tight ${topic === item.key ? 'text-white/65' : 'text-black/45'}`}>{item.subtitle}</span>
             </button>
           ))}
         </div>
 
         {loading && (
-          <div className="border-2 border-black bg-white p-8 flex flex-col items-center gap-3">
+          <div className="border-2 border-black bg-white p-6 flex flex-col items-center gap-3" aria-live="polite">
             <LoaderCircle className="w-5 h-5 animate-spin" />
             <span className="font-pixel text-[8px]">READING EDITION…</span>
           </div>
         )}
 
         {error && (
-          <div className="border-2 border-black bg-[#ffe4e1] p-4 text-center">
+          <div className="border-2 border-black bg-[#ffe4e1] p-4 text-center" role="alert">
             <AlertTriangle className="w-5 h-5 mx-auto mb-2" />
             <p className="text-[11px]">公共知识服务暂时不可用。</p>
-            <button onClick={() => setTopic((value) => value === 'ai' ? 'finance' : 'ai')}
+            <button type="button" onClick={() => setReloadKey((value) => value + 1)}
               className="mt-3 border-2 border-black bg-white px-3 py-1.5 font-pixel text-[7px] inline-flex items-center gap-1">
               <RefreshCw className="w-3 h-3" />重新读取
             </button>
@@ -230,7 +233,7 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
                   <div className="grid grid-cols-3 gap-1.5 mt-2 text-center">
                     <div className="border border-black bg-[#f5f5f5] p-1.5"><span className="block font-pixel text-[9px]">{data.edition.factCount}</span><span className="text-[7px] text-black/45">FACTS</span></div>
                     <div className="border border-black bg-[#f5f5f5] p-1.5"><span className="block font-pixel text-[9px]">R{data.edition.revision}</span><span className="text-[7px] text-black/45">REVISION</span></div>
-                    <div className="border border-black bg-[#f5f5f5] p-1.5"><span className="block font-pixel text-[9px]">{data.mode === 'live' ? 'LIVE' : 'DEMO'}</span><span className="text-[7px] text-black/45">MODE</span></div>
+                    <div className="border border-black bg-[#f5f5f5] p-1.5"><span className="block font-pixel text-[9px]">{data.mode === 'live' ? 'LIVE' : 'CURATED'}</span><span className="text-[7px] text-black/45">MODE</span></div>
                   </div>
                   <code className="block mt-2 text-[8px] text-black/45 truncate">ROOT {shortHash(data.edition.editionRoot, 14, 10)}</code>
                   <div className="mt-2 grid grid-cols-2 gap-2">
