@@ -71,6 +71,10 @@ for (const agent of FLEET_AGENTS) {
   assertEqual(`agent ${id} wallet`, status.wallet, PROOF_OWNER)
   assertEqual(`agent ${id} builderCode`, status.builderCode, BUILDER_CODE)
   assertEqual(`agent ${id} identity registry`, String(status.identityTuple || '').split(':')[2], IDENTITY_REGISTRY)
+  if (id === '43') {
+    assertEqual('agent 43 stable display name', status.name, 'FROST')
+    assertEqual('agent 43 name fallback is explicit', status.nameSource, 'committed-fleet-label')
+  }
   if (agent.requiredTag) {
     assertEqual(`agent ${id} decoded card builderCode`, status.card?.metadata?.builderCode, BUILDER_CODE)
     assertEqual(`agent ${id} decoded card chain`, status.card?.metadata?.chain, 'injective')

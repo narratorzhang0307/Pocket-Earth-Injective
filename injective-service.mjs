@@ -64,9 +64,11 @@ async function getRegistryStatus(agentId, cfg, network) {
     try { return decodeAbiParameters([{ type: 'string' }], value)[0] } catch { return '' }
   }
   const card = decodeDataCard(tokenUri)
+  const fallbackName = id === 43n ? 'FROST' : FLEET_AGENTS.find((agent) => agent.id === id)?.label
   return {
     agentId: id,
-    name: card?.name || `Agent ${id}`,
+    name: card?.name || fallbackName || `Agent ${id}`,
+    nameSource: card ? 'token-uri-card' : fallbackName ? 'committed-fleet-label' : 'generic-fallback',
     type: decodeMetadata(agentTypeRaw),
     owner,
     wallet,
