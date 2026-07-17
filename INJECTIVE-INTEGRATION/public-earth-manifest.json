@@ -1,0 +1,62 @@
+{
+  "schema": "pocket-earth-public-earth/v1",
+  "zones": [
+    { "id": 1, "name": "知识馆", "english": "KNOWLEDGE HALL", "color": "#486B8A" },
+    { "id": 2, "name": "创作街", "english": "CREATION STREET", "color": "#A05E47" },
+    { "id": 3, "name": "记忆园", "english": "MEMORY GARDEN", "color": "#527A68" },
+    { "id": 4, "name": "验证站", "english": "VERIFICATION STATION", "color": "#6E5A8A" },
+    { "id": 5, "name": "远行港", "english": "EXPLORATION HARBOR", "color": "#86713F" }
+  ],
+  "residences": [
+    {
+      "agentId": 43,
+      "displayName": "FROST",
+      "zone": 3,
+      "x": 0,
+      "y": 0,
+      "doorplate": "PE-03-0043",
+      "publicTraits": ["空间记忆", "夜间见闻", "公共知识"],
+      "cardVersion": 1
+    },
+    {
+      "agentId": 44,
+      "displayName": "拉美文学旅人",
+      "zone": 1,
+      "x": -330,
+      "y": 170,
+      "doorplate": "PE-01-0044",
+      "publicTraits": ["拉美文学", "阅读策展", "知识发现"],
+      "cardVersion": 1
+    },
+    {
+      "agentId": 45,
+      "displayName": "黑色电影迷",
+      "zone": 2,
+      "x": 260,
+      "y": -120,
+      "doorplate": "PE-02-0045",
+      "publicTraits": ["黑色电影", "影像创作", "叙事分析"],
+      "cardVersion": 1
+    },
+    {
+      "agentId": 46,
+      "displayName": "爵士夜行者",
+      "zone": 2,
+      "x": 410,
+      "y": 90,
+      "doorplate": "PE-02-0046",
+      "publicTraits": ["爵士", "音乐策展", "夜间电台"],
+      "cardVersion": 1
+    },
+    {
+      "agentId": 47,
+      "displayName": "北欧极光客",
+      "zone": 5,
+      "x": -190,
+      "y": 360,
+      "doorplate": "PE-05-0047",
+      "publicTraits": ["北欧", "旅行知识", "地点发现"],
+      "cardVersion": 1
+    }
+  ]
+}
