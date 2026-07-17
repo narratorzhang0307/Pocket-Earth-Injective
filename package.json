@@ -51,7 +51,8 @@
     "verify:public-earth-live": "node INJECTIVE-INTEGRATION/verify-public-earth-live.mjs",
     "verify:public-earth-api": "node INJECTIVE-INTEGRATION/verify-public-earth-api.mjs",
     "verify:public-earth-ui": "node INJECTIVE-INTEGRATION/verify-public-earth-ui.mjs",
-    "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs"
+    "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs",
+    "verify:competition-deploy": "node INJECTIVE-INTEGRATION/verify-competition-deploy.mjs"
   },
   "dependencies": {
     "@injective/agent-sdk": "file:INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk",
