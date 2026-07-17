@@ -1,12 +1,14 @@
 // Verify the wallet-level evidence chain shown in the demo.
 // Usage: node INJECTIVE-INTEGRATION/verify-wallet-flow.mjs
 import { createPublicClient, decodeEventLog, decodeFunctionData, defineChain, http, parseAbi, parseAbiItem } from 'viem'
+import { getPublicTransactionEvidence } from './public-transaction-evidence.mjs'
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
 const OWNER = '0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934'
 const REGISTRY = '0x8004A818BFB912233c491871b3d84c89A494BD9e'
 const HANDSHAKE_CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
 const REGISTER_TX = '0xd2b574dee473a0eecd550535e23445accfd49c326a443796a496ea85d8b10554'
+const DEPLOY_TX = '0x6048425a7da4516d5041e815228b0e08099c6f72e00f708bbb2a9363abbfa722'
 const HANDSHAKE_TX = '0x0e597f334c6517b993d61ce9cfe372a88bbbf2c308d181c90bfe23c36a63f2d6'
 const ZERO_BYTES32 = '0x' + '0'.repeat(64)
 const PROFILE_HASH_A = '0x7e8a254adf8ec98cacbf4f998433553532045748f6973d1be1e7a94d06165fb9'
@@ -58,18 +60,19 @@ async function assertHttp200(label, url) {
 
 const client = createPublicClient({ chain, transport: http() })
 
-const [registerTx, registerReceipt, handshakeTx, handshakeReceipt, handshakeCode] = await Promise.all([
-  client.getTransaction({ hash: REGISTER_TX }),
-  client.getTransactionReceipt({ hash: REGISTER_TX }),
-  client.getTransaction({ hash: HANDSHAKE_TX }),
-  client.getTransactionReceipt({ hash: HANDSHAKE_TX }),
+const [registerEvidence, deployEvidence, handshakeEvidence, handshakeCode] = await Promise.all([
+  getPublicTransactionEvidence(client, REGISTER_TX),
+  getPublicTransactionEvidence(client, DEPLOY_TX),
+  getPublicTransactionEvidence(client, HANDSHAKE_TX),
   client.getCode({ address: HANDSHAKE_CONTRACT }),
 ])
-const [registerBlock, handshakeBlock, handshakeCodeBeforeTx] = await Promise.all([
-  client.getBlock({ blockNumber: registerReceipt.blockNumber }),
-  client.getBlock({ blockNumber: handshakeReceipt.blockNumber }),
-  client.getCode({ address: HANDSHAKE_CONTRACT, blockNumber: handshakeReceipt.blockNumber - 1n }),
-])
+const { tx: registerTx, receipt: registerReceipt, block: registerBlock } = registerEvidence
+const { tx: deployTx, receipt: deployReceipt } = deployEvidence
+const { tx: handshakeTx, receipt: handshakeReceipt, block: handshakeBlock } = handshakeEvidence
+
+assertTrue('registration evidence source is public', ['injective-rpc', 'injective-blockscout'].includes(registerEvidence.evidenceSource))
+assertTrue('deployment evidence source is public', ['injective-rpc', 'injective-blockscout'].includes(deployEvidence.evidenceSource))
+assertTrue('handshake evidence source is public', ['injective-rpc', 'injective-blockscout'].includes(handshakeEvidence.evidenceSource))
 
 console.log('Registration transaction')
 assertEqual('register tx.from', registerTx.from, OWNER)
@@ -86,7 +89,10 @@ assertEqual('register event owner', transfer.args.to, OWNER)
 
 console.log('\nHandshake contract and transaction')
 assertTrue('SocialHandshake contract code deployed', typeof handshakeCode === 'string' && handshakeCode.length > 2)
-assertTrue('SocialHandshake code existed before handshake tx', typeof handshakeCodeBeforeTx === 'string' && handshakeCodeBeforeTx.length > 2)
+assertEqual('deployment tx.from', deployTx.from, OWNER)
+assertEqual('deployment receipt.status', deployReceipt.status, 'success')
+assertEqual('deployment contract address', deployReceipt.contractAddress, HANDSHAKE_CONTRACT)
+assertTrue('SocialHandshake deployment is before handshake tx', deployReceipt.blockNumber < handshakeReceipt.blockNumber)
 assertEqual('handshake tx.from', handshakeTx.from, OWNER)
 assertEqual('handshake tx.to', handshakeTx.to, HANDSHAKE_CONTRACT)
 assertEqual('handshake receipt.status', handshakeReceipt.status, 'success')

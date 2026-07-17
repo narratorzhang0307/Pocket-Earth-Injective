@@ -1,6 +1,7 @@
 // Verify the real SocialHandshake transaction on Injective testnet.
 // Usage: node INJECTIVE-INTEGRATION/verify-handshake.mjs
 import { createPublicClient, decodeEventLog, decodeFunctionData, defineChain, http, keccak256, parseAbi } from 'viem'
+import { getPublicTransactionEvidence } from './public-transaction-evidence.mjs'
 
 const RPC = 'https://testnet.sentry.chain.json-rpc.injective.network'
 const CONTRACT = '0xe5338a162a44a685201e1f6120b1a851949e3aee'
@@ -65,10 +66,9 @@ const encoder = new TextEncoder()
 assertEqual('profileHashA derivation', keccak256(encoder.encode(HASH_INPUTS.profileHashA)), EXPECTED.profileHashA)
 assertEqual('profileHashB derivation', keccak256(encoder.encode(HASH_INPUTS.profileHashB)), EXPECTED.profileHashB)
 
-const tx = await client.getTransaction({ hash: TX_HASH })
-const receipt = await client.getTransactionReceipt({ hash: TX_HASH })
-const block = await client.getBlock({ blockNumber: receipt.blockNumber })
+const { tx, receipt, block, evidenceSource } = await getPublicTransactionEvidence(client, TX_HASH)
 
+assertTrue('transaction evidence source is public', ['injective-rpc', 'injective-blockscout'].includes(evidenceSource))
 assertEqual('tx.to', tx.to, CONTRACT)
 assertEqual('receipt.status', receipt.status, 'success')
 
