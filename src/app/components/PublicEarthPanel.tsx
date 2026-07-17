@@ -54,7 +54,7 @@ function GlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; se
           const top = 50 - (item.y / 500) * 38;
           const active = item.agentId === selected.agentId;
           return (
-            <button key={item.agentId} onClick={() => onSelect(item)} aria-label={`选择 ${item.displayName} ${item.doorplate}`}
+            <button type="button" key={item.agentId} onClick={() => onSelect(item)} aria-label={`选择 ${item.displayName} ${item.doorplate}`}
               className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group"
               style={{ left: `${left}%`, top: `${top}%`, zIndex: active ? 5 : 2 }}>
               <span className={`w-7 h-7 border-2 border-black flex items-center justify-center font-pixel text-[7px] text-white ${active ? 'scale-125 shadow-[2px_2px_0_#000]' : 'shadow-[1px_1px_0_#000]'}`}
@@ -91,11 +91,18 @@ function GlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; se
 }
 
 function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
+  const selectedIndex = Math.max(0, data.residences.findIndex((item) => item.agentId === selected.agentId));
+
   return (
     <div>
-      <div className="flex gap-2 overflow-x-auto pt-3 pb-2 snap-x snap-mandatory">
+      <div className="mt-3 flex items-center justify-between font-pixel text-[7px] tracking-wide text-black/55">
+        <span>IDENTITY DECK · {data.residences.length} CARDS</span>
+        <span>{selectedIndex + 1} / {data.residences.length} · SWIPE →</span>
+      </div>
+      <div className="flex gap-2 overflow-x-auto pt-2 pb-2 snap-x snap-mandatory">
         {data.residences.map((item) => (
-          <button key={item.agentId} onClick={() => onSelect(item)}
+          <button type="button" key={item.agentId} onClick={() => onSelect(item)} aria-label={`选择 ${item.displayName} 身份卡 ${item.doorplate}`}
+            aria-pressed={item.agentId === selected.agentId}
             className={`snap-center shrink-0 w-[220px] min-h-[285px] text-left border-[3px] border-black p-3 shadow-[4px_4px_0_#000] ${item.agentId === selected.agentId ? 'bg-white' : 'bg-[#dddcd6]'}`}>
             <div className="flex items-start justify-between gap-2">
               <div>
@@ -162,11 +169,11 @@ export default function PublicEarthPanel() {
       </div>
 
       <div className="grid grid-cols-2 gap-2 mt-3">
-        <button onClick={() => setView('earth')} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-black text-white' : 'bg-white'}`}>
-          <Globe2 className="w-3.5 h-3.5" />地球 · 门牌
+        <button type="button" onClick={() => setView('earth')} aria-pressed={view === 'earth'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-black text-white' : 'bg-white'}`}>
+          <Globe2 className="w-3.5 h-3.5" aria-hidden="true" />地球 · 门牌
         </button>
-        <button onClick={() => setView('cards')} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
-          <IdCard className="w-3.5 h-3.5" />身份 · 卡牌
+        <button type="button" onClick={() => setView('cards')} aria-pressed={view === 'cards'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
+          <IdCard className="w-3.5 h-3.5" aria-hidden="true" />身份 · 卡牌
         </button>
       </div>
 

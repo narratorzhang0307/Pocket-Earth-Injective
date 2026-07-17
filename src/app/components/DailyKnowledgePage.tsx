@@ -173,7 +173,13 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
         </div>
       </div>
 
-      <main ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-3" data-testid="daily-knowledge-scroll">
+      <div
+        ref={scrollRef}
+        role="region"
+        aria-label="每日公共知识版次"
+        className="flex-1 overflow-y-auto px-3 py-3 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-3"
+        data-testid="daily-knowledge-scroll"
+      >
         <section className="relative overflow-hidden border-2 border-black bg-[#e7efff] p-2.5 shadow-[2px_2px_0_#000]">
           <div className="absolute -right-5 -top-6 h-20 w-20 rounded-full border-2 border-black/15 bg-white/45" />
           <div className="relative font-pixel text-[9px] tracking-wider">今天值得留下什么？</div>
@@ -262,7 +268,7 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
             </div>
           </>
         )}
-      </main>
+      </div>
     </div>
   );
 }

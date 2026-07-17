@@ -17,6 +17,7 @@ export default function PublicEarthPage() {
         <button
           type="button"
           onClick={() => setKnowledgeOpen(true)}
+          aria-label="打开公共知识层与今日可验证版次"
           className="w-full text-left border-[3px] border-black bg-[#e7efff] p-3 shadow-[3px_3px_0_#000] active:translate-y-px"
           data-testid="public-knowledge-entry"
         >
