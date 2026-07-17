@@ -8,16 +8,26 @@ Pocket Earth 是空间 Agent 平台：私人记忆钉在自己的地球上，公
 
 > Pocket Earth is a spatial agent platform where private memories stay personal, public knowledge becomes verifiable daily editions, and probabilistic agents are backed by deterministic identity and provenance on Injective.
 
-## PPT 页内建议
+## 决赛终版 · 12 页逐页分镜
 
-1. **Problem**：书、电影、音乐、照片、行程和心情散落在不同工具里；公共信息又缺少来源、版次和复验入口。
-2. **Private Earth**：Pocket Earth 用真实地点组织私人知识；Frost-agent 端云双脑负责挑选、寻找、表达和反思，原始记忆与精确坐标不上链。
-3. **Public Earth**：公共地球是空间 Agent 社会的关系层。Injective ERC-8004 身份回答“它是谁”，`PublicEarthRegistry` 的象征性分区与门牌回答“去哪里找到它”；地球视图看关系，身份卡视图看可验证对象。
-4. **Agent Platform**：Agent Forge 把自然语言需求编译为声明式 manifest；Agent Plaza 按空间对象、权限、端/云运行位置和链上身份审核、发布、安装与运行 Agent。
-5. **Public Chronicle**：Daily Knowledge Curator 筛选 AI 与金融领域公共知识，保存来源、verdict、truthScore、recordHash 与 Merkle proof，生成每日知识版次。用户可以下载自包含验证包，在本地重算记录哈希和 Merkle 路径，再与 Injective 上的版次根核对。
-6. **Injective proof**：Injective ERC-8004 `agentId 43-47` 是公开可验证的 Frost 身份；`PublicEarthRegistry` 已为五个身份写入门牌与卡面哈希；`DailyKnowledgeChronicle` 合约保存每日版次 head。当前公共地球合约为 `0xac7cbe6ee92298487d4349b54e2b2c876232ee1b`，知识合约为 `0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25`，2026-07-17 版次已更新到 revision 2。
-7. **Physical Agent**：Frost Edge Node 让同一 Agent 拥有物理出口。Raspberry Pi 只消费公开 JSONL 事件，把 music-agent、知识版次和 Injective `chain_dispatch` 链上见闻映射成屏幕、TTS 与 LED 反馈。
-8. **Model Routing**：统一 provider 层已经支持 Microsoft Foundry Model Router 主路由与 Qwen 降级。只有真实 Azure 请求完成后，才在台上表述为已接入；此前只展示已完成的适配器与验证骨架。
+最终 deck 固定为 `Pocket Earth · Injective 决赛终版.pptx`，只保留一条从用户问题到 Injective 公开证明的主线。现场讲述按下表推进，不临时增页。
+
+| 页 | 任务 | 现场讲法 | 画面动作 |
+|---|---|---|---|
+| 1 | 定位 | 「Pocket Earth 是空间 Agent 平台：私人记忆留在自己的地球，公共身份与知识版次由 Injective 公开见证。」 | 标题停留 8 秒；指出 #43–47、PublicEarthRegistry 与 Chronicle R2 三条证据。 |
+| 2 | 用户问题 | 记忆碎片散落、按时间记不牢、记录沉底、工具不懂人、隐私不敢交。 | 不展开技术，快速建立真实需求。 |
+| 3 | 产品方法 | 地理坐标不是背景图，而是统一组织书、影、乐、照片、行程与心情的索引。 | 从“时间轴”切到“地点轴”。 |
+| 4 | Agent 内核 | 主 Frost 只做委派，专门子 Agent 在隔离上下文中工作，并由 harness 保持失败可降级。 | 用 CEO 委派解释可组合性，不把 Agent 说成智能合约。 |
+| 5 | 平台闭环 | Forge 负责创建，Plaza 负责审核与安装，Public Plaza 负责发现真实链上分身。 | 口播 `CREATE → REVIEW → PUBLISH → INSTALL → RUN`。 |
+| 6 | Public Earth | 头像回答“我是谁”，门牌回答“我在哪”；地球看关系，身份卡看可验证对象。 | 展示真实手机 UI、#43 门牌和五个链上身份；强调不是虚拟土地。 |
+| 7 | Public Knowledge | 每日知识可以下载、带走并在本地重算 Merkle proof；私人记忆始终不进入资源包。 | 展示 revision 2、离线验真、PUBLIC ONLY 和五领域 worker。 |
+| 8 | Injective proof | 链下 Agent 是概率程序，Injective 给身份、门牌、知识版次和时间线确定性的公开锚点。 | 依次指向 ERC-8004、PublicEarthRegistry、DailyKnowledgeChronicle 与 Blockscout/API。 |
+| 9 | 隐私边界 | 「把可验证交给链，把隐私留在端。」 | 对比 ON-CHAIN 与 ON-DEVICE；强调 testnet only、设备不持密钥。 |
+| 10 | Physical Agent | 同一条公开事件 feed 驱动 Raspberry Pi 的屏幕、LED 和 TTS；软件不绑定任何具体驱动。 | 实物放桌面，播放链上见闻；若真机异常则切备份录像。 |
+| 11 | Microsoft Foundry | provider 层选择合适模型，但不改变 Agent manifest；Injective 仍是公开信任层。 | 真实 Azure 验收通过才展示真实响应，否则只讲适配器与严格验收入口。 |
+| 12 | 收束 | 「趁生命气息逗留，把世界钉回它该在的地方。」 | 回到可打开的产品入口和三条独立可核对证据，停在二维码/网址供评委拍摄。 |
+
+正式 deck 已完成全尺寸逐页检查，并通过 `slides_test.py` 溢出检测、模板保真检查和空占位符 XML 检查。比赛前只允许替换最终网址、二维码或已取得的真实 Azure 验收状态，不再改变页序与叙事骨架。
 
 ## 讲法边界
 
