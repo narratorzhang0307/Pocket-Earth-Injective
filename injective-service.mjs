@@ -566,28 +566,56 @@ export async function handleInjective(req, res, url, cfg = {}) {
       const client = createPublicClient({ chain, transport: http(rpcUrl) })
       const events = []
       for (const expected of TIMELINE_EVENTS) {
-        const [tx, receipt] = await Promise.all([
-          client.getTransaction({ hash: expected.hash }),
-          client.getTransactionReceipt({ hash: expected.hash }),
-        ])
-        const block = await client.getBlock({ blockNumber: receipt.blockNumber })
-        const timestamp = new Date(Number(block.timestamp) * 1000).toISOString()
-        if (!sameAddress(tx.from, PROOF_OWNER)) throw new Error(`timeline_from_mismatch:${expected.role}`)
-        if (!sameAddress(tx.to, expected.to)) throw new Error(`timeline_to_mismatch:${expected.role}`)
-        if (String(receipt.status) !== 'success') throw new Error(`timeline_receipt_failed:${expected.role}`)
-        if (receipt.blockNumber !== expected.blockNumber) throw new Error(`timeline_block_mismatch:${expected.role}`)
+        let event
+        try {
+          const [tx, receipt] = await Promise.all([
+            client.getTransaction({ hash: expected.hash }),
+            client.getTransactionReceipt({ hash: expected.hash }),
+          ])
+          const block = await client.getBlock({ blockNumber: receipt.blockNumber })
+          event = {
+            from: tx.from,
+            to: tx.to,
+            status: receipt.status,
+            blockNumber: receipt.blockNumber,
+            timestamp: new Date(Number(block.timestamp) * 1000).toISOString(),
+            contractAddress: receipt.contractAddress || null,
+            evidenceSource: 'injective-rpc',
+          }
+        } catch {
+          // Public RPC nodes may prune older receipts. Blockscout is the public archive fallback,
+          // not a fixture: every field below still comes from the Injective testnet explorer API.
+          const response = await fetch(`https://testnet.blockscout-api.injective.network/api/v2/transactions/${expected.hash}`, { signal: AbortSignal.timeout(15000) })
+          if (!response.ok) throw new Error(`timeline_archive_${response.status}:${expected.role}`)
+          const archived = await response.json()
+          event = {
+            from: archived?.from?.hash || null,
+            to: archived?.to?.hash || null,
+            status: archived?.status === 'ok' ? 'success' : String(archived?.status || 'failed'),
+            blockNumber: BigInt(archived?.block_number || 0),
+            timestamp: new Date(archived?.timestamp).toISOString(),
+            contractAddress: archived?.created_contract?.hash || null,
+            evidenceSource: 'injective-blockscout',
+          }
+        }
+        if (!sameAddress(event.from, PROOF_OWNER)) throw new Error(`timeline_from_mismatch:${expected.role}`)
+        if (!sameAddress(event.to, expected.to)) throw new Error(`timeline_to_mismatch:${expected.role}`)
+        if (String(event.status) !== 'success') throw new Error(`timeline_receipt_failed:${expected.role}`)
+        if (event.blockNumber !== expected.blockNumber) throw new Error(`timeline_block_mismatch:${expected.role}`)
+        const timestamp = event.timestamp
         if (timestamp !== expected.timestamp) throw new Error(`timeline_time_mismatch:${expected.role}`)
-        if (expected.contractAddress && !sameAddress(receipt.contractAddress, expected.contractAddress)) throw new Error(`timeline_contract_mismatch:${expected.role}`)
+        if (expected.contractAddress && !sameAddress(event.contractAddress, expected.contractAddress)) throw new Error(`timeline_contract_mismatch:${expected.role}`)
         events.push({
           label: expected.label,
           role: expected.role,
           hash: expected.hash,
-          from: tx.from,
-          to: tx.to,
-          status: receipt.status,
-          blockNumber: receipt.blockNumber,
+          from: event.from,
+          to: event.to,
+          status: event.status,
+          blockNumber: event.blockNumber,
           timestamp,
-          contractAddress: receipt.contractAddress || null,
+          contractAddress: event.contractAddress,
+          evidenceSource: event.evidenceSource,
           scanUrl: scanUrlForTx(expected.hash),
         })
       }
@@ -612,6 +640,7 @@ export async function handleInjective(req, res, url, cfg = {}) {
           lastTimestamp: events.at(-1)?.timestamp ?? null,
           firstRole: events[0]?.role ?? null,
           lastRole: events.at(-1)?.role ?? null,
+          evidenceSources: [...new Set(events.map((event) => event.evidenceSource))],
           evidenceApi: '/api/injective?tool=get-chain-evidence',
         },
         events,

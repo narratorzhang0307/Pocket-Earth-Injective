@@ -69,6 +69,11 @@ assertEqual('timeline summary last timestamp', timeline.summary.lastTimestamp, T
 assertEqual('timeline summary first role', timeline.summary.firstRole, TIMELINE_EVENTS[0].role)
 assertEqual('timeline summary last role', timeline.summary.lastRole, TIMELINE_EVENTS.at(-1).role)
 assertEqual('timeline summary evidence API', timeline.summary.evidenceApi, '/api/injective?tool=get-chain-evidence')
+assertTrue('timeline summary evidence sources array', Array.isArray(timeline.summary.evidenceSources))
+assertTrue(
+  'timeline summary uses only public Injective evidence sources',
+  timeline.summary.evidenceSources.every((source) => ['injective-rpc', 'injective-blockscout'].includes(source)),
+)
 
 console.log('\nTimeline events')
 for (const expected of TIMELINE_EVENTS) {
@@ -82,6 +87,10 @@ for (const expected of TIMELINE_EVENTS) {
   assertEqual(`${expected.role} blockNumber`, actual.blockNumber, expected.blockNumber)
   assertEqual(`${expected.role} timestamp`, actual.timestamp, expected.timestamp)
   assertEqual(`${expected.role} scanUrl`, actual.scanUrl, scanUrlForTx(expected.hash))
+  assertTrue(
+    `${expected.role} evidence source is public`,
+    ['injective-rpc', 'injective-blockscout'].includes(actual.evidenceSource),
+  )
   if (expected.contractAddress) assertEqual(`${expected.role} contractAddress`, actual.contractAddress, expected.contractAddress)
 }
 
