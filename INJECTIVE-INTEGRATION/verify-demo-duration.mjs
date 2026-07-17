@@ -62,14 +62,19 @@ assertTrue('privacy proof segment is present', scriptText.includes('隐私') && 
 assertTrue('closing names Frost Chronicle', demoScript.includes('FROST Chronicle') && demoScript.includes('画像演化史'))
 assertTrue('closing says Pocket Earth can be opened now', demoScript.includes('现在就能打开') && demoScript.includes('不是纸面方案'))
 assertTrue('closing names three delivery artifacts', demoScript.includes('公开仓库') && demoScript.includes('Demo 视频') && demoScript.includes('Pitch Deck'))
-assertTrue('closing defines Built on Injective accurately', demoScript.includes('Built on Injective') && demoScript.includes('公开身份、版本、时间线、握手和未来结算回执'))
-assertTrue('fleet API proof names pagination fields', demoScript.includes('`sdk`') && demoScript.includes('`total`') && demoScript.includes('`offset`') && demoScript.includes('`limit`'))
-assertTrue('fleet API proof names identity fields', demoScript.includes('`owner`') && demoScript.includes('`wallet`') && demoScript.includes('`identityTuple`') && demoScript.includes('`builderCode`'))
-assertTrue('fleet API proof names public card fields', demoScript.includes('`card.tags`') && demoScript.includes('`card.metadata.builderCode`') && demoScript.includes('data URI 公开名片'))
+assertTrue('closing defines Built on Injective accurately', demoScript.includes('Built on Injective') && demoScript.includes('Injective 让身份、版次、时间线与握手可以被任何人独立核对'))
+assertTrue('fleet API proof names live chain discovery', demoScript.includes('list-agents&builderCode=pocket-earth&limit=5&top=47') && demoScript.includes('agentId 43–47'))
+assertTrue('knowledge API proof names current daily edition', demoScript.includes('/api/knowledge?tool=today&topic=ai') && demoScript.includes('Chronicle revision 2'))
+assertTrue('hardware proof names current public bridge', demoScript.includes('/api/injective?tool=get-hardware-bridge-proof') && demoScript.includes('公开 JSONL 事件'))
 
 const forbidden = ['INJ_PRIVATE_KEY', 'privateKey', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']
 for (const item of forbidden) {
   assertTrue(`demo duration script text omits ${item}`, !demoScript.includes(item))
+}
+
+const finalNarrativeForbidden = ['付费', '支付', '收入', '收益', '结算', '抽成', ['x', '402'].join(''), 'soulbound', '不可转让']
+for (const item of finalNarrativeForbidden) {
+  assertTrue(`demo final narrative omits ${item}`, !demoScript.includes(item))
 }
 
 console.log(`\nOK demo script totals ${total}s, within the ${DEMO_VIDEO_LIMIT_SECONDS}s Injective demo limit.`)

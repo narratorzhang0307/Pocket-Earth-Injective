@@ -393,12 +393,11 @@ for (const phrase of [
   assertTrue(`PROGRESS names standalone hardware proof: ${phrase}`, progress.includes(phrase))
 }
 for (const phrase of [
-  '硬件证明要当作独立镜头',
-  '放在钱包时间线之后、plaza smoke 之前',
-  'hardwareBridge.serviceBoundary',
-  'hardwareBridge.roadmapBoundary',
-  'roadmapSafetyBoundary',
+  '/api/injective?tool=get-hardware-bridge-proof',
+  '/api/knowledge?tool=today&topic=ai',
+  'Chronicle revision 2',
   'privacyBoundary.hardware',
+  '`state` / `tts` / `display`',
 ]) {
   assertTrue(`DEMO-SCRIPT names hardware proof recording step: ${phrase}`, demoScript.includes(phrase))
 }
@@ -420,14 +419,18 @@ for (const phrase of [
   'Profile Chain / Proof of Memory',
   '画像版本见证',
   'Frost Edge Node 只消费公开 JSONL 事件',
-  'Agent Plaza 承接安装、调用、评价和可选付费回执',
-  '未来硬件节点服务也只能走 Agent Plaza 服务回执',
-  '不走代币优先或重资本硬件路线',
+  'Agent Plaza 承接创建、审核、发布、安装和运行',
+  '每日版次',
+  'Chronicle revision 2',
+  'Injective 让身份、版次、时间线与握手可以被任何人独立核对',
 ]) {
   assertTrue(`DEMO-SCRIPT keeps PPT story spine: ${phrase}`, demoScript.includes(phrase))
 }
 const unsupportedPaymentToken = ['x', '402'].join('')
 assertTrue('DEMO-SCRIPT omits unsupported payment settlement wording', !demoScript.includes(unsupportedPaymentToken))
+for (const forbidden of ['付费', '支付', '收入', '收益', '结算', '抽成']) {
+  assertTrue(`DEMO-SCRIPT omits final narrative topic ${forbidden}`, !demoScript.includes(forbidden))
+}
 
 console.log('\nDemo handshake proof guard')
 for (const phrase of [
@@ -500,15 +503,14 @@ for (const phrase of [
   'public-plaza 镜头',
   '不要把 public-plaza 说成安装市场',
   'agent-plaza 安装闭环镜头',
-  '商业路径一句话',
+  '平台路径一句话',
   'manifest / schema / permissions',
   'Injective chain identity badge',
   'reviewManifest',
   'toManifest',
   'INSTALL -> My Agents -> RUN',
-  '长期使用 -> 可信画像 -> Agent 市场',
-  'Profile Confidence',
-  '不要说成代币优先或硬件收入优先',
+  '创建、审核、发布、安装和运行',
+  '不把它说成已经发生的链上事件',
   'INSTALL',
   'My Agents',
   'willEmit',

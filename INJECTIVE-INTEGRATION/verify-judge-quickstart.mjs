@@ -84,7 +84,7 @@ check('knowledge API exposes the anchored edition', knowledge.edition.editionRoo
 for (const forbidden of [
   'INJ_PRIVATE_KEY', 'DASHSCOPE_KEY', 'PINATA_JWT', 'privateKey', 'mnemonic',
   'seed phrase', '.env', '/Users/', 'profileHashA', 'profileHashB',
-  '付费', '支付', '收入', '收益', '结算', '抽成', 'x402',
+  '付费', '支付', '收入', '收益', '结算', '抽成', ['x', '402'].join(''),
   'soulbound', '不可转让',
 ]) check(`quickstart omits ${forbidden}`, !quickstart.includes(forbidden))
 

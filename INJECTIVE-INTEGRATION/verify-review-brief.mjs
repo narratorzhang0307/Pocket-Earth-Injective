@@ -106,14 +106,16 @@ assertTrue('privacyLine states on-chain proof scope', brief.privacyLine.includes
 assertTrue('privacyLine keeps raw media off-chain', brief.privacyLine.includes('Raw media'))
 assertTrue('privacyLine keeps secret env values off-chain', brief.privacyLine.includes('secret env values'))
 
-const [readme, evidenceDoc, demoScript] = await Promise.all([
+const [readme, evidenceDoc, demoScript, judgeQuickstart] = await Promise.all([
   readFile(new URL('../README.md', import.meta.url), 'utf8'),
   readFile(new URL('./CHAIN-EVIDENCE.md', import.meta.url), 'utf8'),
   readFile(new URL('./DEMO-SCRIPT.md', import.meta.url), 'utf8'),
+  readFile(new URL('./JUDGE-QUICKSTART.md', import.meta.url), 'utf8'),
 ])
 assertTrue('README mentions reviewBrief', readme.includes('reviewBrief'))
 assertTrue('CHAIN-EVIDENCE mentions reviewBrief', evidenceDoc.includes('reviewBrief'))
-assertTrue('DEMO-SCRIPT mentions reviewBrief', demoScript.includes('reviewBrief'))
+assertTrue('DEMO-SCRIPT points to concise judge verification', demoScript.includes('npm run verify:judge'))
+assertTrue('JUDGE-QUICKSTART keeps 60-second proof path', judgeQuickstart.includes('60-Second Path') && judgeQuickstart.includes('What This Proves'))
 
 const publicText = JSON.stringify(brief)
 for (const forbidden of ['INJ_PRIVATE_KEY', 'privateKey', 'profileHashA', 'profileHashB', '/Users/zhangcheng/Desktop', 'Pocket-Earth-Plus', 'Sunset-Radio']) {
