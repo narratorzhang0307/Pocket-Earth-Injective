@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { buildDailyEditions, buildFactCommitment, hashValue, verifyMerkleProof } from '../src/app/lib/chronicle/kernel.mjs'
 import { buildLlmRequest, getLlmProviders } from '../frost-agent/provider-compat/runtime.mjs'
 import { searchDailySignals, searchNewsEvidence } from './evidence.mjs'
@@ -237,6 +238,30 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
   const cache = new Map()
   const providers = getLlmProviders(env)
   const adminToken = env.KNOWLEDGE_ADMIN_TOKEN || ''
+  const workerDataDir = resolve(process.cwd(), env.KNOWLEDGE_DATA_DIR || 'var/knowledge')
+
+  function readWorkerSnapshot(topic, date) {
+    const file = resolve(workerDataDir, date, `${topic}.json`)
+    if (!existsSync(file)) return null
+    try {
+      const snapshot = JSON.parse(readFileSync(file, 'utf8'))
+      if (snapshot?.schema !== 'pocket-earth-knowledge-worker/v1'
+        || snapshot?.topic !== topic
+        || snapshot?.date !== date
+        || !Array.isArray(snapshot?.records)
+        || !snapshot.records.length
+        || !snapshot?.edition?.editionRoot) return null
+      return {
+        mode: snapshot.mode,
+        topic,
+        generatedAt: snapshot.generatedAt,
+        records: snapshot.records,
+        edition: snapshot.edition,
+      }
+    } catch {
+      return null
+    }
+  }
 
   async function offline(topic, date) {
     if (!CURATED[topic]) {
@@ -295,7 +320,13 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
 
   async function get(topic, date) {
     const live = await cache.get(`${topic}:${date}:live`)
-    return live || offline(topic, date)
+    if (live) return live
+    const snapshot = readWorkerSnapshot(topic, date)
+    if (snapshot) {
+      cache.set(`${topic}:${date}:live`, Promise.resolve(snapshot))
+      return snapshot
+    }
+    return offline(topic, date)
   }
 
   async function findProof(recordHash) {

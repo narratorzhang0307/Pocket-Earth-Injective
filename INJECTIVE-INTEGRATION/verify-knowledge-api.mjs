@@ -35,7 +35,7 @@ assert.equal(today.body.edition.anchor.txHash, '0x19364a91b7adb1a8eb8daace6fe644
 
 const topics = await call(service, '/api/knowledge?tool=topics')
 assert.equal(topics.status, 200)
-assert.deepEqual(topics.body.topics.map((item) => item.key), ['ai', 'finance', 'science', 'climate', 'culture'])
+assert.deepEqual(topics.body.topics.map((item) => item.key), ['ai', 'technology', 'finance', 'climate', 'science', 'health', 'culture', 'policy'])
 assert.deepEqual(topics.body.anchoredTopics, ['ai', 'finance'])
 assert.match(topics.body.policy, /explicit reviewed Chronicle commit/)
 

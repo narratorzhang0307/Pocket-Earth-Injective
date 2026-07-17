@@ -53,7 +53,8 @@
     "verify:public-earth-ui": "node INJECTIVE-INTEGRATION/verify-public-earth-ui.mjs",
     "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs",
     "verify:competition-deploy": "node INJECTIVE-INTEGRATION/verify-competition-deploy.mjs",
-    "verify:competition-brand": "node INJECTIVE-INTEGRATION/verify-competition-brand.mjs"
+    "verify:competition-brand": "node INJECTIVE-INTEGRATION/verify-competition-brand.mjs",
+    "verify:earth-agents-ui": "node INJECTIVE-INTEGRATION/verify-earth-agents-ui.mjs"
   },
   "dependencies": {
     "@injective/agent-sdk": "file:INJECTIVE-INTEGRATION/_research/repos/injective-agent-sdk/packages/sdk",

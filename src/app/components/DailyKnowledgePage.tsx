@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
   AlertTriangle, Check, ChevronLeft, Database, Download, ExternalLink,
-  Link2, LoaderCircle, RefreshCw, ShieldCheck,
+  Link2, LoaderCircle, RadioTower, RefreshCw, ShieldCheck,
 } from 'lucide-react';
 import type {
   DailyKnowledgeResponse, KnowledgeRecord, KnowledgeTopic, KnowledgeVerdict,
 } from '../lib/chronicle/types';
 
-interface Props { onBack: () => void }
+interface Props { onBack: () => void; initialTopic?: KnowledgeTopic }
 
 interface ProofResult {
   proof: string[];
@@ -18,7 +18,13 @@ interface ProofResult {
 
 const TOPICS: { key: KnowledgeTopic; label: string; subtitle: string }[] = [
   { key: 'ai', label: 'AI', subtitle: '模型与产品' },
+  { key: 'technology', label: '科技', subtitle: '芯片与机器人' },
   { key: 'finance', label: '金融', subtitle: '链上与市场' },
+  { key: 'climate', label: '气候', subtitle: '能源与环境' },
+  { key: 'science', label: '科学', subtitle: '研究与发现' },
+  { key: 'health', label: '健康', subtitle: '医学与生命' },
+  { key: 'culture', label: '文化', subtitle: '城市与遗产' },
+  { key: 'policy', label: '政策', subtitle: '社会与制度' },
 ];
 
 const VERDICTS: Record<KnowledgeVerdict, { label: string; color: string }> = {
@@ -117,8 +123,8 @@ function RecordCard({ record }: { record: KnowledgeRecord }) {
   );
 }
 
-export default function DailyKnowledgePage({ onBack }: Props) {
-  const [topic, setTopic] = useState<KnowledgeTopic>('ai');
+export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Props) {
+  const [topic, setTopic] = useState<KnowledgeTopic>(initialTopic);
   const [data, setData] = useState<DailyKnowledgeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -200,7 +206,15 @@ export default function DailyKnowledgePage({ onBack }: Props) {
           </div>
         )}
 
-        {data && (
+        {!loading && !error && data && !data.edition && (
+          <div className="border-2 border-black bg-[#fff4d7] p-4 text-center shadow-[2px_2px_0_#000]">
+            <RadioTower className="w-5 h-5 mx-auto mb-2" />
+            <p className="font-pixel text-[8px]">NO QUALIFIED EDITION</p>
+            <p className="text-[10px] text-black/55 leading-relaxed mt-2">这个领域今天还没有达到多来源核验门槛。Agent 不会为了填满信息流而虚构知识卡。</p>
+          </div>
+        )}
+
+        {data?.edition && (
           <>
             <section className="relative overflow-hidden border-2 border-black bg-white p-3 pt-4 shadow-[2px_2px_0_#000]" data-testid="knowledge-edition-card">
               <div className="absolute inset-x-0 top-0 h-1 bg-[#7c5cff]" />

@@ -16,11 +16,11 @@ try {
   })
   assert.equal(manifest.schema, 'pocket-earth-knowledge-worker/v1')
   assert.equal(manifest.state, 'complete')
-  assert.equal(manifest.summary.requested, 5)
+  assert.equal(manifest.summary.requested, 8)
   assert.equal(manifest.summary.pending, 0)
   assert.equal(manifest.summary.failed, 0)
   assert.equal(manifest.summary.ready, 2)
-  assert.equal(manifest.summary.skipped, 3)
+  assert.equal(manifest.summary.skipped, 6)
   assert.equal(manifest.chainPolicy.automaticWrite, false)
   assert.deepEqual(manifest.topics.filter((item) => item.status === 'ready').map((item) => item.topic), ANCHORED_TOPIC_KEYS)
 
@@ -44,7 +44,7 @@ try {
   assert.equal(nextDailyRun(new Date('2026-07-17T00:11:00.000Z'), 0, 10).toISOString(), '2026-07-18T00:10:00.000Z')
   const ecosystem = await readFile(new URL('../deploy/online/injective/ecosystem.config.cjs', import.meta.url), 'utf8')
   assert.match(ecosystem, /KNOWLEDGE_WORKER_DAEMON:\s*'1'/)
-  console.log('OK knowledge worker isolates five domains, writes atomic snapshots and never performs automatic chain writes.')
+  console.log('OK knowledge worker isolates eight domains, writes atomic snapshots and never performs automatic chain writes.')
 } finally {
   await rm(outputDir, { recursive: true, force: true })
 }

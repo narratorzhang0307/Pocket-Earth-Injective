@@ -1,4 +1,4 @@
-export type KnowledgeTopic = 'ai' | 'finance';
+export type KnowledgeTopic = 'ai' | 'technology' | 'finance' | 'climate' | 'science' | 'health' | 'culture' | 'policy';
 export type KnowledgeVerdict = 'supported' | 'refuted' | 'mixed' | 'insufficient';
 export type KnowledgeMode = 'live' | 'offline';
 
@@ -58,6 +58,5 @@ export interface DailyKnowledgeResponse {
   topic: KnowledgeTopic;
   generatedAt: string;
   records: KnowledgeRecord[];
-  edition: DailyKnowledgeEdition;
+  edition: DailyKnowledgeEdition | null;
 }
-

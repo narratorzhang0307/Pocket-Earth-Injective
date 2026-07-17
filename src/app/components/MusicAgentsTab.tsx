@@ -15,6 +15,8 @@ import AgentForgePage from './AgentForgePage';
 import AgentPlazaPage from './AgentPlazaPage';
 import UniversalCaptureRunPage from './UniversalCaptureRunPage';
 import DailyKnowledgePage from './DailyKnowledgePage';
+import PublicKnowledgeAgents from './PublicKnowledgeAgents';
+import type { KnowledgeTopic } from '../lib/chronicle/types';
 import { getCustomAgents, subscribeCustomAgents, type AgentManifest } from '../lib/agent';
 import { getLearnedSkills, subscribeSkills, type LearnedSkill } from '../../../frost-agent/harness/skillForge';
 import { startHeartbeat } from '../../../frost-agent/harness/heartbeat';
@@ -36,7 +38,7 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
       { name: 'photos-agent', role: '端侧整理相册，高价值照片钉地球', status: '契约就位' },
       { name: 'travel-agent', role: '按喜好端侧规划行程，完成即钉地球', status: '契约就位' },
       { name: 'jot-agent', role: '一句话/截图 → frost 判书·影·行程·心情 → 钉到对应图层；记心情还能回望', status: '可运行' },
-      { name: 'daily-knowledge', role: '筛选 AI / 金融知识，核验来源并生成 Injective 每日知识版次', status: '可运行' },
+      { name: 'daily-knowledge', role: '八个公共领域每日筛选信号、核验来源并生成 Injective 知识版次', status: '可运行' },
     ],
   },
   {
@@ -71,6 +73,8 @@ const HERO_BY_NAME: Record<string, Running> = { 'agent-forge': 'agentforge' };
 
 export default function MusicAgentsTab() {
   const [running, setRunning] = useState<Running>(null);
+  const [agentScope, setAgentScope] = useState<'private' | 'public'>('public');
+  const [knowledgeTopic, setKnowledgeTopic] = useState<KnowledgeTopic>('ai');
   const [forgeRunId, setForgeRunId] = useState<string | undefined>();   // 「我的 AGENT」点 RUN → 透传给 AgentForge 直达该 agent 运行页
   // P2-I：已学技能（点击=路由到其目标 agent）
   const [learned, setLearned] = useState<LearnedSkill[]>(getLearnedSkills());
@@ -94,7 +98,7 @@ export default function MusicAgentsTab() {
   if (running === 'agentforge') return <AgentForgePage onBack={() => { setRunning(null); setForgeRunId(undefined); }} initialRunId={forgeRunId} />;
   if (running === 'spaceplaza') return <AgentPlazaPage onBack={() => setRunning(null)} onRun={runSkill} />;
   if (running === 'jot') return <UniversalCaptureRunPage onBack={() => setRunning(null)} />;
-  if (running === 'knowledge') return <DailyKnowledgePage onBack={() => setRunning(null)} />;
+  if (running === 'knowledge') return <DailyKnowledgePage initialTopic={knowledgeTopic} onBack={() => setRunning(null)} />;
 
   return (
     <div className="h-full flex flex-col bg-[#EAEAEA] font-sans">
@@ -105,20 +109,36 @@ export default function MusicAgentsTab() {
 
       {/* 标题 */}
       <div className="px-4 py-4 border-b-2 border-black bg-white shrink-0">
-        <h1 className="font-pixel text-xl uppercase tracking-wider mb-2">FROST-AGENT</h1>
+        <h1 className="font-pixel text-xl uppercase tracking-wider mb-2">AGENTS</h1>
         <p className="text-xs text-black/70 tracking-wide font-medium">
-          把地球作为方法的 agent 框架
+          私人知识由你的 Frost 整理 · 公共知识由 Agent 网络核验
         </p>
       </div>
 
       {/* 状态条 */}
       <div className="px-4 py-2.5 border-b-2 border-black bg-black text-[#00ff88] shrink-0">
         <div className="font-pixel text-[9px] flex justify-center items-center tracking-widest">
-          <span>AGENTS: {GROUPS.find((g) => g.title === 'AGENTS')?.items.length ?? 0}</span>
+          <span>{agentScope === 'public' ? 'PUBLIC NETWORK: 16 AGENTS' : `PRIVATE SYSTEM: ${GROUPS.find((g) => g.title === 'AGENTS')?.items.length ?? 0} AGENTS`}</span>
         </div>
       </div>
 
+      <div className="grid grid-cols-2 gap-2 p-2 border-b-2 border-black bg-[#EAEAEA] shrink-0">
+        <button type="button" onClick={() => setAgentScope('private')} aria-pressed={agentScope === 'private'}
+          className={`min-h-11 border-2 border-black px-2 py-1.5 text-left active:translate-y-px ${agentScope === 'private' ? 'bg-black text-white shadow-[2px_2px_0_#00ff88]' : 'bg-white'}`}>
+          <span className="block font-pixel text-[8px]">MY AGENTS</span>
+          <span className={`block text-[8px] mt-0.5 ${agentScope === 'private' ? 'text-white/60' : 'text-black/45'}`}>私人知识与创作</span>
+        </button>
+        <button type="button" onClick={() => setAgentScope('public')} aria-pressed={agentScope === 'public'}
+          className={`min-h-11 border-2 border-black px-2 py-1.5 text-left active:translate-y-px ${agentScope === 'public' ? 'bg-[#2357d9] text-white shadow-[2px_2px_0_#000]' : 'bg-white'}`}>
+          <span className="block font-pixel text-[8px]">PUBLIC AGENTS</span>
+          <span className={`block text-[8px] mt-0.5 ${agentScope === 'public' ? 'text-white/65' : 'text-black/45'}`}>公共新闻与事实核验</span>
+        </button>
+      </div>
+
       {/* agent 分组列表（可滚动） */}
+      {agentScope === 'public' ? (
+        <PublicKnowledgeAgents onOpenTopic={(topic) => { setKnowledgeTopic(topic); setRunning('knowledge'); }} />
+      ) : (
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
         {/* 端侧引擎开关（基础设施·非 agent）：默认收起的小开关，紧贴状态条；点开才展开加载面板 */}
         <OnDeviceBrainPanel />
@@ -243,6 +263,7 @@ export default function MusicAgentsTab() {
           端侧管「挑和找」· 云管「写」
         </div>
       </div>
+      )}
     </div>
   );
 }
