@@ -28,6 +28,7 @@ resource-library/world-photos.json
 
 # 本地生成 / 准备用的临时产物，不入库
 outputs/
+var/knowledge/
 
 # 第三方研究项目（hermes / openhanako / claude-desktop-buddy / langchain 等，各有上游来源，不进本仓库备份）
 hermes-agent-main/

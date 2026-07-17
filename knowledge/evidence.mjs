@@ -1,4 +1,5 @@
 // Domain-neutral RSS evidence retrieval adapted from the user's FactAtlas project.
+import { KNOWLEDGE_TOPICS } from './topics.mjs'
 
 export function decodeEntities(value) {
   return String(value ?? '')
@@ -92,10 +93,8 @@ export async function searchNewsEvidence(query, { limit = 8, signal, fetchImpl =
 }
 
 export async function searchDailySignals(topic, date, options = {}) {
-  const query = topic === 'finance'
-    ? 'global finance markets regulation AI agents Injective'
-    : 'artificial intelligence models research regulation chips Microsoft'
+  const query = KNOWLEDGE_TOPICS[topic]?.query
+  if (!query) throw new Error('unsupported_knowledge_topic')
   const dated = `${query} after:${date}`
   return searchNewsEvidence(dated, { ...options, limit: options.limit || 12 })
 }
-

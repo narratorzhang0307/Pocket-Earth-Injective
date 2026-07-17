@@ -3,8 +3,7 @@ import { buildDailyEditions, buildFactCommitment, hashValue, verifyMerkleProof }
 import { buildLlmRequest, getLlmProviders } from '../frost-agent/provider-compat/runtime.mjs'
 import { searchDailySignals, searchNewsEvidence } from './evidence.mjs'
 import { calculateTruthScore } from './scoring.mjs'
-
-const TOPICS = new Set(['ai', 'finance'])
+import { ANCHORED_TOPIC_KEYS, KNOWLEDGE_TOPICS, PUBLIC_TOPIC_KEYS, isKnowledgeTopic } from './topics.mjs'
 
 let COMMITTED_PROOF = null
 try { COMMITTED_PROOF = JSON.parse(readFileSync(new URL('../INJECTIVE-INTEGRATION/knowledge-edition-proof.json', import.meta.url), 'utf8')) }
@@ -57,7 +56,7 @@ const CURATED = {
 
 function cleanTopic(value) {
   const topic = String(value || 'ai').toLowerCase()
-  return TOPICS.has(topic) ? topic : null
+  return isKnowledgeTopic(topic) ? topic : null
 }
 
 function todayUtc() {
@@ -240,9 +239,19 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
   const adminToken = env.KNOWLEDGE_ADMIN_TOKEN || ''
 
   async function offline(topic, date) {
+    if (!CURATED[topic]) {
+      return {
+        mode: 'unavailable',
+        topic,
+        generatedAt: new Date().toISOString(),
+        records: [],
+        edition: null,
+        error: 'live_verification_provider_required',
+      }
+    }
     const key = `${topic}:${date}:offline`
     if (!cache.has(key)) {
-      cache.set(key, Promise.all([...TOPICS].map((item) => curatedRecord(item, date))).then(async (allRecords) => {
+      cache.set(key, Promise.all(ANCHORED_TOPIC_KEYS.map((item) => curatedRecord(item, date))).then(async (allRecords) => {
         const committedPreviousRoot = COMMITTED_PROOF?.date === date ? COMMITTED_PROOF.previousEditionRoot : null
         const combined = await bundleFromRecords(topic, date, allRecords, 'offline', committedPreviousRoot)
         const proofMatches = COMMITTED_PROOF?.date === date && COMMITTED_PROOF?.editionRoot === combined.edition.editionRoot
@@ -297,7 +306,7 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
       const proof = bundle.edition.proofs[recordHash] || []
       return { record, proof, factsRoot: bundle.edition.factsRoot, editionRoot: bundle.edition.editionRoot, verified: await verifyMerkleProof(recordHash, proof, bundle.edition.factsRoot) }
     }
-    for (const topic of TOPICS) await offline(topic, todayUtc())
+    for (const topic of ANCHORED_TOPIC_KEYS) await offline(topic, todayUtc())
     for (const value of cache.values()) {
       const bundle = await value
       const record = bundle.records.find((item) => item.commitment.recordHash === recordHash)
@@ -312,7 +321,7 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
   async function buildPublicPack(date) {
     // Export the deterministic curated edition. Live drafts remain unanchored until a later
     // edition commit, so they must not silently replace the package tied to COMMITTED_PROOF.
-    const bundles = await Promise.all([...TOPICS].map((topic) => offline(topic, date)))
+    const bundles = await Promise.all(ANCHORED_TOPIC_KEYS.map((topic) => offline(topic, date)))
     const edition = bundles[0].edition
     const records = bundles.flatMap((bundle) => bundle.records)
       .sort((left, right) => left.commitment.recordHash.localeCompare(right.commitment.recordHash))
@@ -359,6 +368,13 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     const tool = url.searchParams.get('tool') || 'today'
     const topic = cleanTopic(url.searchParams.get('topic'))
     const date = safeDate(url.searchParams.get('date'))
+    if (tool === 'topics' && req.method === 'GET') {
+      return json(res, {
+        topics: PUBLIC_TOPIC_KEYS.map((key) => ({ key, ...KNOWLEDGE_TOPICS[key] })),
+        anchoredTopics: ANCHORED_TOPIC_KEYS,
+        policy: 'expanded domains are draft-only until an explicit reviewed Chronicle commit',
+      })
+    }
     if (!topic && tool !== 'proof' && tool !== 'pack') return json(res, { error: 'unsupported_topic' }, 400)
     if (tool === 'today' && req.method === 'GET') return json(res, await get(topic, date))
     if (tool === 'edition' && req.method === 'GET') return json(res, (await get(topic, date)).edition)
@@ -376,5 +392,5 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     return json(res, { error: 'method_not_allowed' }, 405)
   }
 
-  return { handle, get, refresh, findProof, buildPublicPack }
+  return { handle, get, refresh, findProof, buildPublicPack, topics: PUBLIC_TOPIC_KEYS }
 }
