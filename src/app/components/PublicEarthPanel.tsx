@@ -154,10 +154,13 @@ export default function PublicEarthPanel() {
           <div className="font-pixel text-[11px] tracking-wider">PUBLIC EARTH · INJECTIVE</div>
           <div className="text-[9px] text-black/50 mt-0.5">口袋地球装记忆 · 公共地球住分身</div>
         </div>
-        {data && <span className={`font-pixel text-[7px] border-2 border-black px-1.5 py-1 ${data.live ? 'bg-[#315e4b] text-white' : 'bg-[#e2c26e]'}`}>
-          {data.live ? 'LIVE · INJECTIVE' : 'PUBLIC PROOF'}
-        </span>}
       </div>
+
+      {data && <div className="mt-2 flex justify-end">
+        <span className={`font-pixel text-[7px] border-2 border-black px-1.5 py-1 ${data.live ? 'bg-[#315e4b] text-white' : 'bg-[#e2c26e]'}`}>
+          {data.live ? 'LIVE · INJECTIVE' : 'PUBLIC PROOF'}
+        </span>
+      </div>}
 
       <div className="grid grid-cols-2 gap-2 mt-3">
         <button onClick={() => setView('earth')} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-black text-white' : 'bg-white'}`}>
