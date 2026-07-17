@@ -50,6 +50,7 @@ for (const snippet of [
   'chain_dispatch',
   '口袋地球装记忆，公共地球住分身',
   '下载包自包含公开记录',
+  '渲染在端上，内容在包里，指纹在链上',
 ]) check(`quickstart contains ${snippet}`, quickstart.includes(snippet))
 
 for (const value of [
