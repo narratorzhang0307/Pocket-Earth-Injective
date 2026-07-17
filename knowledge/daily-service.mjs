@@ -319,6 +319,11 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
   }
 
   async function get(topic, date) {
+    // A reviewed Chronicle commit is the public source of truth for its date.
+    // Scheduled live snapshots remain drafts and must not hide an existing anchor.
+    if (ANCHORED_TOPIC_KEYS.includes(topic) && COMMITTED_PROOF?.date === date) {
+      return offline(topic, date)
+    }
     const live = await cache.get(`${topic}:${date}:live`)
     if (live) return live
     const snapshot = readWorkerSnapshot(topic, date)
