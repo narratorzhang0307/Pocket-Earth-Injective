@@ -43,6 +43,7 @@
     "verify:public-earth-contract": "node INJECTIVE-INTEGRATION/verify-public-earth-contract.mjs",
     "verify:public-earth-live": "node INJECTIVE-INTEGRATION/verify-public-earth-live.mjs",
     "verify:public-earth-api": "node INJECTIVE-INTEGRATION/verify-public-earth-api.mjs",
+    "verify:public-earth-ui": "node INJECTIVE-INTEGRATION/verify-public-earth-ui.mjs",
     "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs"
   },
   "dependencies": {

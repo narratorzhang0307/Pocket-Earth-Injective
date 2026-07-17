@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { getProfile, profileFingerprint, summarizeTaste } from '../../../frost-agent/harness/profile';
 import { getFrostBrain } from '../../../frost-agent/harness/brain';
 import FrostBuddy from './FrostBuddy';
+import PublicEarthPanel from './PublicEarthPanel';
 import { markPlace } from '../lib/skills/markPlace';
 import type { FrostTheme } from '../../../frost-agent/buddy/themes';
 
@@ -90,6 +91,7 @@ export default function PublicPlazaPage({ onBack }: Props) {
   const [chainNeighbors, setChainNeighbors] = useState<Neighbor[]>([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     let alive = true;
     summarizeTaste(getFrostBrain()).then((t) => { if (alive && t) setTaste(t); }).catch(() => {});
     return () => { alive = false; };
@@ -199,8 +201,8 @@ export default function PublicPlazaPage({ onBack }: Props) {
           <ChevronLeft className="w-4 h-4" strokeWidth={3} />
         </button>
         <div className="flex-1 min-w-0">
-          <div className="font-pixel text-[11px] tracking-wider truncate">PUBLIC-PLAZA</div>
-          <div className="text-[9px] text-black/45 leading-tight mt-0.5">agent 代理社交 · 公共广场</div>
+          <div className="font-pixel text-[11px] tracking-wider truncate">PUBLIC EARTH</div>
+          <div className="text-[9px] text-black/45 leading-tight mt-0.5">链上分身的空间身份与公共广场</div>
         </div>
         <Users className="w-4 h-4" strokeWidth={2.5} style={{ color: ACCENT }} />
       </div>
@@ -267,6 +269,8 @@ export default function PublicPlazaPage({ onBack }: Props) {
 
       {/* 内容区 */}
       <div className="flex-1 overflow-y-auto px-3 py-2.5 space-y-2.5">
+        <PublicEarthPanel />
+
         {neighbors.length === 0 && (
           <div className="border-2 border-black bg-white p-4 shadow-[2px_2px_0_rgba(0,0,0,0.85)] text-center">
             <Users className="w-6 h-6 mx-auto mb-2" strokeWidth={2} style={{ color: ACCENT }} />
@@ -382,7 +386,8 @@ export default function PublicPlazaPage({ onBack }: Props) {
         )}
 
         <div className="text-center text-[8px] font-pixel text-black/30 py-1.5 tracking-widest leading-relaxed">
-          前瞻接口 · 真实匹配需 UGC 生态成熟<br />广场里遇见的人由你本机画像生成 · 主动权始终在你
+          {chainNeighbors.length ? '链上身份来自 Injective · 匹配只使用公开脱敏标签' : '链读失败时仅展示本机示意 · 不伪造链上身份'}<br />
+          私人记忆与现实地址始终留在端侧 · 主动权始终在你
         </div>
       </div>
     </div>
