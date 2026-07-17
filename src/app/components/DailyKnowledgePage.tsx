@@ -53,7 +53,8 @@ function RecordCard({ record }: { record: KnowledgeRecord }) {
   };
 
   return (
-    <article className="border-2 border-black bg-white p-3 shadow-[3px_3px_0_rgba(0,0,0,0.85)]">
+    <article className="relative overflow-hidden border-2 border-black bg-white p-3 pt-4 shadow-[3px_3px_0_rgba(0,0,0,0.85)]" data-testid="knowledge-record-card">
+      <div className="absolute inset-x-0 top-0 h-1" style={{ background: verdict.color }} />
       <div className="flex items-start gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap gap-1 mb-2">
@@ -69,14 +70,20 @@ function RecordCard({ record }: { record: KnowledgeRecord }) {
         </div>
       </div>
 
-      <p className="text-[11px] text-black/65 leading-relaxed mt-2">{record.summary}</p>
+      <p className="text-[11px] text-black/65 leading-[1.55] mt-2">{record.summary}</p>
+
+      <div className="mt-2 h-2 border border-black bg-[#EAEAEA]" aria-label={`可信度 ${record.truthScore}`}>
+        <div className="h-full border-r border-black" style={{ width: `${record.truthScore}%`, background: verdict.color }} />
+      </div>
 
       <div className="mt-3 border-t border-black/20 pt-2">
-        <div className="font-pixel text-[7px] tracking-wider mb-1.5">EVIDENCE · {record.sources.length} SOURCES</div>
+        <div className="font-pixel text-[7px] tracking-wider mb-1.5 flex items-center justify-between">
+          <span>EVIDENCE</span><span>{record.sources.length} INDEPENDENT SOURCES</span>
+        </div>
         <div className="space-y-1.5">
           {record.sources.map((source) => (
             <a key={source.id} href={source.url} target="_blank" rel="noreferrer"
-              className="flex items-start gap-2 border border-black bg-[#f5f5f5] p-2 active:translate-y-px">
+              className="flex min-h-11 items-start gap-2 border border-black bg-[#f5f5f5] p-2 active:translate-y-px">
               <ExternalLink className="w-3 h-3 mt-0.5 shrink-0" strokeWidth={2.5} />
               <span className="min-w-0 flex-1">
                 <span className="block text-[10px] font-bold leading-tight">{source.title}</span>
@@ -91,15 +98,18 @@ function RecordCard({ record }: { record: KnowledgeRecord }) {
       <div className="mt-2 flex items-center gap-2 border-t border-black/20 pt-2">
         <code className="text-[8px] text-black/45 flex-1 truncate">{shortHash(record.commitment.recordHash)}</code>
         <button onClick={verify} disabled={checking}
-          className="font-pixel text-[7px] border-2 border-black bg-black text-[#7CFF6B] px-2 py-1.5 inline-flex items-center gap-1 active:translate-y-px disabled:opacity-50">
+          className="min-h-10 font-pixel text-[7px] border-2 border-black bg-black text-[#7CFF6B] px-2.5 py-2 inline-flex items-center gap-1 active:translate-y-px disabled:opacity-50">
           {checking ? <LoaderCircle className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3 h-3" />}
           验证记录
         </button>
       </div>
       {proof && (
-        <div className={`mt-2 border border-black p-2 text-[9px] flex items-center gap-1.5 ${proof.verified ? 'bg-[#dff8e9]' : 'bg-[#ffe4e1]'}`}>
-          {proof.verified ? <Check className="w-3 h-3" strokeWidth={3} /> : <AlertTriangle className="w-3 h-3" />}
-          {proof.verified ? `Merkle 证明通过 · ${proof.proof.length} 层路径` : 'Merkle 证明未通过'}
+        <div className={`mt-2 border border-black p-2 text-[9px] ${proof.verified ? 'bg-[#dff8e9]' : 'bg-[#ffe4e1]'}`}>
+          <div className="flex items-center gap-1.5 font-bold">
+            {proof.verified ? <Check className="w-3 h-3" strokeWidth={3} /> : <AlertTriangle className="w-3 h-3" />}
+            {proof.verified ? `Merkle 证明通过 · ${proof.proof.length} 层路径` : 'Merkle 证明未通过'}
+          </div>
+          {proof.verified && <code className="mt-1 block truncate text-[7px] text-black/50">EDITION {shortHash(proof.editionRoot, 14, 10)}</code>}
         </div>
       )}
       {proofError && <div className="mt-2 text-[9px] text-[#b42318]">暂时无法读取证明，请稍后重试。</div>}
@@ -155,16 +165,17 @@ export default function DailyKnowledgePage({ onBack }: Props) {
         </div>
       </div>
 
-      <main className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
-        <section className="border-2 border-black bg-[#e7efff] p-3 shadow-[2px_2px_0_#000]">
-          <div className="font-pixel text-[9px] tracking-wider">今天值得留下什么？</div>
-          <p className="text-[10px] text-black/65 leading-relaxed mt-1.5">Agent 筛选公共信息、交叉核验来源并生成每日知识版次；Injective 保存确定性的版次锚点，不上传你的私人记忆。</p>
+      <main className="flex-1 overflow-y-auto px-3 py-3 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-3" data-testid="daily-knowledge-scroll">
+        <section className="relative overflow-hidden border-2 border-black bg-[#e7efff] p-3 shadow-[2px_2px_0_#000]">
+          <div className="absolute -right-5 -top-6 h-20 w-20 rounded-full border-2 border-black/15 bg-white/45" />
+          <div className="relative font-pixel text-[9px] tracking-wider">今天值得留下什么？</div>
+          <p className="relative text-[10px] text-black/65 leading-[1.55] mt-1.5 pr-5">Agent 筛选公共信息、交叉核验来源并生成每日知识版次；Injective 保存确定性的版次锚点，不上传你的私人记忆。</p>
         </section>
 
         <div className="grid grid-cols-2 gap-2">
           {TOPICS.map((item) => (
-            <button key={item.key} onClick={() => setTopic(item.key)}
-              className={`border-2 border-black p-2 text-left active:translate-y-px ${topic === item.key ? 'bg-[#2357d9] text-white shadow-[2px_2px_0_#000]' : 'bg-white text-black'}`}>
+            <button key={item.key} onClick={() => setTopic(item.key)} aria-pressed={topic === item.key}
+              className={`min-h-14 border-2 border-black p-2 text-left active:translate-y-px ${topic === item.key ? 'bg-[#2357d9] text-white shadow-[2px_2px_0_#000]' : 'bg-white text-black'}`}>
               <span className="block font-pixel text-[9px]">{item.label}</span>
               <span className={`block text-[8px] mt-1 ${topic === item.key ? 'text-white/65' : 'text-black/45'}`}>{item.subtitle}</span>
             </button>
@@ -191,7 +202,8 @@ export default function DailyKnowledgePage({ onBack }: Props) {
 
         {data && (
           <>
-            <section className="border-2 border-black bg-white p-3 shadow-[2px_2px_0_#000]">
+            <section className="relative overflow-hidden border-2 border-black bg-white p-3 pt-4 shadow-[2px_2px_0_#000]" data-testid="knowledge-edition-card">
+              <div className="absolute inset-x-0 top-0 h-1 bg-[#7c5cff]" />
               <div className="flex items-start gap-2">
                 <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5 text-[#2357d9]" strokeWidth={2.5} />
                 <div className="min-w-0 flex-1">
@@ -207,16 +219,18 @@ export default function DailyKnowledgePage({ onBack }: Props) {
                     <div className="border border-black bg-[#f5f5f5] p-1.5"><span className="block font-pixel text-[9px]">{data.mode === 'live' ? 'LIVE' : 'DEMO'}</span><span className="text-[7px] text-black/45">MODE</span></div>
                   </div>
                   <code className="block mt-2 text-[8px] text-black/45 truncate">ROOT {shortHash(data.edition.editionRoot, 14, 10)}</code>
-                  {data.edition.anchor && (
-                    <a href={data.edition.anchor.scanUrl} target="_blank" rel="noreferrer"
-                      className="mt-2 border-2 border-black bg-black text-[#7CFF6B] px-2 py-1.5 font-pixel text-[7px] inline-flex items-center gap-1 active:translate-y-px">
-                      <Link2 className="w-3 h-3" />查看 Injective 交易<ExternalLink className="w-3 h-3" />
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    {data.edition.anchor ? (
+                      <a href={data.edition.anchor.scanUrl} target="_blank" rel="noreferrer"
+                        className="min-h-10 border-2 border-black bg-black text-[#7CFF6B] px-2 py-2 font-pixel text-[7px] inline-flex items-center justify-center gap-1 active:translate-y-px">
+                        <Link2 className="w-3 h-3" />链上版次<ExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : <span className="min-h-10 border-2 border-black bg-[#EAEAEA] px-2 py-2 font-pixel text-[7px] inline-flex items-center justify-center">WAITING ANCHOR</span>}
+                    <a href={`/api/knowledge?tool=pack&date=${encodeURIComponent(data.edition.date)}`} download={`pocket-earth-public-knowledge-${data.edition.date}.json`}
+                      className="min-h-10 border-2 border-black bg-white text-black px-2 py-2 font-pixel text-[7px] inline-flex items-center justify-center gap-1 active:translate-y-px">
+                      <Download className="w-3 h-3" />下载验证包
                     </a>
-                  )}
-                  <a href={`/api/knowledge?tool=pack&date=${encodeURIComponent(data.edition.date)}`} download={`pocket-earth-public-knowledge-${data.edition.date}.json`}
-                    className="mt-2 ml-2 border-2 border-black bg-white text-black px-2 py-1.5 font-pixel text-[7px] inline-flex items-center gap-1 active:translate-y-px">
-                    <Download className="w-3 h-3" />下载验证包
-                  </a>
+                  </div>
                   <p className="mt-2 text-[8px] text-black/45 leading-relaxed">资源包包含公共知识、来源与 Merkle proof；下载到本地后可离线核验，并与 Injective 版次根对齐。</p>
                 </div>
               </div>
