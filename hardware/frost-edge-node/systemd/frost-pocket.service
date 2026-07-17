@@ -1,0 +1,24 @@
+# Frost Edge Node sidecar (HW-04 initial template).
+# Runs NEXT TO the sunset-radio services; never replaces or stops them.
+# Install (HW-04, on the Pi):
+#   sudo cp frost-pocket.service /etc/systemd/system/
+#   sudo mkdir -p /etc/frost-pocket && sudo cp frost-pocket.env.example /etc/frost-pocket/frost-pocket.env
+#   sudo systemctl daemon-reload && sudo systemctl enable --now frost-pocket
+
+[Unit]
+Description=Frost Edge Node - Pocket Earth public event consumer (sidecar)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+EnvironmentFile=/etc/frost-pocket/frost-pocket.env
+ExecStart=/usr/bin/python3 %h/pocket-earth/hardware/frost-edge-node/raspi/frost_pocket_consumer.py --sink pi
+Restart=always
+RestartSec=5
+# cursor lives outside the repo so redeploys never lose position
+Environment=FROST_CURSOR_FILE=%h/.frost-pocket/cursor
+
+[Install]
+WantedBy=multi-user.target
