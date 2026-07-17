@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict'
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { createDailyKnowledgeService } from '../knowledge/daily-service.mjs'
 
 function responseCapture() {
@@ -63,5 +66,29 @@ assert.equal(refresh.body.mode, 'offline')
 
 const invalid = await call(service, '/api/knowledge?tool=today&topic=weather')
 assert.equal(invalid.status, 400)
+
+const workerDir = await mkdtemp(join(tmpdir(), 'pocket-earth-knowledge-api-'))
+try {
+  const dateDir = join(workerDir, '2026-07-17')
+  await mkdir(dateDir, { recursive: true })
+  const workerEdition = { editionRoot: `0x${'1'.repeat(64)}`, revision: 1, anchor: null }
+  const workerSnapshot = (topic) => ({
+    schema: 'pocket-earth-knowledge-worker/v1',
+    date: '2026-07-17', topic, generatedAt: '2026-07-17T12:00:00.000Z', mode: 'live',
+    records: [{ id: `${topic}-live-draft`, topic }], edition: workerEdition,
+  })
+  await writeFile(join(dateDir, 'technology.json'), JSON.stringify(workerSnapshot('technology')))
+  await writeFile(join(dateDir, 'ai.json'), JSON.stringify(workerSnapshot('ai')))
+  const snapshotService = createDailyKnowledgeService({ env: { KNOWLEDGE_DATA_DIR: workerDir } })
+  const technologyDraft = await call(snapshotService, '/api/knowledge?tool=today&topic=technology&date=2026-07-17')
+  assert.equal(technologyDraft.body.mode, 'live')
+  assert.equal(technologyDraft.body.records[0].id, 'technology-live-draft')
+  const anchoredAi = await call(snapshotService, '/api/knowledge?tool=today&topic=ai&date=2026-07-17')
+  assert.equal(anchoredAi.body.mode, 'offline')
+  assert.equal(anchoredAi.body.edition.revision, 2)
+  assert.equal(anchoredAi.body.edition.anchor.txHash, '0x19364a91b7adb1a8eb8daace6fe644d3a901b5a18a575d954c641de7bdf296c7')
+} finally {
+  await rm(workerDir, { recursive: true, force: true })
+}
 
 console.log('knowledge API verification passed')
