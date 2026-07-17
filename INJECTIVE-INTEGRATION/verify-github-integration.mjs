@@ -623,7 +623,7 @@ for (const phrase of [
   'Agent Platform Fast Check',
   'Daily Knowledge Chronicle Fast Check',
   'Frost Edge Node Fast Check',
-  'FROST Identity Card Roadmap',
+  'Public Earth + FROST Identity Card',
   '创建—审核—发布—安装—运行',
   '/api/knowledge?tool=proof&recordHash=...',
   'previousEditionRoot',
