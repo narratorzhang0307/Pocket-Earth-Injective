@@ -40,7 +40,7 @@ function shortHash(hash: string) {
 function GlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
   return (
     <div>
-      <div className="relative mx-auto mt-3 w-[250px] h-[250px] rounded-full border-[3px] border-black overflow-hidden shadow-[4px_4px_0_#000]"
+      <div className="relative mx-auto mt-3 w-[min(250px,68vw)] aspect-square rounded-full border-[3px] border-black overflow-hidden shadow-[4px_4px_0_#000]"
         style={{ background: 'radial-gradient(circle at 34% 28%, #f9fbf7 0 8%, #b9d7d0 35%, #75a9a5 74%, #466e76 100%)' }}>
         <div className="absolute inset-[14%] rounded-full border border-black/20" />
         <div className="absolute left-1/2 top-0 bottom-0 border-l border-black/20" />
@@ -82,7 +82,7 @@ function GlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; se
           <div className="mt-1 flex items-center gap-1 text-[9px] text-[#315e4b]"><ShieldCheck className="w-3 h-3" />公开卡面哈希已匹配</div>
         </div>
         <a href={selected.residenceScanUrl} target="_blank" rel="noreferrer" aria-label="在 Injective 浏览器查看门牌交易"
-          className="w-8 h-8 border-2 border-black flex items-center justify-center bg-white active:translate-y-px">
+          className="w-10 h-10 border-2 border-black flex items-center justify-center bg-white active:translate-y-px shrink-0">
           <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />
         </a>
       </div>
@@ -152,15 +152,14 @@ export default function PublicEarthPanel() {
         <div className="w-9 h-9 border-2 border-black bg-black text-white flex items-center justify-center shrink-0"><Globe2 className="w-5 h-5" strokeWidth={2.2} /></div>
         <div className="min-w-0 flex-1">
           <div className="font-pixel text-[11px] tracking-wider">PUBLIC EARTH · INJECTIVE</div>
-          <div className="text-[9px] text-black/50 mt-0.5">口袋地球装记忆 · 公共地球住分身</div>
+          <div className="text-[9px] text-black/50 mt-0.5">
+            {data ? `${data.residences.length} RESIDENTS · 8 KNOWLEDGE AGENTS` : '口袋地球装记忆 · 公共地球住分身'}
+          </div>
         </div>
-      </div>
-
-      {data && <div className="mt-2 flex justify-end">
-        <span className={`font-pixel text-[7px] border-2 border-black px-1.5 py-1 ${data.live ? 'bg-[#315e4b] text-white' : 'bg-[#e2c26e]'}`}>
+        {data && <span className={`font-pixel text-[7px] border-2 border-black px-1.5 py-1 shrink-0 ${data.live ? 'bg-[#315e4b] text-white' : 'bg-[#e2c26e]'}`}>
           {data.live ? 'LIVE · INJECTIVE' : 'PUBLIC PROOF'}
-        </span>
-      </div>}
+        </span>}
+      </div>
 
       <div className="grid grid-cols-2 gap-2 mt-3">
         <button onClick={() => setView('earth')} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-black text-white' : 'bg-white'}`}>
@@ -171,7 +170,7 @@ export default function PublicEarthPanel() {
         </button>
       </div>
 
-      {!data && !error && <div className="h-[290px] flex items-center justify-center font-pixel text-[8px] text-black/40">READING INJECTIVE…</div>}
+      {!data && !error && <div className="h-[260px] flex items-center justify-center font-pixel text-[8px] text-black/40">READING INJECTIVE…</div>}
       {error && !data && <div className="h-[180px] border-2 border-black bg-white mt-3 flex items-center justify-center text-center px-5 text-[10px] text-black/55">公共地球链读暂不可用。没有使用虚构门牌，请稍后重试。</div>}
       {data && selected && (view === 'earth'
         ? <GlobeView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />
