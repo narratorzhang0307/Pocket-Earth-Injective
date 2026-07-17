@@ -29,6 +29,54 @@ async function getReader(network) {
   return _reader
 }
 
+let _registryClient = null
+let _registryAbi = null
+async function getRegistryStatus(agentId, cfg, network) {
+  const { createPublicClient, decodeAbiParameters, defineChain, http, parseAbi } = await import('viem')
+  if (!_registryClient) {
+    const rpcUrl = cfg.rpcUrl || INJECTIVE_TESTNET_RPC
+    const chain = defineChain({
+      id: network === 'mainnet' ? 1776 : INJECTIVE_TESTNET_CHAIN_ID,
+      name: network === 'mainnet' ? 'Injective' : 'Injective EVM Testnet',
+      nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 },
+      rpcUrls: { default: { http: [rpcUrl] } },
+      testnet: network !== 'mainnet',
+    })
+    _registryClient = createPublicClient({ chain, transport: http(rpcUrl) })
+    _registryAbi = parseAbi([
+      'function ownerOf(uint256 tokenId) view returns (address)',
+      'function tokenURI(uint256 tokenId) view returns (string)',
+      'function getAgentWallet(uint256 agentId) view returns (address)',
+      'function getMetadata(uint256 agentId, string key) view returns (bytes)',
+    ])
+  }
+
+  const id = BigInt(agentId)
+  const contractArgs = { address: IDENTITY_REGISTRY, abi: _registryAbi }
+  const [owner, tokenUri, wallet, builderCodeRaw, agentTypeRaw] = await Promise.all([
+    _registryClient.readContract({ ...contractArgs, functionName: 'ownerOf', args: [id] }),
+    _registryClient.readContract({ ...contractArgs, functionName: 'tokenURI', args: [id] }),
+    _registryClient.readContract({ ...contractArgs, functionName: 'getAgentWallet', args: [id] }),
+    _registryClient.readContract({ ...contractArgs, functionName: 'getMetadata', args: [id, 'builderCode'] }),
+    _registryClient.readContract({ ...contractArgs, functionName: 'getMetadata', args: [id, 'agentType'] }),
+  ])
+  const decodeMetadata = (value) => {
+    try { return decodeAbiParameters([{ type: 'string' }], value)[0] } catch { return '' }
+  }
+  const card = decodeDataCard(tokenUri)
+  return {
+    agentId: id,
+    name: card?.name || `Agent ${id}`,
+    type: decodeMetadata(agentTypeRaw),
+    owner,
+    wallet,
+    builderCode: decodeMetadata(builderCodeRaw),
+    tokenUri,
+    identityTuple: `eip155:${network === 'mainnet' ? 1776 : INJECTIVE_TESTNET_CHAIN_ID}:${IDENTITY_REGISTRY}:${id}`,
+    ...(card ? { card } : {}),
+  }
+}
+
 function json(res, obj, code = 200) {
   res.writeHead(code, { 'content-type': 'application/json; charset=utf-8' })
   res.end(JSON.stringify(obj, (_k, v) => (typeof v === 'bigint' ? v.toString() : v)))
@@ -294,8 +342,10 @@ export async function handleInjective(req, res, url, cfg = {}) {
         const top = Number(url.searchParams.get('top') || 47)
         const ids = []
         for (let id = top - offset; id >= Math.max(1, top - offset - limit + 1); id--) ids.push(id)
+        // 直接读 registry，避免 SDK 在解析 data: URI 名片时先打印失败告警；
+        // 内联名片由本服务 decodeDataCard 校验并解码，不依赖外部托管。
         const getStatusWithTimeout = (id, timeoutMs = 4000) => Promise.race([
-          reader.getStatus(BigInt(id)),
+          getRegistryStatus(id, cfg, network),
           new Promise((rs) => setTimeout(() => rs(null), timeoutMs)), // 不存在/慢的 id 超时回 null，不拖累整体
         ]).catch(() => null)
         const settled = await Promise.all(ids.map((id) => getStatusWithTimeout(id)))
@@ -324,9 +374,8 @@ export async function handleInjective(req, res, url, cfg = {}) {
 
     // —— 只读：查单个 agent 状态 ——
     if (tool === 'get-status') {
-      const reader = await getReader(network); if (!reader) return json(res, { error: 'sdk_unavailable' })
       const id = url.searchParams.get('agentId'); if (!id) return json(res, { error: 'no_agentId' })
-      const st = await reader.getStatus(BigInt(id))
+      const st = await getRegistryStatus(id, cfg, network)
       return json(res, st)
     }
 

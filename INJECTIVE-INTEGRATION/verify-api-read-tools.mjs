@@ -69,6 +69,8 @@ try {
   console.error = originalError
 }
 
+assertEqual('read APIs emit no expected SDK card warnings', sdkWarnings.length, 0)
+
 console.log('\n/api ping')
 assertEqual('ping sdk flag', ping.sdk, true)
 assertEqual('ping reachable', ping.reachable, true)

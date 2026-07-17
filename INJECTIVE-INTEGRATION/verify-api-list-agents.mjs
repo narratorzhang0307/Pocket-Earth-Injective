@@ -82,8 +82,6 @@ for (const agent of FLEET_AGENTS) {
   }
 }
 
-if (sdkWarnings.length) {
-  console.log('\nNOTE Agent SDK card fetch warnings were suppressed; /api decoded data URI cards directly.')
-}
+assertEqual('api emits no expected SDK card warnings', sdkWarnings.length, 0)
 
 console.log('\nOK /api/injective list-agents returns the verifiable Pocket Earth fleet from Injective testnet.')
