@@ -52,6 +52,11 @@ Run the adapter smoke:
 python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
 ```
 
+For the authenticated, cursor-based HTTP handoff used by the physical Pi, see
+[`LIVE-HANDOFF.md`](LIVE-HANDOFF.md). The feed client remains a thin consumer:
+Pocket Earth owns live Injective reads and speech templates; Claude-owned device
+drivers only consume `state`, `tts`, and `display` actions.
+
 The adapter does not import the app, the Injective API service, wallet code, or
 any device daemon. BLE, serial, MQTT, and screen drivers should sit after this
 file and map the emitted actions to physical output.

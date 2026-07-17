@@ -338,6 +338,8 @@ frost-agent 由下面这些部件组成，跑在「端侧 Selector + 云 Brain�
 
 端侧未就绪时，`edgeSafe` 安全返回空值并记 health，调用方自动走规则兜底。完整端侧部署（编译 / 转换量化 / sidecar / 调优）见 [`deploy/edge-runtime/`](deploy/edge-runtime/)。
 
+Microsoft Foundry Model Router 与 Qwen 共用 `provider-compat` 服务端入口。`npm run verify:foundry-provider` 只做离线契约验证；填好 `.env` 中三个 `AZURE_OPENAI_*` 字段后，运行 `npm run verify:foundry-live:strict` 发出一条最小真实请求，并核验 HTTP 2xx、Azure provider、返回模型和 Azure request id。普通的 `verify:foundry-live` 在缺凭据时明确显示 `SKIP`；严格命令会失败退出。验收过程不会打印 endpoint、密钥或原始响应。
+
 ### 3.5 五种子智能体类型 → 映射到 Pocket Earth
 
 我把常见的子 agent 形态归纳成五种，在 Pocket Earth 里都有对应：

@@ -104,6 +104,8 @@ python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
 
 完整硬件快检 `npm run verify:hardware` 会同时跑技能路由和事件适配分支，防止硬件叙事停留在 Markdown。
 
+真实 HTTP 联调使用 `raspi/frost_pi_feed_client.py`，完整的软件—Claude 树莓派责任边界、启动命令和 cursor 防重播验收见 [`raspi/LIVE-HANDOFF.md`](raspi/LIVE-HANDOFF.md)。软件侧运行 `npm run verify:hardware-handoff`，不会依赖屏幕、LED 或 TTS 驱动。
+
 ## 与 Injective 的关系
 
 Frost Edge Node 不直接写链。Injective 仍然通过服务端 API 与证据包连接：

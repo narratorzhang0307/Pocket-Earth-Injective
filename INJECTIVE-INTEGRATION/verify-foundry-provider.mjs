@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { buildLlmRequest, getLlmProviders, publicProviderState } from '../frost-agent/provider-compat/runtime.mjs'
+import { runFoundryLiveVerification } from './verify-foundry-live.mjs'
 
 const env = {
   FROST_LLM_PROVIDER: 'auto',
@@ -34,5 +35,37 @@ assert.match(publicState, /fallback/)
 assert.deepEqual(getLlmProviders({ FROST_LLM_PROVIDER: 'azure' }), [])
 assert.deepEqual(getLlmProviders({ FROST_LLM_PROVIDER: 'qwen', DASHSCOPE_API_KEY: 'x' }).map((provider) => provider.name), ['qwen'])
 
-console.log('foundry provider verification passed')
+const skipped = await runFoundryLiveVerification({ env: {}, log: () => {} })
+assert.deepEqual(skipped, {
+  ok: false,
+  skipped: true,
+  missing: ['AZURE_OPENAI_ENDPOINT', 'AZURE_OPENAI_API_KEY', 'AZURE_OPENAI_DEPLOYMENT'],
+})
+await assert.rejects(
+  runFoundryLiveVerification({ env: {}, strict: true, log: () => {} }),
+  /FAILED.*AZURE_OPENAI_ENDPOINT/,
+)
 
+let capturedRequest
+const liveResult = await runFoundryLiveVerification({
+  env,
+  log: () => {},
+  fetchImpl: async (url, init) => {
+    capturedRequest = { url, init }
+    return new Response(JSON.stringify({
+      model: 'routed-model',
+      choices: [{ message: { content: 'POCKET_EARTH_FOUNDRY_OK' } }],
+    }), {
+      status: 200,
+      headers: { 'content-type': 'application/json', 'x-request-id': 'request-id-fixture' },
+    })
+  },
+})
+assert.equal(liveResult.provider, 'azure-model-router')
+assert.equal(liveResult.model, 'routed-model')
+assert.equal(liveResult.requestId, 'request-id-fixture')
+assert.equal(capturedRequest.url, azure.url)
+assert.equal(capturedRequest.init.headers['api-key'], 'azure-secret')
+assert.doesNotMatch(JSON.stringify(liveResult), /azure-secret|pocket-earth\.openai\.azure\.com/)
+
+console.log('foundry provider verification passed')

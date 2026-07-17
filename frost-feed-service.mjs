@@ -41,7 +41,7 @@ async function callAgentList(cfg) {
     setHeader() {},
     end(chunk = '') { body += String(chunk || '') },
   }
-  const url = new URL('http://localhost/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47')
+  const url = new URL('http://localhost/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47&enrich=0')
   await handleInjective(req, res, url, cfg)
   if (statusCode !== 200) throw new Error(`injective_agent_list_${statusCode}`)
   const data = JSON.parse(body || '{}')
@@ -77,7 +77,11 @@ export function createFrostFeed({ token = '', injectiveConfig = {}, capacity = D
   async function seedFromLiveChain() {
     if (entries.length || seedPromise) return seedPromise
     seedPromise = Promise.resolve(liveRead()).then((agents) => {
-      const ids = agents.map((agent) => String(agent?.agentId ?? agent?.id ?? '')).filter(Boolean).slice(0, 12)
+      const ids = agents
+        .map((agent) => String(agent?.agentId ?? agent?.id ?? ''))
+        .filter(Boolean)
+        .sort((left, right) => Number(left) - Number(right))
+        .slice(0, 12)
       if (!ids.length) return null
       return publish(createChainDispatchEvent({
         count: ids.length,
@@ -115,4 +119,3 @@ export function createFrostFeed({ token = '', injectiveConfig = {}, capacity = D
 
   return { handle, publish, publishChronicle, seedFromLiveChain, size: () => entries.length }
 }
-

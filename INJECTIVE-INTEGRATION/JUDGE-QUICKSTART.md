@@ -22,7 +22,7 @@
 - Daily Knowledge Curator 的 AI 与金融卡保存官方来源、verdict、truthScore、recordHash 和 Merkle proof；OFFLINE 卡明确标成策展样例。下载包自包含公开记录与 inclusion proof，本地无需信任 Pocket Earth 界面即可复验。
 - Agent Forge/Plaza 已形成“创建—审核—发布—安装—运行”的产品闭环，并用空间对象、最小权限、端/云位置、链上身份约束上架范围。
 - Frost Edge Node 只消费 `music_now_playing` 与 `chain_dispatch` 公开 JSONL 事件；设备动作限制为 `state`、`tts`、`display`，不持私钥、不签钱包、不读取私人画像原文或精确坐标。
-- Microsoft Foundry Model Router 适配器已进入统一 provider 层；是否在台上表述为真实接入，只取决于 `verify:foundry-provider` 是否拥有真实成功响应。
+- Microsoft Foundry Model Router 适配器已进入统一 provider 层；只有 `npm run verify:foundry-live:strict` 获得真实成功响应后，才在台上表述为已真实接入。`verify:foundry-provider` 只是离线契约测试。
 
 ## Injective Proof Matrix
 
@@ -102,6 +102,8 @@ npm run verify:public-earth-api
 npm run verify:public-earth-ui
 npm run verify:frost-feed
 npm run verify:foundry-provider
+# 填好本机服务端配置后运行；会真实调用 Azure，缺凭据或请求失败均非零退出
+npm run verify:foundry-live:strict
 npm run verify:hardware
 npm run verify:injective
 ```
