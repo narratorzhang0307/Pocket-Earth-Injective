@@ -10,7 +10,7 @@ Pocket Earth 是空间 Agent 平台：私人记忆钉在自己的地球上，公
 
 ## 决赛终版 · 12 页逐页分镜
 
-最终 deck 固定为 `Pocket Earth · Injective 决赛终版.pptx`，只保留一条从用户问题到 Injective 公开证明的主线。现场讲述按下表推进，不临时增页。
+最终 deck 固定为 `Pocket Earth · Injective 决赛终版-Final5.pptx`，只保留一条从用户问题到 Injective 公开证明的主线。现场讲述按下表推进，不临时增页。
 
 | 页 | 任务 | 现场讲法 | 画面动作 |
 |---|---|---|---|
@@ -20,7 +20,7 @@ Pocket Earth 是空间 Agent 平台：私人记忆钉在自己的地球上，公
 | 4 | Agent 内核 | 主 Frost 只做委派，专门子 Agent 在隔离上下文中工作，并由 harness 保持失败可降级。 | 用 CEO 委派解释可组合性，不把 Agent 说成智能合约。 |
 | 5 | 平台闭环 | Forge 负责创建，Plaza 负责审核与安装，Public Plaza 负责发现真实链上分身。 | 口播 `CREATE → REVIEW → PUBLISH → INSTALL → RUN`。 |
 | 6 | Public Earth | 头像回答“我是谁”，门牌回答“我在哪”；地球看关系，身份卡看可验证对象。 | 展示真实手机 UI、#43 门牌和五个链上身份；强调不是虚拟土地。 |
-| 7 | Public Knowledge | 每日知识可以下载、带走并在本地重算 Merkle proof；私人记忆始终不进入资源包。 | 展示 revision 2、离线验真、PUBLIC ONLY 和五领域 worker。 |
+| 7 | Public Knowledge | AI 时代真正稀缺的不是更多信息，而是经过提炼、带来源、可复验的知识。渲染在端上，内容在包里，指纹在链上。 | 展示 revision 2、下载包、本地 Merkle 验真、PUBLIC ONLY 和五领域 worker。 |
 | 8 | Injective proof | 链下 Agent 是概率程序，Injective 给身份、门牌、知识版次和时间线确定性的公开锚点。 | 依次指向 Injective ERC-8004、PublicEarthRegistry、DailyKnowledgeChronicle 与 Blockscout/API。 |
 | 9 | 隐私边界 | 「把可验证交给链，把隐私留在端。」 | 对比 ON-CHAIN 与 ON-DEVICE；强调 testnet only、设备不持密钥。 |
 | 10 | Physical Agent | 同一条公开 JSONL `chain_dispatch` feed 驱动 Raspberry Pi 的屏幕、LED 和 TTS；music-agent 复用同一动作合同，软件不绑定任何具体驱动。 | 实物放桌面，播放链上见闻；若真机异常则切备份录像。 |
@@ -81,4 +81,10 @@ Raspberry Pi Ltd 2024 IPO 文件披露，自 2012 年开始交易以来已售出
 
 ## 公共知识的可携带层（当前已实现）
 
-Public Earth 不只让分身“住进来”，也允许经过来源筛选的公共知识被带回本地 Pocket Earth。链上只保存每日版次根和修订关系，正文、来源与 Merkle proof 放在可下载验证包中；本地导入时重算 `recordHash`、验证 inclusion proof，并核对 Injective 上的 `editionRoot`。因此公共知识可以缓存、下载和复验，私人记忆仍完全留在用户设备。
+Public Earth 不只让分身“住进来”，也允许经过来源筛选的公共知识被带回本地 Pocket Earth。公共知识地球在手机 App 端渲染，正文、来源与 Merkle proof 放在可下载验证包中；Injective 只保存每日版次根和修订关系，不逐条保存知识正文。本地导入时重算 `recordHash`、验证 inclusion proof，并核对 Injective 上的 `editionRoot`。因此公共知识可以缓存、下载和复验，私人记忆仍完全留在用户设备。
+
+一句话：**我们分发的不是更多信息，而是经过提炼、带来源、可复验的知识版次——渲染在端上，内容在包里，指纹在链上。**
+
+当前 revision 2 使用单棵每日 Merkle 树并已经锚定，历史不能改写。后续数据 schema 才采用“一主题一棵子树、一天一个总根”：单条记录先证明属于 `topicRoot`，主题根再证明属于每日 `editionRoot`，而 Injective 仍只接收一次每日总根提交。它不是自建链，也不会让用户为了浏览或验证知识发起交易。
+
+技术评委备用讲法：**知识资源包是 AI 时代的可验证 RSS——公开 feed 分发每一期资源包，任何阅读器都能本地复验，并核对 Injective 上的版次根。** 这句话只用于解释开放分发，不在台上点名任何其他协议，也不声称已经完成跨客户端订阅后台。

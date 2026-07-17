@@ -27,7 +27,7 @@
 | 0 开场 | 0:00–0:15 | App 首屏地球缓缓转，Frost 像素形象浮现 | 「这是 Pocket Earth。口袋地球装记忆，公共地球住分身：私人生活留在自己的地球，Frost 的公共身份、门牌和知识版次由 Injective 见证。」 |
 | 1 链上身份 | 0:15–0:45 | 先切到 `agentId 43` 单个身份页，确认 #43 + Owner；再切钱包页串起注册、绑定、部署、握手 | 「Frost 通过 ERC-8004 身份标准，在 Injective testnet 上注册了持久、公开可验证、可审计的链上身份。这个 #43 就是我的 Frost，Owner 是我的钱包；再看钱包页，每一步都是真实交易，区块浏览器可查。」 |
 | 2 公共地球 | 0:45–1:25 | 回 App：底部 Agents → `public-plaza` → PUBLIC EARTH。展示五个蓝紫色 agent 标记；点 #43 门牌 `PE-03-0043`，再切身份卡视图 | 「这里不是虚拟土地，而是 Agent 社会的空间命名层。头像回答我是谁，门牌回答我在哪。五个 Frost 已拥有 Injective 链上门牌，卡面哈希与 ERC-8004 名片一致。地球是关系层，卡牌只是可验证对象的形，不设稀有度和对战。」 |
-| 3 公共知识包 | 1:25–1:55 | 运行 `daily-knowledge`，展示 AI / 金融卡、Chronicle revision 2，点击“下载验证包” | 「公共地球也有一层可携带的公共知识。正文和来源进入资源包，Injective 保存当天版次根；Pocket Earth 下载后在本地重算记录哈希与 Merkle 路径。公共知识能带走、能复验，不被任何单一界面锁住。」 |
+| 3 公共知识包 | 1:25–1:55 | 运行 `daily-knowledge`，展示 AI / 金融卡、Chronicle revision 2，点击“下载验证包” | 「AI 时代真正稀缺的不是更多信息，而是经过提炼、带来源、可复验的知识。公共知识地球渲染在手机端，正文和来源进入资源包，Injective 只保存当天版次根。Pocket Earth 下载后在本地重算记录哈希与 Merkle 路径：渲染在端上，内容在包里，指纹在链上。」 |
 | 4 夜间报告 | 1:55–2:20 | `public-plaza` 切「夜间 · 回来报告」，随后给 Frost Edge Node 一条公开事件 | 「夜里 Frost 回来，用人话讲今天的链上见闻；同一条公开 JSONL 事件也能交给桌面的 Frost Edge Node 显示和播报。它不持私钥，也不读取私人画像。」 |
 | 5 链上验证 + 隐私 | 2:20–2:50 | 切 Blockscout：Public Earth Registry、#43 门牌交易、Chronicle revision 2；再打开 `/api/injective?tool=get-public-earth` | 「这些都不是前端示意：身份、门牌、卡面承诺与知识版次可由任何人独立核对。隐私铁律是链上只放证明物；书影音原文、精确坐标和画像明细全留在端侧。Injective 让身份、版次、时间线与握手可以被任何人独立核对。」 |
 | 6 收尾 | 2:50–3:00 | 回公共地球全景，打出标题 + Injective logo | 「Pocket Earth 现在就能打开，不是纸面方案；FROST Chronicle 是可追溯、不暴露隐私的画像演化史。公开仓库、Demo 视频、Pitch Deck 三件交付，Built on Injective。」 |

@@ -20,6 +20,7 @@
 - `PublicEarthRegistry` 是实际部署的 Injective EVM 智能合约；五个 Frost 已写入象征性分区、门牌、卡面承诺与修订号。门牌不是现实地址、精确坐标、虚拟土地或地块权利。
 - `DailyKnowledgeChronicle` 是实际部署的 Injective EVM 智能合约；同一天的知识版次已经从 revision 1 演进到 revision 2，旧 root 作为 `previousEditionRoot` 保留。
 - Daily Knowledge Curator 的 AI 与金融卡保存官方来源、verdict、truthScore、recordHash 和 Merkle proof；OFFLINE 卡明确标成策展样例。下载包自包含公开记录与 inclusion proof，本地无需信任 Pocket Earth 界面即可复验。
+- Public Knowledge Earth 渲染在手机 App 端；正文、来源和 proof 留在资源包，Injective 只保存每日版次根与修订关系。也就是“渲染在端上，内容在包里，指纹在链上”。
 - Agent Forge/Plaza 已形成“创建—审核—发布—安装—运行”的产品闭环，并用空间对象、最小权限、端/云位置、链上身份约束上架范围。
 - Frost Edge Node 只消费 `music_now_playing` 与 `chain_dispatch` 公开 JSONL 事件；设备动作限制为 `state`、`tts`、`display`，不持私钥、不签钱包、不读取私人画像原文或精确坐标。
 - Microsoft Foundry Model Router 适配器已进入统一 provider 层；只有 `npm run verify:foundry-live:strict` 获得真实成功响应后，才在台上表述为已真实接入。`verify:foundry-provider` 只是离线契约测试。
