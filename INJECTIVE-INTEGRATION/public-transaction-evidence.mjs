@@ -24,6 +24,7 @@ export async function getPublicTransactionEvidence(client, hash) {
 
     return {
       tx: {
+        hash: archived.hash,
         from: archived.from?.hash || null,
         to: archived.to?.hash || null,
         input: archived.raw_input,
