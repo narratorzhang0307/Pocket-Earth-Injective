@@ -12,6 +12,7 @@ const checks = [
   ['offline sample is labelled honestly', page.includes('OFFLINE 策展样例') && page.includes('不声称已经运行实时模型核验')],
   ['private/public boundary is visible', page.includes('PRIVATE MEMORY STAYS LOCAL') && page.includes('不上传你的私人记忆')],
   ['Injective anchor link is rendered from API', page.includes('data.edition.anchor.scanUrl') && page.includes('INJECTIVE 已锚定')],
+  ['downloadable public knowledge pack is visible', page.includes('/api/knowledge?tool=pack&date=') && page.includes('下载验证包') && page.includes('可离线核验')],
   ['agent console routes to knowledge page', tab.includes("'daily-knowledge': 'knowledge'") && tab.includes('<DailyKnowledgePage')],
   ['plaza card links real Chronicle contract', catalog.includes('0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25') && catalog.includes("runTarget: 'daily-knowledge'")],
   ['final plaza UI has no payment pitch', !/(付费|支付|结算|售价|创作者收入)/.test(plaza) && !/(付费|支付|结算|售价|创作者收入)/.test(tab)],

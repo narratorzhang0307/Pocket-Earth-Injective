@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  AlertTriangle, Check, ChevronLeft, Database, ExternalLink,
+  AlertTriangle, Check, ChevronLeft, Database, Download, ExternalLink,
   Link2, LoaderCircle, RefreshCw, ShieldCheck,
 } from 'lucide-react';
 import type {
@@ -114,6 +114,7 @@ export default function DailyKnowledgePage({ onBack }: Props) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const controller = new AbortController();
     setLoading(true);
     setError(false);
@@ -212,6 +213,11 @@ export default function DailyKnowledgePage({ onBack }: Props) {
                       <Link2 className="w-3 h-3" />查看 Injective 交易<ExternalLink className="w-3 h-3" />
                     </a>
                   )}
+                  <a href={`/api/knowledge?tool=pack&date=${encodeURIComponent(data.edition.date)}`} download={`pocket-earth-public-knowledge-${data.edition.date}.json`}
+                    className="mt-2 ml-2 border-2 border-black bg-white text-black px-2 py-1.5 font-pixel text-[7px] inline-flex items-center gap-1 active:translate-y-px">
+                    <Download className="w-3 h-3" />下载验证包
+                  </a>
+                  <p className="mt-2 text-[8px] text-black/45 leading-relaxed">资源包包含公共知识、来源与 Merkle proof；下载到本地后可离线核验，并与 Injective 版次根对齐。</p>
                 </div>
               </div>
             </section>

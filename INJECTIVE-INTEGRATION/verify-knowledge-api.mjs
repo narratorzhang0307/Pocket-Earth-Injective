@@ -45,6 +45,12 @@ assert.equal(finance.body.records[0].topic, 'finance')
 assert.match(finance.body.records[0].claim, /Chain ID 1439/i)
 assert.match(finance.body.records[0].sources[0].url, /^https:\/\/docs\.injective\.network\//)
 
+const pack = await call(service, '/api/knowledge?tool=pack&date=2026-07-17')
+assert.equal(pack.status, 200)
+assert.equal(pack.body.schema, 'pocket-earth-public-knowledge-pack/v1')
+assert.equal(pack.body.records.length, 2)
+assert.equal(pack.body.edition.revision, 2)
+
 const refresh = await call(service, '/api/knowledge?tool=refresh&topic=ai&date=2026-07-17', 'POST')
 assert.equal(refresh.status, 200)
 assert.equal(refresh.body.mode, 'offline')

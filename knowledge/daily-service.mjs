@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs'
-import { buildDailyEditions, buildFactCommitment, verifyMerkleProof } from '../src/app/lib/chronicle/kernel.mjs'
+import { buildDailyEditions, buildFactCommitment, hashValue, verifyMerkleProof } from '../src/app/lib/chronicle/kernel.mjs'
 import { buildLlmRequest, getLlmProviders } from '../frost-agent/provider-compat/runtime.mjs'
 import { searchDailySignals, searchNewsEvidence } from './evidence.mjs'
 import { calculateTruthScore } from './scoring.mjs'
@@ -214,6 +214,16 @@ function json(res, value, status = 200) {
   res.end(JSON.stringify(value))
 }
 
+function jsonDownload(res, value, filename) {
+  res.writeHead(200, {
+    'content-type': 'application/json; charset=utf-8',
+    'content-disposition': `attachment; filename="${filename}"`,
+    'cache-control': 'public, max-age=300',
+    'x-content-type-options': 'nosniff',
+  })
+  res.end(JSON.stringify(value, null, 2))
+}
+
 function bearer(req) {
   const value = String(req.headers?.authorization || '')
   return value.startsWith('Bearer ') ? value.slice(7) : ''
@@ -299,13 +309,60 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     return null
   }
 
+  async function buildPublicPack(date) {
+    // Export the deterministic curated edition. Live drafts remain unanchored until a later
+    // edition commit, so they must not silently replace the package tied to COMMITTED_PROOF.
+    const bundles = await Promise.all([...TOPICS].map((topic) => offline(topic, date)))
+    const edition = bundles[0].edition
+    const records = bundles.flatMap((bundle) => bundle.records)
+      .sort((left, right) => left.commitment.recordHash.localeCompare(right.commitment.recordHash))
+    const entries = []
+    for (const record of records) {
+      const proof = edition.proofs[record.commitment.recordHash] || []
+      const verified = await verifyMerkleProof(record.commitment.recordHash, proof, edition.factsRoot)
+      if (!verified) throw new Error(`knowledge_pack_proof_invalid:${record.id}`)
+      entries.push({ record, proof, verified })
+    }
+    const packageHash = await hashValue({
+      schema: 'pocket-earth-public-knowledge-pack/v1',
+      editionRoot: edition.editionRoot,
+      records: entries.map((entry) => ({ recordHash: entry.record.commitment.recordHash, proof: entry.proof })),
+    })
+    return {
+      schema: 'pocket-earth-public-knowledge-pack/v1',
+      packageHash,
+      exportedAt: new Date().toISOString(),
+      edition: {
+        schema: edition.schema,
+        date: edition.date,
+        day: edition.day,
+        factCount: edition.factCount,
+        factsRoot: edition.factsRoot,
+        manifestHash: edition.manifestHash,
+        policyRoot: edition.policyRoot,
+        previousEditionRoot: edition.previousEditionRoot,
+        editionRoot: edition.editionRoot,
+        revision: edition.revision,
+        anchor: edition.anchor,
+      },
+      records: entries,
+      importPolicy: {
+        target: 'Pocket Earth local public knowledge layer',
+        mode: 'public-read-only',
+        verification: 'verify every record Merkle proof, then match editionRoot to the Injective daily edition anchor',
+        privacy: 'the package contains public knowledge only; private Pocket Earth memories are never exported or merged into it',
+      },
+    }
+  }
+
   async function handle(req, res, url) {
     const tool = url.searchParams.get('tool') || 'today'
     const topic = cleanTopic(url.searchParams.get('topic'))
     const date = safeDate(url.searchParams.get('date'))
-    if (!topic && tool !== 'proof') return json(res, { error: 'unsupported_topic' }, 400)
+    if (!topic && tool !== 'proof' && tool !== 'pack') return json(res, { error: 'unsupported_topic' }, 400)
     if (tool === 'today' && req.method === 'GET') return json(res, await get(topic, date))
     if (tool === 'edition' && req.method === 'GET') return json(res, (await get(topic, date)).edition)
+    if (tool === 'pack' && req.method === 'GET') return jsonDownload(res, await buildPublicPack(date), `pocket-earth-public-knowledge-${date}.json`)
     if (tool === 'proof' && req.method === 'GET') {
       const recordHash = String(url.searchParams.get('recordHash') || '')
       if (!/^0x[0-9a-f]{64}$/i.test(recordHash)) return json(res, { error: 'invalid_record_hash' }, 400)
@@ -319,5 +376,5 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     return json(res, { error: 'method_not_allowed' }, 405)
   }
 
-  return { handle, get, refresh, findProof }
+  return { handle, get, refresh, findProof, buildPublicPack }
 }
