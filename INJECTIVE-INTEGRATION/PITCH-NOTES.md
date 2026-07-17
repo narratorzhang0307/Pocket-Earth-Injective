@@ -21,10 +21,10 @@ Pocket Earth 是空间 Agent 平台：私人记忆钉在自己的地球上，公
 | 5 | 平台闭环 | Forge 负责创建，Plaza 负责审核与安装，Public Plaza 负责发现真实链上分身。 | 口播 `CREATE → REVIEW → PUBLISH → INSTALL → RUN`。 |
 | 6 | Public Earth | 头像回答“我是谁”，门牌回答“我在哪”；地球看关系，身份卡看可验证对象。 | 展示真实手机 UI、#43 门牌和五个链上身份；强调不是虚拟土地。 |
 | 7 | Public Knowledge | 每日知识可以下载、带走并在本地重算 Merkle proof；私人记忆始终不进入资源包。 | 展示 revision 2、离线验真、PUBLIC ONLY 和五领域 worker。 |
-| 8 | Injective proof | 链下 Agent 是概率程序，Injective 给身份、门牌、知识版次和时间线确定性的公开锚点。 | 依次指向 ERC-8004、PublicEarthRegistry、DailyKnowledgeChronicle 与 Blockscout/API。 |
+| 8 | Injective proof | 链下 Agent 是概率程序，Injective 给身份、门牌、知识版次和时间线确定性的公开锚点。 | 依次指向 Injective ERC-8004、PublicEarthRegistry、DailyKnowledgeChronicle 与 Blockscout/API。 |
 | 9 | 隐私边界 | 「把可验证交给链，把隐私留在端。」 | 对比 ON-CHAIN 与 ON-DEVICE；强调 testnet only、设备不持密钥。 |
-| 10 | Physical Agent | 同一条公开事件 feed 驱动 Raspberry Pi 的屏幕、LED 和 TTS；软件不绑定任何具体驱动。 | 实物放桌面，播放链上见闻；若真机异常则切备份录像。 |
-| 11 | Microsoft Foundry | provider 层选择合适模型，但不改变 Agent manifest；Injective 仍是公开信任层。 | 真实 Azure 验收通过才展示真实响应，否则只讲适配器与严格验收入口。 |
+| 10 | Physical Agent | 同一条公开 JSONL `chain_dispatch` feed 驱动 Raspberry Pi 的屏幕、LED 和 TTS；music-agent 复用同一动作合同，软件不绑定任何具体驱动。 | 实物放桌面，播放链上见闻；若真机异常则切备份录像。 |
+| 11 | Microsoft Foundry | provider 层选择合适模型，但不改变 Agent manifest；Injective 仍是公开信任层。 | 真实 Azure 验收通过才展示真实响应，否则只讲适配器与严格验证命令。 |
 | 12 | 收束 | 「趁生命气息逗留，把世界钉回它该在的地方。」 | 回到可打开的产品入口和三条独立可核对证据，停在二维码/网址供评委拍摄。 |
 
 正式 deck 已完成全尺寸逐页检查，并通过 `slides_test.py` 溢出检测、模板保真检查和空占位符 XML 检查。上台前只允许替换最终网址、二维码或已取得的真实 Azure 验收状态，不再改变页序与叙事骨架。

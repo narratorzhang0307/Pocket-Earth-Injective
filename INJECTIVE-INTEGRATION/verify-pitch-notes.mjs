@@ -67,7 +67,7 @@ const unsupportedPaymentToken = ['x', '402'].join('')
 console.log('\nPitch notes structure')
 assertTrue('pitch notes file exists', existsSync(PITCH_FILE))
 assertTrue('pitch has one-line recommendation', pitch.includes('## 建议放在 PPT 的一句话'))
-assertTrue('pitch has slide outline', pitch.includes('## PPT 页内建议'))
+assertTrue('pitch has slide outline', pitch.includes('## 决赛终版 · 12 页逐页分镜'))
 assertTrue('pitch has speaking boundaries', pitch.includes('## 讲法边界'))
 assertTrue('pitch has cited facts', pitch.includes('## 可引用的事实'))
 
