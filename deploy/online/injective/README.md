@@ -9,6 +9,7 @@
 | 比赛域名 | `pocketearth-injective.throughtheglass.art` |
 | 远端目录 | `~/pocket-earth-injective` |
 | PM2 进程 | `pocket-earth-injective` |
+| 日更进程 | `pocket-earth-injective-knowledge` |
 | Node 端口 | `3018` |
 | nginx 配置 | `nginx-pocket-earth-injective.conf` |
 
@@ -16,9 +17,10 @@
 
 ## 当前状态
 
-- 仓库只准备独立部署包；尚未上传、重启、修改 nginx 或申请证书。
-- DNS A 记录改为 `pocketearth-injective` 并生效后，才执行远端部署。
+- DNS A 记录已使用短横线主机名；部署前仍需只读确认它解析到比赛服务器。
 - 正式上线前，先在比赛目录创建独立 `.env`，并确认 `API_PORT=3018`；严禁复用或覆盖其他应用的 `.env`。
+- 部署脚本只上传最小运行依赖，并保留远端 `.env`、`node_modules/` 与 `var/knowledge/`；不会调用旧 Pocket Earth 的部署脚本。
+- `pocket-earth-injective-knowledge` 每日独立抓取 AI、金融、科学、气候、文化五个领域，失败隔离并原子落盘；它不持有也不使用 Injective 签名器，链上版次只能人工审阅后显式提交。
 
 ## 最终执行顺序
 
@@ -39,6 +41,7 @@ certbot --nginx -d pocketearth-injective.throughtheglass.art --non-interactive -
 curl -fsS https://pocketearth-injective.throughtheglass.art/healthz
 curl -fsS 'https://pocketearth-injective.throughtheglass.art/api/injective?tool=get-public-earth'
 curl -fsS 'https://pocketearth-injective.throughtheglass.art/api/knowledge?tool=today&topic=ai'
+pm2 describe pocket-earth-injective-knowledge
 ```
 
 上线后再统一替换 Final PPT、Judge Quickstart、Demo Script 与二维码中的 Live Demo 地址；在新站点真实通过前，不把占位地址写成“已上线”。

@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { mkdir, rename, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -5,6 +6,18 @@ import { createDailyKnowledgeService } from './daily-service.mjs'
 import { KNOWLEDGE_TOPICS, PUBLIC_TOPIC_KEYS } from './topics.mjs'
 
 const WORKER_SCHEMA = 'pocket-earth-knowledge-worker/v1'
+
+function loadDotEnv(file = resolve(process.cwd(), '.env')) {
+  if (!existsSync(file)) return
+  for (const line of readFileSync(file, 'utf8').split('\n')) {
+    const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/)
+    if (!match) continue
+    const key = match[1]
+    let value = match[2].trim()
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) value = value.slice(1, -1)
+    if (process.env[key] === undefined) process.env[key] = value
+  }
+}
 
 function safeDate(value, now = new Date()) {
   const fallback = now.toISOString().slice(0, 10)
@@ -126,6 +139,7 @@ function parseArgs(argv) {
 }
 
 async function main() {
+  loadDotEnv()
   const options = parseArgs(process.argv.slice(2))
   const outputDir = options.outputDir || resolve(process.cwd(), process.env.KNOWLEDGE_DATA_DIR || 'var/knowledge')
   const run = async () => {
