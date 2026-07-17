@@ -42,4 +42,4 @@ assert.ok(!files.deploy.includes('pm2 delete'))
 assert.ok(!files.nginx.includes('pocketearth.throughtheglass.art'))
 assert.ok(!files.nginx.includes('pocketearth_injective'))
 
-console.log('OK Injective competition deployment lane is isolated and waits for the hyphenated DNS name.')
+console.log('OK Injective competition deployment lane is isolated and uses the live hyphenated HTTPS domain.')

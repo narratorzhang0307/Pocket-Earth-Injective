@@ -17,12 +17,14 @@
 
 ## 当前状态
 
-- DNS A 记录已使用短横线主机名；部署前仍需只读确认它解析到比赛服务器。
-- 正式上线前，先在比赛目录创建独立 `.env`，并确认 `API_PORT=3018`；严禁复用或覆盖其他应用的 `.env`。
+- `https://pocketearth-injective.throughtheglass.art/?demo` 已独立上线并启用 Let's Encrypt HTTPS。
+- 远端目录 `/root/pocket-earth-injective`、端口 `3018`、PM2 Web 进程与 Daily Knowledge Worker 均已独立运行；旧域名和旧服务未修改。
+- 比赛目录使用独立 `.env` 且包含 `API_PORT=3018`；严禁复用或覆盖其他应用的 `.env`。
 - 部署脚本只上传最小运行依赖，并保留远端 `.env`、`node_modules/` 与 `var/knowledge/`；不会调用旧 Pocket Earth 的部署脚本。
-- `pocket-earth-injective-knowledge` 每日独立抓取 AI、金融、科学、气候、文化五个领域，失败隔离并原子落盘；它不持有也不使用 Injective 签名器，链上版次只能人工审阅后显式提交。
+- `pocket-earth-injective-knowledge` 每日独立抓取 AI、金融、科学、气候、文化五个领域，写入 `running/complete` 心跳，失败隔离并原子落盘；它不持有也不使用 Injective 签名器，链上版次只能人工审阅后显式提交。
+- nginx server block 与证书已经安装；后续运行 `deploy.sh` 只更新独立应用包并重载两个 PM2 进程，不改 nginx 或证书。
 
-## 最终执行顺序
+## 首次部署 / 灾备复验顺序
 
 ```bash
 # 1. 只读检查 DNS，必须返回目标服务器地址，且主机名不得含下划线
@@ -44,4 +46,4 @@ curl -fsS 'https://pocketearth-injective.throughtheglass.art/api/knowledge?tool=
 pm2 describe pocket-earth-injective-knowledge
 ```
 
-上线后再统一替换 Final PPT、Judge Quickstart、Demo Script 与二维码中的 Live Demo 地址；在新站点真实通过前，不把占位地址写成“已上线”。
+Final7、Judge Quickstart 与 Demo Script 已统一使用独立比赛域名。每次更新后仍需运行上述验收，避免把 PM2 `online` 误当成 API、日更守护或 HTTPS 已真实可用。
