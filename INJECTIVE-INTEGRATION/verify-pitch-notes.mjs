@@ -107,6 +107,18 @@ assertTrue('hardware bridge README exists', existsSync(resolve('hardware/frost-b
 assertTrue('raspi skill router exists', existsSync(resolve('hardware/frost-buddy/raspi/frost_pi_skill_agent.py')))
 assertTrue('raspi smoke exists', existsSync(resolve('hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py')))
 
+console.log('\nRoadmap boundary anchors')
+for (const snippet of [
+  'FROST 身份卡',
+  'Agent Earth',
+  'AgentEarthRegistry',
+  '不是现实地址',
+  '不是虚拟土地',
+  '本周只作为 Roadmap，不进入主 Demo',
+]) {
+  assertTrue(`pitch roadmap boundary mentions ${snippet}`, pitch.includes(snippet))
+}
+
 console.log('\nDelivery contract wiring')
 assertEqual('verify:pitch script', packageJson.scripts?.['verify:pitch'], 'node INJECTIVE-INTEGRATION/verify-pitch-notes.mjs')
 assertEqual('evidence pitch command', evidence.verification?.pitchNotes, 'npm run verify:pitch')

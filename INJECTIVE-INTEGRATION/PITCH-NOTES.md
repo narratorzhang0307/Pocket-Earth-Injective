@@ -59,3 +59,7 @@ Raspberry Pi Ltd 2024 IPO 文件披露，自 2012 年开始交易以来已售出
 ## FROST 身份卡的后续产品方向
 
 每个 FROST 可以拥有一张可视化 Agent 身份卡：卡面是角色形象，卡背是 agentId、能力版本、知识贡献和服务历史。卡牌属性只随可验证行为演进；Frost Edge Node 读取同一身份后加载对应头像、颜色、声音与技能包。卡、软件与硬件是同一个 Agent 的三个表面，硬件是身份的物理登录终端，而不是人为制造稀缺的收藏品。
+
+## Agent Earth 的后续产品方向
+
+Agent Earth 是 Pocket Earth 公共 Agent 生态的空间命名层：链上身份回答“它是谁”，象征性分区与门牌回答“去哪里找到它”，Daily Knowledge Chronicle 回答“它留下了什么公共知识”。未来可以研究 `AgentEarthRegistry(agentId → zoneId, doorplate, cardHash, version)`，并让现有 public-plaza 的地球标记进入 Agent 的空间主页。它不是现实地址、不是虚拟土地，也不表达稀缺地块或所有权；本周只作为 Roadmap，不进入主 Demo。
