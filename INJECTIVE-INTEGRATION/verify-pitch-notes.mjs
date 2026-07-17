@@ -9,9 +9,10 @@ const RASPBERRY_PI_SOURCE = 'https://data.fca.org.uk/artefacts/NSM/RNS/5182805.h
 const SOURCE_URLS = [
   RASPBERRY_PI_SOURCE,
   'https://investors.raspberrypi.com/',
-  'https://ir.roblox.com/financials/annual-reports/default.aspx',
-  'https://developer.apple.com/app-store/small-business-program/',
-  'https://steamcommunity.com/groups/steamworks/announcements/detail/1697191267930157838',
+  'https://docs.injective.network/developers-evm/network-information',
+  'https://docs.injective.network/developers-evm/smart-contracts',
+  'https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/model-router',
+  'https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router',
 ]
 
 function assertTrue(label, condition) {
@@ -78,6 +79,9 @@ for (const snippet of [
   'SocialHandshake',
   'public-plaza',
   'Nightly Chain Dispatch',
+  'Daily Knowledge Chronicle',
+  'revision 2',
+  'Microsoft Foundry',
   'npm run verify:injective',
   'npm run verify:pitch',
 ]) {
@@ -87,16 +91,15 @@ for (const snippet of [
 console.log('\nHardware boundary anchors')
 for (const snippet of [
   'Raspberry Pi',
-  'BLE',
+  'JSONL',
   'TTS',
   'music-agent',
   'chain_dispatch',
   'npm run verify:hardware',
-  '不要说成已量产',
-  '不接触私钥',
+  '不承诺量产',
+  '不持私钥',
   '画像原文',
   '精确坐标',
-  '名片哈希',
 ]) {
   assertTrue(`pitch hardware boundary mentions ${snippet}`, pitch.includes(snippet))
 }
@@ -115,16 +118,23 @@ for (const url of SOURCE_URLS) {
 }
 for (const snippet of [
   '超过 6700 万台',
-  '9.228 亿美元',
-  '15% 抽成',
-  '不表示 Pocket Earth 已经拥有同等规模',
-  '不支持直接预测 Pocket Earth 硬件销量',
+  '成熟原型平台',
+  '不用于推导 Pocket Earth 的设备规模',
 ]) {
   assertTrue(`pitch keeps cautious market wording: ${snippet}`, pitch.includes(snippet))
 }
 await assertSourceReachable()
 for (const forbidden of [
   unsupportedPaymentToken,
+  '付费',
+  '支付',
+  '收入',
+  '收益',
+  '结算',
+  '抽成',
+  '永久版税',
+  'soulbound',
+  '不可转让',
   'INJ_PRIVATE_KEY',
   'privateKey',
   'profileHashA',

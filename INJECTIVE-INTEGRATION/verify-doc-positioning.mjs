@@ -104,7 +104,7 @@ assertTrue('README routes hardware services to Agent Plaza service receipts', ro
 assertTrue('README names commercial path boundary explicitly', rootReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('README rejects token-first path explicitly', rootReadme.includes('不走代币优先'))
 assertTrue('README keeps Agent Plaza as commercial center', rootReadme.includes('Agent Plaza 的安装、调用、评价和可选付费'))
-assertTrue('demo script keeps Agent Plaza optional payment receipt wording', demoScript.includes('Agent Plaza 承接安装、调用、评价和可选付费回执'))
+assertTrue('demo script keeps Agent Plaza platform wording', demoScript.includes('Agent Plaza 承接创建、审核、发布、安装和运行'))
 assertTrue('PROGRESS marks PLAN and RESEARCH as historical materials', progress.includes('`INJECTIVE-INTEGRATION/PLAN.md` / `INJECTIVE-INTEGRATION/RESEARCH.md`') && progress.includes('历史计划与研究材料'))
 assertTrue('PROGRESS points historical materials at current evidence source', progress.includes('当前事实以 `README.md`、`INJECTIVE-INTEGRATION/CHAIN-EVIDENCE.md`、`INJECTIVE-INTEGRATION/JUDGE-QUICKSTART.md` 和五条只读 API 为准'))
 assertTrue('PROGRESS keeps data URI Agent Card as current fact', progress.includes('data URI Agent Card') && progress.includes('公开证据包'))

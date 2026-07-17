@@ -14,7 +14,7 @@
 | 用户问题 | 个人记忆散落各处，按时间记不牢，记录沉底，工具不懂你，隐私不敢交。 | README 的“Pocket Earth 是什么”、集成说明的“用户痛点与对症解决” |
 | 产品方法 | Pocket Earth 把真实地点当索引，让书、影、乐、照片、行程和心情回到同一颗地球；Frost-agent 端云双脑负责挑、找、表达和反思。 | 地球入口、六类标记、`frost-agent` harness、RunTrace |
 | Injective 证明 | Injective 负责公共见证：ERC-8004 `agentId 43`、`agentId 43-47` fleet、同钱包时间线、SocialHandshake、未来 Profile Checkpoint，以及 Profile Chain / Proof of Memory 的画像版本见证。 | Blockscout、`get-chain-evidence`、`get-agent-proof`、`get-wallet-timeline` |
-| 硬件与商业边界 | Frost Edge Node 只消费公开 JSONL 事件；Agent Plaza 承接安装、调用、评价和可选付费回执；未来硬件节点服务也只能走 Agent Plaza 服务回执；商业路径不走代币优先或重资本硬件路线。 | `get-hardware-bridge-proof`、`hardwareBridge.serviceBoundary`、`agent-plaza`、`reviewManifest`、`Profile Confidence` |
+| 硬件与平台边界 | Frost Edge Node 只消费公开 JSONL 事件；Agent Plaza 承接创建、审核、发布、安装和运行；硬件只把公开事件带进物理空间，不持私钥、不签钱包、不读取私人画像。 | `get-hardware-bridge-proof`、`agent-plaza`、`reviewManifest`、`privacyBoundary.hardware` |
 
 ---
 
@@ -36,14 +36,14 @@
 - **进广场**：底部 `AGENTS`（右下角 ✦）→ 卡片列表往下滑到 `PLAZA` 区 → 点 `public-plaza` 卡的 `▶ RUN`。
 - **public-plaza 镜头**：只展示链上社交发现。画面重点是 `builderCode=pocket-earth` 读回 `agentId 43–47`、链上 agent 名片、相似度、蓝紫色地球标记和 Nightly Chain Dispatch；不要把 public-plaza 说成安装市场。
 - **agent-plaza 安装闭环镜头**：如果要补商业闭环，回到 `PLAZA` 区打开 `agent-plaza`，选一个免费示例（如 cafe-map / graffiti-map / heritage-walk），依次露出 `manifest / schema / permissions`、Injective chain identity badge、`reviewManifest` 安全闸，再点 `INSTALL`，回 `My Agents` 看到该 agent 并点 `RUN`。这条镜头证明“安装即运行”，不是链上社交发现；`npm run verify:plaza` 会复验安装后的 cafe-map 仍保留 `domain=地点`、`mark_place` 工具和 `RUN` 入口；没有 testnet 私钥、合约地址和 `confirm:true` 时，只能展示 `willEmit` dry-run，不要说成已经写入安装回执。
-- **商业路径一句话**：`public-plaza` 只讲链上社交发现；`agent-plaza` 才讲商业路径：长期使用 -> 可信画像 -> Agent 市场。镜头里说清楚开发者发布 `manifest / schema / permissions`，平台用 `reviewManifest` / `toManifest` 审核，用户走 `INSTALL -> My Agents -> RUN`；未来安装、调用、评价和可选付费回执再回流 Profile Confidence。不要说成代币优先或硬件收入优先。
-- **API 复验**：想看接口时，先展示 `/api/injective?tool=get-chain-evidence` 的公开证据包；如果只看 Frost 主身份，打开 `/api/injective?tool=get-agent-proof&agentId=43`；如果只看实体节点，打开 `/api/injective?tool=get-hardware-bridge-proof`。这些入口会把 `registryMintEvents`、`registryMintSummary`、钱包 `timeline`、`timelineSummary`、`handshakeProof`、`hardwareBridge`、`hardwareBridge.roadmapBoundary`、`marketLandscapeBoundary`、`roadmapSafetyBoundary`、`reviewBrief`、`judgeRunbook`、`publicReadApis`、`reviewEntrypoints`、`deliveryChecklist`、`sourceControl` 和 `recordingOrder[].evidenceFocus` 分层列出来。讲商业路径时可以展开 `marketLandscapeBoundary.commercialFlywheel`、`preferredPath`、`negativeCoordinates` 和 `rejectedPaths`，直接说明长期使用 -> 可信画像 -> Agent 市场，以及 PPT 第 34 页反面坐标为什么不走纯社交变现、代币优先或硬件收入优先。再展示 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47` 读回 `agentId 43–47`：顶层看 `sdk`、`total`、`offset`、`limit`，每个 agent 看 `owner`、`wallet`、`identityTuple`、`builderCode`，#44–47 再看 `card.tags` 和 `card.metadata.builderCode`，证明这是链上 data URI 公开名片，不是本地假数据。最后展示 `/api/injective?tool=get-wallet-timeline` 的 `summary`、`chainId 1439` 和事件列表，读回注册、部署、fleet、握手的 RPC 时间线。路线图安全边界可在同一个证据包里看 `roadmapSafetyBoundary.alwaysOn`，它固定只建议不偷改、声明式 skill、不无确认写链、原始记忆不上链、硬件不签名。硬件证明要当作独立镜头：放在钱包时间线之后、plaza smoke 之前，直接打开 `/api/injective?tool=get-hardware-bridge-proof` 看 `chain_dispatch`、Pi 技能白名单、`hardwareBridge.roadmapBoundary` 和 `privacyBoundary.hardware`。
+- **平台路径一句话**：`public-plaza` 讲链上身份发现；`agent-plaza` 讲创建、审核、发布、安装和运行。镜头里说清楚开发者发布 `manifest / schema / permissions`，平台用 `reviewManifest` / `toManifest` 审核，用户走 `INSTALL -> My Agents -> RUN`。
+- **API 复验**：先展示 `/api/injective?tool=get-chain-evidence` 的公开证据包；只看 Frost 主身份时打开 `/api/injective?tool=get-agent-proof&agentId=43`；只看每日版次时打开 `/api/knowledge?tool=today&topic=ai`；只看实体节点时打开 `/api/injective?tool=get-hardware-bridge-proof`。随后展示 `/api/injective?tool=list-agents&builderCode=pocket-earth&limit=5&top=47` 读回 `agentId 43–47`，最后用 Chronicle revision 2 的 Blockscout 交易收束。
 - **广场加载**：链上 agent 约 2–3 秒出现（先显示本机示意，随后替换为链上真实 agent，正常现象）。
 - **若相似度没差异 / 显示画像太薄**：确认地址栏带了 `?demo`（刷新会被 demoReset 清画像，`?demo` 会自动重新预置）。
 - **地球的 agent 点**：蓝紫色（`#7c5cff`），和音乐绿 / 照片青等其他图层区分；缩放后会自动散开不重叠。
 - **录制前 smoke**：先跑 `npm run verify:duration`，确认分镜总时长仍在 180s 内；再跑 `npm run verify:github`、`npm run verify:positioning` 和 `npm run verify:source`，确认公开 GitHub 仓库、远端 README、证据材料、README / app / hardware / docs 的核心集成定位和 `sourceControl` 都指向当前 `Pocket-Earth-Injective`；再跑 `npm run verify:registry`、`npm run verify:agent-proof`、`npm run verify:wallet`、`npm run verify:handshake` 和 `npm run verify:handshake-contract`，确认身份、mint 事件、单 agent 证明卡、钱包时间线、真实握手事件和 SocialHandshake creation/runtime bytecode 与源码一致；再跑 `npm run verify:public-proof`、`npm run verify:public-apis`、`npm run verify:integration-guide` 和 `npm run verify:hardware`，确认公开证据包、五条只读 API、集成说明、硬件公开事件桥和隐私边界没有漂移；再跑 `npm run verify:brief`、`npm run verify:review`、`npm run verify:review-links`、`npm run verify:recording-order`、`npm run verify:plaza-flow`、`npm run verify:nova-alignment` 和 `npm run verify:delivery`，确认简报、链接、录屏顺序、plaza 分组、Injective 价值映射和交付清单正常；最后跑 `npm run verify:demo` 和 `npm run verify:plaza`。
 - **硬件一句话**：如果录屏里出现实体 Frost Buddy，只说「Frost Edge Node 已有 Raspberry Pi / BLE / TTS 公开事件桥、Pi 侧技能路由和解耦事件适配分支，`music_now_playing` 与 Injective `chain_dispatch` 会先变成 `state` / `tts` / `display` 三类公开动作，再交给实体 Frost 播报；未来若出现硬件节点服务，也通过 `hardwareNodeServiceReceipt` 进入 Agent Plaza 服务回执」；不要说成已量产、可签名或完整硬件闭环。
-- **收尾一句话**：按 PPT 第 40-41 页收束，不要泛泛说“做了一个身份系统”。准确说法是：`FROST Chronicle / Proof of Memory` 是可追溯、可验证但不暴露隐私的画像演化史；Profile Chain 证明公开画像来自长期本地知识库，而不是临时自我介绍；Pocket Earth 现在就能打开；三件交付是公开 GitHub + 完整 README、Demo 视频、Pitch Deck；`Built on Injective` 指公开身份、版本、时间线、握手和未来结算回执能被核对。
+- **收尾一句话**：不要泛泛说“做了一个身份系统”。准确说法是：Pocket Earth 把私人空间记忆、公共知识版次和可安装 Agent 接成一个平台；Injective 让身份、版次、时间线与握手可以被任何人独立核对。
 - **录屏别露**：`.env`、私钥、服务器 IP、终端。只露 App UI + 区块浏览器公开页。
 
 ---
@@ -74,4 +74,4 @@
 - **技术实现**：真上链（身份 + 合约 + 握手）、data: URI 内联名片、端云协同 Qwen、隐私分层（只上证明物）。
 - **应用价值**：解决 AI 社交「凭什么信任对方是同一个 agent」——链上可验证身份 + 可追溯的社交轨迹。
 - **产品体验**：白天外出 / 夜间报告的拟人叙事，链上能力被包进「人话」，零门槛。
-- **生态契合**：跑在 Injective testnet，用 Injective 的 ERC-8004 身份 SDK；硬件 Frost 通过公开事件桥播报链上见闻，未来安装、调用、评价和可选付费回执都回到 Agent Plaza 与 Profile Confidence。
+- **生态契合**：跑在 Injective testnet，用 Injective 的 ERC-8004 身份 SDK 与 EVM 智能合约；硬件 Frost 通过公开事件桥播报链上见闻，Daily Knowledge Chronicle 保存知识版次 head。
