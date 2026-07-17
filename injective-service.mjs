@@ -57,6 +57,25 @@ function isBytes32(value) {
   return /^0x[0-9a-f]{64}$/i.test(String(value || ''))
 }
 
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+async function fetchJsonWithRetry(url, { attempts = 3, timeoutMs = 15000 } = {}) {
+  let lastError = null
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        headers: { accept: 'application/json' },
+        signal: AbortSignal.timeout(timeoutMs),
+      })
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      return await response.json()
+    } catch (error) {
+      lastError = error
+      if (attempt + 1 < attempts) await wait(250 * (2 ** attempt))
+    }
+  }
+  throw lastError || new Error('public_json_fetch_failed')
+}
+
 const PROJECT_ROOT = dirname(fileURLToPath(import.meta.url))
 function cleanGitSha(value) {
   const text = String(value || '').trim().toLowerCase()
@@ -706,33 +725,41 @@ export async function handleInjective(req, res, url, cfg = {}) {
     // —— 只读：钱包证据时间线（直接读 Injective RPC 的 tx/receipt/block，无需私钥）——
     if (tool === 'get-wallet-timeline') {
       const { createPublicClient, defineChain, http } = await import('viem')
-      const rpcUrl = cfg.rpcUrl || INJECTIVE_TESTNET_RPC
-      const chain = defineChain({ id: network === 'mainnet' ? 1776 : 1439, name: 'Injective', nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 }, rpcUrls: { default: { http: [rpcUrl] } } })
-      const client = createPublicClient({ chain, transport: http(rpcUrl) })
+      const rpcUrls = [...new Set([
+        cfg.rpcUrl,
+        INJECTIVE_TESTNET_RPC,
+        'https://k8s.testnet.json-rpc.injective.network/',
+      ].filter(Boolean))]
+      const clients = rpcUrls.map((rpcUrl) => {
+        const chain = defineChain({ id: network === 'mainnet' ? 1776 : 1439, name: 'Injective', nativeCurrency: { name: 'Injective', symbol: 'INJ', decimals: 18 }, rpcUrls: { default: { http: [rpcUrl] } } })
+        return createPublicClient({ chain, transport: http(rpcUrl) })
+      })
       const events = []
       for (const expected of TIMELINE_EVENTS) {
-        let event
-        try {
-          const [tx, receipt] = await Promise.all([
-            client.getTransaction({ hash: expected.hash }),
-            client.getTransactionReceipt({ hash: expected.hash }),
-          ])
-          const block = await client.getBlock({ blockNumber: receipt.blockNumber })
-          event = {
-            from: tx.from,
-            to: tx.to,
-            status: receipt.status,
-            blockNumber: receipt.blockNumber,
-            timestamp: new Date(Number(block.timestamp) * 1000).toISOString(),
-            contractAddress: receipt.contractAddress || null,
-            evidenceSource: 'injective-rpc',
-          }
-        } catch {
+        let event = null
+        for (const client of clients) {
+          try {
+            const [tx, receipt] = await Promise.all([
+              client.getTransaction({ hash: expected.hash }),
+              client.getTransactionReceipt({ hash: expected.hash }),
+            ])
+            const block = await client.getBlock({ blockNumber: receipt.blockNumber })
+            event = {
+              from: tx.from,
+              to: tx.to,
+              status: receipt.status,
+              blockNumber: receipt.blockNumber,
+              timestamp: new Date(Number(block.timestamp) * 1000).toISOString(),
+              contractAddress: receipt.contractAddress || null,
+              evidenceSource: 'injective-rpc',
+            }
+            break
+          } catch { /* try the next public RPC, then the explorer archive */ }
+        }
+        if (!event) {
           // Public RPC nodes may prune older receipts. Blockscout is the public archive fallback,
           // not a fixture: every field below still comes from the Injective testnet explorer API.
-          const response = await fetch(`https://testnet.blockscout-api.injective.network/api/v2/transactions/${expected.hash}`, { signal: AbortSignal.timeout(15000) })
-          if (!response.ok) throw new Error(`timeline_archive_${response.status}:${expected.role}`)
-          const archived = await response.json()
+          const archived = await fetchJsonWithRetry(`https://testnet.blockscout-api.injective.network/api/v2/transactions/${expected.hash}`)
           event = {
             from: archived?.from?.hash || null,
             to: archived?.to?.hash || null,

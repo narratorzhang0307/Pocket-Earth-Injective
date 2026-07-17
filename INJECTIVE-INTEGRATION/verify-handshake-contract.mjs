@@ -67,6 +67,22 @@ async function assertHttp200(label, url) {
   }
 }
 
+async function readArchivedDeploymentReceipt() {
+  const archived = await retry('deployment receipt archive', async () => {
+    const res = await fetch(`https://testnet.blockscout-api.injective.network/api/v2/transactions/${CONTRACT_DEPLOY_TX}`, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!res.ok) throw new Error(`deployment receipt archive returned HTTP ${res.status}`)
+    return res.json()
+  })
+  return {
+    status: archived?.status === 'ok' ? 'success' : String(archived?.status || 'failed'),
+    contractAddress: archived?.created_contract?.hash || null,
+    blockNumber: BigInt(archived?.block_number || 0),
+  }
+}
+
 const source = readFileSync(SOURCE_FILE, 'utf8')
 const input = {
   language: 'Solidity',
@@ -109,6 +125,7 @@ assertEqual('deployment creation bytecode hash', keccak256(deployTx.input), kecc
 assertSame('deployment creation bytecode', deployTx.input, compiledCreation)
 
 const deployReceipt = await retry('deployment receipt', () => client.getTransactionReceipt({ hash: CONTRACT_DEPLOY_TX }))
+  .catch(() => readArchivedDeploymentReceipt())
 assertEqual('deployment receipt.status', deployReceipt.status, 'success')
 assertEqual('deployment receipt.contractAddress', deployReceipt.contractAddress, CONTRACT)
 assertEqual('deployment receipt.blockNumber', deployReceipt.blockNumber, CONTRACT_DEPLOY_BLOCK)
