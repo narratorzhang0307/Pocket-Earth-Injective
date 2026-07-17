@@ -38,7 +38,6 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
       { name: 'photos-agent', role: '端侧整理相册，高价值照片钉地球', status: '契约就位' },
       { name: 'travel-agent', role: '按喜好端侧规划行程，完成即钉地球', status: '契约就位' },
       { name: 'jot-agent', role: '一句话/截图 → frost 判书·影·行程·心情 → 钉到对应图层；记心情还能回望', status: '可运行' },
-      { name: 'daily-knowledge', role: '八个公共领域每日筛选信号、核验来源并生成 Injective 知识版次', status: '可运行' },
     ],
   },
   {
@@ -145,6 +144,7 @@ export default function MusicAgentsTab() {
 
         {/* 置顶：总 agent FROST —— 统领所有子 agent 的宠物入口（点进去跟它对话）*/}
         <button
+          type="button"
           onClick={() => setRunning('frost')}
           className="w-full text-left flex items-center gap-3 border-2 border-black p-2.5 shadow-[3px_3px_0_rgba(0,0,0,0.85)] active:translate-y-px"
           style={{ background: '#d9d9d9' }}
@@ -159,6 +159,7 @@ export default function MusicAgentsTab() {
 
         {/* 造物主：一个能造 agent 的 agent —— 说一句话长出新的 agent */}
         <button
+          type="button"
           onClick={() => setRunning('agentforge')}
           className="w-full text-left flex items-center gap-2.5 border-2 border-black p-2.5 shadow-[3px_3px_0_rgba(0,0,0,0.85)] active:translate-y-px"
           style={{ background: '#fff1e6' }}
@@ -169,7 +170,7 @@ export default function MusicAgentsTab() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="font-pixel text-[11px] tracking-wider text-black">AGENT-FORGE</div>
-            <div className="text-[10px] text-black/60 leading-snug mt-0.5">说一句话，让 frost 造一个新 agent（端侧/云 Qwen 拟稿 → 安全闸 → 钉地球）</div>
+            <div className="text-[10px] text-black/60 leading-snug mt-0.5">说一句话，让 Frost 造一个新 agent（模型路由拟稿 → 安全闸 → 钉地球）</div>
           </div>
           <span className="shrink-0 font-pixel text-[6px] uppercase tracking-wider border border-black bg-black text-[#ff8a3d] px-1.5 py-1">▶ RUN</span>
         </button>
@@ -179,7 +180,7 @@ export default function MusicAgentsTab() {
           <div className="space-y-2">
             <div className="font-pixel text-[8px] tracking-widest text-black/55 px-0.5">我的 AGENT · 自建 / 广场添加</div>
             {customAgents.map((a) => (
-              <button key={a.id} onClick={() => { setForgeRunId(a.id); setRunning('agentforge'); }}
+              <button type="button" key={a.id} onClick={() => { setForgeRunId(a.id); setRunning('agentforge'); }}
                 className="w-full text-left flex items-center gap-2.5 border-2 border-black p-2 bg-white shadow-[2px_2px_0_rgba(0,0,0,0.85)] active:translate-y-px">
                 <div className="shrink-0 w-8 h-8 border-2 border-black flex items-center justify-center text-[16px]" style={{ background: a.color }}>{a.emoji}</div>
                 <div className="min-w-0 flex-1">
@@ -208,6 +209,7 @@ export default function MusicAgentsTab() {
                 const hover = social ? 'hover:bg-[#6b7a8f]/10' : market ? 'hover:bg-[#7c5cff]/10' : 'hover:bg-[#00ff88]/10';
                 return (
                   <button
+                    type="button"
                     key={a.name}
                     onClick={runnable ? () => setRunning(target) : undefined}
                     className={`w-full text-left flex items-center gap-3 bg-white border-2 border-black p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)] transition-colors ${
@@ -243,7 +245,7 @@ export default function MusicAgentsTab() {
             </div>
             <div className="space-y-2">
               {learned.map((s) => (
-                <button key={s.id} onClick={() => runSkill(s.target)}
+                <button type="button" key={s.id} onClick={() => runSkill(s.target)}
                   className="w-full text-left flex items-center gap-3 bg-white border-2 border-black p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)] transition-colors hover:bg-[#7c8cff]/10 active:translate-y-px">
                   <div className="w-3 h-3 shrink-0 bg-black flex items-center justify-center border border-black" style={{ boxShadow: '1px 1px 0px #7c8cff' }}>
                     <div className="w-1.5 h-1.5" style={{ background: '#7c8cff' }} />

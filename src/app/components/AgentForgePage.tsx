@@ -14,6 +14,12 @@ import RunTrace from './RunTrace';
 import { startAgentRun } from '../lib/observe/bus';
 
 const ACCENT = '#ff8a3d';
+const FORGE_STARTERS = [
+  { label: '咖啡馆地图', prompt: '帮我整理喝过的咖啡馆，记录风味和感受，钉到店所在城市' },
+  { label: '观鸟地图', prompt: '帮我整理见过的鸟类和观鸟地点，钉到真实观察地' },
+  { label: '建筑散步', prompt: '帮我收藏喜欢的建筑，记录建筑师和年代，钉到建筑所在地' },
+  { label: '展览记录', prompt: '帮我整理看过的展览，记录策展主题，钉到美术馆所在城市' },
+] as const;
 
 export default function AgentForgePage({ onBack, initialRunId }: { onBack: () => void; initialRunId?: string }) {
   const [agents, setAgents] = useState<AgentManifest[]>(getCustomAgents());
@@ -37,7 +43,7 @@ export default function AgentForgePage({ onBack, initialRunId }: { onBack: () =>
     setBusy(true); setDraft(null); setReview(null); setErr('');
     const { draft: m, via: v } = await proposeManifest(d, { onEdge });
     setBusy(false); setVia(v);
-    if (!m) { setErr('拟稿失败（云脑/端侧未就绪或没吐出合法 JSON）。'); return; }
+    if (!m) { setErr('拟稿失败（云端模型路由/端侧模型未就绪，或没有返回合法 JSON）。'); return; }
     setDraft(m); setReview(reviewManifest({ ...m, id: 'x', createdAt: '2026-01-01' }));
   };
 
@@ -54,12 +60,12 @@ export default function AgentForgePage({ onBack, initialRunId }: { onBack: () =>
     <div className="h-full flex flex-col bg-[#EAEAEA] font-sans overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-2 px-3 py-2.5 border-b-2 border-black bg-white shrink-0">
-        <button onClick={onBack} className="w-8 h-8 border-2 border-black bg-white flex items-center justify-center shadow-[1px_1px_0_#000] active:translate-y-px">
-          <ChevronLeft className="w-4 h-4" strokeWidth={3} />
+        <button type="button" onClick={onBack} aria-label="返回 Agent 列表" className="w-9 h-9 border-2 border-black bg-white flex items-center justify-center shadow-[1px_1px_0_#000] active:translate-y-px">
+          <ChevronLeft className="w-4 h-4" strokeWidth={3} aria-hidden="true" />
         </button>
         <div className="flex-1 min-w-0">
           <div className="font-pixel text-[11px] tracking-wider truncate">AGENT-FORGE</div>
-          <div className="text-[9px] text-black/45 leading-tight mt-0.5">说一句话，让 frost 造一个新 agent</div>
+          <div className="text-[9px] text-black/45 leading-tight mt-0.5">说一句话，让 Frost 造一个新 agent</div>
         </div>
         <Hammer className="w-4 h-4" strokeWidth={2.5} style={{ color: ACCENT }} />
       </div>
@@ -75,16 +81,30 @@ export default function AgentForgePage({ onBack, initialRunId }: { onBack: () =>
         {/* 描述 → 生成 */}
         <div className="border-2 border-black bg-white p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)]">
           <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={2}
+            aria-label="描述你想创建的空间 Agent"
             placeholder="想造个什么 agent？例：帮我整理喝过的咖啡馆，钉到店所在城市"
             className="w-full border-2 border-black px-2.5 py-2 text-[12px] bg-[#EAEAEA] focus:outline-none focus:bg-white resize-none" />
+          <div className="mt-2 flex gap-1.5 overflow-x-auto pb-0.5" aria-label="空间 Agent 灵感">
+            {FORGE_STARTERS.map((starter) => (
+              <button
+                type="button"
+                key={starter.label}
+                onClick={() => setDesc(starter.prompt)}
+                className="min-h-8 shrink-0 border border-black bg-[#fff1e6] px-2 text-[9px] font-bold active:translate-y-px"
+              >
+                + {starter.label}
+              </button>
+            ))}
+          </div>
           <div className="flex items-center gap-2 mt-2">
             {/* 云/端侧拟稿切换 */}
-            <button onClick={() => setOnEdge((v) => !v)}
+            <button type="button" onClick={() => setOnEdge((v) => !v)}
+              aria-pressed={onEdge}
               className="flex items-center gap-1 border-2 border-black px-2 py-1.5 text-[9px] font-bold bg-white shadow-[1px_1px_0_#000] active:translate-y-px">
-              {onEdge ? <><Cpu className="w-3 h-3" strokeWidth={2.5} style={{ color: '#00aa55' }} />端侧拟稿</> : <><Cloud className="w-3 h-3" strokeWidth={2.5} />云脑拟稿</>}
+              {onEdge ? <><Cpu className="w-3 h-3" strokeWidth={2.5} style={{ color: '#00aa55' }} />端侧拟稿</> : <><Cloud className="w-3 h-3" strokeWidth={2.5} />模型路由</>}
             </button>
             <span className="text-[8.5px] text-black/45 leading-snug flex-1">拟稿 → 安全审查 → 你确认才安装；只产声明式 manifest，不执行任何代码。</span>
-            <button onClick={generate} disabled={busy || !desc.trim()}
+            <button type="button" onClick={generate} disabled={busy || !desc.trim()}
               className="flex items-center gap-1 border-2 border-black px-3 py-1.5 text-[11px] font-bold shadow-[1px_1px_0_#000] active:translate-y-px text-white disabled:opacity-40" style={{ background: ACCENT }}>
               {busy ? '拟稿中…' : '造 ✦'}
             </button>
@@ -99,7 +119,7 @@ export default function AgentForgePage({ onBack, initialRunId }: { onBack: () =>
             <div className="flex items-center justify-between mb-1.5">
               <div className="font-pixel text-[8px] tracking-widest" style={{ color: ACCENT }}>◍ 草案 · 待安全审查</div>
               <span className="font-pixel text-[7px] tracking-wider border border-black px-1.5 py-0.5" style={{ background: via === 'edge' ? '#e7fff1' : '#eef3ff' }}>
-                {via === 'edge' ? '端侧 Qwen 拟稿' : '云 Qwen 拟稿'}
+                {via === 'edge' ? '端侧模型拟稿' : '云端模型路由拟稿'}
               </span>
             </div>
             <div className="text-[14px] font-bold">{String(draft.emoji || '📦')} {String(draft.name || '(无名)')}</div>
@@ -133,7 +153,19 @@ export default function AgentForgePage({ onBack, initialRunId }: { onBack: () =>
         <div className="flex items-center gap-1.5 px-0.5 pt-1">
           <span className="font-pixel text-[8px] tracking-widest text-black/55">已造 agent · MY AGENTS</span>
         </div>
-        {agents.length === 0 && <div className="text-[11px] text-black/40 px-0.5">还没有自建 agent。上面描述一句，造你的第一个。</div>}
+        {agents.length === 0 && (
+          <div className="border-2 border-dashed border-black bg-[#fffaf5] p-3 shadow-[2px_2px_0_#ff8a3d]">
+            <div className="font-pixel text-[8px] tracking-widest">YOUR FIRST SPATIAL AGENT</div>
+            <p className="mt-1.5 text-[10px] leading-relaxed text-black/55">从一种空间对象开始：咖啡馆、鸟、建筑或展览。Frost 只生成声明式规则，不生成和执行任意代码。</p>
+            <div className="mt-3 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center text-center">
+              <span className="border border-black bg-white px-1 py-2 text-[8px] font-bold">描述对象</span>
+              <span className="w-4 font-pixel text-[8px]" aria-hidden="true">→</span>
+              <span className="border border-black bg-white px-1 py-2 text-[8px] font-bold">安全审查</span>
+              <span className="w-4 font-pixel text-[8px]" aria-hidden="true">→</span>
+              <span className="border border-black bg-white px-1 py-2 text-[8px] font-bold">钉到地球</span>
+            </div>
+          </div>
+        )}
         {agents.map((a) => (
           <div key={a.id} className="border-2 border-black bg-white p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)]">
             <div className="flex items-center gap-2">
@@ -142,10 +174,10 @@ export default function AgentForgePage({ onBack, initialRunId }: { onBack: () =>
                 <div className="text-[12px] font-bold truncate">{a.name}</div>
                 <div className="text-[10px] text-black/55 leading-tight truncate">{a.desc || a.domain}</div>
               </div>
-              <button onClick={() => setRun(a)} className="shrink-0 flex items-center gap-1 border-2 border-black px-2 py-1 font-pixel text-[8px] text-white active:translate-y-px" style={{ background: ACCENT }}>
+              <button type="button" onClick={() => setRun(a)} className="shrink-0 flex items-center gap-1 border-2 border-black px-2 py-1 font-pixel text-[8px] text-white active:translate-y-px" style={{ background: ACCENT }}>
                 <Play className="w-3 h-3" strokeWidth={3} />运行
               </button>
-              <button onClick={() => removeCustomAgent(a.id)} className="shrink-0 w-7 h-7 border-2 border-black bg-white flex items-center justify-center active:translate-y-px">
+              <button type="button" onClick={() => removeCustomAgent(a.id)} aria-label={`删除 ${a.name}`} className="shrink-0 w-8 h-8 border-2 border-black bg-white flex items-center justify-center active:translate-y-px">
                 <Trash2 className="w-3.5 h-3.5 text-black/55" strokeWidth={2.5} />
               </button>
             </div>
@@ -305,7 +337,7 @@ function RunView({ manifest, onBack, onEdge }: { manifest: AgentManifest; onBack
             placeholder={`说一个主题，自动建一张「${manifest.domain}」地图，例：杭州观鸟地图`}
             className="w-full border-2 border-black px-2.5 py-2 text-[12px] bg-[#EAEAEA] focus:outline-none focus:bg-white resize-none" />
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-[8.5px] text-black/45 flex-1 leading-snug">云 Qwen 联网搜索：规划 → 搜真实条目 → 反思补全 → 摊草稿批，你勾选才钉（几十秒）</span>
+            <span className="text-[8.5px] text-black/45 flex-1 leading-snug">云端模型路由与联网搜索：规划 → 搜真实条目 → 反思补全 → 摊草稿批，你勾选才钉（几十秒）</span>
             <button onClick={buildMap} disabled={mapBusy || !goal.trim()}
               className="flex items-center gap-1 border-2 border-black px-3 py-1.5 text-[11px] font-bold shadow-[1px_1px_0_#000] active:translate-y-px text-white disabled:opacity-40" style={{ background: manifest.color }}>
               {mapBusy ? <><Loader2 className="w-3.5 h-3.5 animate-spin" strokeWidth={3} />建图中…</> : <><Map className="w-3.5 h-3.5" strokeWidth={2.5} />开始建图</>}
