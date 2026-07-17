@@ -6,17 +6,17 @@
   "contractAddress": "0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25",
   "date": "2026-07-17",
   "day": 20260717,
-  "revision": 1,
+  "revision": 2,
   "factCount": 2,
-  "factsRoot": "0xca1eff773d590abdba71b6f825aa32d2cdcdf7d96d3a2f6d62d571cceb9a431f",
-  "manifestHash": "0xe302d5908a83de3b82627e2bc6670d6ea6d504ea593e1e07260dda89e32d349d",
+  "factsRoot": "0x4b932d6f75df1e447ac53a8630654a581819d9ab99cacba1113275cd0c2299cf",
+  "manifestHash": "0x0ad0a53398c994ff529c10984d802aa1981559963ed1b328e52585e43122b88b",
   "policyRoot": "0x0338ab99fcbc04ca34636f398ff0af55f2e7463990d02075638a96609a942444",
-  "previousEditionRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "editionRoot": "0x90e20c7b3e2e4c96e1dd4404cba79e815fc9d19e22fb751f43e9cd57d4a5e601",
-  "transactionHash": "0xbefc3debc10c4bea157d635b76b55f49601f9909058cbdd03d9f33ba46fe7959",
-  "blockNumber": "133816863",
-  "scanUrl": "https://testnet.blockscout.injective.network/tx/0xbefc3debc10c4bea157d635b76b55f49601f9909058cbdd03d9f33ba46fe7959",
-  "committedAt": "2026-07-17T11:32:56.000Z",
+  "previousEditionRoot": "0x90e20c7b3e2e4c96e1dd4404cba79e815fc9d19e22fb751f43e9cd57d4a5e601",
+  "editionRoot": "0x6e62dcc3fe00495d15d2a7600a5dff6a9f396b85f641fd5316ff69b8327491da",
+  "transactionHash": "0x19364a91b7adb1a8eb8daace6fe644d3a901b5a18a575d954c641de7bdf296c7",
+  "blockNumber": "133817598",
+  "scanUrl": "https://testnet.blockscout.injective.network/tx/0x19364a91b7adb1a8eb8daace6fe644d3a901b5a18a575d954c641de7bdf296c7",
+  "committedAt": "2026-07-17T11:43:28.699Z",
   "records": [
     {
       "id": "pk_ai_20260717",
@@ -25,9 +25,9 @@
       "claim": "Microsoft Foundry Model Router 可以作为单一模型端点部署，并为每次提示选择合适的底层对话模型。",
       "verdict": "supported",
       "truthScore": 86,
-      "recordHash": "0x4baa33ef3e23ed245e9b34f56c61675a3fad76764daeb6e0ae5cd06ed4511467",
+      "recordHash": "0x15f20592e38c185bd748a6da955829737456aa80d3bc81a3d38dca14ccb7a67a",
       "proof": [
-        "0xe0493e61ddf04763796b66213dfb48378863bece98a6d3b37f964145015e8eb1"
+        "0x152132ff50afa87a4b8c716ca4822a3bfc3715647d3801293757d558a0a52021"
       ],
       "sources": [
         {
@@ -48,25 +48,25 @@
       "id": "pk_finance_20260717",
       "topic": "finance",
       "mode": "offline",
-      "claim": "Injective 官方信息显示，x402 按请求付费的 Agent 支付机制已经在 Injective 主网上线。",
+      "claim": "Injective EVM 测试网使用 Chain ID 1439，并支持通过标准 EVM 工具部署、验证和调用 Solidity 智能合约。",
       "verdict": "supported",
       "truthScore": 86,
-      "recordHash": "0xe0493e61ddf04763796b66213dfb48378863bece98a6d3b37f964145015e8eb1",
+      "recordHash": "0x152132ff50afa87a4b8c716ca4822a3bfc3715647d3801293757d558a0a52021",
       "proof": [
-        "0x4baa33ef3e23ed245e9b34f56c61675a3fad76764daeb6e0ae5cd06ed4511467"
+        "0x15f20592e38c185bd748a6da955829737456aa80d3bc81a3d38dca14ccb7a67a"
       ],
       "sources": [
         {
-          "title": "What Is x402? AI Agent Payments, Live on Injective",
-          "url": "https://injective.com/blog/x402",
-          "publisher": "Injective",
-          "publishedAt": "2026-06-08"
+          "title": "EVM Network Information",
+          "url": "https://docs.injective.network/developers-evm/network-information",
+          "publisher": "Injective Docs",
+          "publishedAt": "2026-05-19"
         },
         {
-          "title": "Injective Agents: The Platform for Autonomous AI Trading Agents",
-          "url": "https://injective.com/blog/injective-agents-the-platform-for-autonomous-ai-trading-agents",
-          "publisher": "Injective",
-          "publishedAt": "2026-05-01"
+          "title": "Your First EVM Smart Contract",
+          "url": "https://docs.injective.network/developers-evm/smart-contracts",
+          "publisher": "Injective Docs",
+          "publishedAt": null
         }
       ]
     }

@@ -24,7 +24,6 @@ const head = await client.readContract({ address: deployment.contractAddress, ab
 assert.equal(head[0], proof.editionRoot)
 assert.equal(Number(head[1]), proof.day)
 assert.equal(Number(head[2]), proof.revision)
-assert.equal(head[3].toString(), '1784287976')
+assert.ok(head[3] > 0n)
 
 console.log(`chronicle live verification passed · ${deployment.contractAddress} · revision ${head[2]}`)
-

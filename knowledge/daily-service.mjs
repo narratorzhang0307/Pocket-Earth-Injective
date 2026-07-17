@@ -33,23 +33,23 @@ const CURATED = {
     ],
   },
   finance: {
-    claim: 'Injective reports that x402 pay-per-request agent payments are live on Injective mainnet.',
-    claimZh: 'Injective 官方信息显示，x402 按请求付费的 Agent 支付机制已经在 Injective 主网上线。',
-    summary: 'Injective 的产品说明与 Agents 平台说明都把 x402 描述为当前可用的按请求结算能力；Pocket Earth 本身尚未接入。',
+    claim: 'Injective EVM testnet uses chain ID 1439 and supports deploying, verifying and interacting with Solidity smart contracts using standard EVM tooling.',
+    claimZh: 'Injective EVM 测试网使用 Chain ID 1439，并支持通过标准 EVM 工具部署、验证和调用 Solidity 智能合约。',
+    summary: 'Injective 官方开发文档给出了测试网参数，并提供了从编译、部署、验证到调用 Solidity 合约的完整路径。',
     sources: [
       {
-        title: 'What Is x402? AI Agent Payments, Live on Injective',
-        url: 'https://injective.com/blog/x402',
-        publisher: 'Injective',
-        publishedAt: '2026-06-08',
-        snippet: 'The official product note states that x402 is live on Injective mainnet for API payments by software agents.',
+        title: 'EVM Network Information',
+        url: 'https://docs.injective.network/developers-evm/network-information',
+        publisher: 'Injective Docs',
+        publishedAt: '2026-05-19',
+        snippet: 'The official network reference lists Injective EVM testnet chain ID 1439, its JSON-RPC endpoint and Blockscout explorer.',
       },
       {
-        title: 'Injective Agents: The Platform for Autonomous AI Trading Agents',
-        url: 'https://injective.com/blog/injective-agents-the-platform-for-autonomous-ai-trading-agents',
-        publisher: 'Injective',
-        publishedAt: '2026-05-01',
-        snippet: 'The platform overview describes x402 micropayments as the settlement path for autonomous agent services.',
+        title: 'Your First EVM Smart Contract',
+        url: 'https://docs.injective.network/developers-evm/smart-contracts',
+        publisher: 'Injective Docs',
+        publishedAt: null,
+        snippet: 'The official guide documents compiling, testing, deploying, verifying and interacting with Solidity smart contracts on Injective EVM testnet.',
       },
     ],
   },
@@ -193,19 +193,19 @@ async function curatedRecord(topic, date) {
     },
     sources: fixture.sources.map((source, index) => ({ ...source, id: `${topic}-source-${index + 1}`, origin: 'Curated authoritative source', stance: 'support', reliability: 90, reason: '直接来自相关平台的官方说明。' })),
     models: [],
-    missingEvidence: ['等待管理员触发实时 RSS 检索与双角色模型复核。'],
+    missingEvidence: ['等待管理员触发实时检索与双角色模型复核。'],
     trace: [{ stage: 'curated-fixture', provider: 'Pocket Earth', model: null, requestId: null, startedAt: `${date}T08:00:00.000Z`, durationMs: 0, status: 'preview' }],
   }
 }
 
-async function bundleFromRecords(topic, date, rawRecords, mode) {
+async function bundleFromRecords(topic, date, rawRecords, mode, previousEditionRoot = null) {
   const records = []
   for (const raw of rawRecords) {
     const commitment = await buildFactCommitment(raw, raw.canonicalClaim || raw.claim, null, date)
     records.push({ ...raw, commitment })
   }
   const facts = records.map((record) => ({ id: record.id, savedAt: record.createdAt, claim: record.claim, canonicalClaim: record.canonicalClaim || record.claim, verdict: record.verdict, truthScore: record.truthScore, commitment: record.commitment }))
-  const edition = (await buildDailyEditions(facts))[0]
+  const edition = (await buildDailyEditions(facts, previousEditionRoot))[0]
   return { mode, topic, generatedAt: new Date().toISOString(), records, edition: { ...edition, revision: 1, anchor: null } }
 }
 
@@ -233,7 +233,8 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     const key = `${topic}:${date}:offline`
     if (!cache.has(key)) {
       cache.set(key, Promise.all([...TOPICS].map((item) => curatedRecord(item, date))).then(async (allRecords) => {
-        const combined = await bundleFromRecords(topic, date, allRecords, 'offline')
+        const committedPreviousRoot = COMMITTED_PROOF?.date === date ? COMMITTED_PROOF.previousEditionRoot : null
+        const combined = await bundleFromRecords(topic, date, allRecords, 'offline', committedPreviousRoot)
         const proofMatches = COMMITTED_PROOF?.date === date && COMMITTED_PROOF?.editionRoot === combined.edition.editionRoot
         return {
           ...combined,
