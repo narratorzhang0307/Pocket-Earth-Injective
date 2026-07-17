@@ -41,6 +41,7 @@
     "verify:chronicle-live": "node INJECTIVE-INTEGRATION/verify-chronicle-live.mjs",
     "verify:knowledge-ui": "node INJECTIVE-INTEGRATION/verify-knowledge-ui.mjs",
     "verify:public-earth-contract": "node INJECTIVE-INTEGRATION/verify-public-earth-contract.mjs",
+    "verify:public-earth-live": "node INJECTIVE-INTEGRATION/verify-public-earth-live.mjs",
     "deploy:public-earth": "node INJECTIVE-INTEGRATION/deploy-public-earth.mjs"
   },
   "dependencies": {

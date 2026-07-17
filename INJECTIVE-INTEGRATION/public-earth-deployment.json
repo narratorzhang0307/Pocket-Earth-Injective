@@ -1,0 +1,71 @@
+{
+  "schema": "pocket-earth-public-earth-deployment/v1",
+  "network": "Injective EVM Testnet",
+  "chainId": 1439,
+  "publisher": "0x6D5ABec67Ba6387691DB42c48Dd1DA736e1dC934",
+  "identityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+  "contractAddress": "0xac7cbe6ee92298487d4349b54e2b2c876232ee1b",
+  "deploymentTransactionHash": "0x070ff1cba35239af525cc54ec3fc255fd072ffc9c362bf5c008d3ff2ece5cfbe",
+  "deploymentBlockNumber": "133822547",
+  "deploymentScanUrl": "https://testnet.blockscout.injective.network/tx/0x070ff1cba35239af525cc54ec3fc255fd072ffc9c362bf5c008d3ff2ece5cfbe",
+  "contractScanUrl": "https://testnet.blockscout.injective.network/address/0xac7cbe6ee92298487d4349b54e2b2c876232ee1b",
+  "deployedAt": "2026-07-17T12:53:37.968Z",
+  "boundary": "symbolic agent residences only; no land scarcity, auctions, resale, private memory, or real-world location",
+  "residences": [
+    {
+      "agentId": 43,
+      "doorplate": "PE-03-0043",
+      "zone": 3,
+      "x": 0,
+      "y": 0,
+      "cardHash": "0x14973f7f4862a41040d9214fff968b118229b57716002d6eba53e7e4f983bedb",
+      "transactionHash": "0xb5826b7198eed8ce8ab04b95423eab1d1183d966687d57e253088120fe0a2b3e",
+      "blockNumber": "133822575",
+      "scanUrl": "https://testnet.blockscout.injective.network/tx/0xb5826b7198eed8ce8ab04b95423eab1d1183d966687d57e253088120fe0a2b3e"
+    },
+    {
+      "agentId": 44,
+      "doorplate": "PE-01-0044",
+      "zone": 1,
+      "x": -330,
+      "y": 170,
+      "cardHash": "0xf24dde29376318b3d5791942058544e4882f7767077b531a594fca4092a0aa48",
+      "transactionHash": "0x5f78d5b7ab29aa995a3a4e6859ce8348b2cacb80888d6d3a6418bea4809a49ff",
+      "blockNumber": "133822604",
+      "scanUrl": "https://testnet.blockscout.injective.network/tx/0x5f78d5b7ab29aa995a3a4e6859ce8348b2cacb80888d6d3a6418bea4809a49ff"
+    },
+    {
+      "agentId": 45,
+      "doorplate": "PE-02-0045",
+      "zone": 2,
+      "x": 260,
+      "y": -120,
+      "cardHash": "0x34aa62737ccee29b37513d674ea01e601aba2d73a77ac4a4dd1ea0ff4a0f43de",
+      "transactionHash": "0xcc386aa351872b26ab9b63bce051a4794eb55041157978e12679ed52555c6dd4",
+      "blockNumber": "133822633",
+      "scanUrl": "https://testnet.blockscout.injective.network/tx/0xcc386aa351872b26ab9b63bce051a4794eb55041157978e12679ed52555c6dd4"
+    },
+    {
+      "agentId": 46,
+      "doorplate": "PE-02-0046",
+      "zone": 2,
+      "x": 410,
+      "y": 90,
+      "cardHash": "0x7e7c4ac3155a62679950dd1a5e64214100cabf912edead70e323986ba60a068a",
+      "transactionHash": "0xd92f460b02614f9a1226da8b45b61fa3402e54f0ac1e4773bd54ccfbc9b19476",
+      "blockNumber": "133822644",
+      "scanUrl": "https://testnet.blockscout.injective.network/tx/0xd92f460b02614f9a1226da8b45b61fa3402e54f0ac1e4773bd54ccfbc9b19476"
+    },
+    {
+      "agentId": 47,
+      "doorplate": "PE-05-0047",
+      "zone": 5,
+      "x": -190,
+      "y": 360,
+      "cardHash": "0xfaea9b8a0bc515c61a155b27d29b6f5814d3742d5fe0f8c3e5adc1c4c2220258",
+      "transactionHash": "0xcf4dc926da06cacef67e9e52f9b8fab192d3c26a0b59ebfee0a5f8326d3ffb2b",
+      "blockNumber": "133822673",
+      "scanUrl": "https://testnet.blockscout.injective.network/tx/0xcf4dc926da06cacef67e9e52f9b8fab192d3c26a0b59ebfee0a5f8326d3ffb2b"
+    }
+  ]
+}
