@@ -21,7 +21,7 @@
 - 远端目录 `/root/pocket-earth-injective`、端口 `3018`、PM2 Web 进程与 Daily Knowledge Worker 均已独立运行；旧域名和旧服务未修改。
 - 比赛目录使用独立 `.env` 且包含 `API_PORT=3018`；严禁复用或覆盖其他应用的 `.env`。
 - 部署脚本只上传最小运行依赖，并保留远端 `.env`、`node_modules/` 与 `var/knowledge/`；不会调用旧 Pocket Earth 的部署脚本。
-- `pocket-earth-injective-knowledge` 每日独立抓取 AI、金融、科学、气候、文化五个领域，写入 `running/complete` 心跳，失败隔离并原子落盘；它不持有也不使用 Injective 签名器，链上版次只能人工审阅后显式提交。
+- `pocket-earth-injective-knowledge` 每日独立抓取 AI、科技、金融、气候、科学、健康、文化、政策八个领域，写入 `running/complete` 心跳，失败隔离并原子落盘；它不持有也不使用 Injective 签名器，链上版次只能人工审阅后显式提交。
 - nginx server block 与证书已经安装；后续运行 `deploy.sh` 只更新独立应用包并重载两个 PM2 进程，不改 nginx 或证书。
 
 ## 首次部署 / 灾备复验顺序

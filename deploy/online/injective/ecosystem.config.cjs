@@ -16,7 +16,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         KNOWLEDGE_WORKER_DAEMON: '1',
-        KNOWLEDGE_TOPICS: 'ai,finance,science,climate,culture',
+        KNOWLEDGE_TOPICS: 'ai,technology,finance,climate,science,health,culture,policy',
         KNOWLEDGE_DATA_DIR: 'var/knowledge',
         KNOWLEDGE_RUN_HOUR_UTC: '0',
         KNOWLEDGE_RUN_MINUTE_UTC: '10',

@@ -44,6 +44,7 @@ try {
   assert.equal(nextDailyRun(new Date('2026-07-17T00:11:00.000Z'), 0, 10).toISOString(), '2026-07-18T00:10:00.000Z')
   const ecosystem = await readFile(new URL('../deploy/online/injective/ecosystem.config.cjs', import.meta.url), 'utf8')
   assert.match(ecosystem, /KNOWLEDGE_WORKER_DAEMON:\s*'1'/)
+  assert.match(ecosystem, /KNOWLEDGE_TOPICS:\s*'ai,technology,finance,climate,science,health,culture,policy'/)
   console.log('OK knowledge worker isolates eight domains, writes atomic snapshots and never performs automatic chain writes.')
 } finally {
   await rm(outputDir, { recursive: true, force: true })
