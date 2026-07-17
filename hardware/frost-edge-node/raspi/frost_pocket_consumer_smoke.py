@@ -68,17 +68,29 @@ def test_reject_bad_events(adapter):
 class _FeedHandler(BaseHTTPRequestHandler):
     event_line = ""
     seen = []
+    resync_head = ""
+    reject_cursor = ""
 
     def do_GET(self):
         parsed = urlparse(self.path)
         query = parse_qs(parsed.query)
+        after = query.get("after", [""])[0]
         auth = self.headers.get("Authorization", "")
-        type(self).seen.append({"after": query.get("after", [""])[0], "auth": auth})
+        type(self).seen.append({"after": after, "auth": auth})
         if auth != f"Bearer {TOKEN}":
             self.send_response(401)
             self.end_headers()
             return
-        if query.get("after", [""])[0] == "cursor-1":
+        if self.reject_cursor and after == self.reject_cursor:
+            self.send_response(400)
+            self.end_headers()
+            return
+        if self.resync_head:
+            self.send_response(204)
+            self.send_header("X-Frost-Next-Cursor", self.resync_head)
+            self.end_headers()
+            return
+        if after == "cursor-1":
             self.send_response(204)
             self.end_headers()
             return
@@ -136,6 +148,22 @@ def test_http_feed(adapter):
             status, detail = consumer.poll_once(bad_cfg, EmitJsonSink(adapter, io.StringIO()), adapter)
             check("401 reported as auth error", status == consumer.AUTH_ERROR)
             check("cursor unchanged after 401", cursor_file.read_text(encoding="utf-8").strip() == "cursor-1")
+
+            # 5) feed restart resync: stale-high cursor gets 204 + newer head cursor
+            cursor_file.write_text("cursor-99\n", encoding="utf-8")
+            _FeedHandler.resync_head = "cursor-2"
+            status, detail = consumer.poll_once(cfg, EmitJsonSink(adapter, io.StringIO()), adapter)
+            check("stale cursor returns empty", status == consumer.EMPTY)
+            check("cursor resynced to feed head", cursor_file.read_text(encoding="utf-8").strip() == "cursor-2")
+            _FeedHandler.resync_head = ""
+
+            # 6) invalid cursor (400) -> cursor file reset
+            cursor_file.write_text("garbage\n", encoding="utf-8")
+            _FeedHandler.reject_cursor = "garbage"
+            status, detail = consumer.poll_once(cfg, EmitJsonSink(adapter, io.StringIO()), adapter)
+            check("400 reported as feed error", status == consumer.FEED_ERROR and "reset" in detail)
+            check("cursor cleared after 400", cursor_file.read_text(encoding="utf-8").strip() == "")
+            _FeedHandler.reject_cursor = ""
 
             # 5) token never logged
             captured = io.StringIO()

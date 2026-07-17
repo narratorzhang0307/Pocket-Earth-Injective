@@ -103,12 +103,23 @@ def poll_once(cfg, sink, adapter):
     try:
         with urllib.request.urlopen(request, timeout=cfg.timeout) as response:
             if response.status == 204:
+                # Feed restarts reset its in-memory sequence; a stale-high cursor
+                # would then 204 forever. The 204 header carries the server's
+                # LATEST cursor -- adopting it resyncs without ever replaying.
+                latest = response.headers.get(CURSOR_HEADER, "")
+                if latest and latest != cursor:
+                    save_cursor(cfg, latest)
+                    return EMPTY, "cursor resynced to feed head"
                 return EMPTY, ""
             body = response.read().decode("utf-8", errors="replace")
             next_cursor = response.headers.get(CURSOR_HEADER, "")
     except urllib.error.HTTPError as exc:
         if exc.code == 401:
             return AUTH_ERROR, "feed rejected token (check FROST_FEED_TOKEN env)"
+        if exc.code == 400 and cursor:
+            if cfg.cursor_file and cfg.cursor_file.exists():
+                cfg.cursor_file.write_text("", encoding="utf-8")  # reset, restart from head
+            return FEED_ERROR, "feed rejected cursor; cursor reset"
         return FEED_ERROR, f"feed http {exc.code}"
     except (urllib.error.URLError, OSError, TimeoutError) as exc:
         return FEED_ERROR, f"feed unreachable: {getattr(exc, 'reason', exc)}"
