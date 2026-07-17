@@ -51,7 +51,7 @@ try {
   expect(txt.includes('Injective 链上身份'), 'Injective chain identity copy missing')
   expect(txt.includes('链上见闻'), 'on-chain sights agent missing')
   expect(txt.includes('咖啡地图'), 'cafe-map installable card missing')
-  expect(txt.includes('全部') && txt.includes('免费') && txt.includes('付费') && txt.includes('端侧') && txt.includes('链上'), 'filter bar missing expected modes')
+  expect(txt.includes('全部') && txt.includes('端侧') && txt.includes('云端') && txt.includes('链上'), 'filter bar missing current runtime and chain modes')
   expect(errors.length === 0, 'console/page errors:\n' + errors.join('\n'))
   console.log('\n=== 广场可见文本 ===\n' + txt)
   console.log('\n=== console 报错 ===\n' + (errors.length ? errors.join('\n') : '✅ 无'))

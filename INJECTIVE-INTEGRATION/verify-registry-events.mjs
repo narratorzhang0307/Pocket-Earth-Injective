@@ -35,40 +35,102 @@ async function assertHttp200(label, url) {
 }
 
 const client = createPublicClient({ chain, transport: http(INJECTIVE_TESTNET_RPC) })
-const logs = await client.getLogs({
-  address: IDENTITY_REGISTRY,
-  event: transferEvent,
-  args: { to: PROOF_OWNER },
-  fromBlock: FROM_BLOCK,
-  toBlock: TO_BLOCK,
-})
+let logs = []
+try {
+  logs = await client.getLogs({
+    address: IDENTITY_REGISTRY,
+    event: transferEvent,
+    args: { to: PROOF_OWNER },
+    fromBlock: FROM_BLOCK,
+    toBlock: TO_BLOCK,
+  })
+} catch {
+  // The public RPC may prune old log ranges. Missing events are resolved below
+  // from the Injective testnet Blockscout archive, never from a local fixture.
+}
+
+const archiveCache = new Map()
+async function getArchiveTransaction(hash) {
+  if (!archiveCache.has(hash)) {
+    archiveCache.set(hash, (async () => {
+      const response = await fetch(`https://testnet.blockscout-api.injective.network/api/v2/transactions/${hash}`, {
+        signal: AbortSignal.timeout(15000),
+      })
+      if (!response.ok) throw new Error(`Blockscout transaction ${hash} returned HTTP ${response.status}`)
+      return response.json()
+    })())
+  }
+  return archiveCache.get(hash)
+}
+
+async function getArchivedMint(expected) {
+  const transaction = await getArchiveTransaction(expected.transactionHash)
+  const transfer = transaction.token_transfers?.find((item) => (
+    String(item?.token?.address_hash).toLowerCase() === IDENTITY_REGISTRY.toLowerCase()
+    && String(item?.total?.token_id) === String(expected.agentId)
+  ))
+  if (!transfer) return null
+  return {
+    log: {
+      transactionHash: transaction.hash,
+      blockNumber: BigInt(transaction.block_number),
+    },
+    args: {
+      from: transfer.from?.hash,
+      to: transfer.to?.hash,
+      tokenId: BigInt(transfer.total.token_id),
+    },
+    evidenceSource: 'injective-blockscout',
+  }
+}
 
 const found = new Map()
 for (const log of logs) {
   const decoded = decodeEventLog({ abi: [transferEvent], data: log.data, topics: log.topics })
   const tokenId = String(decoded.args.tokenId)
   if (!EXPECTED.has(tokenId)) continue
-  found.set(tokenId, { log, args: decoded.args })
+  found.set(tokenId, { log, args: decoded.args, evidenceSource: 'injective-rpc' })
 }
 
 for (const [tokenId, expected] of EXPECTED) {
-  const item = found.get(tokenId)
+  const item = found.get(tokenId) || await getArchivedMint(expected)
   if (!item) throw new Error(`agentId ${tokenId} mint event not found`)
   console.log(`\nagentId ${tokenId} registry mint`)
+  assertEqual(`agent ${tokenId} evidence source`, item.evidenceSource, item.evidenceSource === 'injective-rpc' ? 'injective-rpc' : 'injective-blockscout')
   assertEqual(`agent ${tokenId} mint from`, item.args.from, REGISTRY_MINT_ZERO_ADDRESS)
   assertEqual(`agent ${tokenId} mint to`, item.args.to, PROOF_OWNER)
   assertEqual(`agent ${tokenId} transactionHash`, item.log.transactionHash, expected.transactionHash)
   console.log(`OK agent ${tokenId} blockNumber: ${item.log.blockNumber}`)
   assertEqual(`agent ${tokenId} expected blockNumber`, item.log.blockNumber, expected.blockNumber)
 
-  const [tx, receipt] = await Promise.all([
-    client.getTransaction({ hash: expected.transactionHash }),
-    client.getTransactionReceipt({ hash: expected.transactionHash }),
-  ])
-  assertEqual(`agent ${tokenId} tx.from`, tx.from, PROOF_OWNER)
-  assertEqual(`agent ${tokenId} tx.to`, tx.to, IDENTITY_REGISTRY)
-  assertEqual(`agent ${tokenId} receipt.status`, receipt.status, 'success')
-  assertEqual(`agent ${tokenId} receipt.blockNumber`, receipt.blockNumber, item.log.blockNumber)
+  let transactionProof
+  try {
+    const [tx, receipt] = await Promise.all([
+      client.getTransaction({ hash: expected.transactionHash }),
+      client.getTransactionReceipt({ hash: expected.transactionHash }),
+    ])
+    transactionProof = {
+      from: tx.from,
+      to: tx.to,
+      status: receipt.status,
+      blockNumber: receipt.blockNumber,
+      evidenceSource: 'injective-rpc',
+    }
+  } catch {
+    const archived = await getArchiveTransaction(expected.transactionHash)
+    transactionProof = {
+      from: archived.from?.hash,
+      to: archived.to?.hash,
+      status: archived.status === 'ok' ? 'success' : String(archived.status || 'failed'),
+      blockNumber: BigInt(archived.block_number),
+      evidenceSource: 'injective-blockscout',
+    }
+  }
+  assertEqual(`agent ${tokenId} transaction evidence source`, transactionProof.evidenceSource, transactionProof.evidenceSource === 'injective-rpc' ? 'injective-rpc' : 'injective-blockscout')
+  assertEqual(`agent ${tokenId} tx.from`, transactionProof.from, PROOF_OWNER)
+  assertEqual(`agent ${tokenId} tx.to`, transactionProof.to, IDENTITY_REGISTRY)
+  assertEqual(`agent ${tokenId} receipt.status`, transactionProof.status, 'success')
+  assertEqual(`agent ${tokenId} receipt.blockNumber`, transactionProof.blockNumber, item.log.blockNumber)
 
   await assertHttp200(`agent ${tokenId} tx`, scanUrlForTx(expected.transactionHash))
 }
