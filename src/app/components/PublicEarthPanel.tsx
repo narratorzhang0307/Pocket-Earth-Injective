@@ -75,7 +75,7 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
               </div>
               <div className="mt-3 h-[96px] border-2 border-black bg-black overflow-hidden">
                 <img src={PORTRAITS[item.agentId]} alt={`${item.displayName} Frost 身份肖像`} loading="lazy" draggable={false}
-                  className="h-full w-full object-cover" style={{ objectPosition: 'center 38%' }} />
+                  className="h-full w-full object-cover" style={{ objectPosition: 'center 50%' }} />
               </div>
               <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
                 <span className="font-pixel text-[7px]">{item.doorplate}</span>
