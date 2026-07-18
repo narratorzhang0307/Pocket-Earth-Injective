@@ -35,7 +35,7 @@ SOCKET_PATH = os.environ.get("WHISPLAY_DAEMON_SOCKET", "/tmp/whisplay-daemon.soc
 RUNTIME_PATH = os.environ.get("WHISPLAY_RUNTIME", "/home/pi/Whisplay/runtime")
 SNAPSHOT_PATH = Path(os.environ.get("FROST_MIRROR_PATH", "/run/pocket-earth-edge/live.png"))
 LONG_PRESS_SECONDS = float(os.environ.get("POCKET_LAUNCHER_LONG_PRESS_SECONDS", "1.2"))
-DOUBLE_CLICK_SECONDS = float(os.environ.get("POCKET_LAUNCHER_DOUBLE_CLICK_SECONDS", "0.42"))
+DOUBLE_CLICK_SECONDS = float(os.environ.get("POCKET_LAUNCHER_DOUBLE_CLICK_SECONDS", "0.85"))
 FOREGROUND_GRACE_SECONDS = float(os.environ.get("POCKET_LAUNCHER_FOREGROUND_GRACE_SECONDS", "0.0"))
 FOREGROUND_POLL_SECONDS = float(os.environ.get("POCKET_LAUNCHER_FOREGROUND_POLL_SECONDS", "0.25"))
 STARTUP_GRACE_SECONDS = float(os.environ.get("POCKET_LAUNCHER_STARTUP_GRACE_SECONDS", "1.0"))
@@ -137,7 +137,7 @@ def render_root(selected: int) -> Image.Image:
         draw.text((20, y + 9), ("> " if active else "  ") + project["label"], font=font(13, "mono"), fill=INK)
         draw.text((22, y + 31), project["path"].replace("/home/pi/", "~/"), font=font(9, "mono"), fill=INK if active else GREY)
     draw.text((12, 246), "CLICK: MOVE  2X: OPEN", font=font(9, "mono"), fill=INK)
-    draw.text((12, 263), "HOLD: BACK", font=font(9, "mono"), fill=GREY)
+    draw.text((12, 263), "HOLD: OPEN", font=font(9, "mono"), fill=GREY)
     return image
 
 
@@ -323,6 +323,11 @@ class ProjectLauncher:
                 self.long_fired = False
                 return
             self.click_count += 1
+            print(
+                f"pocket-launcher: click {self.click_count} "
+                f"(window={DOUBLE_CLICK_SECONDS:.2f}s level={self.state.level})",
+                flush=True,
+            )
             if self.click_timer:
                 self.click_timer.cancel()
             self.click_timer = threading.Timer(DOUBLE_CLICK_SECONDS, self._settle_clicks)
@@ -342,6 +347,7 @@ class ProjectLauncher:
             if not self.active:
                 return
             if count >= 2:
+                print(f"pocket-launcher: open by {count} clicks", flush=True)
                 result = self.state.enter()
                 if result == "sunset":
                     self.leave_to_sunset()
@@ -355,7 +361,12 @@ class ProjectLauncher:
             if not self.active:
                 return
             self.long_fired = True
-            result = self.state.back()
+            if self.state.level == "root":
+                print("pocket-launcher: open by hold", flush=True)
+                result = self.state.enter()
+            else:
+                print("pocket-launcher: back by hold", flush=True)
+                result = self.state.back()
             if result == "sunset":
                 self.leave_to_sunset()
             else:
