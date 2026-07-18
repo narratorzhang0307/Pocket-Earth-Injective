@@ -666,8 +666,11 @@ def render_earth_answer(state: EarthAnswerState) -> Image.Image:
         for line in quote_lines:
             draw.text((19, y), line, font=quote_font, fill=INK)
             y += line_step
-        credit = f"— {item['author']}"
-        draw.text((19, min(226, y + 2)), credit, font=font_for_text(credit, 11, "bold"), fill=(46, 108, 246))
+        credit = item["author"]
+        credit_font = font_for_text(credit, 11, "bold")
+        credit_box = draw.textbbox((0, 0), credit, font=credit_font)
+        credit_width = credit_box[2] - credit_box[0]
+        draw.text(((WIDTH - credit_width) // 2, 226), credit, font=credit_font, fill=(46, 108, 246))
         footer = "CLICK: PREVIOUS"
 
     draw.line((12, 249, 228, 249), fill=(184, 179, 168), width=1)
