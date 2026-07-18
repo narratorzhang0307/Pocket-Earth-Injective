@@ -241,6 +241,7 @@ class PocketEarthDeviceDriver:
         self.snapshot_path = DEFAULT_SNAPSHOT
         self.board = None
         self._previous_app_id = ""
+        self._borrowed_app_id = ""
         self._mirror = None
         self._mirror_thread = None
         port = int(os.environ.get("FROST_MIRROR_PORT", "8766")) if mirror_port is None else mirror_port
@@ -318,27 +319,50 @@ class PocketEarthDeviceDriver:
         }
         board.set_rgb_fade(*colors.get(state, colors["idle"]), duration_ms=420)
 
-    def _prepare_foreground(self, board) -> None:
+    def _prepare_foreground(self, board) -> bool:
         response = board._send_request("health.ping").get("payload", {})
         foreground = _text(response.get("foreground_app_id"), 80)
         if not foreground or foreground == "pocket-earth-edge":
-            return
+            return False
         allowed = {
             item.strip()
-            for item in os.environ.get("FROST_PREEMPT_APP_IDS", "sunset-radio-status").split(",")
+            for item in os.environ.get("FROST_BORROW_APP_IDS", "sunset-radio-status").split(",")
             if item.strip()
         }
         if foreground not in allowed:
             raise RuntimeError(f"Whisplay foreground is busy with {foreground}")
         self._previous_app_id = foreground
-        board._send_request("app.exit.request", {"app_id": foreground})
-        deadline = time.monotonic() + float(os.environ.get("FROST_FOCUS_RELEASE_TIMEOUT", "4"))
-        while time.monotonic() < deadline:
-            current = board._send_request("health.ping").get("payload", {}).get("foreground_app_id")
-            if not current:
-                return
-            time.sleep(0.2)
-        raise RuntimeError(f"Whisplay foreground {foreground} did not release")
+        focus = board._send_request("app.focus.acquire", {"app_id": foreground}).get("payload", {})
+        token = focus.get("session_token")
+        if not token:
+            raise RuntimeError(f"Whisplay did not grant borrowed focus for {foreground}")
+        framebuffer = board._send_request(
+            "framebuffer.acquire",
+            {"app_id": foreground, "session_token": token},
+        ).get("payload", {})
+        board._session_token = token
+        board._attach_framebuffer(framebuffer["buffer_handle"], int(framebuffer["stride"]))
+        self._borrowed_app_id = foreground
+        _log(f"borrowed Whisplay framebuffer from {foreground}")
+        return True
+
+    def _release_display_focus(self) -> None:
+        if self.board is None:
+            return
+        app_id = self._borrowed_app_id
+        token = self.board._session_token
+        self._borrowed_app_id = ""
+        if not app_id:
+            self.board.release_focus()
+            return
+        try:
+            self.board._send_request(
+                "app.focus.release",
+                {"app_id": app_id, "session_token": token},
+            )
+        finally:
+            self.board._session_token = None
+            self.board._detach_framebuffer()
 
     def _restore_previous_app(self) -> None:
         app_id = self._previous_app_id
@@ -364,8 +388,9 @@ class PocketEarthDeviceDriver:
         if self.dry_run:
             return True
         board = self._connect_board()
-        self._prepare_foreground(board)
-        board.acquire_foreground(timeout_sec=7.0)
+        borrowed = self._prepare_foreground(board)
+        if not borrowed:
+            board.acquire_foreground(timeout_sec=7.0)
         board.set_backlight(int(os.environ.get("FROST_SCREEN_BRIGHTNESS", "82")))
         board.draw_image(0, 0, WIDTH, HEIGHT, rgb565_bytes(image))
         return True
@@ -456,7 +481,10 @@ class PocketEarthDeviceDriver:
                 time.sleep(hold_seconds)
         finally:
             if self.board is not None:
-                self.board.release_focus()
+                try:
+                    self._release_display_focus()
+                except (OSError, RuntimeError) as exc:
+                    _log(f"Whisplay focus release failed: {exc}")
                 try:
                     self.board.set_rgb_fade(0, 0, 0, duration_ms=500)
                 except (OSError, RuntimeError) as exc:
