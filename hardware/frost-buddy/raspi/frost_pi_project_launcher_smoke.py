@@ -12,6 +12,7 @@ from frost_pi_project_launcher import (
     POCKET_MODES,
     PROJECTS,
     SAFE_FOREGROUND_APPS,
+    TOPIC_AGENT_KEYS,
     VENDOR_APPS,
     _content_pages,
     _font_supports_text,
@@ -45,14 +46,17 @@ def main() -> int:
     state = MenuState(SUNSET_CATALOG)
     assert state.level == "root"
     assert [item["path"] for item in PROJECTS] == ["/home/pi/sunset-radio", "/home/pi/pocket-earth"]
-    assert len(AGENTS) == 6
+    assert len(AGENTS) == 12
+    assert len(TOPIC_AGENT_KEYS) == 8
     assert [item["label"] for item in POCKET_MODES] == ["静默地球", "AGENTS", "今日一页"]
     assert len(DAYBOOK_ENTRIES) == 31
     assert CONTENT_CACHE["schema"] == "pocket-earth-edge-content-cache/v1"
     assert [item["state"] for item in CONTENT_CACHE["buffer"]] == ["cached", "miss", "anchored"]
     assert CONTENT_CACHE["knowledgeEdition"]["revision"] == 2
     assert CONTENT_CACHE["knowledgeEdition"]["factCount"] == 2
-    assert sum(len(CONTENT_CACHE["signals"][topic]) for topic in ("ai", "finance")) == 6
+    assert set(CONTENT_CACHE["signals"]["topics"]) == set(TOPIC_AGENT_KEYS)
+    assert sum(len(topic["signals"]) for topic in CONTENT_CACHE["signals"]["topics"].values()) == 16
+    assert CONTENT_CACHE["signals"]["sourceSignalCount"] == 37
     assert "pocket-earth-edge" in SAFE_FOREGROUND_APPS
     assert {"whisplay-bluetooth", "whisplay-wifi"}.issubset(VENDOR_APPS)
     assert state.image().size == (240, 280)

@@ -256,8 +256,14 @@ for (const snippet of [
   '/home/pi/pocket-earth',
   'FROST 身份',
   '公共知识',
-  'AI NEWS',
-  'FINANCE',
+  '人工智能',
+  '科技',
+  '金融',
+  '气候与能源',
+  '科学',
+  '健康与生命',
+  '城市与文化',
+  '政策与社会',
   'FACT VERIFIER',
   '链上见闻',
   'LONG_PRESS_SECONDS',
@@ -283,7 +289,7 @@ for (const snippet of ['render_quiet_home', 'render_daybook', 'POCKET EARTH', 'I
 assertEqual('Pocket Earth daybook schema', daybook.schema, 'pocket-earth-daybook/v1')
 assertEqual('Pocket Earth original daybook count', daybook.entries?.length, 31)
 
-for (const snippet of ['len(AGENTS) == 6', 'state.enter()', 'state.back()', '(240, 280)']) {
+for (const snippet of ['len(AGENTS) == 12', 'len(TOPIC_AGENT_KEYS) == 8', 'state.enter()', 'state.back()', '(240, 280)']) {
   assertTrue(`project launcher smoke keeps ${snippet}`, projectLauncherSmoke.includes(snippet))
 }
 

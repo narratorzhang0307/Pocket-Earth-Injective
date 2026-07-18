@@ -88,14 +88,18 @@ to its local API; it does not take ownership of the radio database or player.
 
 `POCKET EARTH` first opens three sibling spaces: `静默地球` is a clock-first,
 sound-free home with a pixel globe, the shared Frost silhouette, and public
-agent/knowledge status; `AGENTS` contains the six evidence readers; `今日一页`
+agent/knowledge status; `AGENTS` contains twelve evidence readers; `今日一页`
 is an offline calendar with one of 31 original Pocket Earth decision prompts.
 The clock and date refresh once per minute without network calls or TTS. This
 borrows the low-distraction product logic of a pocket decision device, not its
 brand, copy, fortune-telling, or visual assets.
 
-Pocket Earth exposes six agent pages: Frost identity, public knowledge, AI
-news, finance, fact verifier, and chain dispatch. The launcher is
+Pocket Earth exposes twelve agent pages: Frost identity, public knowledge, all
+eight FactAtlas topic agents (AI, technology, finance, climate, science,
+health, culture, and policy), fact verifier, and chain dispatch. The device
+ships two representative cards per topic from the real 37-card 07-15 snapshot,
+with request receipts and explicit `待核验` labels; it does not relabel a
+candidate as truth or invent the missing 07-16 edition. The launcher is
 an independent `pocket-earth-launcher.service`; it subscribes to the existing
 Whisplay button stream and switches foreground ownership through Whisplay IPC.
 It does not import or edit Sunset Radio source code. Run its offline navigation

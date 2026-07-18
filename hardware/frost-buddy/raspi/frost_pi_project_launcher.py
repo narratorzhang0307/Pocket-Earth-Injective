@@ -77,11 +77,19 @@ PROJECTS = (
 AGENTS = (
     {"key": "identity", "label": "FROST 身份", "meta": "ERC-8004 · AGENT 43-47", "accent": GREEN},
     {"key": "knowledge", "label": "公共知识", "meta": "8 TOPICS · VERIFIED EDITION", "accent": CYAN},
-    {"key": "ai", "label": "AI NEWS", "meta": "DAILY CURATION AGENT", "accent": MAGENTA},
-    {"key": "finance", "label": "FINANCE", "meta": "MARKET KNOWLEDGE AGENT", "accent": ORANGE},
+    {"key": "ai", "label": "人工智能", "meta": "AI FRONTIER SCOUT", "accent": MAGENTA},
+    {"key": "technology", "label": "科技", "meta": "TECHNOLOGY SCOUT", "accent": GREEN},
+    {"key": "finance", "label": "金融", "meta": "MARKETS SCOUT", "accent": ORANGE},
+    {"key": "climate", "label": "气候与能源", "meta": "CLIMATE SCOUT", "accent": CYAN},
+    {"key": "science", "label": "科学", "meta": "SCIENCE SCOUT", "accent": MAGENTA},
+    {"key": "health", "label": "健康与生命", "meta": "LIFE SCIENCE SCOUT", "accent": GREEN},
+    {"key": "culture", "label": "城市与文化", "meta": "CULTURE CARTOGRAPHER", "accent": ORANGE},
+    {"key": "policy", "label": "政策与社会", "meta": "PUBLIC INTEREST SCOUT", "accent": CYAN},
     {"key": "verify", "label": "FACT VERIFIER", "meta": "SOURCE CROSS-CHECK", "accent": CYAN},
     {"key": "dispatch", "label": "链上见闻", "meta": "INJECTIVE PUBLIC PROOF", "accent": GREEN},
 )
+
+TOPIC_AGENT_KEYS = ("ai", "technology", "finance", "climate", "science", "health", "culture", "policy")
 
 SUNSET_MODES = (
     {"key": "catalog", "label": "歌曲目录", "meta": "按时区、城市与曲目选择", "accent": ORANGE},
@@ -115,7 +123,7 @@ def load_content_cache() -> dict:
         "buffer": [],
         "identity": {"agentIds": [43, 44, 45, 46, 47], "residences": []},
         "knowledgeEdition": {"date": "OFFLINE", "revision": 0, "factCount": 0, "records": []},
-        "signals": {"date": "OFFLINE", "ai": [], "finance": []},
+        "signals": {"date": "OFFLINE", "topics": {}},
         "verification": {"stages": ["主张受理", "证据侦察", "调查方", "质疑方", "确定性裁决", "版次入库"]},
         "chainDispatch": {"publicEarthResidences": 0, "knowledgeRevision": 0, "eventKinds": []},
     }
@@ -273,6 +281,7 @@ def _content_pages(agent: dict) -> list[dict]:
     edition = CONTENT_CACHE.get("knowledgeEdition", {})
     records = {item.get("topic"): item for item in edition.get("records", [])}
     signals = CONTENT_CACHE.get("signals", {})
+    signal_topics = signals.get("topics", {})
     buffer = CONTENT_CACHE.get("buffer", [])
     verifier = CONTENT_CACHE.get("verification", {})
     dispatch = CONTENT_CACHE.get("chainDispatch", {})
@@ -319,27 +328,49 @@ def _content_pages(agent: dict) -> list[dict]:
                 "lines": buffer_lines or ["暂无日期缓存"],
             },
         ]
-    if key in {"ai", "finance"}:
+    if key in TOPIC_AGENT_KEYS:
         verified = records.get(key, {})
-        candidates = signals.get(key, [])
-        topic_title = "AI 已核验知识" if key == "ai" else "金融已核验知识"
-        pages = [{
-            "tag": "VERIFIED · 07-17",
-            "title": topic_title,
-            "badge": f"TRUTH {verified.get('truthScore', '—')} · {verified.get('sourceCount', 0)} SOURCES",
-            "lines": [verified.get("claim", "等待下一版次"), verified.get("sourceLabel", "")],
-        }]
+        topic = signal_topics.get(key, {})
+        candidates = topic.get("signals", [])
+        pages = []
+        if verified:
+            pages.append({
+                "tag": f"VERIFIED · {edition.get('date', '')[5:]}",
+                "title": verified.get("title", f"{topic.get('label', key.upper())}已核验知识"),
+                "badge": f"TRUTH {verified.get('truthScore', '—')} · {verified.get('sourceCount', 0)} SOURCES",
+                "lines": [
+                    verified.get("claim", "等待下一版次"),
+                    verified.get("why", ""),
+                    f"证据 · {verified.get('sourceLabel', '')}",
+                    f"RECORD {short_hash(verified.get('recordHash'))}",
+                ],
+            })
+        pages.append({
+            "tag": "CACHED EDITION · 07-15",
+            "title": f"{topic.get('label', key.upper())}信号简报",
+            "badge": f"TOP {len(candidates)} · 37 SIGNALS / 8 TOPICS",
+            "lines": [
+                topic.get("brief", "等待公开信号缓存"),
+                f"AGENT · {topic.get('agent', 'FACTATLAS TOPIC AGENT')}",
+                f"RECEIPT · {topic.get('requestId', '—')}",
+                "候选信号，不等于已核验事实",
+            ],
+        })
         pages.extend({
             "tag": f"SIGNAL {index + 1}/{len(candidates)} · 07-15",
             "title": item.get("headline", "公开信号"),
             "badge": f"IMPORTANCE {item.get('importance', '—')} · 待核验",
-            "lines": [item.get("claim", ""), f"SOURCE · {item.get('publisher', 'PUBLIC')}"],
+            "lines": [
+                item.get("claim", ""),
+                item.get("why", ""),
+                f"SOURCE · {item.get('publisher', 'PUBLIC')}",
+            ],
         } for index, item in enumerate(candidates))
         pages.append({
             "tag": "CACHE PROVENANCE",
             "title": "候选不冒充事实",
-            "badge": "37 SIGNALS · 8 TOPICS",
-            "lines": ["07-15 保留排序回执与来源", "只有复核后的记录进入 Merkle 版次", "07-16 缺失会明确显示 MISS"],
+            "badge": "37 SIGNALS · 8 TOPIC AGENTS",
+            "lines": ["设备展示每个领域的前两条候选", "07-15 保留排序回执与来源", "只有复核后的记录进入 Merkle 版次", "07-16 缺失明确显示 MISS"],
         })
         return pages
     if key == "verify":
