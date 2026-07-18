@@ -86,12 +86,21 @@ sunset calculator, and `随机骰子` adapts the app's amber-on-night dice ritua
 PI Home only reads the independent radio catalog and posts a targeted command
 to its local API; it does not take ownership of the radio database or player.
 
-Pocket Earth currently exposes six launcher pages: Frost identity, public
-knowledge, AI news, finance, fact verifier, and chain dispatch. The launcher is
+`POCKET EARTH` first opens three sibling spaces: `静默地球` is a clock-first,
+sound-free home with a pixel globe, the shared Frost silhouette, and public
+agent/knowledge status; `AGENTS` contains the six evidence readers; `今日一页`
+is an offline calendar with one of 31 original Pocket Earth decision prompts.
+The clock and date refresh once per minute without network calls or TTS. This
+borrows the low-distraction product logic of a pocket decision device, not its
+brand, copy, fortune-telling, or visual assets.
+
+Pocket Earth exposes six agent pages: Frost identity, public knowledge, AI
+news, finance, fact verifier, and chain dispatch. The launcher is
 an independent `pocket-earth-launcher.service`; it subscribes to the existing
 Whisplay button stream and switches foreground ownership through Whisplay IPC.
 It does not import or edit Sunset Radio source code. Run its offline navigation
-and 240×280 render check with `python3 frost_pi_project_launcher_smoke.py`.
+and 240×280 render checks with `python3 frost_pi_project_launcher_smoke.py` and
+`python3 frost_pi_quiet_home_smoke.py`.
 
 `whisplay_pi_home_guard.py` suppresses the vendor Bluetooth/Wi-Fi/demo app
 desktop once PI HOME is registered. It keeps a `.pre-pocket-earth` backup and

@@ -145,6 +145,8 @@ const physicalDriver = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_
 const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py', 'utf8')
 const projectLauncher = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher.py', 'utf8')
 const projectLauncherSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py', 'utf8')
+const quietHome = readFileSync('hardware/frost-buddy/raspi/frost_pi_quiet_home.py', 'utf8')
+const daybook = JSON.parse(readFileSync('hardware/frost-buddy/raspi/frost_pi_daybook.json', 'utf8'))
 const sunsetBridge = readFileSync('hardware/frost-buddy/raspi/frost_pi_sunset_bridge.py', 'utf8')
 const sunsetHints = JSON.parse(readFileSync('hardware/frost-buddy/raspi/frost_pi_sunset_hints.json', 'utf8'))
 const piHomeGuard = readFileSync('hardware/frost-buddy/raspi/whisplay_pi_home_guard.py', 'utf8')
@@ -226,6 +228,9 @@ for (const snippet of [
   'hold for 1.2 seconds to open',
   'double-click to go back',
   'cached evidence cards',
+  '`静默地球`',
+  '`今日一页`',
+  '31 original Pocket Earth decision prompts',
 ]) {
   assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
 }
@@ -260,6 +265,8 @@ for (const snippet of [
   '歌曲目录',
   '日落时刻',
   '随机骰子',
+  '静默地球',
+  '今日一页',
 ]) {
   assertTrue(`project launcher keeps ${snippet}`, projectLauncher.includes(snippet))
 }
@@ -269,6 +276,12 @@ for (const snippet of ['load_catalog', 'catalog_groups', 'upcoming_sunsets', 'co
 }
 assertEqual('Sunset exact-track hints schema', sunsetHints.schema, 'sunset-radio-command-hints/v1')
 assertEqual('Sunset exact-track hints count', Object.keys(sunsetHints.hints || {}).length, 621)
+
+for (const snippet of ['render_quiet_home', 'render_daybook', 'POCKET EARTH', 'INJECTIVE · PUBLIC PROOF ONLINE']) {
+  assertTrue(`quiet home keeps ${snippet}`, quietHome.includes(snippet))
+}
+assertEqual('Pocket Earth daybook schema', daybook.schema, 'pocket-earth-daybook/v1')
+assertEqual('Pocket Earth original daybook count', daybook.entries?.length, 31)
 
 for (const snippet of ['len(AGENTS) == 6', 'state.enter()', 'state.back()', '(240, 280)']) {
   assertTrue(`project launcher smoke keeps ${snippet}`, projectLauncherSmoke.includes(snippet))
@@ -316,6 +329,9 @@ execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.p
 
 console.log('\nRaspberry Pi project launcher smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi quiet home smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_quiet_home_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nRaspberry Pi Sunset bridge smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_sunset_bridge_smoke.py'], { stdio: 'inherit' })

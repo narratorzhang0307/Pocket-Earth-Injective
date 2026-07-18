@@ -19,6 +19,9 @@ FILES=(
   frost_pi_content_cache.json
   frost_pi_project_launcher.py
   frost_pi_project_launcher_smoke.py
+  frost_pi_quiet_home.py
+  frost_pi_quiet_home_smoke.py
+  frost_pi_daybook.json
   frost_pi_sunset_bridge.py
   frost_pi_sunset_bridge_smoke.py
   frost_pi_sunset_hints.json
@@ -44,6 +47,9 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_content_cache.json' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_project_launcher.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_project_launcher_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_quiet_home.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_quiet_home_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_daybook.json' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_sunset_bridge.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_sunset_bridge_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_sunset_hints.json' /home/pi/pocket-earth/
@@ -62,6 +68,7 @@ ssh "$PI_HOST" "set -euo pipefail
   /usr/bin/python3 frost_pi_device_driver_smoke.py
   /usr/bin/python3 frost_pi_sunset_bridge_smoke.py
   /usr/bin/python3 frost_pi_project_launcher_smoke.py
+  /usr/bin/python3 frost_pi_quiet_home_smoke.py
   /usr/bin/python3 whisplay_pi_home_guard_smoke.py
   sudo /usr/bin/python3 whisplay_pi_home_guard.py --install
   sudo systemctl daemon-reload

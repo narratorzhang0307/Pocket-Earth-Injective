@@ -18,6 +18,7 @@ import sys
 import threading
 import time
 import unicodedata
+from datetime import datetime
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
@@ -31,6 +32,7 @@ from frost_pi_sunset_bridge import (
     random_track as choose_random_sunset_track,
     upcoming_sunsets,
 )
+from frost_pi_quiet_home import load_daybook, render_daybook, render_quiet_home
 
 
 WIDTH = 240
@@ -87,6 +89,12 @@ SUNSET_MODES = (
     {"key": "dice", "label": "随机骰子", "meta": "让今夜替你选一城一曲", "accent": CYAN},
 )
 
+POCKET_MODES = (
+    {"key": "quiet", "label": "静默地球", "meta": "时间、Frost 与公共状态", "accent": GREEN},
+    {"key": "agents", "label": "AGENTS", "meta": "身份、知识与事实核验", "accent": CYAN},
+    {"key": "daybook", "label": "今日一页", "meta": "日历与一句原创选择", "accent": MAGENTA},
+)
+
 CONTENT_CACHE_PATH = Path(
     os.environ.get(
         "POCKET_EARTH_CONTENT_CACHE",
@@ -114,6 +122,7 @@ def load_content_cache() -> dict:
 
 
 CONTENT_CACHE = load_content_cache()
+DAYBOOK_ENTRIES = load_daybook()
 
 FONT_REGULAR = (
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
@@ -458,6 +467,16 @@ def render_sunset_modes(selected: int, catalog: list[dict]) -> Image.Image:
     return _render_sunset_list("SUNSET RADIO", "~/sunset-radio  /  选择模式", items, selected)
 
 
+def render_pocket_modes(selected: int) -> Image.Image:
+    return _render_sunset_list(
+        "POCKET EARTH",
+        "~/pocket-earth  /  选择空间",
+        [dict(mode) for mode in POCKET_MODES],
+        selected,
+        accent=GREEN,
+    )
+
+
 def render_sunset_groups(groups: list[dict], selected: int) -> Image.Image:
     items = [
         {"label": group["label"], "meta": f"{len(group['cities'])} 座城市", "accent": ORANGE}
@@ -583,6 +602,7 @@ class MenuState:
     def __init__(self, sunset_catalog: list[dict] | None = None):
         self.level = "root"
         self.root_index = 1
+        self.pocket_mode_index = 0
         self.agent_index = 0
         self.page_index = 0
         self.sunset_catalog = sunset_catalog if sunset_catalog is not None else load_sunset_catalog()
@@ -614,6 +634,18 @@ class MenuState:
     def image(self) -> Image.Image:
         if self.level == "root":
             return render_root(self.root_index)
+        if self.level == "pocket_modes":
+            return render_pocket_modes(self.pocket_mode_index)
+        if self.level == "pocket_idle":
+            return render_quiet_home(datetime.now().astimezone(), CONTENT_CACHE, font, font_for_text)
+        if self.level == "daybook":
+            return render_daybook(
+                datetime.now().astimezone(),
+                DAYBOOK_ENTRIES,
+                font,
+                font_for_text,
+                _wrapped_lines,
+            )
         if self.level == "sunset_modes":
             return render_sunset_modes(self.sunset_mode_index, self.sunset_catalog)
         if self.level == "sunset_groups":
@@ -634,6 +666,8 @@ class MenuState:
     def move(self) -> None:
         if self.level == "root":
             self.root_index = (self.root_index + 1) % len(PROJECTS)
+        elif self.level == "pocket_modes":
+            self.pocket_mode_index = (self.pocket_mode_index + 1) % len(POCKET_MODES)
         elif self.level == "agents":
             self.agent_index = (self.agent_index + 1) % len(AGENTS)
             self.page_index = 0
@@ -664,7 +698,10 @@ class MenuState:
             if PROJECTS[self.root_index]["key"] == "sunset":
                 self.level = "sunset_modes"
                 return "draw"
-            self.level = "agents"
+            self.level = "pocket_modes"
+        elif self.level == "pocket_modes":
+            mode = POCKET_MODES[self.pocket_mode_index]["key"]
+            self.level = {"quiet": "pocket_idle", "agents": "agents", "daybook": "daybook"}[mode]
         elif self.level == "agents":
             self.level = "agent"
             self.page_index = 0
@@ -710,6 +747,12 @@ class MenuState:
             self.page_index = 0
             return "draw"
         if self.level == "agents":
+            self.level = "pocket_modes"
+            return "draw"
+        if self.level in {"pocket_idle", "daybook"}:
+            self.level = "pocket_modes"
+            return "draw"
+        if self.level == "pocket_modes":
             self.level = "root"
             return "draw"
         if self.level == "sunset_tracks":
@@ -747,6 +790,7 @@ class ProjectLauncher:
         self.empty_foreground_since = None
         self.recovery_requested_for = ""
         self.recovery_requested_at = 0.0
+        self.last_clock_minute = ""
 
         self.board = WhisplayDaemonProxy(
             socket_path=SOCKET_PATH,
@@ -945,6 +989,10 @@ class ProjectLauncher:
                 self.active = True
                 self.empty_foreground_since = None
                 self.recovery_requested_for = ""
+                if self.state.level in {"pocket_idle", "daybook"}:
+                    minute = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
+                    if minute != self.last_clock_minute:
+                        self.draw()
                 return
             if foreground in SAFE_FOREGROUND_APPS:
                 self.empty_foreground_since = None
@@ -1017,6 +1065,7 @@ class ProjectLauncher:
 
     def draw(self) -> None:
         image = self.state.image()
+        self.last_clock_minute = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
         save_snapshot(image)
         self.board.draw_image(0, 0, WIDTH, HEIGHT, rgb565_bytes(image))
 
