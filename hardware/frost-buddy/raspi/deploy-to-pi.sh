@@ -51,8 +51,9 @@ ssh "$PI_HOST" "set -euo pipefail
   /usr/bin/python3 frost_pi_project_launcher_smoke.py
   sudo systemctl daemon-reload
   if sudo test -f /etc/pocket-earth-edge.env; then
-    sudo systemctl enable --now pocket-earth-edge.service
-    sudo systemctl enable --now pocket-earth-launcher.service
+    sudo systemctl enable pocket-earth-edge.service pocket-earth-launcher.service
+    sudo systemctl restart pocket-earth-edge.service
+    sudo systemctl restart pocket-earth-launcher.service
   else
     echo 'Pocket Earth code installed; /etc/pocket-earth-edge.env is required before service start.'
   fi
