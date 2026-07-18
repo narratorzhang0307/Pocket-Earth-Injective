@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs'
 import { createPublicClient, createWalletClient, defineChain, http, parseAbi } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { createDailyKnowledgeService } from '../knowledge/daily-service.mjs'
+import { archiveReviewedEdition } from '../knowledge/archive.mjs'
 import { buildDailyEditions, verifyMerkleProof } from '../src/app/lib/chronicle/kernel.mjs'
 import { waitForInjectiveReceipt } from './wait-injective-receipt.mjs'
 
@@ -74,7 +75,7 @@ const transactionHash = await walletClient.writeContract(simulation.request)
 const receipt = await waitForInjectiveReceipt(publicClient, transactionHash, account.address)
 if (!receipt || receipt.status !== 'success') throw new Error(`edition commit not confirmed: ${transactionHash}`)
 
-console.log(JSON.stringify({
+const proofBundle = {
   schema: 'pocket-earth-daily-knowledge-proof/v1',
   network: 'Injective EVM Testnet',
   chainId: 1439,
@@ -104,4 +105,13 @@ console.log(JSON.stringify({
     proof: edition.proofs[record.commitment.recordHash],
     sources: record.sources.map((source) => ({ title: source.title, url: source.url, publisher: source.publisher, publishedAt: source.publishedAt })),
   })),
-}))
+}
+
+// The confirmed, reviewed edition is a compact permanent archive. Candidate
+// stories and model traces remain in the seven-day hot cache and are not copied.
+await archiveReviewedEdition({
+  outputDir: env.KNOWLEDGE_DATA_DIR || new URL('../var/knowledge', import.meta.url).pathname,
+  proof: proofBundle,
+})
+
+console.log(JSON.stringify(proofBundle))

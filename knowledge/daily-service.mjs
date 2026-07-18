@@ -2,6 +2,8 @@ import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { buildDailyEditions, buildFactCommitment, hashValue, verifyMerkleProof } from '../src/app/lib/chronicle/kernel.mjs'
 import { buildLlmRequest, getLlmProviders } from '../frost-agent/provider-compat/runtime.mjs'
+import { runKnowledgeTopicAgent } from './agent-harness.mjs'
+import { readLatestReviewedEdition } from './archive.mjs'
 import { searchDailySignals, searchNewsEvidence } from './evidence.mjs'
 import { calculateTruthScore } from './scoring.mjs'
 import { ANCHORED_TOPIC_KEYS, KNOWLEDGE_TOPICS, PUBLIC_TOPIC_KEYS, isKnowledgeTopic } from './topics.mjs'
@@ -205,8 +207,8 @@ async function bundleFromRecords(topic, date, rawRecords, mode, previousEditionR
     records.push({ ...raw, commitment })
   }
   const facts = records.map((record) => ({ id: record.id, savedAt: record.createdAt, claim: record.claim, canonicalClaim: record.canonicalClaim || record.claim, verdict: record.verdict, truthScore: record.truthScore, commitment: record.commitment }))
-  const edition = (await buildDailyEditions(facts, previousEditionRoot))[0]
-  return { mode, topic, generatedAt: new Date().toISOString(), records, edition: { ...edition, revision: 1, anchor: null } }
+    const edition = (await buildDailyEditions(facts, previousEditionRoot))[0]
+  return { mode, topic, memoryTier: 'L1-working-memory', generatedAt: new Date().toISOString(), records, edition: { ...edition, revision: 1, anchor: null } }
 }
 
 function json(res, value, status = 200) {
@@ -254,12 +256,52 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
       return {
         mode: snapshot.mode,
         topic,
+        memoryTier: snapshot.memoryTier || 'L2-short-term-cache',
         generatedAt: snapshot.generatedAt,
         records: snapshot.records,
         edition: snapshot.edition,
+        ...(snapshot.harness ? { harness: snapshot.harness } : {}),
+        ...(snapshot.reviewGate ? { reviewGate: snapshot.reviewGate } : {}),
       }
     } catch {
       return null
+    }
+  }
+
+  async function readReviewedArchive(topic, date) {
+    const archive = await readLatestReviewedEdition(workerDataDir, date)
+    if (!archive) return null
+    const records = archive.records.filter((record) => record.topic === topic).map((record) => ({
+      ...record,
+      mode: 'archive',
+      createdAt: archive.committedAt,
+      commitment: { recordHash: record.recordHash },
+    }))
+    if (!records.length) return null
+    return {
+      mode: 'archive',
+      topic,
+      memoryTier: archive.memoryTier,
+      generatedAt: archive.committedAt,
+      records,
+      edition: {
+        date: archive.date,
+        day: archive.day,
+        factCount: archive.factCount,
+        factsRoot: archive.factsRoot,
+        manifestHash: archive.manifestHash,
+        policyRoot: archive.policyRoot,
+        previousEditionRoot: archive.previousEditionRoot,
+        editionRoot: archive.editionRoot,
+        revision: archive.revision,
+        anchor: {
+          chainId: archive.chainId,
+          contractAddress: archive.contractAddress,
+          txHash: archive.transactionHash,
+          scanUrl: archive.scanUrl,
+        },
+      },
+      reviewGate: { status: 'reviewed-and-anchored', eligibleForChronicle: true, automaticChainWrite: false },
     }
   }
 
@@ -301,21 +343,25 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
 
   async function refresh(topic, date) {
     if (!providers.length) return offline(topic, date)
-    let signals = []
-    try { signals = await searchDailySignals(topic, date, { limit: 6 }) }
-    catch { return offline(topic, date) }
-    const records = []
-    for (const signal of signals.slice(0, 2)) {
-      try {
-        const sources = await searchNewsEvidence(signal.title, { limit: 5 })
-        if (sources.length < 2) continue
-        records.push(await verifyLiveClaim(topic, signal.title, sources, providers))
-      } catch { /* one failed signal must not discard the whole edition */ }
+    try {
+      const bundle = await runKnowledgeTopicAgent({
+        topic,
+        date,
+        discover: searchDailySignals,
+        gatherEvidence: searchNewsEvidence,
+        verify: (selectedTopic, claim, sources) => verifyLiveClaim(selectedTopic, claim, sources, providers),
+        assemble: bundleFromRecords,
+      })
+      cache.set(`${topic}:${date}:live`, Promise.resolve(bundle))
+      return bundle
+    } catch (error) {
+      const fallback = await offline(topic, date)
+      return {
+        ...fallback,
+        fallbackReason: String(error?.code || error?.message || error).slice(0, 300),
+        ...(error?.run ? { harness: error.run } : {}),
+      }
     }
-    if (!records.length) return offline(topic, date)
-    const bundle = await bundleFromRecords(topic, date, records, 'live')
-    cache.set(`${topic}:${date}:live`, Promise.resolve(bundle))
-    return bundle
   }
 
   async function get(topic, date) {
@@ -331,6 +377,8 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
       cache.set(`${topic}:${date}:live`, Promise.resolve(snapshot))
       return snapshot
     }
+    const archive = await readReviewedArchive(topic, date)
+    if (archive) return archive
     return offline(topic, date)
   }
 
@@ -402,7 +450,8 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
 
   async function handle(req, res, url) {
     const tool = url.searchParams.get('tool') || 'today'
-    const topic = cleanTopic(url.searchParams.get('topic'))
+    const requestedTopic = url.searchParams.get('topic')
+    const topic = cleanTopic(requestedTopic)
     const date = safeDate(url.searchParams.get('date'))
     if (tool === 'topics' && req.method === 'GET') {
       return json(res, {
@@ -410,6 +459,12 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
         anchoredTopics: ANCHORED_TOPIC_KEYS,
         policy: 'expanded domains are draft-only until an explicit reviewed Chronicle commit',
       })
+    }
+    if (tool === 'archive' && req.method === 'GET') {
+      if (requestedTopic && !topic) return json(res, { error: 'unsupported_topic' }, 400)
+      const archive = await readLatestReviewedEdition(workerDataDir, date)
+      if (!archive) return json(res, { error: 'reviewed_archive_not_found' }, 404)
+      return json(res, requestedTopic ? { ...archive, records: archive.records.filter((record) => record.topic === topic) } : archive)
     }
     if (!topic && tool !== 'proof' && tool !== 'pack') return json(res, { error: 'unsupported_topic' }, 400)
     if (tool === 'today' && req.method === 'GET') return json(res, await get(topic, date))

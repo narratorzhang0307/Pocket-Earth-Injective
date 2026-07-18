@@ -20,6 +20,7 @@ module.exports = {
         KNOWLEDGE_DATA_DIR: 'var/knowledge',
         KNOWLEDGE_RUN_HOUR_UTC: '0',
         KNOWLEDGE_RUN_MINUTE_UTC: '10',
+        KNOWLEDGE_RETENTION_DAYS: '7',
       },
     },
   ],

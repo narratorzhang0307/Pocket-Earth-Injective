@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { mkdir, rename, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, rename, rm, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDailyKnowledgeService } from './daily-service.mjs'
+import { archiveReviewedEdition } from './archive.mjs'
 import { KNOWLEDGE_TOPICS, PUBLIC_TOPIC_KEYS } from './topics.mjs'
 
 const WORKER_SCHEMA = 'pocket-earth-knowledge-worker/v1'
@@ -28,6 +29,40 @@ function normalizeTopics(value) {
   const requested = Array.isArray(value) ? value : String(value || '').split(',')
   const topics = requested.map((item) => String(item).trim().toLowerCase()).filter(Boolean)
   return [...new Set((topics.length ? topics : PUBLIC_TOPIC_KEYS).filter((topic) => KNOWLEDGE_TOPICS[topic]))]
+}
+
+function retentionDays(value) {
+  const parsed = Number(value)
+  return Number.isInteger(parsed) && parsed >= 1 && parsed <= 31 ? parsed : 7
+}
+
+function utcDateValue(value) {
+  if (!/^20\d{2}-\d{2}-\d{2}$/.test(String(value || ''))) return null
+  const parsed = new Date(`${value}T00:00:00.000Z`)
+  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value ? parsed.getTime() : null
+}
+
+export async function pruneKnowledgeHistory({ outputDir, runDate, keepDays = 7 } = {}) {
+  const days = retentionDays(keepDays)
+  const runValue = utcDateValue(runDate)
+  if (runValue === null) throw new Error('knowledge_retention_invalid_run_date')
+  const cutoff = runValue - ((days - 1) * 86_400_000)
+  const removed = []
+  const entries = await readdir(outputDir, { withFileTypes: true })
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue
+    const value = utcDateValue(entry.name)
+    if (value === null || value >= cutoff) continue
+    // Only an exact, validated YYYY-MM-DD child of outputDir can reach rm.
+    await rm(resolve(outputDir, entry.name), { recursive: true, force: true })
+    removed.push(entry.name)
+  }
+  return {
+    keepDays: days,
+    windowStart: new Date(cutoff).toISOString().slice(0, 10),
+    windowEnd: runDate,
+    removed: removed.sort(),
+  }
 }
 
 async function atomicJson(file, value) {
@@ -58,8 +93,20 @@ export async function runKnowledgeCycle({
   if (!requestedTopics.length) throw new Error('knowledge_worker_no_valid_topics')
   const dateDir = resolve(outputDir, runDate)
   await mkdir(dateDir, { recursive: true, mode: 0o700 })
+  let reviewedArchive = { state: 'none' }
+  try {
+    const proofFile = new URL('../INJECTIVE-INTEGRATION/knowledge-edition-proof.json', import.meta.url)
+    if (existsSync(proofFile)) {
+      const proof = JSON.parse(readFileSync(proofFile, 'utf8'))
+      const archived = await archiveReviewedEdition({ outputDir, proof })
+      reviewedArchive = { state: 'preserved', date: archived.archive.date, revision: archived.archive.revision }
+    }
+  } catch (error) {
+    reviewedArchive = { state: 'failed', error: String(error instanceof Error ? error.message : error).slice(0, 300) }
+  }
   const startedAt = now.toISOString()
   const results = []
+  let retention = { keepDays: retentionDays(env.KNOWLEDGE_RETENTION_DAYS), state: 'pending', removed: [] }
   const chainPolicy = {
     automaticWrite: false,
     nextStep: 'review snapshots, then run the explicit Chronicle commit command',
@@ -80,6 +127,8 @@ export async function runKnowledgeCycle({
       pending: requestedTopics.length - results.length,
     },
     chainPolicy,
+    retention,
+    reviewedArchive,
   })
   await atomicJson(resolve(outputDir, 'status.json'), makeManifest('running'))
 
@@ -91,17 +140,23 @@ export async function runKnowledgeCycle({
         schema: WORKER_SCHEMA,
         date: runDate,
         topic,
+        agentId: KNOWLEDGE_TOPICS[topic].agentId,
         topicLabel: KNOWLEDGE_TOPICS[topic].label,
+        topicRole: KNOWLEDGE_TOPICS[topic].role,
         anchoredDomain: KNOWLEDGE_TOPICS[topic].anchored,
         generatedAt: bundle.generatedAt,
         mode: bundle.mode,
+        memoryTier: 'L2-short-term-cache',
         records: bundle.records || [],
         edition: bundle.edition || null,
+        ...(bundle.harness ? { harness: bundle.harness } : {}),
+        ...(bundle.reviewGate ? { reviewGate: bundle.reviewGate } : {}),
         ...(bundle.error ? { error: bundle.error } : {}),
       }
       await atomicJson(resolve(dateDir, `${topic}.json`), snapshot)
       results.push({
         topic,
+        agentId: KNOWLEDGE_TOPICS[topic].agentId,
         status: bundle.records?.length ? 'ready' : 'skipped',
         mode: bundle.mode,
         recordCount: bundle.records?.length || 0,
@@ -123,6 +178,23 @@ export async function runKnowledgeCycle({
       })
     }
     await atomicJson(resolve(outputDir, 'status.json'), makeManifest('running'))
+  }
+
+  try {
+    retention = {
+      state: 'complete',
+      ...(await pruneKnowledgeHistory({
+        outputDir,
+        runDate,
+        keepDays: env.KNOWLEDGE_RETENTION_DAYS,
+      })),
+    }
+  } catch (error) {
+    retention = {
+      ...retention,
+      state: 'failed',
+      error: String(error instanceof Error ? error.message : error).slice(0, 300),
+    }
   }
 
   const completedAt = new Date().toISOString()
