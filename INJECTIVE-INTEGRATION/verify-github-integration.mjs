@@ -198,7 +198,7 @@ assertTrue('remote README names hardware market boundary in fast proof ladder', 
 assertTrue('remote README names hardware service boundary in fast proof ladder', remoteReadme.includes('hardwareBridge.serviceBoundary'))
 assertTrue('remote README names Agent Plaza service receipts for hardware', remoteReadme.includes('Agent Plaza 服务回执'))
 assertTrue('remote README names hardware smoke boundary', remoteReadme.includes('离线冒烟') && remoteReadme.includes('state/tts/display'))
-assertTrue('remote README keeps physical adapters pending', remoteReadme.includes('真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层'))
+assertTrue('remote README names implemented physical driver', remoteReadme.includes('Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS 和手机镜像 driver 已完成'))
 assertTrue('remote README keeps hardware adapter lane removable', remoteReadme.includes('可选、可删、可独立测试'))
 assertTrue('remote README names commercial path boundary', remoteReadme.includes('### 5.3 商业路径与三条边界'))
 assertTrue('remote README rejects token-first path', remoteReadme.includes('不走代币优先'))
@@ -650,7 +650,7 @@ for (const phrase of [
   'hardwareNodeServiceReceipt',
   'roadmapSafetyBoundary',
   'PPT 硬件边界守门',
-  '真实 BLE / TTS / 小屏幕物理驱动仍待后续 adapter 接入',
+  'Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS、手机镜像与 systemd sidecar 已实现并真机验收',
   '硬件收入优先路径',
   'npm run verify:handshake',
   'npm run verify:handshake-contract',
@@ -670,12 +670,12 @@ assertTrue('remote hardware README names module subject explicitly', remoteHardw
 assertTrue('remote hardware README names market subject explicitly', remoteHardware.includes('Frost Edge Node 的市场判断'))
 assertTrue('remote hardware README names hardware service boundary explicitly', remoteHardware.includes('硬件节点服务边界'))
 assertTrue('remote hardware README names Agent Plaza service receipt', remoteHardware.includes('Agent Plaza 服务回执'))
-assertTrue('remote hardware README keeps driver boundary', remoteHardware.includes('真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层'))
+assertTrue('remote hardware README names implemented driver boundary', remoteHardware.includes('Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS、手机镜像 driver 都已实现'))
 assertTrue('remote hardware README omits vague module subject', !remoteHardware.includes('这个模块先承担'))
 assertTrue('remote hardware README omits vague market subject', !remoteHardware.includes('这个判断在 Markdown'))
 assertTrue('remote hardware verifier locks smoke-tested bridge', remoteVerifyHardware.includes('hardware proof roadmap current names smoke-tested bridge'))
-assertTrue('remote hardware verifier keeps physical adapters pending', remoteVerifyHardware.includes('hardware proof roadmap keeps physical adapters pending'))
-assertTrue('remote hardware verifier checks README physical driver boundary', remoteVerifyHardware.includes('真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层'))
+assertTrue('remote hardware verifier keeps optional transports pending', remoteVerifyHardware.includes('hardware proof roadmap keeps optional transports pending'))
+assertTrue('remote hardware verifier checks implemented README physical driver', remoteVerifyHardware.includes('Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS 和手机镜像 driver 已完成'))
 assertTrue('remote hardware verifier checks removable adapter lane', remoteVerifyHardware.includes('可选、可删、可独立测试'))
 for (const phrase of [
   'Adapter Contract Matrix',

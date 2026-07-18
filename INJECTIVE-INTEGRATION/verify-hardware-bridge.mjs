@@ -107,6 +107,10 @@ assertListIncludes('hardware proof Pi skills', hardwareProof.hardwareBridge?.piR
 assertEqual('hardware proof Pi adapter path', hardwareProof.hardwareBridge?.piAdapter?.modulePath, 'hardware/frost-buddy/raspi/frost_pi_event_adapter.py')
 assertListIncludes('hardware proof Pi adapter actions', hardwareProof.hardwareBridge?.piAdapter?.actions, ['state', 'tts', 'display'])
 assertTrue('hardware proof Pi adapter boundary', String(hardwareProof.hardwareBridge?.piAdapter?.boundary || '').includes('transport-neutral adapter lane'))
+assertEqual('hardware proof physical driver status', hardwareProof.hardwareBridge?.physicalDriver?.status, 'implemented-and-live-tested')
+assertEqual('hardware proof physical driver path', hardwareProof.hardwareBridge?.physicalDriver?.modulePath, 'hardware/frost-buddy/raspi/frost_pi_device_driver.py')
+assertListIncludes('hardware proof physical outputs', hardwareProof.hardwareBridge?.physicalDriver?.outputs, ['Whisplay 240x280 display', 'RGB LED', 'local MiniMax TTS', 'offline espeak fallback', 'phone mirror'])
+assertTrue('hardware proof physical live preflight', String(hardwareProof.hardwareBridge?.physicalDriver?.livePreflight || '').includes('frost_pi_live_preflight.py --strict'))
 assertEqual('hardware proof market role', hardwareProof.hardwareBridge?.marketBoundary?.role, HARDWARE_BRIDGE_PROOF.marketBoundary.role)
 assertEqual('hardware proof market source', hardwareProof.hardwareBridge?.marketBoundary?.sourceUrl, HARDWARE_BRIDGE_PROOF.marketBoundary.sourceUrl)
 assertTrue('hardware proof market business path', String(hardwareProof.hardwareBridge?.marketBoundary?.businessPath || '').includes('Agent Plaza'))
@@ -120,7 +124,9 @@ assertTrue('hardware proof service ties to Agent Plaza receipts', String(hardwar
 assertEqual('hardware proof roadmap current', hardwareProof.hardwareBridge?.roadmapBoundary?.current, HARDWARE_BRIDGE_PROOF.roadmapBoundary.current)
 assertTrue('hardware proof roadmap current names smoke-tested bridge', String(hardwareProof.hardwareBridge?.roadmapBoundary?.current || '').includes('smoke-tested'))
 assertListIncludes('hardware proof roadmap pending adapters', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, HARDWARE_BRIDGE_PROOF.roadmapBoundary.pendingAdapters)
-assertListIncludes('hardware proof roadmap keeps physical adapters pending', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, ['BLE transport', 'local TTS driver', 'display driver'])
+assertListIncludes('hardware proof roadmap keeps optional transports pending', hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters, ['BLE transport', 'MQTT or serial bridge'])
+assertTrue('hardware proof roadmap no longer marks TTS pending', !hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters?.includes('local TTS driver'))
+assertTrue('hardware proof roadmap no longer marks display pending', !hardwareProof.hardwareBridge?.roadmapBoundary?.pendingAdapters?.includes('display driver'))
 assertTrue('hardware proof roadmap integration rule', String(hardwareProof.hardwareBridge?.roadmapBoundary?.integrationRule || '').includes('optional/removable'))
 assertTrue('hardware proof roadmap P4 framing', String(hardwareProof.hardwareBridge?.roadmapBoundary?.p4Framing || '').includes('not a mass-produced revenue product'))
 assertListIncludes('hardware proof privacy boundary', hardwareProof.privacyBoundary?.hardware, ['no private keys', 'no wallet signing', 'no raw profile text', 'public JSONL events only'])
@@ -135,6 +141,9 @@ const hardwareReadme = readFileSync('hardware/frost-buddy/README.md', 'utf8')
 const raspiReadme = readFileSync('hardware/frost-buddy/raspi/README.md', 'utf8')
 const piAdapter = readFileSync('hardware/frost-buddy/raspi/frost_pi_event_adapter.py', 'utf8')
 const piAdapterSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py', 'utf8')
+const physicalDriver = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver.py', 'utf8')
+const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py', 'utf8')
+const linuxLayout = readFileSync('hardware/frost-buddy/raspi/LINUX-LAYOUT.md', 'utf8')
 
 for (const snippet of [
   'Frost Edge Node',
@@ -156,7 +165,7 @@ for (const snippet of [
   'Agent Plaza 服务回执',
   'hardwareNodeServiceReceipt',
   'Raspberry Pi 事件适配分支保持解耦',
-  '真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层',
+  'Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS、手机镜像 driver 都已实现',
   'frost_pi_event_adapter.py',
   'state',
   'tts',
@@ -174,7 +183,7 @@ for (const snippet of [
   'public-plaza',
   '公开事件',
   '离线冒烟',
-  '真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层',
+  'Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS 和手机镜像 driver 已完成',
   '体验差异化',
   '开发套件',
   '可选、可删、可独立测试',
@@ -205,8 +214,29 @@ for (const snippet of [
   'Transport driver',
   'Main app and Injective API',
   'hardware boundary from the final deck',
+  'frost_pi_device_driver.py',
+  'phone mirror',
 ]) {
   assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
+}
+
+for (const snippet of [
+  'PocketEarthDeviceDriver',
+  'render_evidence_card',
+  'WhisplayDaemonProxy',
+  'FROST_TTS_CACHE_DIR',
+  'borrowed Whisplay framebuffer',
+  'app.focus.release',
+]) {
+  assertTrue(`physical driver keeps ${snippet}`, physicalDriver.includes(snippet))
+}
+
+for (const snippet of ['240x280', 'rgb565Bytes', 'PocketEarthDeviceDriver']) {
+  assertTrue(`physical driver smoke keeps ${snippet}`, physicalDriverSmoke.includes(snippet))
+}
+
+for (const snippet of ['/opt/pocket-earth-edge', '/etc/pocket-earth-edge.env', '/var/lib/pocket-earth-edge', '/var/cache/pocket-earth-edge', '/run/pocket-earth-edge', 'music-agent']) {
+  assertTrue(`Linux layout keeps ${snippet}`, linuxLayout.includes(snippet))
 }
 
 for (const snippet of [
@@ -237,5 +267,8 @@ execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py'
 
 console.log('\nRaspberry Pi event adapter smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi physical driver smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nOK Frost Buddy hardware bridge can carry music-agent and Injective chain-dispatch events safely.')

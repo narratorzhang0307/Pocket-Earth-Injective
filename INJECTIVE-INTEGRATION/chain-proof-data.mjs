@@ -59,8 +59,8 @@ export const INTEGRATION_ALIGNMENT = [
   {
     key: 'agent-physical-world',
     integrationSignal: 'Agent x physical-world product surface',
-    projectSignal: 'Frost Buddy keeps a Raspberry Pi / BLE / TTS public-event bridge plus a decoupled Pi adapter so music-agent events and Injective chain dispatches become state/tts/display actions for a physical Frost device.',
-    evidence: 'hardware/frost-buddy emits safe JSONL events; the Pi skill router maps chain_dispatch and music requests; the Pi event adapter outputs state/tts/display actions without private keys.',
+    projectSignal: 'Frost Buddy keeps a Raspberry Pi public-event bridge plus a decoupled Pi adapter and physical Whisplay driver so music-agent events and Injective chain dispatches become screen, RGB LED, local TTS, and phone-mirror output.',
+    evidence: 'hardware/frost-buddy emits safe JSONL events; the Pi event adapter outputs state/tts/display actions; the physical driver renders 240×280 RGB565 cards, borrows and restores the active Whisplay framebuffer, speaks through local MiniMax with offline fallback, and commits a replay cursor without private keys.',
     machineCheck: 'npm run verify:hardware',
   },
   {
@@ -175,6 +175,15 @@ export const HARDWARE_BRIDGE_PROOF = {
     smoke: 'python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py',
     boundary: 'transport-neutral adapter lane: BLE, serial, MQTT, display, and local TTS sit after public actions, not inside the Pocket Earth main path',
   },
+  physicalDriver: {
+    status: 'implemented-and-live-tested',
+    modulePath: 'hardware/frost-buddy/raspi/frost_pi_device_driver.py',
+    servicePath: 'hardware/frost-buddy/raspi/pocket-earth-edge.service',
+    outputs: ['Whisplay 240x280 display', 'RGB LED', 'local MiniMax TTS', 'offline espeak fallback', 'phone mirror'],
+    smoke: 'python3 hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py',
+    livePreflight: '/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict',
+    isolation: 'hardware/frost-buddy/raspi/LINUX-LAYOUT.md',
+  },
   privacyBoundary: [
     'no private keys',
     'no wallet signing',
@@ -207,8 +216,8 @@ export const HARDWARE_BRIDGE_PROOF = {
     agentPlazaTieIn: 'If hardware node services become monetized, they are sold as Agent Plaza service receipts, not as a hardware-revenue-first path.',
   },
   roadmapBoundary: {
-    current: 'JSONL public-event bridge, Pi skill router, and transport-neutral state/tts/display action adapter are implemented and smoke-tested.',
-    pendingAdapters: ['BLE transport', 'local TTS driver', 'display driver', 'MQTT or serial bridge'],
+    current: 'JSONL public-event bridge, Pi skill router, state/tts/display adapter, Whisplay display, RGB LED, local MiniMax/offline TTS, phone mirror, systemd service, and replay cursor are implemented, smoke-tested, and live-tested on the Pi.',
+    pendingAdapters: ['BLE transport', 'MQTT or serial bridge'],
     integrationRule: 'Physical adapters sit after public actions and remain optional/removable; Pocket Earth main app, public-plaza, agent-plaza, and Injective APIs do not depend on them.',
     p4Framing: 'P4 Frost Network keeps hardware as a music-agent and chain-dispatch playback node, not a mass-produced revenue product.',
   },
@@ -327,7 +336,7 @@ export const ROADMAP_SAFETY_BOUNDARY = {
     {
       phase: 'P4 Frost Network',
       status: 'future',
-      proof: 'Frost Edge Node already proves public JSONL events, Pi router, and state/tts/display adapter actions',
+      proof: 'Frost Edge Node already proves public JSONL events, Pi router, state/tts/display actions, Whisplay output, RGB LED, local TTS, phone mirror, and cursor-safe systemd runtime',
       boundary: 'hardware remains a developer-kit and experience layer; devices do not sign wallets or read raw profiles',
     },
   ],
@@ -463,7 +472,7 @@ export const DELIVERY_CHECKLIST = [
     key: 'frost-edge-node',
     requirement: 'Frost Edge Node hardware bridge stays demonstrable and privacy-bounded',
     status: 'ready-prototype',
-    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, plus a Raspberry Pi skill router and Pi event adapter state/tts/display action contract, without private keys or raw profile data; hardwareBridge.piAdapter, hardwareBridge.marketBoundary, hardwareBridge.serviceBoundary, and hardwareBridge.roadmapBoundary keep it framed as a prototype/developer-kit endpoint while BLE/TTS/display drivers stay optional and any future hardware-node service monetization stays inside Agent Plaza service receipts.',
+    evidence: 'hardware/frost-buddy exposes JSONL music_now_playing and chain_dispatch events, a Raspberry Pi skill router, a Pi event adapter with state/tts/display actions, and an implemented Whisplay/RGB/local-TTS/phone-mirror physical driver without private keys or raw profile data; hardwareBridge.piAdapter, hardwareBridge.physicalDriver, hardwareBridge.marketBoundary, hardwareBridge.serviceBoundary, and hardwareBridge.roadmapBoundary keep it framed as a prototype/developer-kit endpoint while BLE/MQTT/serial transports stay optional and any future hardware-node service monetization stays inside Agent Plaza service receipts.',
     localCheck: 'npm run verify:hardware',
     linkKey: 'hardware-bridge',
   },

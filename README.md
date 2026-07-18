@@ -141,9 +141,9 @@ Frost Edge Node 是 Pocket Earth 的实体节点原型：手机和网页继续�
 | `hardware/frost-buddy/` | 把 `music_now_playing` 与 `chain_dispatch` 转成 JSONL 公开事件 | 不保存私钥、不签名、不处理钱包交易 |
 | Raspberry Pi 侧路由 | 用白名单 skill 把“下一首”“播报链上见闻”等语音转成命令或公开事件 | 不执行任意代码，不接触 `bytes32` 哈希原文 |
 | Raspberry Pi 事件适配分支 | `frost_pi_event_adapter.py` 把公开 JSONL 拆成 `state` / `tts` / `display` 三类动作 | 不绑定 BLE、串口、MQTT 或主应用代码，删掉也不影响产品主线 |
-| 物理输出层 | BLE / 串口 / MQTT / 本地 TTS / 小屏幕可任选其一接入 | 不把硬件包装成已量产产品或当前收入主线 |
+| 物理输出层 | Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS、手机镜像已接入；BLE / 串口 / MQTT 可后续替换接入 | 不把硬件包装成已量产产品或当前收入主线 |
 
-Frost Edge Node 硬件方向的商业判断很克制：Raspberry Pi 作为原型平台可信，官方投资者页披露累计出货已超过 6700 万台；但 Pocket Earth 不把硬件写成市场规模预测。Frost Edge Node 先是体验差异化和开发套件，让 music-agent 有实体感，也让 Injective 链上见闻能被实体 Frost 读给用户听。代码上也保持解耦：主线只产出公开事件，Pi adapter 只产出设备动作，当前可复验的是 JSONL 公开事件桥、Pi 技能路由和 `state/tts/display` action 合同，并由 `npm run verify:hardware` 统一跑离线冒烟；真实 BLE / TTS / 小屏幕物理驱动仍在后续 adapter 层，并由 `hardwareBridge.roadmapBoundary` 固定为可选、可删、可独立测试。`hardwareBridge.serviceBoundary` 进一步约束未来硬件节点服务：可以做 `chain_dispatch` 播报、`music_now_playing` 房间存在感、用户明确同意后的每日记忆/播客摘要；不能导出私人画像、替钱包签名、上传原始照片票据或宣称量产收入。若未来收费，形态也是 `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)` 这类 Agent Plaza 服务回执，而不是硬件收入优先。收入主线仍是长期使用沉淀可信画像，再进入 Agent Plaza 的安装、调用、评价和可选付费回执。
+Frost Edge Node 硬件方向的商业判断很克制：Raspberry Pi 作为原型平台可信，官方投资者页披露累计出货已超过 6700 万台；但 Pocket Earth 不把硬件写成市场规模预测。Frost Edge Node 先是体验差异化和开发套件，让 music-agent 有实体感，也让 Injective 链上见闻能被实体 Frost 读给用户听。代码上也保持解耦：主线只产出公开事件，Pi adapter 只产出设备动作；JSONL 公开事件桥、Pi 技能路由、`state/tts/display` action 合同，以及 Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS 和手机镜像 driver 已完成，并分别由离线冒烟 `npm run verify:hardware` 与真机 `frost_pi_live_preflight.py --strict` 复验。BLE、MQTT、serial 仍由 `hardwareBridge.roadmapBoundary` 固定为可选、可删、可独立测试的后续 transport。`hardwareBridge.serviceBoundary` 进一步约束未来硬件节点服务：可以做 `chain_dispatch` 播报、`music_now_playing` 房间存在感、用户明确同意后的每日记忆/播客摘要；不能导出私人画像、替钱包签名、上传原始照片票据或宣称量产收入。若未来收费，形态也是 `hardwareNodeServiceReceipt(agentId, serviceId, eventHash, resultHash, timestamp)` 这类 Agent Plaza 服务回执，而不是硬件收入优先。收入主线仍是长期使用沉淀可信画像，再进入 Agent Plaza 的安装、调用、评价和可选付费回执。
 
 ### 5.3 商业路径与三条边界
 

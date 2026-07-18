@@ -41,6 +41,13 @@ public events it can render, speak, or signal. A future untrusted third-party
 agent should graduate from a sibling directory to its own Linux user, systemd
 unit, or container. Directory separation alone is not a security boundary.
 
+Sunset Radio is the deliberate legacy exception. Its complete music-agent
+runtime stays in `/home/pi/sunset-radio`; Pocket Earth does not duplicate or
+move it during the final sprint. Pocket Earth owns only the transport-neutral
+`music_now_playing` action path and physical output adapter. If the radio later
+becomes a first-class built-in Pocket Earth agent, its reviewed module can move
+to `/opt/pocket-earth-edge/agents/music-agent/` in a separate migration.
+
 ## Process and port isolation
 
 | Unit / endpoint | Role |

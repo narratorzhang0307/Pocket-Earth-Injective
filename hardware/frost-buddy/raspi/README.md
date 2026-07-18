@@ -54,12 +54,19 @@ python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
 
 For the authenticated, cursor-based HTTP handoff used by the physical Pi, see
 [`LIVE-HANDOFF.md`](LIVE-HANDOFF.md). The feed client remains a thin consumer:
-Pocket Earth owns live Injective reads and speech templates; Claude-owned device
-drivers only consume `state`, `tts`, and `display` actions.
+Pocket Earth owns live Injective reads and speech templates; the repo-owned
+physical driver only consumes `state`, `tts`, and `display` actions.
 
-The adapter does not import the app, the Injective API service, wallet code, or
-any device daemon. BLE, serial, MQTT, and screen drivers should sit after this
-file and map the emitted actions to physical output.
+`frost_pi_device_driver.py` is the implemented Whisplay HAT output lane. It maps
+those actions to the 240×280 display, RGB LED, local MiniMax TTS with offline
+fallback, and a phone mirror. It borrows and restores the existing Sunset Radio
+framebuffer without importing Sunset Radio business code. BLE, serial, and MQTT
+remain replaceable future transports after the same action contract.
+
+The installed filesystem and process boundary is documented in
+[`LINUX-LAYOUT.md`](LINUX-LAYOUT.md). Run the offline driver smoke with
+`python3 frost_pi_device_driver_smoke.py`; on the Pi, run
+`/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict`.
 
 ## Adapter Contract Matrix
 

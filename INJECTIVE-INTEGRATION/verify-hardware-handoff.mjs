@@ -96,7 +96,8 @@ try {
     'state/tts/display',
     'x-frost-next-cursor',
     'server-side',
-    'Claude',
+    'frost_pi_device_driver.py',
+    'Whisplay',
     'Injective testnet',
   ]) assert.ok(handoffDoc.includes(snippet), `handoff doc missing ${snippet}`)
   assert.equal(packageJson.scripts['verify:hardware-handoff'], 'node INJECTIVE-INTEGRATION/verify-hardware-handoff.mjs')

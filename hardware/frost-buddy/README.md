@@ -92,9 +92,9 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 | `tts` | 本地 TTS 或蓝牙音箱 | 只读取 `speak` 公开播报文案 |
 | `display` | OLED、e-ink、WebSocket 面板 | 展示标题、摘要、公开 `agentIds` 与 Blockscout `scanUrl` |
 
-这条分支不 import Pocket Earth 前端、不 import Injective 服务、不签名、不联网，也不绑定 BLE / serial / MQTT 的具体实现。后续真实设备只需要把 action 映射到自己的传输层；删掉这个 adapter 也不会影响主 app、`public-plaza`、`agent-plaza` 或链上证据 API。
+事件 adapter 不 import Pocket Earth 前端、不 import Injective 服务、不签名、不联网，也不绑定具体设备。真实 Whisplay HAT driver 独立放在 adapter 之后；删掉 driver 或 adapter 都不会影响主 app、`public-plaza`、`agent-plaza` 或链上证据 API。
 
-`hardwareBridge.roadmapBoundary` 会把这条边界同步暴露到 `/api/injective?tool=get-chain-evidence` 和 `/api/injective?tool=get-hardware-bridge-proof`：当前已经可复验的是 JSONL 公开事件桥、Pi 技能路由和 `state/tts/display` action 合同；真实 BLE / TTS / 小屏幕驱动仍在后续 adapter 层，保持可选、可删、可独立测试。
+`hardwareBridge.roadmapBoundary` 会把这条边界同步暴露到 `/api/injective?tool=get-chain-evidence` 和 `/api/injective?tool=get-hardware-bridge-proof`：JSONL 公开事件桥、Pi 技能路由、`state/tts/display` action 合同，以及 Whisplay 小屏幕、RGB LED、本地 MiniMax / 离线 TTS、手机镜像 driver 都已实现并可独立复验；BLE、MQTT 和 serial 仍是后续可选 transport。
 
 离线冒烟：
 
@@ -102,9 +102,9 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
 ```
 
-完整硬件快检 `npm run verify:hardware` 会同时跑技能路由和事件适配分支，防止硬件叙事停留在 Markdown。
+完整硬件快检 `npm run verify:hardware` 会同时跑技能路由、事件适配和物理 driver 离线渲染，防止硬件叙事停留在 Markdown。真机另运行 `/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict`。
 
-真实 HTTP 联调使用 `raspi/frost_pi_feed_client.py`，完整的软件—Claude 树莓派责任边界、启动命令和 cursor 防重播验收见 [`raspi/LIVE-HANDOFF.md`](raspi/LIVE-HANDOFF.md)。软件侧运行 `npm run verify:hardware-handoff`，不会依赖屏幕、LED 或 TTS 驱动。
+真实 HTTP 联调使用 `raspi/frost_pi_feed_client.py`，完整的软件—物理 sidecar 责任边界、启动命令和 cursor 防重播验收见 [`raspi/LIVE-HANDOFF.md`](raspi/LIVE-HANDOFF.md)。软件侧运行 `npm run verify:hardware-handoff`，不会依赖屏幕、LED 或 TTS 驱动。
 
 ## 与 Injective 的关系
 
