@@ -15,6 +15,8 @@ for (const anchor of [
   '知识地图',
   '知识详情',
   '身份卡牌',
+  '上一张身份卡',
+  '下一张身份卡',
   'FROST IDENTITY CARD',
   'INJECTIVE VERIFIED',
   '知识卡是信息分发层 · 身份卡是可验证身份层',
