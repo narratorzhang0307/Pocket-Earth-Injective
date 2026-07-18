@@ -58,8 +58,15 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Check the live Pocket Earth Raspberry Pi lane")
     parser.add_argument("--strict", action="store_true")
     args = parser.parse_args(argv)
-    cursor = Path.home() / ".local" / "state" / "pocket-earth" / "frost-feed.cursor"
-    snapshot = Path(os.environ.get("FROST_MIRROR_PATH", "/tmp/pocket-earth-edge-live.png"))
+    state_cursor = Path("/var/lib/pocket-earth-edge/frost-feed.cursor")
+    legacy_cursor = Path.home() / ".local" / "state" / "pocket-earth" / "frost-feed.cursor"
+    cursor = state_cursor if state_cursor.exists() else legacy_cursor
+    runtime_snapshot = Path("/run/pocket-earth-edge/live.png")
+    legacy_snapshot = Path("/tmp/pocket-earth-edge-live.png")
+    snapshot = Path(os.environ.get(
+        "FROST_MIRROR_PATH",
+        str(runtime_snapshot if runtime_snapshot.exists() else legacy_snapshot),
+    ))
     report = {
         "ok": True,
         "hostname": socket.gethostname(),
@@ -77,6 +84,8 @@ def main(argv=None):
             "offlineTts": bool(shutil.which("espeak-ng") or shutil.which("espeak")),
         },
         "eventLane": {
+            "cursorPath": str(cursor),
+            "snapshotPath": str(snapshot),
             "mirrorResponding": _mirror(),
             "snapshotReady": snapshot.is_file() and snapshot.stat().st_size > 1024,
             "cursorCommitted": cursor.is_file() and cursor.stat().st_size > 8,

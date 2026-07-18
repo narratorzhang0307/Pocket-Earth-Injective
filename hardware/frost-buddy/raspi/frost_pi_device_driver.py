@@ -410,7 +410,12 @@ class PocketEarthDeviceDriver:
     @staticmethod
     def _tts_cache_path(text: str) -> Path:
         digest = hashlib.sha1(text.encode("utf-8")).hexdigest()[:16]
-        cache = Path(tempfile.gettempdir()) / "pocket-earth-edge-tts"
+        cache = Path(
+            os.environ.get(
+                "FROST_TTS_CACHE_DIR",
+                str(Path(tempfile.gettempdir()) / "pocket-earth-edge-tts"),
+            )
+        )
         cache.mkdir(parents=True, exist_ok=True)
         return cache / f"{digest}.mp3"
 

@@ -33,6 +33,13 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver_smoke.py' /opt/pocket-earth-edge/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_live_preflight.py' /opt/pocket-earth-edge/
   sudo install -m 0644 '$STAGE/pocket-earth-edge.service' /etc/systemd/system/pocket-earth-edge.service
+  sudo install -d -m 0750 -o pi -g pi /var/lib/pocket-earth-edge /var/cache/pocket-earth-edge
+  legacy_cursor=/home/pi/.local/state/pocket-earth/frost-feed.cursor
+  state_cursor=/var/lib/pocket-earth-edge/frost-feed.cursor
+  if sudo test -s \"\$legacy_cursor\" && ! sudo test -s \"\$state_cursor\"; then
+    sudo install -m 0640 -o pi -g pi \"\$legacy_cursor\" \"\$state_cursor\"
+    echo 'Migrated the committed Frost feed cursor into /var/lib/pocket-earth-edge.'
+  fi
   cd /opt/pocket-earth-edge
   /usr/bin/python3 frost_pi_device_driver_smoke.py
   sudo systemctl daemon-reload
