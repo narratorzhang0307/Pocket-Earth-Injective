@@ -80,11 +80,14 @@ safe two-level Whisplay interface without exposing a destructive file manager:
 - single-click inside an agent page to move through its cached evidence cards,
 - double-click from `PI HOME` to return to the radio status screen.
 
-`SUNSET RADIO` opens three device-native modes: `歌曲目录` reads the existing
-96-city/621-track resource tree, `日落时刻` reuses Sunset Radio's real solar
-sunset calculator, and `随机骰子` adapts the app's amber-on-night dice ritual.
-PI Home only reads the independent radio catalog and posts a targeted command
-to its local API; it does not take ownership of the radio database or player.
+`SUNSET RADIO` opens three device-native modes: `歌曲目录` directly flattens
+the existing 96-city/621-track resource tree into one song list (no UTC or city
+directory layer), `日落时刻` reuses Sunset Radio's real solar sunset calculator,
+and `随机骰子` adapts the app's amber-on-night dice ritual. The song-directory
+heading is centered in its black title bar. Once the dice lands, one click
+plays the selected result; double-click still returns without playback. PI Home only reads the independent
+radio catalog and posts a targeted command to its local API; it does not take
+ownership of the radio database or player.
 
 `POCKET EARTH` first opens three sibling spaces: `静默地球` is a clock-first,
 sound-free home with a pixel globe, the shared Frost silhouette, and public

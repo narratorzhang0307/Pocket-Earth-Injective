@@ -25,7 +25,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 from frost_pi_device_driver import rgb565_bytes
 from frost_pi_sunset_bridge import (
-    catalog_groups,
     load_catalog as load_sunset_catalog,
     queue_city as queue_sunset_city,
     queue_track as queue_sunset_track,
@@ -224,9 +223,13 @@ def save_snapshot(image: Image.Image) -> None:
     temporary.replace(SNAPSHOT_PATH)
 
 
-def draw_header(draw: ImageDraw.ImageDraw, title: str, accent) -> None:
+def draw_header(draw: ImageDraw.ImageDraw, title: str, accent, *, centered: bool = False) -> None:
     draw.rectangle((0, 0, WIDTH, 39), fill=INK)
-    draw.text((11, 8), title, font=font_for_text(title, 15, "mono"), fill=PAPER)
+    title_font = font_for_text(title, 15, "mono")
+    title_box = draw.textbbox((0, 0), title, font=title_font)
+    title_width = title_box[2] - title_box[0]
+    title_x = max(11, (WIDTH - title_width) // 2) if centered else 11
+    draw.text((title_x, 8), title, font=title_font, fill=PAPER)
     draw.rectangle((211, 8, 229, 30), fill=accent, outline=PAPER, width=1)
 
 
@@ -457,10 +460,18 @@ def _wrapped_lines(draw: ImageDraw.ImageDraw, text: str, text_font, max_width: i
     return lines[:max_lines]
 
 
-def _render_sunset_list(title: str, breadcrumb: str, items: list[dict], selected: int, accent=ORANGE) -> Image.Image:
+def _render_sunset_list(
+    title: str,
+    breadcrumb: str,
+    items: list[dict],
+    selected: int,
+    accent=ORANGE,
+    *,
+    centered_title: bool = False,
+) -> Image.Image:
     image = Image.new("RGB", (WIDTH, HEIGHT), PAPER)
     draw = ImageDraw.Draw(image)
-    draw_header(draw, title, accent)
+    draw_header(draw, title, accent, centered=centered_title)
     draw.text((12, 48), breadcrumb, font=font_for_text(breadcrumb, 8, "mono"), fill=GREY)
     if not items:
         draw.text((12, 92), "曲库正在载入", font=font(18, "bold"), fill=INK)
@@ -508,33 +519,37 @@ def render_pocket_modes(selected: int) -> Image.Image:
     )
 
 
-def render_sunset_groups(groups: list[dict], selected: int) -> Image.Image:
-    items = [
-        {"label": group["label"], "meta": f"{len(group['cities'])} 座城市", "accent": ORANGE}
-        for group in groups
-    ]
-    return _render_sunset_list("歌曲目录", "按日落时区进入城市目录", items, selected)
+def flatten_sunset_tracks(catalog: list[dict]) -> list[dict]:
+    """Expose one honest flat catalogue while retaining the source city."""
+    tracks = []
+    for city in catalog:
+        for track in city.get("tracks", []):
+            tracks.append(
+                {
+                    **track,
+                    "cityName": city.get("cityName", ""),
+                    "cityNameZh": city.get("cityNameZh", ""),
+                }
+            )
+    return tracks
 
 
-def render_sunset_cities(cities: list[dict], selected: int) -> Image.Image:
+def render_sunset_tracks(tracks: list[dict], selected: int) -> Image.Image:
     items = [
         {
-            "label": f"{city['cityNameZh']}  {city['cityName']}",
-            "meta": f"{len(city['tracks'])} TRACKS · UTC {city['tzOffset']:+g}",
+            "label": track["title"],
+            "meta": " · ".join(value for value in (track.get("artist", ""), track.get("cityNameZh", "")) if value),
             "accent": ORANGE,
         }
-        for city in cities
+        for track in tracks
     ]
-    return _render_sunset_list("歌曲目录", "时区目录  /  选择城市", items, selected)
-
-
-def render_sunset_tracks(city: dict | None, selected: int) -> Image.Image:
-    city = city or {"cityNameZh": "—", "tracks": []}
-    items = [
-        {"label": track["title"], "meta": track.get("artist", ""), "accent": ORANGE}
-        for track in city.get("tracks", [])
-    ]
-    return _render_sunset_list("歌曲目录", f"{city['cityNameZh']}  /  选择歌曲", items, selected)
+    return _render_sunset_list(
+        "歌曲目录",
+        f"全部歌曲  /  {len(tracks)} TRACKS",
+        items,
+        selected,
+        centered_title=True,
+    )
 
 
 def render_sunset_times(events: list[dict], selected: int) -> Image.Image:
@@ -593,7 +608,7 @@ def render_sunset_dice(state) -> Image.Image:
             draw.text((12, 204), state.dice_city.get("cityNameZh", ""), font=font(14, "bold"), fill=PAPER)
             title = _wrapped_lines(draw, state.dice_track.get("title", ""), font(11), 216, 1)
             draw.text((12, 225), title[0] if title else "", font=font(11), fill=amber)
-            draw.text((12, 246), "HOLD: PLAY", font=font(8, "mono"), fill=PAPER)
+            draw.text((12, 246), "CLICK: PLAY", font=font(8, "mono"), fill=PAPER)
     draw.text((12, 265), "2X: BACK", font=font(8, "mono"), fill=(116, 112, 106))
     return image
 
@@ -637,11 +652,9 @@ class MenuState:
         self.agent_index = 0
         self.page_index = 0
         self.sunset_catalog = sunset_catalog if sunset_catalog is not None else load_sunset_catalog()
-        self.sunset_groups = catalog_groups(self.sunset_catalog)
+        self.sunset_tracks = flatten_sunset_tracks(self.sunset_catalog)
         self.sunset_events = upcoming_sunsets(self.sunset_catalog, limit=24)
         self.sunset_mode_index = 0
-        self.sunset_group_index = 0
-        self.sunset_city_index = 0
         self.sunset_track_index = 0
         self.sunset_event_index = 0
         self.dice_phase = "idle"
@@ -649,18 +662,6 @@ class MenuState:
         self.dice_code = "0000 · 0000"
         self.dice_city = None
         self.dice_track = None
-
-    def current_group(self) -> dict | None:
-        if not self.sunset_groups:
-            return None
-        return self.sunset_groups[self.sunset_group_index % len(self.sunset_groups)]
-
-    def current_city(self) -> dict | None:
-        group = self.current_group()
-        cities = group.get("cities", []) if group else []
-        if not cities:
-            return None
-        return cities[self.sunset_city_index % len(cities)]
 
     def image(self) -> Image.Image:
         if self.level == "root":
@@ -679,13 +680,8 @@ class MenuState:
             )
         if self.level == "sunset_modes":
             return render_sunset_modes(self.sunset_mode_index, self.sunset_catalog)
-        if self.level == "sunset_groups":
-            return render_sunset_groups(self.sunset_groups, self.sunset_group_index)
-        if self.level == "sunset_cities":
-            group = self.current_group()
-            return render_sunset_cities(group.get("cities", []) if group else [], self.sunset_city_index)
         if self.level == "sunset_tracks":
-            return render_sunset_tracks(self.current_city(), self.sunset_track_index)
+            return render_sunset_tracks(self.sunset_tracks, self.sunset_track_index)
         if self.level == "sunset_times":
             return render_sunset_times(self.sunset_events, self.sunset_event_index)
         if self.level == "sunset_dice":
@@ -706,21 +702,8 @@ class MenuState:
             self.page_index = (self.page_index + 1) % len(_content_pages(AGENTS[self.agent_index]))
         elif self.level == "sunset_modes":
             self.sunset_mode_index = (self.sunset_mode_index + 1) % len(SUNSET_MODES)
-        elif self.level == "sunset_groups" and self.sunset_groups:
-            self.sunset_group_index = (self.sunset_group_index + 1) % len(self.sunset_groups)
-            self.sunset_city_index = 0
-            self.sunset_track_index = 0
-        elif self.level == "sunset_cities":
-            group = self.current_group()
-            cities = group.get("cities", []) if group else []
-            if cities:
-                self.sunset_city_index = (self.sunset_city_index + 1) % len(cities)
-                self.sunset_track_index = 0
-        elif self.level == "sunset_tracks":
-            city = self.current_city()
-            tracks = city.get("tracks", []) if city else []
-            if tracks:
-                self.sunset_track_index = (self.sunset_track_index + 1) % len(tracks)
+        elif self.level == "sunset_tracks" and self.sunset_tracks:
+            self.sunset_track_index = (self.sunset_track_index + 1) % len(self.sunset_tracks)
         elif self.level == "sunset_times" and self.sunset_events:
             self.sunset_event_index = (self.sunset_event_index + 1) % len(self.sunset_events)
 
@@ -738,22 +721,14 @@ class MenuState:
             self.page_index = 0
         elif self.level == "sunset_modes":
             mode = SUNSET_MODES[self.sunset_mode_index]["key"]
-            self.level = {"catalog": "sunset_groups", "sunset": "sunset_times", "dice": "sunset_dice"}[mode]
+            self.level = {"catalog": "sunset_tracks", "sunset": "sunset_times", "dice": "sunset_dice"}[mode]
             if mode == "dice":
                 self.dice_phase = "idle"
                 self.dice_city = None
                 self.dice_track = None
-        elif self.level == "sunset_groups" and self.sunset_groups:
-            self.level = "sunset_cities"
-            self.sunset_city_index = 0
-        elif self.level == "sunset_cities" and self.current_city():
-            self.level = "sunset_tracks"
-            self.sunset_track_index = 0
         elif self.level == "sunset_tracks":
-            city = self.current_city()
-            tracks = city.get("tracks", []) if city else []
-            if tracks:
-                return ("play_track", tracks[self.sunset_track_index % len(tracks)])
+            if self.sunset_tracks:
+                return ("play_track", self.sunset_tracks[self.sunset_track_index % len(self.sunset_tracks)])
         elif self.level == "sunset_times" and self.sunset_events:
             return ("play_city", self.sunset_events[self.sunset_event_index % len(self.sunset_events)])
         elif self.level == "sunset_dice":
@@ -787,12 +762,9 @@ class MenuState:
             self.level = "root"
             return "draw"
         if self.level == "sunset_tracks":
-            self.level = "sunset_cities"
+            self.level = "sunset_modes"
             return "draw"
-        if self.level == "sunset_cities":
-            self.level = "sunset_groups"
-            return "draw"
-        if self.level in {"sunset_groups", "sunset_times", "sunset_dice"}:
+        if self.level in {"sunset_times", "sunset_dice"}:
             self.level = "sunset_modes"
             return "draw"
         if self.level == "sunset_modes":
@@ -930,6 +902,10 @@ class ProjectLauncher:
                     self.leave_to_sunset()
                     return
             else:
+                if self.state.level == "sunset_dice" and self.state.dice_phase == "landed":
+                    print("pocket-launcher: play landed dice result by click", flush=True)
+                    self._handle_result(self.state.enter())
+                    return
                 self.state.move()
             self.draw()
 

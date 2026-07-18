@@ -17,6 +17,7 @@ from frost_pi_project_launcher import (
     _content_pages,
     _font_supports_text,
     cjk_font_status,
+    flatten_sunset_tracks,
     font_for_text,
 )
 
@@ -44,6 +45,9 @@ SUNSET_CATALOG = [
 
 def main() -> int:
     state = MenuState(SUNSET_CATALOG)
+    flattened = flatten_sunset_tracks(SUNSET_CATALOG)
+    assert len(flattened) == 3
+    assert flattened[0]["cityNameZh"] == "洛杉矶"
     assert state.level == "root"
     assert [item["path"] for item in PROJECTS] == ["/home/pi/sunset-radio", "/home/pi/pocket-earth"]
     assert len(AGENTS) == 12
@@ -99,13 +103,10 @@ def main() -> int:
     assert PROJECTS[state.root_index]["key"] == "sunset"
     assert state.enter() == "draw" and state.level == "sunset_modes"
     assert state.image().size == (240, 280)
-    assert state.enter() == "draw" and state.level == "sunset_groups"
-    assert state.enter() == "draw" and state.level == "sunset_cities"
     assert state.enter() == "draw" and state.level == "sunset_tracks"
+    assert len(state.sunset_tracks) == 3
     action = state.enter()
     assert action[0] == "play_track" and action[1]["id"] == "la-1"
-    assert state.back() == "draw" and state.level == "sunset_cities"
-    assert state.back() == "draw" and state.level == "sunset_groups"
     assert state.back() == "draw" and state.level == "sunset_modes"
 
     state.move()

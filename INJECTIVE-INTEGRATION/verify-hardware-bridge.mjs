@@ -271,6 +271,10 @@ for (const snippet of [
   '歌曲目录',
   '日落时刻',
   '随机骰子',
+  'flatten_sunset_tracks',
+  'centered_title=True',
+  'CLICK: PLAY',
+  'play landed dice result by click',
   '静默地球',
   '今日一页',
 ]) {
