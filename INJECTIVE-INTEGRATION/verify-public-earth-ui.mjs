@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 
 const panel = readFileSync(new URL('../src/app/components/PublicEarthPanel.tsx', import.meta.url), 'utf8')
 const knowledgeGlobe = readFileSync(new URL('../src/app/components/PublicKnowledgeGlobe.tsx', import.meta.url), 'utf8')
@@ -19,6 +19,16 @@ for (const anchor of [
   'INJECTIVE VERIFIED',
   '知识卡是信息分发层 · 身份卡是可验证身份层',
 ]) assert.ok(panel.includes(anchor), `PublicEarthPanel missing ${anchor}`)
+for (const portrait of [
+  'frost-43-core.png',
+  'frost-44-literature.png',
+  'frost-45-noir.png',
+  'frost-46-jazz.png',
+  'frost-47-aurora.png',
+]) {
+  assert.ok(panel.includes(`/frost-identities/${portrait}`), `PublicEarthPanel missing portrait ${portrait}`)
+  assert.ok(existsSync(new URL(`../public/frost-identities/${portrait}`, import.meta.url)), `portrait file missing ${portrait}`)
+}
 for (const anchor of [
   '<EarthMap',
   'Mapbox 公共知识新闻地图',
