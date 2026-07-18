@@ -7,7 +7,7 @@ import { RADIO_CITIES } from '../harness/domain';
 import { PlaylistEntry, ChatTurn } from '../harness/types';
 import { getFrostBrain } from '../harness/brain';
 import { cleanVoice, HUMAN_VOICE } from '../harness/persona';
-import { formatHistory } from '../harness/memory';
+import { formatHistory, formatRecalledMemory } from '../harness/memory';
 
 // 全曲目查找表（跨城）：trackId → 歌名/歌手/城市
 const TRACK_LOOKUP = new Map(
@@ -39,10 +39,11 @@ export function extractAnchor(text: string): string {
   return text.slice(0, 8) || '今夜';
 }
 
-function buildPrompt(text: string, anchor: string, history: string, pool: typeof CANDIDATES): string {
+function buildPrompt(text: string, anchor: string, history: string, memory: string, pool: typeof CANDIDATES): string {
   const lib = pool.map((c) => `${c.id} | ${c.title} — ${c.artist} · ${c.city}`).join('\n');
   return [
     '你是 Frost（弗洛斯特），深夜电台的开放式 DJ。声音冷静克制、带黄昏与远方，不像产品说明。',
+    formatRecalledMemory(memory),
     history,
     `用户请求：${text}`,
     `这次的方向锚点：「${anchor}」——据此判断 ta 想听的国家 / 地域 / 风格 / 心情，围绕它选歌。`,
@@ -74,7 +75,7 @@ function crossCityFallback(limit = 7): PlaylistEntry[] {
   return picks;
 }
 
-export interface CuratePlaylistInput { text: string; history?: ChatTurn[] }
+export interface CuratePlaylistInput { text: string; history?: ChatTurn[]; memory?: string }
 export interface CuratePlaylistResult {
   anchor: string;            // 提取到的方向锚点（日本 / 爵士 / 失眠 …）
   reply: string;             // Frost 口吻的策展说明
@@ -90,7 +91,7 @@ export async function curatePlaylist(input: CuratePlaylistInput): Promise<Curate
 
   // 云「写」：从全候选里精选并写每首贴合理由
   let raw = '';
-  try { raw = (await getFrostBrain().complete(buildPrompt(text, anchor, formatHistory(input.history), CANDIDATES), { json: true })).trim(); } catch { raw = ''; }
+  try { raw = (await getFrostBrain().complete(buildPrompt(text, anchor, formatHistory(input.history), input.memory || '', CANDIDATES), { json: true })).trim(); } catch { raw = ''; }
 
   if (raw) {
     try {

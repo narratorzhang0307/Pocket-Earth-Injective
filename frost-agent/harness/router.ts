@@ -85,6 +85,6 @@ export async function runFrost(ctx: FrostContext): Promise<AgentResult & { inten
   // Boundary：只放行合法动作
   const { valid } = validateActions(result.radioActions);
   // 把路由痕迹拼到子 agent 自己的痕迹前面，让思考过程可见
-  const trace = [...routeTrace, ...(result.trace || [])];
+  const trace = [...routeTrace, ...(ctx.memoryTrace || []), ...(result.trace || [])];
   return { ...result, radioActions: valid, trace, intent };
 }

@@ -33,6 +33,8 @@ export interface FrostContext {
   citySlug?: string;     // 当前所在城市
   userText?: string;     // 用户这一句话（闲聊/策展类用）
   history?: ChatTurn[];  // 最近对话（会话记忆，给大脑做上下文）
+  memory?: string;       // 应用层 Memory Router 按本轮问题召回的只读记忆块
+  memoryTrace?: string[];// 只记录召回了哪些记忆轨道，不暴露私人记忆正文
 }
 
 /** 歌单条目（open-dj 等产出，FrostPanel 展示）。 */

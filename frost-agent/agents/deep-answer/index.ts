@@ -3,7 +3,7 @@ import { RADIO_CITIES } from '../../harness/domain';
 import { AgentResult, FrostContext } from '../../harness/types';
 import { getFrostBrain } from '../../harness/brain';
 import { cleanVoice, HUMAN_VOICE } from '../../harness/persona';
-import { formatHistory } from '../../harness/memory';
+import { formatHistory, formatRecalledMemory } from '../../harness/memory';
 
 function podcastSnippet(citySlug?: string): { city: string; text: string } | null {
   const city = citySlug ? RADIO_CITIES.find((c) => c.slug === citySlug) : undefined;
@@ -20,7 +20,7 @@ export async function runDeepAnswer(
   const text = (ctx.userText || '').trim();
 
   let brainReply = '';
-  const prompt = `${formatHistory(ctx.history)}就用户的城市/作家/作品文化问题给出一段有质感的回答（120-220 字），从声音、夜晚、城市气质切入。\n${HUMAN_VOICE}\n用户：${text}`;
+  const prompt = `${formatRecalledMemory(ctx.memory)}${formatHistory(ctx.history)}就用户的城市/作家/作品文化问题给出一段有质感的回答（120-220 字），从声音、夜晚、城市气质切入。\n${HUMAN_VOICE}\n用户：${text}`;
   try { brainReply = cleanVoice((await getFrostBrain().complete(prompt)).trim()); } catch { brainReply = ''; }
   if (brainReply) {
     return { agent: 'deep-answer', reply: brainReply, data: { source: 'brain' }, radioActions: [] };

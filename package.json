@@ -46,6 +46,7 @@
     "verify:knowledge-pack": "node INJECTIVE-INTEGRATION/verify-knowledge-pack.mjs",
     "verify:knowledge-worker": "node INJECTIVE-INTEGRATION/verify-knowledge-worker.mjs",
     "verify:knowledge-agent-harness": "node INJECTIVE-INTEGRATION/verify-knowledge-agent-harness.mjs",
+    "verify:memory-router": "node INJECTIVE-INTEGRATION/verify-memory-router.mjs",
     "knowledge:refresh": "node knowledge/daily-worker.mjs",
     "knowledge:worker": "node knowledge/daily-worker.mjs",
     "verify:public-earth-contract": "node INJECTIVE-INTEGRATION/verify-public-earth-contract.mjs",

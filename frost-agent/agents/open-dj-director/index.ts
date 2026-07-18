@@ -22,7 +22,7 @@ export async function runOpenDjDirector(
   ctx: FrostContext
 ): Promise<AgentResult<{ anchor: string; playlist: PlaylistEntry[] }>> {
   // 调用「调度歌曲」skill（编排全部走云脑 Brain；思考痕迹仍按「端侧挑、云端写」架构叙事呈现，故 edgeUsed 恒传 true）
-  const { anchor, reply, playlist, viaLLM } = await curatePlaylist({ text: ctx.userText || '', history: ctx.history });
+  const { anchor, reply, playlist, viaLLM } = await curatePlaylist({ text: ctx.userText || '', history: ctx.history, memory: ctx.memory });
   return {
     agent: 'open-dj-director',
     reply,

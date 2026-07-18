@@ -3,10 +3,11 @@
 import { AgentResult, FrostContext } from '../../harness/types';
 import { getFrostBrain } from '../../harness/brain';
 import { FROST_PERSONA, NO_STAGE_DIRECTION, HUMAN_VOICE, cleanVoice } from '../../harness/persona';
-import { formatHistory } from '../../harness/memory';
+import { formatHistory, formatRecalledMemory } from '../../harness/memory';
 
 // Frost 这座电台能做的事（喂给大脑当自我认知，也用于 fallback 引导）
 const CAPABILITIES = [
+  '读取公共地球的可信知识版次：按领域回答当天重要进展，并区分已锚定事实与待审核候选',
   '一键编排「24H 电台」：从现在到午夜沿日落线逐城择歌、写明理由',
   '按书/心情/场景给你策一份跨城歌单（比如"我在读卡夫卡"）',
   '切到某座城的电台、换歌、暂停（比如"播放圣彼得堡的歌"）',
@@ -14,13 +15,17 @@ const CAPABILITIES = [
   '跟着日落走：现在哪座城正临近黄昏',
 ];
 
-const buildPrompt = (text: string, history: string) =>
+const buildPrompt = (text: string, history: string, memory: string) =>
   `你是${FROST_PERSONA.name}（${FROST_PERSONA.nameEn}），深夜电台的主理人。${FROST_PERSONA.selfIntro}\n` +
   `声音：冷静克制、带黄昏与远方的口吻，不像产品说明；对外永远是同一个你，不要暴露"子 agent / 系统 / 路由"这些词。\n` +
+  formatRecalledMemory(memory) +
   `你这座电台能为用户做的事：\n${CAPABILITIES.map((c) => '· ' + c).join('\n')}\n` +
   (history ? history + '（结合上面的对话，别前后矛盾）\n' : '') +
   `用户问了一个没有现成功能直接对应的问题。请用一到三句话、用你的声音回应：` +
-  `能答就答（世界、城市、音乐、夜晚、心情都能聊）；若他其实是想让你做点什么、而你能做的是上面那些，就自然把他引过去。` +
+  `能答就答（公共知识、世界、城市、音乐、夜晚、心情都能聊）；若召回了「公共语义记忆」，优先依据其中的记录正面回答，` +
+  `不要说自己不播或不能回答新闻；标成「候选版次，尚待链上锚定」的内容必须如实说明这一状态，不得冒充已经锚定。` +
+  `回答公共知识问题时到事实与版次状态为止，不要再把话题转回电台或邀请用户听歌。` +
+  `若他其实是想让你做点什么、而你能做的是上面那些，就自然把他引过去。` +
   `不要罗列功能清单，像深夜 DJ 那样说话。${NO_STAGE_DIRECTION}\n${HUMAN_VOICE}\n用户：${text}\n${FROST_PERSONA.name}：`;
 
 const FALLBACKS = [
@@ -37,7 +42,7 @@ function pickFallback(seed: string): string {
 export async function runGeneral(ctx: FrostContext): Promise<AgentResult<{ source: 'brain' | 'fallback' }>> {
   const text = (ctx.userText || '').trim();
   let reply = '';
-  try { reply = cleanVoice((await getFrostBrain().complete(buildPrompt(text, formatHistory(ctx.history)))).trim()); } catch { reply = ''; }
+  try { reply = cleanVoice((await getFrostBrain().complete(buildPrompt(text, formatHistory(ctx.history), ctx.memory || ''))).trim()); } catch { reply = ''; }
   const source: 'brain' | 'fallback' = reply ? 'brain' : 'fallback';
   if (!reply) reply = pickFallback(text || 'frost');
   return {

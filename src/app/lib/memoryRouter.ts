@@ -1,4 +1,4 @@
-// 记忆中枢 · 读装配（L1 总 FROST 长期记忆的统一读出口）。
+// 记忆中枢 · FROST 类型化记忆的统一读出口。
 // 取代各 agent 手工拼 getProfileSummary + getTasteSummary：一行 assembleMemory() 把
 //   【口味气质叙事 + 按评分偏爱口味 + 长期标签画像】+「记忆即空气」规则
 // 拼成注入云脑 system 的记忆块。只读现成端侧记忆、绝不触发云脑；新增 agent 统一走这里，杜绝漏接。
@@ -10,6 +10,8 @@ import { getProfileSummary, getCachedTasteLine, summarizeTaste } from '../../../
 import { getFrostBrain } from '../../../frost-agent/harness/brain';
 import { getTasteSummary } from './taste';
 import { getMoodTrace } from './mood/retrospect';
+import type { MemoryKind, MemoryRecall } from './memory/types';
+import { formatPublicSemanticMemory, publicSemanticStore } from './memory/publicSemantic.mjs';
 
 // 「记忆即空气」注入规则（抄 OpenHanako）：用记忆但不出戏、不谄媚、冲突以当前对话为准。
 export const MEMORY_AIR_RULES =
@@ -27,19 +29,63 @@ export function ensureNarrative(): void {
   summarizeTaste(getFrostBrain()).catch(() => {}).finally(() => { narrPending = false; });
 }
 
-/** 读装配：拼出注入云脑 system 的记忆块。无任何记忆时返回空串（连规则也不注入，省 token）。
- *  opts.domain 预留（按域附本地领域摘要）。 */
-export function assembleMemory(_opts?: { domain?: string }): string {
+function readPrivateMemory(_opts?: { domain?: string }): { block: string; lanes: MemoryKind[] } {
   ensureNarrative();                    // 后台保鲜叙事层（不阻塞，本次用已缓存的）
-  const parts: string[] = [];
-  const line = getCachedTasteLine();    // L1 叙事：一句话口味气质（已缓存，不触发云脑）
-  const loved = getTasteSummary();      // L2 按评分的偏爱口味视图（taste.ts）
-  const moodTrace = getMoodTrace();     // L3 情绪足迹（独立 mood 通道，读 geoStickers，不走 ProfileDomain）
-  const profile = getProfileSummary();  // L4 标签画像
-  if (line) parts.push(`# 你的口味气质（一句话）\n${line}`);
-  if (loved) parts.push(loved);
-  if (moodTrace) parts.push(moodTrace);
-  if (profile) parts.push(profile);
-  if (!parts.length) return '';
-  return `${MEMORY_AIR_RULES}\n\n${parts.join('\n\n')}`;
+  const selfParts: string[] = [];
+  // 以下是私人记忆的四种“读取视图”，不是冷热存储层级里的 L1 / L2 / L3。
+  const line = getCachedTasteLine();    // 一句话口味气质（已缓存，不触发云脑）
+  const loved = getTasteSummary();      // 按评分的偏爱口味视图（taste.ts）
+  const moodTrace = getMoodTrace();     // 情绪足迹（独立 mood 通道，读 geoStickers，不走 ProfileDomain）
+  const profile = getProfileSummary();  // 长期标签画像
+  if (line) selfParts.push(`# 你的口味气质（一句话）\n${line}`);
+  if (loved) selfParts.push(loved);
+  if (profile) selfParts.push(profile);
+  const parts = [...selfParts, ...(moodTrace ? [moodTrace] : [])];
+  const lanes: MemoryKind[] = [];
+  if (selfParts.length) lanes.push('self');
+  if (moodTrace) lanes.push('episodic');
+  return {
+    block: parts.length ? `${MEMORY_AIR_RULES}\n\n${parts.join('\n\n')}` : '',
+    lanes,
+  };
+}
+
+/** 兼容原有同步 agent 的私人记忆读出口。无记忆时返回空串。 */
+export function assembleMemory(opts?: { domain?: string }): string {
+  return readPrivateMemory(opts).block;
+}
+
+/**
+ * 按当前问题唤醒类型化记忆。
+ *
+ * 私人 self / episodic 记忆仍只从浏览器本地读取；公共 semantic 记忆只从
+ * `/api/knowledge` 只读检索。本函数不写 profile，也不会把公共知识并入用户画像。
+ */
+export async function recallMemory(query: string, opts?: { domain?: string }): Promise<MemoryRecall> {
+  const privateMemory = readPrivateMemory(opts);
+  const privateBlock = privateMemory.block;
+  const semanticEntries = await publicSemanticStore.retrieve(query);
+  const semanticBlock = formatPublicSemanticMemory(semanticEntries);
+  const blocks = [privateBlock, semanticBlock].filter(Boolean);
+  const lanes: MemoryKind[] = [];
+  const trace: string[] = [];
+  if (privateBlock) {
+    lanes.push(...privateMemory.lanes);
+    trace.push(`Memory Router → 私人 ${privateMemory.lanes.join(' / ')} 记忆（端侧只读）`);
+  }
+  if (semanticEntries.length) {
+    lanes.push('semantic');
+    trace.push(`Memory Router → 公共 semantic 记忆（${semanticEntries.length} 条可信记录，只读）`);
+  }
+  return {
+    block: blocks.join('\n\n'),
+    lanes: [...new Set(lanes)],
+    entries: semanticEntries,
+    trace,
+  };
+}
+
+/** 兼容只需要 prompt 文本的 agent。 */
+export async function assembleMemoryForQuery(query: string, opts?: { domain?: string }): Promise<string> {
+  return (await recallMemory(query, opts)).block;
 }

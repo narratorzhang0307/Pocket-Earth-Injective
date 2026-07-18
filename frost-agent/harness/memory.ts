@@ -12,3 +12,9 @@ export function formatHistory(history?: ChatTurn[]): string {
   const lines = recent.map((t) => `${t.role === 'user' ? '用户' : 'Frost'}: ${t.text}`);
   return `# 最近对话（会话记忆）\n${lines.join('\n')}\n`;
 }
+
+/** 应用层按当前问题召回的类型化记忆。内核只消费文本，不反向依赖具体存储。 */
+export function formatRecalledMemory(memory?: string): string {
+  const value = String(memory || '').trim();
+  return value ? `${value}\n\n` : '';
+}

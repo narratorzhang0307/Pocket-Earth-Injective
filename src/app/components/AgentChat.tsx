@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { edgeSafe } from '../../../frost-agent/edge/contract';
-import { assembleMemory } from '../lib/memoryRouter';
+import { assembleMemoryForQuery } from '../lib/memoryRouter';
 import { HUMAN_VOICE, cleanVoice } from '../../../frost-agent/harness/persona';
 import { streamText } from '../../../frost-agent/sync/stream';
 import { streamComplete } from '../lib/streamComplete';
@@ -68,7 +68,7 @@ export default function AgentChat({ config }: { config: AgentChatConfig }) {
   const buildNewRecs = async (text: string, history: string): Promise<string | null> => {
     const checkSeen = config.checkSeen;
     if (!checkSeen) return null;
-    const memory = assembleMemory();
+    const memory = await assembleMemoryForQuery(text);
     const baseSys = `${config.persona}\n\n${memory ? memory + '\n\n' : ''}【用户数据】\n${config.context()}\n\n用户想让你推荐 ta「没接触过」的。基于 ta 的口味画像列 10 个符合口味的候选，优先冷门 / 小众 / 近作。只输出 JSON：{"items":[{"title":"作品名(不带书名号)","why":"一句话为何对 ta 味，≤30字"}]}，不要任何解释。`;
     const pool: { title: string; why: string }[] = [];
     const seen: string[] = [];
@@ -115,7 +115,7 @@ export default function AgentChat({ config }: { config: AgentChatConfig }) {
       }
       // 普通对话（含「推经典」场景、讨论、找片）：真 SSE 逐 token 流式作答（替代「整段生成 + 打字机模拟」）。
       if (!reply) {
-        const memory = assembleMemory();   // 长期记忆经记忆中枢统一装配后注入云脑 system
+        const memory = await assembleMemoryForQuery(text);   // 按本轮问题召回私人画像或公共语义记忆
         const system = `${config.persona}\n\n${memory ? memory + '\n\n' : ''}【用户数据】\n${config.context()}\n\n${HUMAN_VOICE}\n\n要求：结合用户的口味画像作答，像懂行的朋友，具体有判断，不超过 180 字。【若用户要你推荐】只推荐 ta 大概率「没看过 / 没读过 / 没听过」的冷门、小众或近作，主动避开人尽皆知的主流经典（ta 几乎都接触过了），每条点明为何对 ta 的味；绝不推荐 ta 很可能已经接触过的东西。`;
         const prompt = `${history ? history + '\n' : ''}用户：${text}`;
         if (!mountedRef.current) return;

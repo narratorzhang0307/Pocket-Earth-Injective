@@ -7,6 +7,7 @@ import { derive, STATE_LABEL, type FrostState } from '../../../frost-agent/buddy
 import { themeFor, THEME_LABEL, type FrostTheme } from '../../../frost-agent/buddy/themes';
 import FrostBuddy, { FrostAvatar } from './FrostBuddy';
 import UserZhaIcon from './UserZhaIcon';
+import { recallMemory } from '../lib/memoryRouter';
 
 // FROST · 总 agent 宠物页（第一阶段：界面 + 状态）
 // 整页走「全黑终端」配色，和其它 agent 的浅灰界面拉开层级、凸显总 agent。
@@ -75,7 +76,14 @@ export default function FrostBuddyPage({ onBack, onRun }: Props) {
     setTurns((t) => [...t, { role: 'user', text }]);
     setBusy(true);
     try {
-      const res = await runFrost({ now: new Date(), userText: text, history });
+      const recalled = await recallMemory(text);
+      const res = await runFrost({
+        now: new Date(),
+        userText: text,
+        history,
+        memory: recalled.block,
+        memoryTrace: recalled.trace,
+      });
       const data = res.data as { playlist?: unknown[] } | undefined;
       const landed = !!(data?.playlist?.length || (res.radioActions && res.radioActions.length));
       setTurns((t) => [...t, { role: 'frost', text: res.reply, trace: res.trace, intent: res.intent, runTarget: INTENT_RUN[res.intent] }]);
