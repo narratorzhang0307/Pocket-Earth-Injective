@@ -21,8 +21,11 @@ for (const anchor of [
   '<EarthMap',
   'Mapbox 公共知识新闻地图',
   'theme="public"',
-  'PUBLIC SIGNAL MAP',
-  'NEWS CARDS · TAP TO INSPECT',
+  'PUBLIC KNOWLEDGE SIGNALS',
+  'SIGNAL POINTS · TAP TO APPROACH',
+  'IMAGE CARDS · TAP TO READ',
+  'CONTEXT IMAGE · 非证据图片',
+  '返回全球',
   '待交叉核验 · 尚未进入 Merkle 版次',
   '候选新闻不会冒充事实',
 ]) assert.ok(knowledgeGlobe.includes(anchor), `PublicKnowledgeGlobe missing ${anchor}`)
