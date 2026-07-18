@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Globe2, IdCard, Link2, Newspaper, ShieldCheck } from 'lucide-react';
-import FrostBuddy from './FrostBuddy';
 import PublicKnowledgeGlobe from './PublicKnowledgeGlobe';
 import PublicKnowledgeDetails from './PublicKnowledgeDetails';
-import type { FrostTheme } from '../../../frost-agent/buddy/themes';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 
 type Zone = { id: number; name: string; english: string; color: string };
@@ -26,8 +24,14 @@ type PublicEarthResponse = {
 
 interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
-const THEMES: Record<number, FrostTheme> = { 43: 'none', 44: 'book', 45: 'movie', 46: 'music', 47: 'travel' };
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
+const PORTRAITS: Record<number, string> = {
+  43: '/frost-identities/frost-43-core.png',
+  44: '/frost-identities/frost-44-literature.png',
+  45: '/frost-identities/frost-45-noir.png',
+  46: '/frost-identities/frost-46-jazz.png',
+  47: '/frost-identities/frost-47-aurora.png',
+};
 
 function shortHash(hash: string) {
   return hash ? `${hash.slice(0, 8)}…${hash.slice(-6)}` : '—';
@@ -54,9 +58,9 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
               </div>
               <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
             </div>
-            <div className="mt-3 h-[96px] border-2 border-black flex items-center justify-center overflow-hidden"
-              style={{ background: `linear-gradient(145deg, ${item.zoneInfo?.color || '#8aa'}33, #f7f1e5)` }}>
-              <FrostBuddy state="idle" theme={THEMES[item.agentId] || 'none'} color={COLORS[item.agentId]} glow={false} size={12} />
+            <div className="mt-3 h-[96px] border-2 border-black bg-black overflow-hidden">
+              <img src={PORTRAITS[item.agentId]} alt={`${item.displayName} Frost 身份肖像`} loading="lazy" draggable={false}
+                className="h-full w-full object-cover" style={{ objectPosition: 'center 38%' }} />
             </div>
             <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
               <span className="font-pixel text-[7px]">{item.doorplate}</span>
