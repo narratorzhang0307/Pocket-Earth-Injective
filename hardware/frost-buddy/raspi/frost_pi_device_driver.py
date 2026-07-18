@@ -14,7 +14,9 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -89,15 +91,28 @@ def _wrap(draw: ImageDraw.ImageDraw, value: str, font, max_width: int, max_lines
         return []
     lines: list[str] = []
     current = ""
-    for char in text:
-        candidate = current + char
-        if current and _measure(draw, candidate, font) > max_width:
-            lines.append(current.rstrip())
-            current = char.lstrip()
+    tokens = re.findall(r"[A-Za-z0-9][A-Za-z0-9_:/?&=.+-]*|\s+|.", text)
+    for token in tokens:
+        candidate = current + token
+        if not current or _measure(draw, candidate, font) <= max_width:
+            current = candidate
+            continue
+        lines.append(current.rstrip())
+        if len(lines) >= max_lines:
+            break
+        current = token.lstrip()
+        while current and _measure(draw, current, font) > max_width:
+            fitting = ""
+            for char in current:
+                if fitting and _measure(draw, fitting + char, font) > max_width:
+                    break
+                fitting += char
+            lines.append(fitting)
+            current = current[len(fitting):]
             if len(lines) >= max_lines:
                 break
-        else:
-            current = candidate
+        if len(lines) >= max_lines:
+            break
     if len(lines) < max_lines and current:
         lines.append(current.rstrip())
     consumed = "".join(lines)
@@ -139,14 +154,16 @@ def render_evidence_card(actions: list[dict]) -> Image.Image:
     draw.ellipse((214, 47, 226, 59), fill=CHAIN_MAGENTA, outline=INK, width=2)
 
     title = _text(display.get("title") or "Frost Edge Node", 80)
-    title_font = _font(22, "bold")
+    title_size = 18 if len(title) > 18 and title.isascii() else 22
+    title_font = _font(title_size, "bold")
     title_lines = _wrap(draw, title, title_font, 214, 2)
     y = 69
     for line in title_lines:
         draw.text((12, y), line, font=title_font, fill=INK)
         y += 29
 
-    subtitle = _text(display.get("subtitle"), 100)
+    agent_ids = [str(item) for item in display.get("agentIds", []) if str(item).strip()][:8]
+    subtitle = "" if agent_ids else _text(display.get("subtitle"), 100)
     if subtitle:
         draw.rectangle((11, y + 1, 229, y + 25), fill=(225, 225, 221), outline=INK, width=2)
         subtitle_lines = _wrap(draw, subtitle, _font(11, "mono"), 204, 1)
@@ -156,11 +173,11 @@ def render_evidence_card(actions: list[dict]) -> Image.Image:
 
     body = _text(display.get("body"), 220)
     body_font = _font(15, "regular")
-    for line in _wrap(draw, body, body_font, 214, 4):
+    max_body_lines = max(1, min(4, (210 - y) // 23))
+    for line in _wrap(draw, body, body_font, 214, max_body_lines):
         draw.text((12, y), line, font=body_font, fill=INK)
         y += 23
 
-    agent_ids = [str(item) for item in display.get("agentIds", []) if str(item).strip()][:8]
     if agent_ids:
         label = "AGENT ID  " + " / ".join(agent_ids)
         draw.rectangle((11, 220, 229, 247), fill=INK)
@@ -249,7 +266,24 @@ class PocketEarthDeviceDriver:
             sys.path.insert(0, DEFAULT_WHISPLAY_RUNTIME)
         from whisplay_client import DEFAULT_DAEMON_SOCKET_PATH, WhisplayDaemonProxy
 
-        board = WhisplayDaemonProxy(
+        class TimedWhisplayDaemonProxy(WhisplayDaemonProxy):
+            """Official proxy with a bounded request wait for unattended recovery."""
+
+            def _send_request(self, cmd: str, payload: dict | None = None) -> dict:
+                body = {"version": 1, "cmd": cmd, "payload": payload or {}}
+                with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+                    client.settimeout(float(os.environ.get("FROST_WHISPLAY_TIMEOUT", "5")))
+                    client.connect(self.socket_path)
+                    client.sendall((json.dumps(body) + "\n").encode("utf-8"))
+                    line = client.makefile("r").readline().strip()
+                    if not line:
+                        raise RuntimeError("empty response from whisplay-daemon")
+                    response = json.loads(line)
+                    if not response.get("ok"):
+                        raise RuntimeError(response.get("error", "whisplay-daemon request failed"))
+                    return response
+
+        board = TimedWhisplayDaemonProxy(
             socket_path=DEFAULT_DAEMON_SOCKET_PATH,
             app_id="pocket-earth-edge",
             display_name="Pocket Earth",
