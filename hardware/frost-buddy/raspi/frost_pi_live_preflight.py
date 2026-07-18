@@ -14,7 +14,10 @@ from urllib.request import urlopen
 
 
 def _command(*args):
-    return subprocess.run(args, text=True, capture_output=True, timeout=5, check=False)
+    try:
+        return subprocess.run(args, text=True, capture_output=True, timeout=5, check=False)
+    except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
+        return subprocess.CompletedProcess(args, 127, "", str(exc))
 
 
 def _active(unit):
