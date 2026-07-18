@@ -65,7 +65,7 @@ export function applyPublicEarthTheme(map: mapboxgl.Map) {
       if (/(admin|boundary)/i.test(layer.id) && layer.type === "line") {
         map.setPaintProperty(layer.id, "line-color", "#5c5a54");
         map.setPaintProperty(layer.id, "line-opacity", 0.6);
-        map.setPaintProperty(layer.id, "line-width", ["interpolate", ["linear"], ["zoom"], 0, 0.34, 3, 0.46, 7, 0.68] as any);
+        map.setPaintProperty(layer.id, "line-width", ["interpolate", ["linear"], ["zoom"], 0, 0.08, 3, 0.12, 7, 0.20] as any);
       }
       if (layer.type === "symbol") {
         const isCountryLabel = /country-label/i.test(layer.id);
