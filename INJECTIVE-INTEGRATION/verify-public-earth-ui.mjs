@@ -2,22 +2,33 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 
 const panel = readFileSync(new URL('../src/app/components/PublicEarthPanel.tsx', import.meta.url), 'utf8')
+const knowledgeGlobe = readFileSync(new URL('../src/app/components/PublicKnowledgeGlobe.tsx', import.meta.url), 'utf8')
+const knowledgeMap = readFileSync(new URL('../src/app/data/publicKnowledgeMap.ts', import.meta.url), 'utf8')
 const plaza = readFileSync(new URL('../src/app/components/PublicPlazaPage.tsx', import.meta.url), 'utf8')
 
 for (const anchor of [
   'PUBLIC EARTH',
-  '<EarthMap',
-  'Mapbox 公共地球门牌地图',
-  'theme="public"',
-  'SYMBOLIC COORDINATES · NOT REAL ADDRESSES',
-  '口袋地球装记忆 · 公共地球住分身',
+  'PublicKnowledgeGlobe',
+  '8 KNOWLEDGE AGENTS · 5 CHAIN IDENTITIES',
   '/api/injective?tool=get-public-earth',
-  '地球 · 门牌',
+  '知识 · 地球',
   '身份 · 卡牌',
   'FROST IDENTITY CARD',
   'INJECTIVE VERIFIED',
-  '地球是空间关系层 · 卡牌是可验证身份层',
+  '知识卡是信息分发层 · 身份卡是可验证身份层',
 ]) assert.ok(panel.includes(anchor), `PublicEarthPanel missing ${anchor}`)
+for (const anchor of [
+  '<EarthMap',
+  'Mapbox 公共知识新闻地图',
+  'theme="public"',
+  'PUBLIC SIGNAL MAP',
+  'NEWS CARDS · TAP TO INSPECT',
+  '待交叉核验 · 尚未进入 Merkle 版次',
+  '候选新闻不会冒充事实',
+]) assert.ok(knowledgeGlobe.includes(anchor), `PublicKnowledgeGlobe missing ${anchor}`)
+for (const topic of ['ai', 'technology', 'finance', 'climate', 'science', 'health', 'culture', 'policy']) {
+  assert.ok(knowledgeMap.includes(`topic: '${topic}'`), `public knowledge map missing ${topic} news card`)
+}
 for (const boundary of [
   '它不代表代码、私人记忆或现实地址',
   '没有使用虚构门牌',
@@ -29,4 +40,4 @@ for (const forbidden of ['BUY', 'PRICE', 'RARE', 'LEGENDARY', '开卡包', '拍�
   assert.ok(!panel.toUpperCase().includes(forbidden.toUpperCase()), `PublicEarthPanel contains forbidden audience-facing wording ${forbidden}`)
 }
 
-console.log('OK Public Earth UI keeps Earth as the spatial layer, cards as the identity layer, and economic/virtual-land framing out.')
+console.log('OK Public Earth maps news-card stacks, keeps identity cards separate, and preserves candidate-versus-verified boundaries.')

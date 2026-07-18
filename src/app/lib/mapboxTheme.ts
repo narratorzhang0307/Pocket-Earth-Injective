@@ -33,7 +33,7 @@ export function applySoftGreenParksTheme(map: mapboxgl.Map) {
   }
 }
 
-// 公共地球使用低照度的居民网络底图：地理仍可辨认，但不会抢过链上身份标记。
+// 公共地球使用低照度的知识地图底图：地理仍可辨认，但不会抢过新闻知识卡片。
 // 视觉取法来自 sunset-radio 的深夜地图，配色改为 Pocket Earth 的深海蓝与链上绿。
 export function applyPublicEarthTheme(map: mapboxgl.Map) {
   const style = map.getStyle?.();
@@ -63,8 +63,8 @@ export function applyPublicEarthTheme(map: mapboxgl.Map) {
       }
       if (layer.type === "symbol") {
         const isCountryLabel = /country-label/i.test(layer.id);
-        // 公共地球不是导航地图：城市、道路、景点等底图文字会和居民门牌争抢注意力。
-        // 只留极淡的国家级提示，其余符号全部隐藏，让身份节点成为唯一的阅读入口。
+        // 公共地球不是导航地图：城市、道路、景点等底图文字会和新闻卡片争抢注意力。
+        // 只留极淡的国家级提示，其余符号全部隐藏，让公共知识成为唯一的阅读入口。
         map.setLayoutProperty(layer.id, "visibility", isCountryLabel ? "visible" : "none");
         if (isCountryLabel) {
           map.setLayoutProperty(layer.id, "text-size", ["interpolate", ["linear"], ["zoom"], 0, 6, 3, 7.5, 6, 9] as any);

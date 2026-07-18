@@ -2,21 +2,22 @@ import { useState } from 'react';
 import { Database, Download, ShieldCheck } from 'lucide-react';
 import DailyKnowledgePage from './DailyKnowledgePage';
 import PublicEarthPanel from './PublicEarthPanel';
+import type { KnowledgeTopic } from '../lib/chronicle/types';
 
 export default function PublicEarthPage() {
-  const [knowledgeOpen, setKnowledgeOpen] = useState(false);
+  const [knowledgeOpen, setKnowledgeOpen] = useState<KnowledgeTopic | null>(null);
 
-  if (knowledgeOpen) return <DailyKnowledgePage onBack={() => setKnowledgeOpen(false)} />;
+  if (knowledgeOpen) return <DailyKnowledgePage initialTopic={knowledgeOpen} onBack={() => setKnowledgeOpen(null)} />;
 
   return (
     <div className="h-full min-h-0 flex flex-col bg-[#EAEAEA] overflow-hidden">
       <h1 className="sr-only">PUBLIC EARTH</h1>
       <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-3 pb-[max(1rem,env(safe-area-inset-bottom))]" data-testid="public-earth-scroll">
-        <PublicEarthPanel />
+        <PublicEarthPanel onOpenTopic={setKnowledgeOpen} />
 
         <button
           type="button"
-          onClick={() => setKnowledgeOpen(true)}
+          onClick={() => setKnowledgeOpen('ai')}
           aria-label="打开公共知识层与今日可验证版次"
           className="w-full text-left border-[3px] border-black bg-[#e7efff] p-3 shadow-[3px_3px_0_#000] active:translate-y-px"
           data-testid="public-knowledge-entry"

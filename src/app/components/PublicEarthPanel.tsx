@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ExternalLink, Globe2, IdCard, Link2, MapPin, ShieldCheck } from 'lucide-react';
-import type mapboxgl from 'mapbox-gl';
-import EarthMap from './EarthMap';
+import { Globe2, IdCard, Link2, ShieldCheck } from 'lucide-react';
 import FrostBuddy from './FrostBuddy';
+import PublicKnowledgeGlobe from './PublicKnowledgeGlobe';
 import type { FrostTheme } from '../../../frost-agent/buddy/themes';
+import type { KnowledgeTopic } from '../lib/chronicle/types';
 
 type Zone = { id: number; name: string; english: string; color: string };
 type Residence = {
@@ -14,204 +14,22 @@ type Residence = {
   cardVersion: number;
   zone: number;
   zoneInfo?: Zone;
-  x: number;
-  y: number;
   cardHash: string;
-  cardHashMatches: boolean;
   revision: number;
-  updatedAt: number | null;
-  identityScanUrl: string;
-  residenceScanUrl: string;
 };
 type PublicEarthResponse = {
   live: boolean;
-  evidenceSource: string;
-  boundary: string;
   contract: { address: string; scanUrl: string };
-  zones: Zone[];
   residences: Residence[];
 };
+
+interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
 const THEMES: Record<number, FrostTheme> = { 43: 'none', 44: 'book', 45: 'movie', 46: 'music', 47: 'travel' };
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
 
 function shortHash(hash: string) {
   return hash ? `${hash.slice(0, 8)}…${hash.slice(-6)}` : '—';
-}
-
-const PUBLIC_RESIDENCE_SOURCE = 'public-earth-residences';
-const PUBLIC_RESIDENCE_HALOS = 'public-earth-residence-halos';
-const PUBLIC_RESIDENCE_DOTS = 'public-earth-residence-dots';
-const PUBLIC_RESIDENCE_IDS = 'public-earth-residence-ids';
-const PUBLIC_RESIDENCE_LABELS = 'public-earth-residence-labels';
-
-// 链上 x/y 是公共地球的符号位置，不是现实地址；这里只把同一坐标确定性投影到 Mapbox globe。
-function mapCoordinates(item: Residence): [number, number] {
-  return [Math.max(-36, Math.min(36, item.x * 0.07)), Math.max(-36, Math.min(40, item.y * 0.08))];
-}
-
-function residenceGeoJson(data: PublicEarthResponse, selectedId: number) {
-  return {
-    type: 'FeatureCollection' as const,
-    features: data.residences.map((item) => ({
-      type: 'Feature' as const,
-      geometry: { type: 'Point' as const, coordinates: mapCoordinates(item) },
-      properties: {
-        agentId: item.agentId,
-        idLabel: `#${item.agentId}`,
-        label: item.displayName,
-        color: COLORS[item.agentId] || '#273F58',
-        active: item.agentId === selectedId,
-      },
-    })),
-  };
-}
-
-function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
-  const [map, setMap] = useState<mapboxgl.Map | null>(null);
-
-  useEffect(() => {
-    if (!map) return;
-
-    const syncLayer = () => {
-      const geojson = residenceGeoJson(data, selected.agentId);
-      const source = map.getSource(PUBLIC_RESIDENCE_SOURCE) as mapboxgl.GeoJSONSource | undefined;
-      if (source) source.setData(geojson);
-      else map.addSource(PUBLIC_RESIDENCE_SOURCE, { type: 'geojson', data: geojson });
-
-      if (!map.getLayer(PUBLIC_RESIDENCE_HALOS)) {
-        map.addLayer({
-          id: PUBLIC_RESIDENCE_HALOS,
-          type: 'circle',
-          source: PUBLIC_RESIDENCE_SOURCE,
-          paint: {
-            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 14, 8],
-            'circle-color': ['get', 'color'],
-            'circle-opacity': ['case', ['boolean', ['get', 'active'], false], 0.28, 0.15],
-            'circle-blur': 0.72,
-          },
-        });
-      }
-      if (!map.getLayer(PUBLIC_RESIDENCE_DOTS)) {
-        map.addLayer({
-          id: PUBLIC_RESIDENCE_DOTS,
-          type: 'circle',
-          source: PUBLIC_RESIDENCE_SOURCE,
-          paint: {
-            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 6, 4.5],
-            'circle-color': ['get', 'color'],
-            'circle-stroke-color': '#d8eee4',
-            'circle-stroke-width': ['case', ['boolean', ['get', 'active'], false], 1.2, 0.75],
-          },
-        });
-      }
-      if (!map.getLayer(PUBLIC_RESIDENCE_IDS)) {
-        map.addLayer({
-          id: PUBLIC_RESIDENCE_IDS,
-          type: 'symbol',
-          source: PUBLIC_RESIDENCE_SOURCE,
-          layout: {
-            'text-field': ['get', 'idLabel'],
-            'text-size': 7.5,
-            'text-offset': [0, -1.15],
-            'text-anchor': 'bottom',
-            'text-allow-overlap': true,
-            'text-ignore-placement': true,
-          },
-          paint: {
-            'text-color': '#a7c8b8',
-            'text-halo-color': '#08100e',
-            'text-halo-width': 1.2,
-          },
-        });
-      }
-      if (!map.getLayer(PUBLIC_RESIDENCE_LABELS)) {
-        map.addLayer({
-          id: PUBLIC_RESIDENCE_LABELS,
-          type: 'symbol',
-          source: PUBLIC_RESIDENCE_SOURCE,
-          layout: {
-            'text-field': ['get', 'label'],
-            'text-size': 9,
-            'text-offset': [0, 1.05],
-            'text-anchor': 'top',
-            'text-allow-overlap': true,
-            'text-ignore-placement': true,
-          },
-          paint: {
-            'text-color': '#d8eee4',
-            'text-halo-color': '#02050a',
-            'text-halo-width': 1.6,
-          },
-        });
-      }
-    };
-
-    const selectFeature = (event: mapboxgl.MapLayerMouseEvent) => {
-      const agentId = Number(event.features?.[0]?.properties?.agentId);
-      const item = data.residences.find((candidate) => candidate.agentId === agentId);
-      if (item) onSelect(item);
-    };
-    const showPointer = () => { map.getCanvas().style.cursor = 'pointer'; };
-    const hidePointer = () => { map.getCanvas().style.cursor = ''; };
-    const bind = () => {
-      syncLayer();
-      map.on('click', PUBLIC_RESIDENCE_DOTS, selectFeature);
-      map.on('click', PUBLIC_RESIDENCE_IDS, selectFeature);
-      map.on('click', PUBLIC_RESIDENCE_LABELS, selectFeature);
-      map.on('mouseenter', PUBLIC_RESIDENCE_DOTS, showPointer);
-      map.on('mouseleave', PUBLIC_RESIDENCE_DOTS, hidePointer);
-    };
-
-    if (map.isStyleLoaded()) bind();
-    else map.once('load', bind);
-
-    return () => {
-      map.off('load', bind);
-      if (map.getLayer(PUBLIC_RESIDENCE_DOTS)) {
-        map.off('click', PUBLIC_RESIDENCE_DOTS, selectFeature);
-        map.off('mouseenter', PUBLIC_RESIDENCE_DOTS, showPointer);
-        map.off('mouseleave', PUBLIC_RESIDENCE_DOTS, hidePointer);
-      }
-      if (map.getLayer(PUBLIC_RESIDENCE_IDS)) map.off('click', PUBLIC_RESIDENCE_IDS, selectFeature);
-      if (map.getLayer(PUBLIC_RESIDENCE_LABELS)) map.off('click', PUBLIC_RESIDENCE_LABELS, selectFeature);
-    };
-  }, [data, map, onSelect, selected.agentId]);
-
-  return (
-    <div>
-      <div className="relative mt-3 h-[330px] overflow-hidden border-2 border-[#334c43] bg-[#02050a] shadow-[4px_4px_0_#000]" aria-label="Mapbox 公共地球门牌地图">
-        <EarthMap theme="public" center={[0, 18]} zoom={1.15} onReady={setMap} className="z-0" />
-        <div className="pointer-events-none absolute left-3 top-3 z-20 border border-[#739786]/55 bg-[#030806]/85 px-2.5 py-2 text-[#d8eee4] backdrop-blur-sm">
-          <div className="flex items-center gap-1.5 font-pixel text-[7px] tracking-widest"><span className="h-1.5 w-1.5 bg-[#35e79a] shadow-[0_0_8px_#35e79a]" />RESIDENT NETWORK</div>
-          <div className="mt-1 text-[8px] text-[#8da99d]">05 identities · Injective testnet</div>
-        </div>
-        <div className="pointer-events-none absolute bottom-2 left-2 z-20 border border-[#739786]/40 bg-[#030806]/85 px-2 py-1 font-pixel text-[6px] tracking-wide text-[#9ab4a8] backdrop-blur-sm">
-          SYMBOLIC COORDINATES · NOT REAL ADDRESSES
-        </div>
-      </div>
-
-      <div className="mt-3 flex items-center gap-2.5 border-2 border-[#334c43] bg-[#0b1113] p-2.5 text-[#d8eee4] shadow-[3px_3px_0_#000]">
-        <div className="w-12 h-12 border border-[#587064] bg-[#111c1d] flex items-center justify-center overflow-hidden shrink-0">
-          <FrostBuddy state="idle" theme={THEMES[selected.agentId] || 'none'} color={COLORS[selected.agentId]} glow={false} size={6} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <span className="font-pixel text-[8px] truncate text-white">{selected.displayName}</span>
-            <span className="ml-auto font-pixel text-[7px] border border-[#9ab4a8] px-1 py-0.5 text-white" style={{ background: selected.zoneInfo?.color || '#273F58' }}>
-              {selected.zoneInfo?.name}
-            </span>
-          </div>
-          <div className="mt-1 flex items-center gap-1 text-[10px] text-[#9ab4a8]"><MapPin className="w-3 h-3" />{selected.doorplate} · 版本 {selected.revision}</div>
-          <div className="mt-1 flex items-center gap-1 text-[9px] text-[#50d99a]"><ShieldCheck className="w-3 h-3" />公开卡面哈希已匹配</div>
-        </div>
-        <a href={selected.residenceScanUrl} target="_blank" rel="noreferrer" aria-label="在 Injective 浏览器查看门牌交易"
-          className="w-10 h-10 border border-[#739786] flex items-center justify-center bg-[#101b18] text-[#b9ffdc] active:translate-y-px shrink-0">
-          <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />
-        </a>
-      </div>
-    </div>
-  );
 }
 
 function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
@@ -260,8 +78,8 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
   );
 }
 
-export default function PublicEarthPanel() {
-  const [view, setView] = useState<'earth' | 'cards'>('earth');
+export default function PublicEarthPanel({ onOpenTopic = () => {} }: Props) {
+  const [view, setView] = useState<'knowledge' | 'cards'>('knowledge');
   const [data, setData] = useState<PublicEarthResponse | null>(null);
   const [selectedId, setSelectedId] = useState(43);
   const [error, setError] = useState(false);
@@ -284,9 +102,7 @@ export default function PublicEarthPanel() {
         <div className="min-w-0 flex-1">
           <span className="sr-only">PUBLIC EARTH · INJECTIVE</span>
           <div className="font-pixel text-[12px] tracking-wider">PUBLIC EARTH</div>
-          <div className="font-pixel text-[7px] text-[#315e4b] mt-1 tracking-wide">
-            {data ? `${data.residences.length} CHAIN RESIDENTS · 8 KNOWLEDGE AGENTS` : '口袋地球装记忆 · 公共地球住分身'}
-          </div>
+          <div className="font-pixel text-[7px] text-[#315e4b] mt-1 tracking-wide">8 KNOWLEDGE AGENTS · 5 CHAIN IDENTITIES</div>
         </div>
         {data && <span className={`inline-flex items-center gap-1.5 font-pixel text-[7px] border-2 border-black px-2 py-1.5 shrink-0 ${data.live ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-[#e2c26e]'}`}>
           {data.live && <span className="h-1.5 w-1.5 bg-[#35e79a] shadow-[0_0_7px_#35e79a]" />}{data.live ? 'LIVE' : 'PUBLIC PROOF'}
@@ -294,23 +110,22 @@ export default function PublicEarthPanel() {
       </div>
 
       <div className="grid grid-cols-2 gap-2 mt-3">
-        <button type="button" onClick={() => setView('earth')} aria-pressed={view === 'earth'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-white'}`}>
-          <Globe2 className="w-3.5 h-3.5" aria-hidden="true" />地球 · 门牌
+        <button type="button" onClick={() => setView('knowledge')} aria-pressed={view === 'knowledge'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'knowledge' ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-white'}`}>
+          <Globe2 className="w-3.5 h-3.5" aria-hidden="true" />知识 · 地球
         </button>
         <button type="button" onClick={() => setView('cards')} aria-pressed={view === 'cards'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
           <IdCard className="w-3.5 h-3.5" aria-hidden="true" />身份 · 卡牌
         </button>
       </div>
 
-      {!data && !error && <div className="h-[260px] flex items-center justify-center font-pixel text-[8px] text-black/40">READING INJECTIVE…</div>}
-      {error && !data && <div className="h-[180px] border-2 border-black bg-white mt-3 flex items-center justify-center text-center px-5 text-[10px] text-black/55">公共地球链读暂不可用。没有使用虚构门牌，请稍后重试。</div>}
-      {data && selected && (view === 'earth'
-        ? <MapboxGlobeView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />
-        : <CardView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />)}
+      {view === 'knowledge' && <PublicKnowledgeGlobe onOpenTopic={onOpenTopic} />}
+      {view === 'cards' && !data && !error && <div className="h-[260px] flex items-center justify-center font-pixel text-[8px] text-black/40">READING INJECTIVE…</div>}
+      {view === 'cards' && error && !data && <div className="h-[180px] border-2 border-black bg-white mt-3 flex items-center justify-center text-center px-5 text-[10px] text-black/55">身份链读暂不可用。没有使用虚构门牌，请稍后重试。</div>}
+      {view === 'cards' && data && selected && <CardView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />}
 
       {data && <div className="mt-3 pt-2 border-t border-black/20 flex items-center gap-1.5 text-[8px] text-black/45">
         <Link2 className="w-3 h-3" />
-        <span className="flex-1">地球是空间关系层 · 卡牌是可验证身份层</span>
+        <span className="flex-1">知识卡是信息分发层 · 身份卡是可验证身份层</span>
         <a href={data.contract.scanUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2">CONTRACT ↗</a>
       </div>}
     </section>

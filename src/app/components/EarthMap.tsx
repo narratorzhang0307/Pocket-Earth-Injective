@@ -20,7 +20,7 @@ interface EarthMapProps {
   zoom?: number;
   /** 地图实例创建完成后回调，供父组件做地理锚定的叠加层 */
   onReady?: (map: mapboxgl.Map) => void;
-  /** 私人地图沿用明亮纸面；公共地球使用低照度居民网络主题。 */
+  /** 私人地图沿用明亮纸面；公共地球使用低照度知识地图主题。 */
   theme?: 'private' | 'public';
   className?: string;
 }

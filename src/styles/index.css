@@ -1,3 +1,75 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+.public-knowledge-map-card {
+  --topic-color: #7cff6b;
+  width: 84px;
+  min-height: 48px;
+  padding: 7px 7px 6px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(216, 238, 228, .82);
+  border-radius: 2px;
+  background: rgba(4, 10, 9, .94);
+  color: #e7f4ee;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, .82), 0 0 0 1px rgba(0, 0, 0, .35);
+  text-align: left;
+  cursor: pointer;
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+
+.public-knowledge-map-card::before {
+  content: '';
+  height: 3px;
+  position: absolute;
+  inset: 0 0 auto;
+  background: var(--topic-color);
+}
+
+.public-knowledge-map-card::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  left: calc(50% - 4px);
+  bottom: -5px;
+  border: solid rgba(216, 238, 228, .82);
+  border-width: 0 1px 1px 0;
+  background: #040a09;
+  transform: rotate(45deg);
+}
+
+.public-knowledge-map-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #8fa99d;
+  font: 700 6px ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .04em;
+}
+
+.public-knowledge-map-card__meta b {
+  margin-left: auto;
+  color: var(--topic-color);
+  font-size: 7px;
+}
+
+.public-knowledge-map-card > strong {
+  display: -webkit-box;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #f3faf6;
+  font-size: 8px;
+  font-weight: 750;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.public-knowledge-map-card.is-selected {
+  z-index: 3;
+  border-color: #fff;
+  box-shadow: 3px 4px 0 #000, 0 0 0 2px var(--topic-color);
+  transform: translateY(-3px);
+}
