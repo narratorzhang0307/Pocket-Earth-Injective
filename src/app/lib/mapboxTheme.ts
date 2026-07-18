@@ -33,8 +33,8 @@ export function applySoftGreenParksTheme(map: mapboxgl.Map) {
   }
 }
 
-// 公共地球使用低照度的知识地图底图：地理仍可辨认，但不会抢过新闻知识卡片。
-// 视觉取法来自 sunset-radio 的深夜地图，配色改为 Pocket Earth 的深海蓝与链上绿。
+// 公共地球是一张可被继续贴上新闻的「公共编辑桌」：不用深色交易终端，
+// 而用灰绿纸本、旧地图和温和道路线承托便签。配色取自「上街去」的地图拼贴层。
 export function applyPublicEarthTheme(map: mapboxgl.Map) {
   const style = map.getStyle?.();
   if (!style?.layers?.length) return;
@@ -42,36 +42,41 @@ export function applyPublicEarthTheme(map: mapboxgl.Map) {
   for (const layer of style.layers) {
     if (!layer?.id) continue;
     try {
-      if (layer.type === "background") map.setPaintProperty(layer.id, "background-color", "#02050a");
+      if (layer.type === "background") map.setPaintProperty(layer.id, "background-color", "#c9c6bd");
       if (/water|ocean/i.test(layer.id) && layer.type === "fill") {
-        map.setPaintProperty(layer.id, "fill-color", "#07131d");
-        map.setPaintProperty(layer.id, "fill-opacity", 0.98);
+        map.setPaintProperty(layer.id, "fill-color", "#a9bfbe");
+        map.setPaintProperty(layer.id, "fill-opacity", 0.95);
       }
       if (/(land|landuse|park|national-park|forest|wood|grass|meadow|pitch|cemetery|garden)/i.test(layer.id)) {
         if (layer.type === "fill") {
-          map.setPaintProperty(layer.id, "fill-color", "#17201f");
-          map.setPaintProperty(layer.id, "fill-opacity", 0.9);
+          const isGreen = /(park|forest|wood|grass|meadow|garden)/i.test(layer.id);
+          map.setPaintProperty(layer.id, "fill-color", isGreen ? "#b8cbb4" : "#cec9bd");
+          map.setPaintProperty(layer.id, "fill-opacity", isGreen ? 0.74 : 0.94);
         }
         if (layer.type === "line") {
-          map.setPaintProperty(layer.id, "line-color", "#31433e");
-          map.setPaintProperty(layer.id, "line-opacity", 0.32);
+          map.setPaintProperty(layer.id, "line-color", "#747b73");
+          map.setPaintProperty(layer.id, "line-opacity", 0.46);
         }
       }
       if (/(road|bridge|tunnel)/i.test(layer.id) && layer.type === "line") {
-        map.setPaintProperty(layer.id, "line-color", "#27343a");
-        map.setPaintProperty(layer.id, "line-opacity", 0.25);
+        map.setPaintProperty(layer.id, "line-color", "#8e8980");
+        map.setPaintProperty(layer.id, "line-opacity", 0.5);
+      }
+      if (/(admin|boundary)/i.test(layer.id) && layer.type === "line") {
+        map.setPaintProperty(layer.id, "line-color", "#5c5a54");
+        map.setPaintProperty(layer.id, "line-opacity", 0.6);
       }
       if (layer.type === "symbol") {
         const isCountryLabel = /country-label/i.test(layer.id);
-        // 公共地球不是导航地图：城市、道路、景点等底图文字会和新闻卡片争抢注意力。
-        // 只留极淡的国家级提示，其余符号全部隐藏，让公共知识成为唯一的阅读入口。
-        map.setLayoutProperty(layer.id, "visibility", isCountryLabel ? "visible" : "none");
-        if (isCountryLabel) {
-          map.setLayoutProperty(layer.id, "text-size", ["interpolate", ["linear"], ["zoom"], 0, 6, 3, 7.5, 6, 9] as any);
-          map.setPaintProperty(layer.id, "text-color", "#71817c");
-          map.setPaintProperty(layer.id, "text-halo-color", "#02050a");
-          map.setPaintProperty(layer.id, "text-halo-width", 1);
-          map.setPaintProperty(layer.id, "text-opacity", 0.34);
+        const isPlaceLabel = isCountryLabel || /(state-label|settlement.*label|place-label)/i.test(layer.id);
+        // 便签必须能看出「贴在哪里」：保留国家、省州和城市，隐藏 POI 广告性文字。
+        map.setLayoutProperty(layer.id, "visibility", isPlaceLabel ? "visible" : "none");
+        if (isPlaceLabel) {
+          map.setLayoutProperty(layer.id, "text-size", ["interpolate", ["linear"], ["zoom"], 0, isCountryLabel ? 6.5 : 5.5, 4, isCountryLabel ? 9 : 7.5, 7, isCountryLabel ? 11 : 9.5] as any);
+          map.setPaintProperty(layer.id, "text-color", isCountryLabel ? "#4f504a" : "#66675f");
+          map.setPaintProperty(layer.id, "text-halo-color", "#ded9cc");
+          map.setPaintProperty(layer.id, "text-halo-width", 1.15);
+          map.setPaintProperty(layer.id, "text-opacity", isCountryLabel ? 0.72 : 0.56);
           try { map.setPaintProperty(layer.id, "icon-opacity", 0); } catch {}
         }
       }
@@ -80,11 +85,11 @@ export function applyPublicEarthTheme(map: mapboxgl.Map) {
 
   try {
     map.setFog({
-      color: "#07110f",
-      "high-color": "#0b1c20",
-      "space-color": "#010307",
-      "horizon-blend": 0.035,
-      "star-intensity": 0.08,
+      color: "#c9c6bd",
+      "high-color": "#d1d8d3",
+      "space-color": "#b3b0a8",
+      "horizon-blend": 0.06,
+      "star-intensity": 0,
     } as any);
   } catch {}
 }

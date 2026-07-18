@@ -4,23 +4,37 @@
 
 .public-news-map {
   position: relative;
+  isolation: isolate;
   height: 390px;
   margin-top: 12px;
   overflow: hidden;
-  border: 2px solid #334c43;
-  background: #02050a;
+  border: 2px solid #111;
+  background: #d9d6ce;
   box-shadow: 4px 4px 0 #000;
+}
+
+/* The map is an editorial pasteboard rather than a trading-terminal screen. */
+.public-news-map::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(30 35 32 / .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(30 35 32 / .055) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none;
 }
 
 .public-news-map__legend,
 .public-news-map__instruction,
 .public-news-map__reset {
   position: absolute;
-  z-index: 20;
-  border: 1px solid rgb(115 151 134 / .5);
-  background: rgb(3 8 6 / .88);
-  color: #d8eee4;
-  backdrop-filter: blur(7px);
+  z-index: 30;
+  border: 1.5px solid #111;
+  background: #f5f0e4;
+  color: #171b18;
+  box-shadow: 2px 2px 0 rgb(0 0 0 / .82);
 }
 
 .public-news-map__legend {
@@ -28,6 +42,7 @@
   left: 12px;
   padding: 8px 10px;
   pointer-events: none;
+  transform: rotate(-.6deg);
 }
 
 .public-news-map__legend > div {
@@ -40,15 +55,16 @@
 }
 
 .public-news-map__legend > div > span {
-  width: 6px;
-  height: 6px;
-  background: #35e79a;
-  box-shadow: 0 0 9px #35e79a;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #111;
+  border-radius: 50%;
+  background: #ff35c9;
 }
 
 .public-news-map__legend p {
   margin-top: 4px;
-  color: #8da99d;
+  color: #676860;
   font-size: 8px;
 }
 
@@ -57,7 +73,7 @@
   left: 8px;
   padding: 5px 7px;
   pointer-events: none;
-  color: #9ab4a8;
+  color: #4f514b;
   font-family: var(--font-pixel, ui-monospace, monospace);
   font-size: 6px;
   letter-spacing: .08em;
@@ -70,7 +86,8 @@
   align-items: center;
   gap: 5px;
   padding: 6px 8px;
-  color: #bff7da;
+  background: #d7eee2;
+  color: #16231d;
   font-size: 9px;
   font-weight: 700;
   cursor: pointer;
@@ -80,13 +97,17 @@
    then an image-led paper card when the reader approaches. */
 .public-news-marker {
   --topic-color: #7cff6b;
+  --paper-color: #f3efe4;
+  --note-rotation: 0deg;
+  --orbit-note-x: 0px;
+  --orbit-note-y: 0px;
   --news-card-x: 0px;
   --news-card-y: 0px;
   position: relative;
   z-index: 8;
   display: block;
-  width: 18px;
-  height: 24px;
+  width: 16px;
+  height: 25px;
   overflow: visible;
   border: 0;
   padding: 0;
@@ -99,42 +120,46 @@
 .public-news-marker__signal {
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 18px;
-  height: 18px;
+  left: 3px;
+  z-index: 3;
+  width: 11px;
+  height: 14px;
   transition: opacity .18s ease, transform .18s ease;
 }
 
 .public-news-marker__signal::after {
   content: '';
   position: absolute;
-  bottom: -7px;
-  left: 8px;
-  width: 1px;
-  height: 8px;
-  background: linear-gradient(to bottom, var(--topic-color), transparent);
-  opacity: .7;
+  top: 8px;
+  left: 5px;
+  width: 2px;
+  height: 7px;
+  background: #111;
+  transform: rotate(6deg);
 }
 
 .public-news-marker__signal i {
   position: absolute;
-  inset: 1px;
-  border: 1px solid color-mix(in srgb, var(--topic-color) 70%, transparent);
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid #111;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--topic-color) 10%, transparent);
-  box-shadow: 0 0 11px color-mix(in srgb, var(--topic-color) 56%, transparent);
+  background: #ff35c9;
+  box-shadow: 1px 1px 0 rgb(0 0 0 / .72);
 }
 
 .public-news-marker__signal b {
   position: absolute;
-  top: 6px;
-  left: 6px;
-  width: 6px;
-  height: 6px;
-  border: 1px solid rgb(255 255 255 / .78);
-  background: var(--topic-color);
-  box-shadow: 0 0 8px var(--topic-color);
-  transform: rotate(45deg);
+  z-index: 3;
+  top: 3px;
+  left: 3px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
 }
 
 .public-news-marker:hover .public-news-marker__signal {
@@ -142,8 +167,68 @@
 }
 
 .public-news-marker.is-selected .public-news-marker__signal i {
-  border-color: #fff;
-  box-shadow: 0 0 0 2px rgb(255 255 255 / .18), 0 0 16px var(--topic-color);
+  border-width: 2px;
+  background: var(--topic-color);
+  box-shadow: 0 0 0 2px #f7f1e5, 2px 2px 0 #111;
+}
+
+.public-news-marker__orbit-note {
+  position: absolute;
+  z-index: 1;
+  bottom: 18px;
+  left: 50%;
+  display: grid;
+  width: 76px;
+  min-height: 46px;
+  border: 1.25px solid #111;
+  background: var(--paper-color);
+  padding: 8px 6px 5px;
+  color: #171916;
+  box-shadow: 2px 2px 0 rgb(0 0 0 / .72);
+  pointer-events: auto;
+  transform: translate(calc(-50% + var(--orbit-note-x)), var(--orbit-note-y)) rotate(var(--note-rotation));
+  transform-origin: 50% 100%;
+  transition: opacity .18s ease, transform .2s ease;
+}
+
+.public-news-marker__orbit-note::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 17px;
+  height: 6px;
+  border: 1px solid rgb(65 61 53 / .18);
+  background: rgb(235 226 198 / .78);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.public-news-marker__orbit-note strong {
+  overflow: hidden;
+  font-size: 7px;
+  font-weight: 850;
+  line-height: 1.12;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-news-marker__orbit-note em {
+  display: -webkit-box;
+  margin-top: 3px;
+  overflow: hidden;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.public-news-marker__orbit-note small {
+  margin-top: 4px;
+  color: #62655e;
+  font: 650 5px/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .04em;
 }
 
 .public-news-marker__paper {
@@ -153,16 +238,28 @@
   display: grid;
   width: 112px;
   overflow: hidden;
-  border: 1px solid rgb(243 239 228 / .72);
-  border-radius: 3px;
-  background: #f3efe4;
+  border: 1.5px solid #111;
+  background: var(--paper-color);
   color: #111513;
-  box-shadow: 0 12px 28px rgb(0 0 0 / .58), 3px 3px 0 rgb(0 0 0 / .7);
+  box-shadow: 4px 4px 0 rgb(0 0 0 / .78), 0 10px 22px rgb(0 0 0 / .2);
   opacity: 0;
   pointer-events: none;
   transform: translate(calc(-50% + var(--news-card-x)), calc(10px + var(--news-card-y))) scale(.82);
   transform-origin: 50% 100%;
   transition: opacity .2s ease, transform .2s ease, width .18s ease;
+}
+
+.public-news-marker__paper::before {
+  content: '';
+  position: absolute;
+  z-index: 4;
+  top: -4px;
+  left: 50%;
+  width: 28px;
+  height: 8px;
+  border: 1px solid rgb(65 61 53 / .16);
+  background: rgb(238 229 199 / .83);
+  transform: translateX(-50%) rotate(-2deg);
 }
 
 .public-news-marker__paper::after {
@@ -180,13 +277,20 @@
 }
 
 .public-news-marker.is-zoom-card .public-news-marker__signal {
-  opacity: .78;
+  opacity: .9;
   transform: scale(.72);
+}
+
+.public-news-marker.is-zoom-card .public-news-marker__orbit-note {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(calc(-50% + var(--orbit-note-x)), calc(8px + var(--orbit-note-y))) rotate(var(--note-rotation)) scale(.84);
 }
 
 .public-news-marker.is-zoom-card.is-selected .public-news-marker__paper,
 .public-news-marker.is-field-card .public-news-marker__paper {
   opacity: 1;
+  pointer-events: auto;
   transform: translate(calc(-50% + var(--news-card-x)), var(--news-card-y)) scale(1);
 }
 
@@ -196,8 +300,8 @@
 
 .public-news-marker.is-zoom-card.is-selected .public-news-marker__paper {
   width: 126px;
-  border-color: #fff;
-  box-shadow: 0 14px 34px rgb(0 0 0 / .66), 4px 4px 0 #000, 0 0 0 2px var(--topic-color);
+  border-color: #111;
+  box-shadow: 5px 5px 0 #000, 0 14px 28px rgb(0 0 0 / .3);
   transform: translate(calc(-50% + var(--news-card-x)), calc(-4px + var(--news-card-y))) scale(1.02);
 }
 
@@ -259,7 +363,7 @@
 .public-news-marker__paper > small {
   margin: 0 7px 8px;
   overflow: hidden;
-  color: #67716b;
+  color: #5f625c;
   font: 650 6px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -270,8 +374,8 @@
   margin-top: 14px;
   padding-bottom: 12px;
   overflow: hidden;
-  border: 2px solid #334c43;
-  background: #09100e;
+  border: 2px solid #111;
+  background: #d7d2c7;
   box-shadow: 4px 4px 0 #000;
 }
 
@@ -431,12 +535,14 @@
   align-items: center;
   gap: 6px;
   margin-top: 10px;
-  border: 1px solid #405d51;
-  background: #0b1511;
+  border: 1.5px solid #111;
+  background: #d9ede2;
   padding: 8px 9px;
-  color: #75dba9;
+  color: #294c3c;
   font-size: 8px;
   line-height: 1.4;
+  box-shadow: 2px 2px 0 #111;
+  transform: rotate(-.25deg);
 }
 
 .public-news-topic-index {
@@ -448,25 +554,32 @@
 
 .public-news-topic-index button {
   --topic-color: #7cff6b;
+  --paper-color: #f3efe4;
   position: relative;
   display: grid;
   grid-template-columns: 7px auto minmax(0, 1fr) 12px;
   align-items: center;
   gap: 6px;
   min-height: 38px;
-  border: 1px solid #3d574c;
-  background: #0c1411;
+  border: 1.5px solid #111;
+  background: var(--paper-color);
   padding: 7px 8px;
-  color: #c6d8cf;
+  color: #1b1c1a;
   text-align: left;
+  box-shadow: 2px 2px 0 rgb(0 0 0 / .78);
   cursor: pointer;
 }
+
+.public-news-topic-index button:nth-child(4n + 1) { transform: rotate(-.35deg); }
+.public-news-topic-index button:nth-child(4n + 2) { transform: rotate(.3deg); }
+.public-news-topic-index button:nth-child(4n + 3) { transform: rotate(.2deg); }
+.public-news-topic-index button:nth-child(4n) { transform: rotate(-.25deg); }
 
 .public-news-topic-index button > i {
   width: 7px;
   height: 7px;
+  border: 1px solid #111;
   background: var(--topic-color);
-  box-shadow: 0 0 7px color-mix(in srgb, var(--topic-color) 65%, transparent);
 }
 
 .public-news-topic-index button > span {
@@ -476,7 +589,7 @@
 
 .public-news-topic-index button > small {
   overflow: hidden;
-  color: #70877c;
+  color: #666861;
   font-size: 7px;
   text-align: right;
   text-overflow: ellipsis;
@@ -484,8 +597,8 @@
 }
 
 .public-news-topic-index button[aria-pressed='true'] {
-  border-color: #d9eee4;
-  background: color-mix(in srgb, var(--topic-color) 13%, #0c1411);
-  color: #fff;
-  box-shadow: 2px 2px 0 #000;
+  border-width: 2px;
+  background: color-mix(in srgb, var(--topic-color) 18%, var(--paper-color));
+  color: #111;
+  box-shadow: 3px 3px 0 #000;
 }

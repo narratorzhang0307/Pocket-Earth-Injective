@@ -20,7 +20,7 @@ interface EarthMapProps {
   zoom?: number;
   /** 地图实例创建完成后回调，供父组件做地理锚定的叠加层 */
   onReady?: (map: mapboxgl.Map) => void;
-  /** 私人地图沿用明亮纸面；公共地球使用低照度知识地图主题。 */
+  /** 私人地图沿用明亮纸面；公共地球使用公共编辑桌地图主题。 */
   theme?: 'private' | 'public';
   className?: string;
 }
@@ -80,10 +80,11 @@ export default function EarthMap({
     mapboxgl.accessToken = MAPBOX_TOKEN;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: theme === 'public' ? 'mapbox://styles/mapbox/dark-v11' : MAPBOX_STYLE,
-      projection: 'globe',
+      style: theme === 'public' ? 'mapbox://styles/mapbox/light-v11' : MAPBOX_STYLE,
+      projection: theme === 'public' ? 'mercator' : 'globe',
       center,
       zoom,
+      minZoom: theme === 'public' ? -1.25 : 0,
       attributionControl: false,
       interactive,
     });
@@ -155,7 +156,7 @@ export default function EarthMap({
       <div
         ref={mapContainer}
         className={className}
-        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, background: '#000000' }}
+        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, background: theme === 'public' ? '#c9c6bd' : '#000000' }}
       />
 
       {/* 加载中 / 失败的可见反馈（盖在黑色容器上，像素风一致） */}
