@@ -6,6 +6,9 @@ const plaza = readFileSync(new URL('../src/app/components/PublicPlazaPage.tsx', 
 
 for (const anchor of [
   'PUBLIC EARTH',
+  '<EarthMap',
+  'Mapbox 公共地球门牌地图',
+  'SYMBOLIC POSITIONS · 非现实地址',
   '口袋地球装记忆 · 公共地球住分身',
   '/api/injective?tool=get-public-earth',
   '地球 · 门牌',

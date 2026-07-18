@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, Globe2, IdCard, Link2, MapPin, ShieldCheck } from 'lucide-react';
+import type mapboxgl from 'mapbox-gl';
+import EarthMap from './EarthMap';
 import FrostBuddy from './FrostBuddy';
 import type { FrostTheme } from '../../../frost-agent/buddy/themes';
 
@@ -37,34 +39,114 @@ function shortHash(hash: string) {
   return hash ? `${hash.slice(0, 8)}…${hash.slice(-6)}` : '—';
 }
 
-function GlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
+const PUBLIC_RESIDENCE_SOURCE = 'public-earth-residences';
+const PUBLIC_RESIDENCE_DOTS = 'public-earth-residence-dots';
+const PUBLIC_RESIDENCE_LABELS = 'public-earth-residence-labels';
+
+// 链上 x/y 是公共地球的符号位置，不是现实地址；这里只把同一坐标确定性投影到 Mapbox globe。
+function mapCoordinates(item: Residence): [number, number] {
+  return [Math.max(-36, Math.min(36, item.x * 0.07)), Math.max(-36, Math.min(40, item.y * 0.08))];
+}
+
+function residenceGeoJson(data: PublicEarthResponse, selectedId: number) {
+  return {
+    type: 'FeatureCollection' as const,
+    features: data.residences.map((item) => ({
+      type: 'Feature' as const,
+      geometry: { type: 'Point' as const, coordinates: mapCoordinates(item) },
+      properties: {
+        agentId: item.agentId,
+        label: `#${item.agentId}`,
+        color: COLORS[item.agentId] || '#273F58',
+        active: item.agentId === selectedId,
+      },
+    })),
+  };
+}
+
+function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
+  const [map, setMap] = useState<mapboxgl.Map | null>(null);
+
+  useEffect(() => {
+    if (!map) return;
+
+    const syncLayer = () => {
+      const geojson = residenceGeoJson(data, selected.agentId);
+      const source = map.getSource(PUBLIC_RESIDENCE_SOURCE) as mapboxgl.GeoJSONSource | undefined;
+      if (source) source.setData(geojson);
+      else map.addSource(PUBLIC_RESIDENCE_SOURCE, { type: 'geojson', data: geojson });
+
+      if (!map.getLayer(PUBLIC_RESIDENCE_DOTS)) {
+        map.addLayer({
+          id: PUBLIC_RESIDENCE_DOTS,
+          type: 'circle',
+          source: PUBLIC_RESIDENCE_SOURCE,
+          paint: {
+            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 15, 10],
+            'circle-color': ['get', 'color'],
+            'circle-stroke-color': '#000000',
+            'circle-stroke-width': ['case', ['boolean', ['get', 'active'], false], 4, 2],
+          },
+        });
+      }
+      if (!map.getLayer(PUBLIC_RESIDENCE_LABELS)) {
+        map.addLayer({
+          id: PUBLIC_RESIDENCE_LABELS,
+          type: 'symbol',
+          source: PUBLIC_RESIDENCE_SOURCE,
+          layout: {
+            'text-field': ['get', 'label'],
+            'text-size': 10,
+            'text-offset': [0, 1.8],
+            'text-anchor': 'top',
+            'text-allow-overlap': true,
+            'text-ignore-placement': true,
+          },
+          paint: {
+            'text-color': '#111111',
+            'text-halo-color': '#ffffff',
+            'text-halo-width': 2,
+          },
+        });
+      }
+    };
+
+    const selectFeature = (event: mapboxgl.MapLayerMouseEvent) => {
+      const agentId = Number(event.features?.[0]?.properties?.agentId);
+      const item = data.residences.find((candidate) => candidate.agentId === agentId);
+      if (item) onSelect(item);
+    };
+    const showPointer = () => { map.getCanvas().style.cursor = 'pointer'; };
+    const hidePointer = () => { map.getCanvas().style.cursor = ''; };
+    const bind = () => {
+      syncLayer();
+      map.on('click', PUBLIC_RESIDENCE_DOTS, selectFeature);
+      map.on('click', PUBLIC_RESIDENCE_LABELS, selectFeature);
+      map.on('mouseenter', PUBLIC_RESIDENCE_DOTS, showPointer);
+      map.on('mouseleave', PUBLIC_RESIDENCE_DOTS, hidePointer);
+    };
+
+    if (map.isStyleLoaded()) bind();
+    else map.once('load', bind);
+
+    return () => {
+      map.off('load', bind);
+      if (map.getLayer(PUBLIC_RESIDENCE_DOTS)) {
+        map.off('click', PUBLIC_RESIDENCE_DOTS, selectFeature);
+        map.off('mouseenter', PUBLIC_RESIDENCE_DOTS, showPointer);
+        map.off('mouseleave', PUBLIC_RESIDENCE_DOTS, hidePointer);
+      }
+      if (map.getLayer(PUBLIC_RESIDENCE_LABELS)) map.off('click', PUBLIC_RESIDENCE_LABELS, selectFeature);
+    };
+  }, [data, map, onSelect, selected.agentId]);
+
   return (
     <div>
-      <div className="relative mx-auto mt-3 w-[min(250px,68vw)] aspect-square rounded-full border-[3px] border-black overflow-hidden shadow-[4px_4px_0_#000]"
-        style={{ background: 'radial-gradient(circle at 34% 28%, #f9fbf7 0 8%, #b9d7d0 35%, #75a9a5 74%, #466e76 100%)' }}>
-        <div className="absolute inset-[14%] rounded-full border border-black/20" />
-        <div className="absolute left-1/2 top-0 bottom-0 border-l border-black/20" />
-        <div className="absolute left-[25%] top-[4%] bottom-[4%] w-1/2 rounded-[50%] border-x border-black/20" />
-        <div className="absolute left-[4%] right-[4%] top-1/2 border-t border-black/20" />
-        <div className="absolute left-[10%] right-[10%] top-[28%] h-[44%] rounded-[50%] border-y border-black/20" />
-        <div className="absolute left-[18%] top-[23%] w-[31%] h-[25%] rounded-[55%_45%_65%_35%] rotate-[-8deg] bg-[#d9d39f] border border-black/30" />
-        <div className="absolute right-[18%] top-[38%] w-[28%] h-[31%] rounded-[45%_65%_42%_58%] rotate-[12deg] bg-[#a8bf82] border border-black/30" />
-        {data.residences.map((item) => {
-          const left = 50 + (item.x / 500) * 38;
-          const top = 50 - (item.y / 500) * 38;
-          const active = item.agentId === selected.agentId;
-          return (
-            <button type="button" key={item.agentId} onClick={() => onSelect(item)} aria-label={`选择 ${item.displayName} ${item.doorplate}`}
-              className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group"
-              style={{ left: `${left}%`, top: `${top}%`, zIndex: active ? 5 : 2 }}>
-              <span className={`w-7 h-7 border-2 border-black flex items-center justify-center font-pixel text-[7px] text-white ${active ? 'scale-125 shadow-[2px_2px_0_#000]' : 'shadow-[1px_1px_0_#000]'}`}
-                style={{ background: COLORS[item.agentId] || '#273F58' }}>#{item.agentId}</span>
-              <span className={`mt-1 px-1 py-0.5 bg-white/95 border border-black font-pixel text-[6px] whitespace-nowrap ${active ? 'opacity-100' : 'opacity-75 group-hover:opacity-100'}`}>
-                {item.doorplate}
-              </span>
-            </button>
-          );
-        })}
+      <div className="relative mt-3 h-[310px] overflow-hidden border-[3px] border-black bg-black shadow-[4px_4px_0_#000]" aria-label="Mapbox 公共地球门牌地图">
+        <EarthMap center={[0, 18]} zoom={1.15} onReady={setMap} className="z-0" />
+        <div className="pointer-events-none absolute bottom-2 left-2 z-20 border border-black bg-white/90 px-2 py-1 font-pixel text-[6px] tracking-wide">
+          SYMBOLIC POSITIONS · 非现实地址
+        </div>
       </div>
 
       <div className="mt-4 border-2 border-black bg-white p-2.5 flex items-center gap-2.5">
@@ -180,7 +262,7 @@ export default function PublicEarthPanel() {
       {!data && !error && <div className="h-[260px] flex items-center justify-center font-pixel text-[8px] text-black/40">READING INJECTIVE…</div>}
       {error && !data && <div className="h-[180px] border-2 border-black bg-white mt-3 flex items-center justify-center text-center px-5 text-[10px] text-black/55">公共地球链读暂不可用。没有使用虚构门牌，请稍后重试。</div>}
       {data && selected && (view === 'earth'
-        ? <GlobeView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />
+        ? <MapboxGlobeView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />
         : <CardView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />)}
 
       {data && <div className="mt-3 pt-2 border-t border-black/20 flex items-center gap-1.5 text-[8px] text-black/45">
