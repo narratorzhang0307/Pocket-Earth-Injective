@@ -15,6 +15,7 @@ FILES=(
   frost_pi_feed_client.py
   frost_pi_device_driver.py
   frost_pi_device_driver_smoke.py
+  frost_pi_live_preflight.py
   pocket-earth-edge.service
 )
 
@@ -30,6 +31,7 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_feed_client.py' /opt/pocket-earth-edge/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver.py' /opt/pocket-earth-edge/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver_smoke.py' /opt/pocket-earth-edge/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_live_preflight.py' /opt/pocket-earth-edge/
   sudo install -m 0644 '$STAGE/pocket-earth-edge.service' /etc/systemd/system/pocket-earth-edge.service
   cd /opt/pocket-earth-edge
   /usr/bin/python3 frost_pi_device_driver_smoke.py
