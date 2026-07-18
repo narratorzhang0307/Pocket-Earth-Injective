@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MAPBOX_TOKEN, MAPBOX_STYLE } from '../lib/mapbox';
-import { applySoftGreenParksTheme, setMapLabelsToChinese } from '../lib/mapboxTheme';
+import { applyPublicEarthTheme, applySoftGreenParksTheme, setMapLabelsToChinese } from '../lib/mapboxTheme';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -20,6 +20,8 @@ interface EarthMapProps {
   zoom?: number;
   /** 地图实例创建完成后回调，供父组件做地理锚定的叠加层 */
   onReady?: (map: mapboxgl.Map) => void;
+  /** 私人地图沿用明亮纸面；公共地球使用低照度居民网络主题。 */
+  theme?: 'private' | 'public';
   className?: string;
 }
 
@@ -30,6 +32,7 @@ export default function EarthMap({
   center = [118.793, 32.049],
   zoom = 2.6,
   onReady,
+  theme = 'private',
   className,
 }: EarthMapProps) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -77,7 +80,7 @@ export default function EarthMap({
     mapboxgl.accessToken = MAPBOX_TOKEN;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: MAPBOX_STYLE,
+      style: theme === 'public' ? 'mapbox://styles/mapbox/dark-v11' : MAPBOX_STYLE,
       projection: 'globe',
       center,
       zoom,
@@ -89,16 +92,19 @@ export default function EarthMap({
 
     map.current.on('style.load', () => {
       if (!map.current) return;
-      applySoftGreenParksTheme(map.current);
+      if (theme === 'public') applyPublicEarthTheme(map.current);
+      else applySoftGreenParksTheme(map.current);
       setMapLabelsToChinese(map.current);
-      // 星球背景（globe 投影下的太空）改为纯黑，去掉大气辉光与星点
-      map.current.setFog({
-        color: 'rgba(0,0,0,0)',
-        'high-color': '#000000',
-        'space-color': '#000000',
-        'horizon-blend': 0.02,
-        'star-intensity': 0,
-      } as any);
+      if (theme === 'private') {
+        // 私人地图维持纯黑太空，让纸面标记保持对比。
+        map.current.setFog({
+          color: 'rgba(0,0,0,0)',
+          'high-color': '#000000',
+          'space-color': '#000000',
+          'horizon-blend': 0.02,
+          'star-intensity': 0,
+        } as any);
+      }
     });
     map.current.on('load', () => map.current?.resize());
 
@@ -195,12 +201,14 @@ export default function EarthMap({
           onClick={toggleSpin}
           className={cn(
             'w-10 h-10 shrink-0 rounded-full backdrop-blur-md flex items-center justify-center border shadow-sm pointer-events-auto transition-colors active:scale-95',
-            spinning ? 'bg-[#0A84FF] border-[#0A84FF]' : 'bg-white/80 border-black/5'
+            spinning
+              ? theme === 'public' ? 'bg-[#35e79a] border-[#b9ffdc]' : 'bg-[#0A84FF] border-[#0A84FF]'
+              : theme === 'public' ? 'bg-[#09120f]/90 border-[#7d9b8c]/50' : 'bg-white/80 border-black/5'
           )}
           title="地球自转"
         >
           <Globe
-            className={cn('w-5 h-5', spinning ? 'text-white animate-spin' : 'text-[#1C1C1E]')}
+            className={cn('w-5 h-5', spinning ? `${theme === 'public' ? 'text-[#03100b]' : 'text-white'} animate-spin` : theme === 'public' ? 'text-[#b9d8ca]' : 'text-[#1C1C1E]')}
             style={spinning ? { animationDuration: '6s' } : undefined}
           />
         </button>

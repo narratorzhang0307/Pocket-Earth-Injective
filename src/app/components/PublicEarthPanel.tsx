@@ -40,7 +40,9 @@ function shortHash(hash: string) {
 }
 
 const PUBLIC_RESIDENCE_SOURCE = 'public-earth-residences';
+const PUBLIC_RESIDENCE_HALOS = 'public-earth-residence-halos';
 const PUBLIC_RESIDENCE_DOTS = 'public-earth-residence-dots';
+const PUBLIC_RESIDENCE_IDS = 'public-earth-residence-ids';
 const PUBLIC_RESIDENCE_LABELS = 'public-earth-residence-labels';
 
 // 链上 x/y 是公共地球的符号位置，不是现实地址；这里只把同一坐标确定性投影到 Mapbox globe。
@@ -56,7 +58,8 @@ function residenceGeoJson(data: PublicEarthResponse, selectedId: number) {
       geometry: { type: 'Point' as const, coordinates: mapCoordinates(item) },
       properties: {
         agentId: item.agentId,
-        label: `#${item.agentId}`,
+        idLabel: `#${item.agentId}`,
+        label: item.displayName,
         color: COLORS[item.agentId] || '#273F58',
         active: item.agentId === selectedId,
       },
@@ -76,16 +79,47 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
       if (source) source.setData(geojson);
       else map.addSource(PUBLIC_RESIDENCE_SOURCE, { type: 'geojson', data: geojson });
 
+      if (!map.getLayer(PUBLIC_RESIDENCE_HALOS)) {
+        map.addLayer({
+          id: PUBLIC_RESIDENCE_HALOS,
+          type: 'circle',
+          source: PUBLIC_RESIDENCE_SOURCE,
+          paint: {
+            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 24, 15],
+            'circle-color': ['get', 'color'],
+            'circle-opacity': ['case', ['boolean', ['get', 'active'], false], 0.42, 0.24],
+            'circle-blur': 0.65,
+          },
+        });
+      }
       if (!map.getLayer(PUBLIC_RESIDENCE_DOTS)) {
         map.addLayer({
           id: PUBLIC_RESIDENCE_DOTS,
           type: 'circle',
           source: PUBLIC_RESIDENCE_SOURCE,
           paint: {
-            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 15, 10],
+            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 12, 8],
             'circle-color': ['get', 'color'],
-            'circle-stroke-color': '#000000',
-            'circle-stroke-width': ['case', ['boolean', ['get', 'active'], false], 4, 2],
+            'circle-stroke-color': '#d8eee4',
+            'circle-stroke-width': ['case', ['boolean', ['get', 'active'], false], 2.5, 1.5],
+          },
+        });
+      }
+      if (!map.getLayer(PUBLIC_RESIDENCE_IDS)) {
+        map.addLayer({
+          id: PUBLIC_RESIDENCE_IDS,
+          type: 'symbol',
+          source: PUBLIC_RESIDENCE_SOURCE,
+          layout: {
+            'text-field': ['get', 'idLabel'],
+            'text-size': 7,
+            'text-allow-overlap': true,
+            'text-ignore-placement': true,
+          },
+          paint: {
+            'text-color': '#ffffff',
+            'text-halo-color': '#08100e',
+            'text-halo-width': 0.8,
           },
         });
       }
@@ -96,16 +130,16 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
           source: PUBLIC_RESIDENCE_SOURCE,
           layout: {
             'text-field': ['get', 'label'],
-            'text-size': 10,
-            'text-offset': [0, 1.8],
+            'text-size': 9,
+            'text-offset': [0, 1.5],
             'text-anchor': 'top',
             'text-allow-overlap': true,
             'text-ignore-placement': true,
           },
           paint: {
-            'text-color': '#111111',
-            'text-halo-color': '#ffffff',
-            'text-halo-width': 2,
+            'text-color': '#d8eee4',
+            'text-halo-color': '#02050a',
+            'text-halo-width': 1.6,
           },
         });
       }
@@ -121,6 +155,7 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
     const bind = () => {
       syncLayer();
       map.on('click', PUBLIC_RESIDENCE_DOTS, selectFeature);
+      map.on('click', PUBLIC_RESIDENCE_IDS, selectFeature);
       map.on('click', PUBLIC_RESIDENCE_LABELS, selectFeature);
       map.on('mouseenter', PUBLIC_RESIDENCE_DOTS, showPointer);
       map.on('mouseleave', PUBLIC_RESIDENCE_DOTS, hidePointer);
@@ -136,35 +171,40 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
         map.off('mouseenter', PUBLIC_RESIDENCE_DOTS, showPointer);
         map.off('mouseleave', PUBLIC_RESIDENCE_DOTS, hidePointer);
       }
+      if (map.getLayer(PUBLIC_RESIDENCE_IDS)) map.off('click', PUBLIC_RESIDENCE_IDS, selectFeature);
       if (map.getLayer(PUBLIC_RESIDENCE_LABELS)) map.off('click', PUBLIC_RESIDENCE_LABELS, selectFeature);
     };
   }, [data, map, onSelect, selected.agentId]);
 
   return (
     <div>
-      <div className="relative mt-3 h-[310px] overflow-hidden border-[3px] border-black bg-black shadow-[4px_4px_0_#000]" aria-label="Mapbox 公共地球门牌地图">
-        <EarthMap center={[0, 18]} zoom={1.15} onReady={setMap} className="z-0" />
-        <div className="pointer-events-none absolute bottom-2 left-2 z-20 border border-black bg-white/90 px-2 py-1 font-pixel text-[6px] tracking-wide">
-          SYMBOLIC POSITIONS · 非现实地址
+      <div className="relative mt-3 h-[330px] overflow-hidden border-2 border-[#334c43] bg-[#02050a] shadow-[4px_4px_0_#000]" aria-label="Mapbox 公共地球门牌地图">
+        <EarthMap theme="public" center={[0, 18]} zoom={1.15} onReady={setMap} className="z-0" />
+        <div className="pointer-events-none absolute left-3 top-3 z-20 border border-[#739786]/55 bg-[#030806]/85 px-2.5 py-2 text-[#d8eee4] backdrop-blur-sm">
+          <div className="flex items-center gap-1.5 font-pixel text-[7px] tracking-widest"><span className="h-1.5 w-1.5 bg-[#35e79a] shadow-[0_0_8px_#35e79a]" />RESIDENT NETWORK</div>
+          <div className="mt-1 text-[8px] text-[#8da99d]">05 identities · Injective testnet</div>
+        </div>
+        <div className="pointer-events-none absolute bottom-2 left-2 z-20 border border-[#739786]/40 bg-[#030806]/85 px-2 py-1 font-pixel text-[6px] tracking-wide text-[#9ab4a8] backdrop-blur-sm">
+          SYMBOLIC COORDINATES · NOT REAL ADDRESSES
         </div>
       </div>
 
-      <div className="mt-4 border-2 border-black bg-white p-2.5 flex items-center gap-2.5">
-        <div className="w-12 h-12 border-2 border-black bg-[#f4f1e8] flex items-center justify-center overflow-hidden shrink-0">
+      <div className="mt-3 flex items-center gap-2.5 border-2 border-[#334c43] bg-[#0b1113] p-2.5 text-[#d8eee4] shadow-[3px_3px_0_#000]">
+        <div className="w-12 h-12 border border-[#587064] bg-[#111c1d] flex items-center justify-center overflow-hidden shrink-0">
           <FrostBuddy state="idle" theme={THEMES[selected.agentId] || 'none'} color={COLORS[selected.agentId]} glow={false} size={6} />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="font-pixel text-[8px] truncate">{selected.displayName}</span>
-            <span className="ml-auto font-pixel text-[7px] border border-black px-1 py-0.5 text-white" style={{ background: selected.zoneInfo?.color || '#273F58' }}>
+            <span className="font-pixel text-[8px] truncate text-white">{selected.displayName}</span>
+            <span className="ml-auto font-pixel text-[7px] border border-[#9ab4a8] px-1 py-0.5 text-white" style={{ background: selected.zoneInfo?.color || '#273F58' }}>
               {selected.zoneInfo?.name}
             </span>
           </div>
-          <div className="mt-1 flex items-center gap-1 text-[10px] text-black/60"><MapPin className="w-3 h-3" />{selected.doorplate} · 版本 {selected.revision}</div>
-          <div className="mt-1 flex items-center gap-1 text-[9px] text-[#315e4b]"><ShieldCheck className="w-3 h-3" />公开卡面哈希已匹配</div>
+          <div className="mt-1 flex items-center gap-1 text-[10px] text-[#9ab4a8]"><MapPin className="w-3 h-3" />{selected.doorplate} · 版本 {selected.revision}</div>
+          <div className="mt-1 flex items-center gap-1 text-[9px] text-[#50d99a]"><ShieldCheck className="w-3 h-3" />公开卡面哈希已匹配</div>
         </div>
         <a href={selected.residenceScanUrl} target="_blank" rel="noreferrer" aria-label="在 Injective 浏览器查看门牌交易"
-          className="w-10 h-10 border-2 border-black flex items-center justify-center bg-white active:translate-y-px shrink-0">
+          className="w-10 h-10 border border-[#739786] flex items-center justify-center bg-[#101b18] text-[#b9ffdc] active:translate-y-px shrink-0">
           <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />
         </a>
       </div>
@@ -238,20 +278,21 @@ export default function PublicEarthPanel() {
   return (
     <section className="border-[3px] border-black bg-[#f3f0e7] p-3 shadow-[3px_3px_0_#000]" data-testid="public-earth-panel">
       <div className="flex items-start gap-2">
-        <div className="w-9 h-9 border-2 border-black bg-black text-white flex items-center justify-center shrink-0"><Globe2 className="w-5 h-5" strokeWidth={2.2} /></div>
+        <div className="w-9 h-9 border-2 border-black bg-[#07110f] text-[#7CFFB2] flex items-center justify-center shrink-0"><Globe2 className="w-5 h-5" strokeWidth={2.2} /></div>
         <div className="min-w-0 flex-1">
-          <div className="font-pixel text-[11px] tracking-wider">PUBLIC EARTH · INJECTIVE</div>
-          <div className="text-[9px] text-black/50 mt-0.5">
-            {data ? `${data.residences.length} RESIDENTS · 8 KNOWLEDGE AGENTS` : '口袋地球装记忆 · 公共地球住分身'}
+          <span className="sr-only">PUBLIC EARTH · INJECTIVE</span>
+          <div className="font-pixel text-[12px] tracking-wider">PUBLIC EARTH</div>
+          <div className="font-pixel text-[7px] text-[#315e4b] mt-1 tracking-wide">
+            {data ? `${data.residences.length} CHAIN RESIDENTS · 8 KNOWLEDGE AGENTS` : '口袋地球装记忆 · 公共地球住分身'}
           </div>
         </div>
-        {data && <span className={`font-pixel text-[7px] border-2 border-black px-1.5 py-1 shrink-0 ${data.live ? 'bg-[#315e4b] text-white' : 'bg-[#e2c26e]'}`}>
-          {data.live ? 'LIVE · INJECTIVE' : 'PUBLIC PROOF'}
+        {data && <span className={`inline-flex items-center gap-1.5 font-pixel text-[7px] border-2 border-black px-2 py-1.5 shrink-0 ${data.live ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-[#e2c26e]'}`}>
+          {data.live && <span className="h-1.5 w-1.5 bg-[#35e79a] shadow-[0_0_7px_#35e79a]" />}{data.live ? 'LIVE' : 'PUBLIC PROOF'}
         </span>}
       </div>
 
       <div className="grid grid-cols-2 gap-2 mt-3">
-        <button type="button" onClick={() => setView('earth')} aria-pressed={view === 'earth'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-black text-white' : 'bg-white'}`}>
+        <button type="button" onClick={() => setView('earth')} aria-pressed={view === 'earth'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'earth' ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-white'}`}>
           <Globe2 className="w-3.5 h-3.5" aria-hidden="true" />地球 · 门牌
         </button>
         <button type="button" onClick={() => setView('cards')} aria-pressed={view === 'cards'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
