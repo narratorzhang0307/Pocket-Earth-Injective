@@ -16,6 +16,7 @@ import AgentPlazaPage from './AgentPlazaPage';
 import UniversalCaptureRunPage from './UniversalCaptureRunPage';
 import DailyKnowledgePage from './DailyKnowledgePage';
 import PublicKnowledgeAgents from './PublicKnowledgeAgents';
+import EarthAnswerAgentPage from './EarthAnswerAgentPage';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 import { getCustomAgents, subscribeCustomAgents, type AgentManifest } from '../lib/agent';
 import { getLearnedSkills, subscribeSkills, type LearnedSkill } from '../../../frost-agent/harness/skillForge';
@@ -23,6 +24,7 @@ import { startHeartbeat } from '../../../frost-agent/harness/heartbeat';
 
 interface AgentItem {
   name: string;
+  label?: string;
   role: string;
   status: string;
 }
@@ -32,6 +34,7 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
     title: 'AGENTS',
     sub: '子 agent',
     items: [
+      { name: 'earth-answer-agent', label: '地球答案 / EARTH ANSWER', role: '每天 00:00 解锁一条行动原文；可以回看，不可偷看明天', status: '可运行' },
       { name: 'music-agent', role: '把音乐钉到歌手出身地 / 歌曲城市', status: '契约就位' },
       { name: 'books-agent', role: '把书钉到故事地 / 作者地 + 读完日期', status: '契约就位' },
       { name: 'movies-agent', role: '把电影钉到取景地 / 故事地', status: '契约就位' },
@@ -58,8 +61,9 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
 ];
 
 
-type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | 'knowledge' | null;
+type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | 'knowledge' | 'earthanswer' | null;
 const RUN_BY_NAME: Record<string, Running> = {
+  'earth-answer-agent': 'earthanswer',
   'music-agent': 'music', 'movies-agent': 'movies',
   'books-agent': 'books', 'photos-agent': 'photos', 'travel-agent': 'travel',
   'council-room': 'council', 'jot-agent': 'jot',
@@ -98,6 +102,7 @@ export default function MusicAgentsTab() {
   if (running === 'spaceplaza') return <AgentPlazaPage onBack={() => setRunning(null)} onRun={runSkill} />;
   if (running === 'jot') return <UniversalCaptureRunPage onBack={() => setRunning(null)} />;
   if (running === 'knowledge') return <DailyKnowledgePage initialTopic={knowledgeTopic} onBack={() => setRunning(null)} />;
+  if (running === 'earthanswer') return <EarthAnswerAgentPage onBack={() => setRunning(null)} />;
 
   return (
     <div className="h-full flex flex-col bg-[#EAEAEA] font-sans">
@@ -203,16 +208,17 @@ export default function MusicAgentsTab() {
               {g.items.map((a) => {
                 const target = RUN_BY_NAME[a.name];
                 const runnable = !!target;
+                const dailyRitual = a.name === 'earth-answer-agent';
                 const social = a.name === 'public-plaza';   // 代理社交：石板蓝灰
                 const market = a.name === 'agent-plaza';     // agent 商业广场：链上紫
-                const dot = social ? '#6b7a8f' : market ? '#7c5cff' : '#00ff88';
-                const hover = social ? 'hover:bg-[#6b7a8f]/10' : market ? 'hover:bg-[#7c5cff]/10' : 'hover:bg-[#00ff88]/10';
+                const dot = dailyRitual ? '#2357d9' : social ? '#6b7a8f' : market ? '#7c5cff' : '#00ff88';
+                const hover = dailyRitual ? 'hover:bg-[#f7f2e7]' : social ? 'hover:bg-[#6b7a8f]/10' : market ? 'hover:bg-[#7c5cff]/10' : 'hover:bg-[#00ff88]/10';
                 return (
                   <button
                     type="button"
                     key={a.name}
                     onClick={runnable ? () => setRunning(target) : undefined}
-                    className={`w-full text-left flex items-center gap-3 bg-white border-2 border-black p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)] transition-colors ${
+                    className={`w-full text-left flex items-center gap-3 border-2 border-black p-2.5 transition-colors ${dailyRitual ? 'bg-[#f7f2e7] shadow-[3px_3px_0_#2357d9]' : 'bg-white shadow-[2px_2px_0_rgba(0,0,0,0.85)]'} ${
                       runnable ? `${hover} active:translate-y-px` : 'cursor-default'
                     }`}
                   >
@@ -221,13 +227,13 @@ export default function MusicAgentsTab() {
                       <div className="w-1.5 h-1.5" style={{ background: dot }} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="font-pixel text-[9px] tracking-wide truncate">{a.name}</div>
+                      <div className="font-pixel text-[9px] tracking-wide truncate">{a.label ?? a.name}</div>
                       <div className="text-[11px] text-black/60 leading-tight mt-0.5">{a.role}</div>
                     </div>
                     <span className={`shrink-0 font-pixel text-[6px] uppercase tracking-wider border border-black px-1.5 py-1 ${
-                      runnable ? 'bg-black text-[#7CFF6B]' : 'bg-[#00ff88] text-black'
+                      dailyRitual ? 'bg-[#2357d9] text-white' : runnable ? 'bg-black text-[#7CFF6B]' : 'bg-[#00ff88] text-black'
                     }`}>
-                      {runnable ? '▶ RUN' : a.status}
+                      {dailyRitual ? 'TODAY' : runnable ? '▶ RUN' : a.status}
                     </span>
                   </button>
                 );
