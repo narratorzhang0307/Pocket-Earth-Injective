@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarDays, ChevronLeft, Cpu, Dices, Globe2, History, LockKeyhole } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, Cpu, Dices, Globe2, History, LockKeyhole } from 'lucide-react';
 import earthAnswersPayload from '../../../hardware/frost-buddy/raspi/earth_answers_365.json';
 
 interface EarthAnswer {
@@ -75,6 +75,8 @@ export default function EarthAnswerAgentPage({ onBack }: Props) {
   const selectedKey = dayStamp(selected);
   const selectedTime = selected.getTime();
   const todayTime = today.getTime();
+  const editionStart = new Date(today.getFullYear(), 0, 1);
+  const editionStartTime = editionStart.getTime();
   const future = selectedTime > todayTime;
   const past = selectedTime < todayTime;
   const unlocked = past || revealed.has(selectedKey);
@@ -160,6 +162,18 @@ export default function EarthAnswerAgentPage({ onBack }: Props) {
               </div>
             )}
           </div>
+          <div className="grid grid-cols-2 border-t-2 border-black bg-white">
+            <button type="button" onClick={() => setSelected((current) => addDays(current, -1))} disabled={selectedTime <= editionStartTime}
+              className="flex min-h-11 items-center justify-center gap-1.5 border-r border-black px-2 font-pixel text-[7px] tracking-wide active:bg-[#f7f2e7] disabled:cursor-not-allowed disabled:text-black/25"
+              aria-label="查看前一天的地球答案">
+              <ChevronLeft className="h-3.5 w-3.5" strokeWidth={3} /> PREVIOUS DAY
+            </button>
+            <button type="button" onClick={() => setSelected((current) => addDays(current, 1))} disabled={selectedTime >= todayTime}
+              className="flex min-h-11 items-center justify-center gap-1.5 px-2 font-pixel text-[7px] tracking-wide active:bg-[#f7f2e7] disabled:cursor-not-allowed disabled:text-black/25"
+              aria-label="查看后一天的地球答案">
+              NEXT DAY <ChevronRight className="h-3.5 w-3.5" strokeWidth={3} />
+            </button>
+          </div>
         </section>
 
         <section className="border-2 border-black bg-white p-2.5 shadow-[2px_2px_0_#000]" aria-labelledby="earth-answer-history">
@@ -170,12 +184,13 @@ export default function EarthAnswerAgentPage({ onBack }: Props) {
           <div className="grid grid-cols-7 gap-1">
             {historyDays.map((date) => {
               const key = dayStamp(date);
+              const beforeEdition = date.getTime() < editionStartTime;
               const isFuture = date.getTime() > todayTime;
               const active = key === selectedKey;
               return (
-                <button type="button" key={key} disabled={isFuture} onClick={() => setSelected(date)} aria-pressed={active}
-                  aria-label={`${isFuture ? '尚未解锁' : '查看'} ${String(date.getMonth() + 1).padStart(2, '0')}月${String(date.getDate()).padStart(2, '0')}日地球答案`}
-                  className={`min-h-14 border-2 border-black px-0.5 py-1 text-center active:translate-y-px disabled:cursor-not-allowed ${active ? 'bg-black text-white shadow-[2px_2px_0_#00ff88]' : isFuture ? 'bg-[#d9d9d9] text-black/35' : 'bg-[#f7f2e7] text-black'}`}>
+                <button type="button" key={key} disabled={isFuture || beforeEdition} onClick={() => setSelected(date)} aria-pressed={active}
+                  aria-label={`${isFuture ? '尚未解锁' : beforeEdition ? '不在本版次' : '查看'} ${String(date.getMonth() + 1).padStart(2, '0')}月${String(date.getDate()).padStart(2, '0')}日地球答案`}
+                  className={`min-h-14 border-2 border-black px-0.5 py-1 text-center active:translate-y-px disabled:cursor-not-allowed ${active ? 'bg-black text-white shadow-[2px_2px_0_#00ff88]' : isFuture || beforeEdition ? 'bg-[#d9d9d9] text-black/35' : 'bg-[#f7f2e7] text-black'}`}>
                   <span className="block font-pixel text-[6px]">{String(date.getMonth() + 1).padStart(2, '0')}</span>
                   <span className="mt-1 block font-serif text-[20px] font-bold leading-none">{date.getDate()}</span>
                   <span className="mt-1 block text-[7px]">{isFuture ? '锁' : key === todayKey ? '今' : '阅'}</span>
