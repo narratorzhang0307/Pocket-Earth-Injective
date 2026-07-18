@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline smoke checks for the two-level Whisplay project launcher."""
+"""Offline smoke checks for the Whisplay project and mode launcher."""
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -12,12 +12,35 @@ from frost_pi_project_launcher import (
     SAFE_FOREGROUND_APPS,
     VENDOR_APPS,
     _content_pages,
+    _font_supports_text,
     cjk_font_status,
+    font_for_text,
 )
 
 
+SUNSET_CATALOG = [
+    {
+        "slug": "los-angeles",
+        "cityName": "Los Angeles",
+        "cityNameZh": "洛杉矶",
+        "tzOffset": -8,
+        "tracks": [
+            {"id": "la-1", "title": "Los Angeles", "artist": "X", "audioUrl": "https://example/la", "citySlug": "los-angeles"},
+            {"id": "la-2", "title": "California", "artist": "Y", "audioUrl": "https://example/ca", "citySlug": "los-angeles"},
+        ],
+    },
+    {
+        "slug": "beijing",
+        "cityName": "Beijing",
+        "cityNameZh": "北京",
+        "tzOffset": 8,
+        "tracks": [{"id": "bj-1", "title": "北京北京", "artist": "Z", "audioUrl": "https://example/bj", "citySlug": "beijing"}],
+    },
+]
+
+
 def main() -> int:
-    state = MenuState()
+    state = MenuState(SUNSET_CATALOG)
     assert state.level == "root"
     assert [item["path"] for item in PROJECTS] == ["/home/pi/sunset-radio", "/home/pi/pocket-earth"]
     assert len(AGENTS) == 6
@@ -48,6 +71,36 @@ def main() -> int:
     assert state.back() == "draw" and state.level == "root"
     assert state.back() == "sunset"
 
+    state = MenuState(SUNSET_CATALOG)
+    state.move()
+    assert PROJECTS[state.root_index]["key"] == "sunset"
+    assert state.enter() == "draw" and state.level == "sunset_modes"
+    assert state.image().size == (240, 280)
+    assert state.enter() == "draw" and state.level == "sunset_groups"
+    assert state.enter() == "draw" and state.level == "sunset_cities"
+    assert state.enter() == "draw" and state.level == "sunset_tracks"
+    action = state.enter()
+    assert action[0] == "play_track" and action[1]["id"] == "la-1"
+    assert state.back() == "draw" and state.level == "sunset_cities"
+    assert state.back() == "draw" and state.level == "sunset_groups"
+    assert state.back() == "draw" and state.level == "sunset_modes"
+
+    state.move()
+    assert state.enter() == "draw" and state.level == "sunset_times"
+    assert state.image().size == (240, 280)
+    assert state.enter()[0] == "play_city"
+    assert state.back() == "draw" and state.level == "sunset_modes"
+
+    state.move()
+    assert state.enter() == "draw" and state.level == "sunset_dice"
+    assert state.enter() == "roll_dice"
+    state.set_dice_frame()
+    assert state.dice_phase == "rolling" and state.image().size == (240, 280)
+    state.land_dice()
+    assert state.dice_phase == "landed" and state.dice_track
+    assert state.enter()[0] == "play_track"
+    assert state.back() == "draw" and state.level == "sunset_modes"
+
     with TemporaryDirectory() as directory:
         output = Path(directory) / "launcher.png"
         state.image().save(output)
@@ -57,7 +110,16 @@ def main() -> int:
     if Path(cjk_font).exists() and ("wqy" in cjk_font.lower() or "cjk" in cjk_font.lower()):
         assert cjk_ok, f"Chinese glyph smoke failed for {cjk_font}"
 
-    print(f"frost_pi_project_launcher smoke passed; cjkFont={cjk_font} cjkGlyphs={cjk_ok}")
+    thai_text = "ไม่เคย"
+    thai_font = font_for_text(thai_text, 11, "bold")
+    thai_path = str(getattr(thai_font, "path", "PIL-default"))
+    if Path(thai_path).exists():
+        assert _font_supports_text(thai_font, thai_text), f"Thai glyph smoke failed for {thai_path}"
+
+    print(
+        f"frost_pi_project_launcher smoke passed; cjkFont={cjk_font} "
+        f"cjkGlyphs={cjk_ok} thaiFont={thai_path}"
+    )
     return 0
 
 

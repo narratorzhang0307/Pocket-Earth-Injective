@@ -74,11 +74,17 @@ The installed filesystem and process boundary is documented in
 safe two-level Whisplay interface without exposing a destructive file manager:
 
 - hold the orange button for 1.2 seconds to enter `PI HOME`,
-- single-click to move between sibling projects or agents,
-- hold for 1.2 seconds to open `SUNSET RADIO`, `POCKET EARTH`, or a selected agent,
+- single-click to move between sibling projects, modes, cities, songs, or agents,
+- hold for 1.2 seconds to open or execute the selected item,
 - double-click to go back one level,
 - single-click inside an agent page to move through its cached evidence cards,
-- hold to go back one level.
+- double-click from `PI HOME` to return to the radio status screen.
+
+`SUNSET RADIO` opens three device-native modes: `歌曲目录` reads the existing
+96-city/621-track resource tree, `日落时刻` reuses Sunset Radio's real solar
+sunset calculator, and `随机骰子` adapts the app's amber-on-night dice ritual.
+PI Home only reads the independent radio catalog and posts a targeted command
+to its local API; it does not take ownership of the radio database or player.
 
 Pocket Earth currently exposes six launcher pages: Frost identity, public
 knowledge, AI news, finance, fact verifier, and chain dispatch. The launcher is

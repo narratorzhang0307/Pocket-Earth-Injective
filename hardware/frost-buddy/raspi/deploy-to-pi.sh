@@ -16,8 +16,12 @@ FILES=(
   frost_pi_device_driver.py
   frost_pi_device_driver_smoke.py
   frost_pi_live_preflight.py
+  frost_pi_content_cache.json
   frost_pi_project_launcher.py
   frost_pi_project_launcher_smoke.py
+  frost_pi_sunset_bridge.py
+  frost_pi_sunset_bridge_smoke.py
+  frost_pi_sunset_hints.json
   whisplay_pi_home_guard.py
   whisplay_pi_home_guard_smoke.py
   pocket-earth-edge.service
@@ -37,8 +41,12 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_live_preflight.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_content_cache.json' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_project_launcher.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_project_launcher_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_sunset_bridge.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_sunset_bridge_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_sunset_hints.json' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/whisplay_pi_home_guard.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/whisplay_pi_home_guard_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 '$STAGE/pocket-earth-edge.service' /etc/systemd/system/pocket-earth-edge.service
@@ -52,6 +60,7 @@ ssh "$PI_HOST" "set -euo pipefail
   fi
   cd /home/pi/pocket-earth
   /usr/bin/python3 frost_pi_device_driver_smoke.py
+  /usr/bin/python3 frost_pi_sunset_bridge_smoke.py
   /usr/bin/python3 frost_pi_project_launcher_smoke.py
   /usr/bin/python3 whisplay_pi_home_guard_smoke.py
   sudo /usr/bin/python3 whisplay_pi_home_guard.py --install

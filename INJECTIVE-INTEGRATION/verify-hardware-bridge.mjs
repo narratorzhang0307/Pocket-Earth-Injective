@@ -145,6 +145,8 @@ const physicalDriver = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_
 const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py', 'utf8')
 const projectLauncher = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher.py', 'utf8')
 const projectLauncherSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py', 'utf8')
+const sunsetBridge = readFileSync('hardware/frost-buddy/raspi/frost_pi_sunset_bridge.py', 'utf8')
+const sunsetHints = JSON.parse(readFileSync('hardware/frost-buddy/raspi/frost_pi_sunset_hints.json', 'utf8'))
 const piHomeGuard = readFileSync('hardware/frost-buddy/raspi/whisplay_pi_home_guard.py', 'utf8')
 const linuxLayout = readFileSync('hardware/frost-buddy/raspi/LINUX-LAYOUT.md', 'utf8')
 
@@ -255,9 +257,18 @@ for (const snippet of [
   '链上见闻',
   'LONG_PRESS_SECONDS',
   'DOUBLE_CLICK_SECONDS',
+  '歌曲目录',
+  '日落时刻',
+  '随机骰子',
 ]) {
   assertTrue(`project launcher keeps ${snippet}`, projectLauncher.includes(snippet))
 }
+
+for (const snippet of ['load_catalog', 'catalog_groups', 'upcoming_sunsets', 'command_hint', 'queue_city', 'queue_track', 'target": "pi"']) {
+  assertTrue(`Sunset bridge keeps ${snippet}`, sunsetBridge.includes(snippet))
+}
+assertEqual('Sunset exact-track hints schema', sunsetHints.schema, 'sunset-radio-command-hints/v1')
+assertEqual('Sunset exact-track hints count', Object.keys(sunsetHints.hints || {}).length, 621)
 
 for (const snippet of ['len(AGENTS) == 6', 'state.enter()', 'state.back()', '(240, 280)']) {
   assertTrue(`project launcher smoke keeps ${snippet}`, projectLauncherSmoke.includes(snippet))
@@ -305,6 +316,9 @@ execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.p
 
 console.log('\nRaspberry Pi project launcher smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi Sunset bridge smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_sunset_bridge_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nWhisplay PI HOME desktop guard smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/whisplay_pi_home_guard_smoke.py'], { stdio: 'inherit' })
