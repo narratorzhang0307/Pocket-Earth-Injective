@@ -22,6 +22,7 @@ import sys
 import tempfile
 import threading
 import time
+from datetime import datetime
 from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -133,6 +134,14 @@ def rgb565_bytes(image: Image.Image) -> bytes:
     return bytes(output)
 
 
+def _local_stamp(value: str) -> str:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parsed.astimezone().strftime("%m-%d %H:%M %Z")
+    except (TypeError, ValueError):
+        return time.strftime("%m-%d %H:%M %Z")
+
+
 def render_evidence_card(actions: list[dict]) -> Image.Image:
     state = next((item for item in actions if item.get("type") == "state"), {})
     display = next((item for item in actions if item.get("type") == "display"), {})
@@ -186,7 +195,7 @@ def render_evidence_card(actions: list[dict]) -> Image.Image:
         draw.line((12, 228, 228, 228), fill=INK, width=2)
 
     created_at = _text(display.get("createdAt") or state.get("createdAt"), 30)
-    stamp = created_at[:16].replace("T", " ") if created_at else time.strftime("%Y-%m-%d %H:%M")
+    stamp = _local_stamp(created_at)
     draw.text((12, 257), stamp, font=_font(9, "mono"), fill=MUTED_GREY)
     draw.text((148, 257), "PUBLIC PROOF", font=_font(9, "mono"), fill=INK)
     return image

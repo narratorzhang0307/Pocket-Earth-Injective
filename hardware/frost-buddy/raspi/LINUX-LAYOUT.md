@@ -22,6 +22,25 @@ This follows the Linux filesystem split: application code under `/opt`, global
 configuration under `/etc`, durable changing state under `/var/lib`, disposable
 cache under `/var/cache`, and current-boot runtime material under `/run`.
 
+## Agent namespace
+
+`/home/pi` is the home directory of the operating-system user named `pi`; it is
+not the architectural root of Pocket Earth. Trusted Pocket Earth sub-agents are
+parallel branches inside the Pocket Earth namespace instead:
+
+```text
+/opt/pocket-earth-edge/agents/<agent-key>/          # code or reviewed manifest
+/etc/pocket-earth-edge/agents.d/<agent-key>.conf    # system configuration
+/var/lib/pocket-earth-edge/agents/<agent-key>/      # durable agent state
+/run/pocket-earth-edge/agents/<agent-key>/          # current invocation state
+```
+
+The current Pi does not need a copy of every Agent Plaza or public-news agent.
+Those agents run on the server; the Pi installs only physical adapters for the
+public events it can render, speak, or signal. A future untrusted third-party
+agent should graduate from a sibling directory to its own Linux user, systemd
+unit, or container. Directory separation alone is not a security boundary.
+
 ## Process and port isolation
 
 | Unit / endpoint | Role |
