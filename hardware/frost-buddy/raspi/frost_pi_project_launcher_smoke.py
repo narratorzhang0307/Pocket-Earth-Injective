@@ -14,7 +14,6 @@ def main() -> int:
     assert len(AGENTS) == 6
     assert state.image().size == (240, 280)
 
-    state.move()
     assert PROJECTS[state.root_index]["key"] == "pocket"
     assert state.enter() == "draw" and state.level == "agents"
     assert state.image().size == (240, 280)

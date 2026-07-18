@@ -101,8 +101,8 @@ def render_root(selected: int) -> Image.Image:
         draw.rectangle((11, y, 229, y + 50), fill=fill, outline=INK, width=3)
         draw.text((20, y + 9), ("> " if active else "  ") + project["label"], font=font(13, "mono"), fill=INK)
         draw.text((22, y + 31), project["path"].replace("/home/pi/", "~/"), font=font(9, "mono"), fill=INK if active else GREY)
-    draw.text((12, 246), "单击切换  ·  双击进入", font=font(10, "regular"), fill=INK)
-    draw.text((12, 263), "长按返回", font=font(9, "mono"), fill=GREY)
+    draw.text((12, 246), "CLICK: MOVE  2X: OPEN", font=font(9, "mono"), fill=INK)
+    draw.text((12, 263), "HOLD: BACK", font=font(9, "mono"), fill=GREY)
     return image
 
 
@@ -123,8 +123,8 @@ def render_agents(selected: int) -> Image.Image:
         draw.text((17, y + 5), ("> " if active else "  ") + agent["label"], font=font(12, "bold"), fill=INK)
         draw.text((20, y + 23), agent["meta"], font=font(7, "mono"), fill=INK if active else GREY)
 
-    draw.text((12, 254), f"{selected + 1}/{len(AGENTS)}  单击切换 · 双击打开", font=font(8, "mono"), fill=INK)
-    draw.text((12, 267), "长按返回 PI HOME", font=font(8, "mono"), fill=GREY)
+    draw.text((12, 254), f"{selected + 1}/{len(AGENTS)} CLICK: MOVE  2X: OPEN", font=font(8, "mono"), fill=INK)
+    draw.text((12, 267), "HOLD: PI HOME", font=font(8, "mono"), fill=GREY)
     return image
 
 
@@ -149,14 +149,14 @@ def render_agent_page(agent: dict) -> Image.Image:
     lines = [copy[1][i:i + 15] for i in range(0, len(copy[1]), 15)]
     for index, line in enumerate(lines[:3]):
         draw.text((12, 193 + index * 22), line, font=font(13, "regular"), fill=INK)
-    draw.text((12, 263), "长按返回 AGENTS", font=font(9, "mono"), fill=GREY)
+    draw.text((12, 263), "HOLD: BACK TO AGENTS", font=font(9, "mono"), fill=GREY)
     return image
 
 
 class MenuState:
     def __init__(self):
         self.level = "root"
-        self.root_index = 0
+        self.root_index = 1
         self.agent_index = 0
 
     def image(self) -> Image.Image:
@@ -212,7 +212,7 @@ class ProjectLauncher:
             app_id="pocket-earth-launcher",
             display_name="PI Home",
             icon="PI",
-            launch_command="sudo -n systemctl kill -s SIGUSR1 pocket-earth-launcher.service",
+            launch_command="sudo -n systemctl kill --kill-whom=main -s SIGUSR1 pocket-earth-launcher.service",
             launch_cwd="/home/pi/pocket-earth",
             priority=100,
             persist=True,
