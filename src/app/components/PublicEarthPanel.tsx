@@ -25,12 +25,12 @@ type PublicEarthResponse = {
 interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
-const PORTRAITS: Record<number, { src: string; viewBox: string }> = {
-  43: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '4 4 504 504' },
-  44: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 4 504 504' },
-  45: { src: '/frost-identities/frost-nft-group-2.png', viewBox: '1028 4 504 504' },
-  46: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 516 504 504' },
-  47: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '1028 4 504 504' },
+const PORTRAITS: Record<number, { src: string; viewBox: string; background: string }> = {
+  43: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '4 4 504 504', background: '#304781' },
+  44: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 4 504 504', background: '#e95973' },
+  45: { src: '/frost-identities/frost-nft-group-2.png', viewBox: '1028 4 504 504', background: '#bde9e3' },
+  46: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 516 504 504', background: '#f6c34a' },
+  47: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '1028 4 504 504', background: '#7352ef' },
 };
 
 function shortHash(hash: string) {
@@ -73,11 +73,16 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
                 </div>
                 <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
               </div>
-              <div className="mt-3 h-[118px] border-2 border-black bg-black overflow-hidden">
-                <svg viewBox={PORTRAITS[item.agentId].viewBox} preserveAspectRatio="xMidYMid slice" role="img"
-                  aria-label={`${item.displayName} Frost 身份肖像`} className="h-full w-full">
+              <div className="mt-3 flex h-[148px] items-center justify-center overflow-hidden border-2 border-black" style={{ background: PORTRAITS[item.agentId].background }}>
+                <svg viewBox={PORTRAITS[item.agentId].viewBox} preserveAspectRatio="xMidYMid meet" role="img"
+                  aria-label={`${item.displayName} Frost 身份肖像`} className="h-[128px] w-[128px] overflow-hidden">
                   <title>{item.displayName} Frost 身份肖像</title>
-                  <image href={PORTRAITS[item.agentId].src} width="1536" height="1024" />
+                  <defs>
+                    <clipPath id={`frost-portrait-${item.agentId}`}>
+                      <rect x={PORTRAITS[item.agentId].viewBox.split(' ')[0]} y={PORTRAITS[item.agentId].viewBox.split(' ')[1]} width="504" height="504" />
+                    </clipPath>
+                  </defs>
+                  <image href={PORTRAITS[item.agentId].src} width="1536" height="1024" clipPath={`url(#frost-portrait-${item.agentId})`} />
                 </svg>
               </div>
               <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
