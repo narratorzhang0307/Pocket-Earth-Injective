@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Globe2, IdCard, Link2, ShieldCheck } from 'lucide-react';
+import { Globe2, IdCard, Link2, Newspaper, ShieldCheck } from 'lucide-react';
 import FrostBuddy from './FrostBuddy';
 import PublicKnowledgeGlobe from './PublicKnowledgeGlobe';
+import PublicKnowledgeDetails from './PublicKnowledgeDetails';
 import type { FrostTheme } from '../../../frost-agent/buddy/themes';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 
@@ -79,7 +80,7 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
 }
 
 export default function PublicEarthPanel({ onOpenTopic = () => {} }: Props) {
-  const [view, setView] = useState<'knowledge' | 'cards'>('knowledge');
+  const [view, setView] = useState<'map' | 'details' | 'cards'>('map');
   const [data, setData] = useState<PublicEarthResponse | null>(null);
   const [selectedId, setSelectedId] = useState(43);
   const [error, setError] = useState(false);
@@ -109,21 +110,25 @@ export default function PublicEarthPanel({ onOpenTopic = () => {} }: Props) {
         </span>}
       </div>
 
-      <div className="grid grid-cols-2 gap-2 mt-3">
-        <button type="button" onClick={() => setView('knowledge')} aria-pressed={view === 'knowledge'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'knowledge' ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-white'}`}>
-          <Globe2 className="w-3.5 h-3.5" aria-hidden="true" />知识 · 地球
+      <div className="grid grid-cols-3 gap-1.5 mt-3" aria-label="公共地球内容视图">
+        <button type="button" onClick={() => setView('map')} aria-pressed={view === 'map'} className={`border-2 border-black py-2 font-pixel text-[7px] flex items-center justify-center gap-1 ${view === 'map' ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-white'}`}>
+          <Globe2 className="w-3 h-3" aria-hidden="true" />知识地图
         </button>
-        <button type="button" onClick={() => setView('cards')} aria-pressed={view === 'cards'} className={`border-2 border-black py-1.5 font-pixel text-[8px] flex items-center justify-center gap-1.5 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
-          <IdCard className="w-3.5 h-3.5" aria-hidden="true" />身份 · 卡牌
+        <button type="button" onClick={() => setView('details')} aria-pressed={view === 'details'} className={`border-2 border-black py-2 font-pixel text-[7px] flex items-center justify-center gap-1 ${view === 'details' ? 'bg-[#315e4b] text-white' : 'bg-white'}`}>
+          <Newspaper className="w-3 h-3" aria-hidden="true" />知识详情
+        </button>
+        <button type="button" onClick={() => setView('cards')} aria-pressed={view === 'cards'} className={`border-2 border-black py-2 font-pixel text-[7px] flex items-center justify-center gap-1 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
+          <IdCard className="w-3 h-3" aria-hidden="true" />身份卡牌
         </button>
       </div>
 
-      {view === 'knowledge' && <PublicKnowledgeGlobe onOpenTopic={onOpenTopic} />}
+      {view === 'map' && <PublicKnowledgeGlobe />}
+      {view === 'details' && <PublicKnowledgeDetails onOpenTopic={onOpenTopic} />}
       {view === 'cards' && !data && !error && <div className="h-[260px] flex items-center justify-center font-pixel text-[8px] text-black/40">READING INJECTIVE…</div>}
       {view === 'cards' && error && !data && <div className="h-[180px] border-2 border-black bg-white mt-3 flex items-center justify-center text-center px-5 text-[10px] text-black/55">身份链读暂不可用。没有使用虚构门牌，请稍后重试。</div>}
       {view === 'cards' && data && selected && <CardView data={data} selected={selected} onSelect={(item) => setSelectedId(item.agentId)} />}
 
-      {data && <div className="mt-3 pt-2 border-t border-black/20 flex items-center gap-1.5 text-[8px] text-black/45">
+      {view === 'cards' && data && <div className="mt-3 pt-2 border-t border-black/20 flex items-center gap-1.5 text-[8px] text-black/45">
         <Link2 className="w-3 h-3" />
         <span className="flex-1">知识卡是信息分发层 · 身份卡是可验证身份层</span>
         <a href={data.contract.scanUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2">CONTRACT ↗</a>
