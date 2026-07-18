@@ -46,7 +46,7 @@ v2.0 把第 4 章的工程原则系统落到 frost-agent。完整 13 条见 [HAR
 | Shell | `harness/persona.ts` | 统一对外人格与声音；用户始终听见同一个声音，而非内部子 agent |
 | Brain | `harness/brain.ts`, `httpBrain.ts` | 可插拔 `FrostBrain.complete()`；stub 返回空串，全链路无 LLM 也能跑；密钥只在服务端 |
 | Router | `harness/router.ts`, `llmRoute.ts` | 混合路由：规则秒回 → LLM 抽意图 → 规则兜底 |
-| Memory | `harness/memory.ts` | 会话级记忆（最近若干轮） |
+| Memory | `harness/memory.ts` + 应用层 `memoryRouter.ts` | 最近六轮工作记忆 + 本地私人画像 + 按问题只读召回公共语义记忆 |
 | Boundary | `harness/validator.ts` | 子 agent 只「建议」动作，过校验才落地 |
 | Sub-agents | `agents/*` | 每个 = `contract.md`（职责契约）+ 实现；含 runtime agent 与离线 pipeline |
 
@@ -58,7 +58,7 @@ v2.0 把第 4 章的工程原则系统落到 frost-agent。完整 13 条见 [HAR
 2. **动作词表只有 `RadioAction`**，`validator` 也只认这一套 —— 其它对象（书 / 电影 / 照片）没有自己的落点动作。
 3. **领域数据只有 `RADIO_CITIES`**，被 router / llmRoute / validator 及多数 agent 直接 `import`。
 
-另有两个缺口：`contract.md` 里的 `tools:` 目前只是文档，没有真正的工具注册表；`memory` 只有会话级，没有跨会话的长期个人记忆。
+剩余缺口：`contract.md` 里的 `tools:` 目前只是文档，没有真正的工具注册表；长期记忆已有本地画像和公共语义召回，但大规模向量检索仍是后续能力。
 
 ## 5. 目标分层架构
 
@@ -128,7 +128,7 @@ interface Selector {
 一句话：**端侧管「挑和找」，云管「写」。** 端侧路径还带来隐私（个人偏好与相册不出端）、成本与离线三重收益 —— 这对 photos-agent 是硬约束：原图与相册永不出端，云永远拿不到原图。
 
 ## 8. 长期记忆
-`memory` 从「会话级」扩展为「会话 + 画像」：个人偏好、阅读 / 观影 / 收听史、收藏与其向量表示。`curate` 与 `script` 都查询画像，使落点与叙述是为「这个人」整理的，而非通用生成。原始记录留端侧，只上送用于「写」的最小片段。
+`memory` 已从「会话级」扩展为三条物理隔离的轨道：最近六轮工作记忆、本地跨会话私人画像、服务器端公共语义知识。应用层 `memoryRouter` 按当前问题只读召回，公共知识只进入本轮 prompt，绝不写进 `pe.profile.v1`。原始私人记录留端侧，只上送用于「写」的最小片段；公共知识只接纳有来源、通过可信阈值的记录。
 
 ## 9. 演进路径 v2.0（增量，不重写）
 
@@ -137,7 +137,7 @@ interface Selector {
 3. 统一动作词表到 `mark_place`，Boundary 增加去重与照片价值阈值校验。
 4. 落地四个 agent（books / movies / music / photos）的运行时实现，契约已就位（`agents/*-agent/contract.md`）。
 5. 新增 `Selector` 端侧接口（先用云 stub 占位），把 curate 的选择 / 打分改走 Selector。
-6. 长期记忆从会话级扩到画像级，接入 curate 与 script。
+6. ✓ 长期记忆从会话级扩到画像级；公共语义召回已接入 FROST 与通用 AgentChat，向量检索留作数据规模增长后的增量能力。
 
 ## 10. 边界与口径
 

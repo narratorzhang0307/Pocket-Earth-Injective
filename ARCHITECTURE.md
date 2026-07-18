@@ -360,14 +360,18 @@ MNN sidecar 是 OpenAI 兼容最小面（`/health` `/v1/chat` `/v1/embeddings`�
 
 ---
 
-## 9. 长期记忆双层与闭环
+## 9. 类型化记忆与冷热闭环
 
-记忆是「越用越懂你」的底座，由**两条平行轴**构成，并形成一个完整闭环。
+记忆是「越用越懂你」与「越用越可靠」的共同底座。FROST 不把所有信息混成一个库，而是按 `self / episodic / semantic / procedural` 分轨，在本轮工作记忆里按需汇合。
 
-### 9.1 双层物理隔离
+### 9.1 私人记忆与公共知识物理隔离
 
-- **短时层** `harness/memory.ts`：只管会话内最近 6 轮（`formatHistory`），给大脑当上下文。
-- **长期层** `harness/profile.ts`：跨会话沉淀的口味——结构化脱敏画像，只存偏好标签计数（`domains[domain][field] = TagCount[]`，如 `movies.directors` / `books.authors`），**绝不存原文/隐私**，每字段按热度排序截 50。**隐私铁律**：profile 只在云脑侧读，端侧 Selector（`/api/edge`）一律不接触，画像不出端到端侧模型。
+- **Working / L1** `harness/memory.ts`：只管会话内最近 6 轮（`formatHistory`），给大脑当上下文。
+- **Self + Episodic** `harness/profile.ts`、IndexedDB 与空间记录：跨会话沉淀脱敏口味、书影音和位置经历。profile 只存偏好标签计数，**绝不存原文/隐私**，每字段按热度截 50。
+- **Semantic / L2→L3** `knowledge/`：七天完整公共信号是短期缓存；只有经审核、形成 Merkle 证明并锚定 Injective 的版次进入长期语义记忆。
+- **Procedural** `frost-agent/agents/*/contract.md` 与 skill 注册：保存“怎么做”，不和用户经历或公共事实混存。
+
+**隐私铁律**：公共知识只能被只读召回到当前 prompt，不能调用 `recordSignals`，不能写入 `pe.profile.v1`；私人画像也不进入公共知识包或 Injective 版次。
 
 ### 9.2 三段闭环：回流 → 装配 → 记忆即空气
 
@@ -375,28 +379,30 @@ MNN sidecar 是 OpenAI 兼容最小面（`/health` `/v1/chat` `/v1/embeddings`�
 各 agent 的 `confirmPin` 落点成功后调 `recordSignals`，把公开创作标签（国别/导演/作者/流派/城市/季节）喂回画像。movie/book 还**按真实星级加权**（5★×3、4★×2、其余×1，用 `Array(w).fill` 复制标签），**首次钉才回流**（`reason!=='exists'`）；travel/photo 用「只回流本次新钉城市」保证重确认幂等；photo 的 city 来自坐标反查、只回流非空。**故意不回流 cast 演员表**，避免画像退化成社交图谱。播种：启动时 `profileSeed.seedProfileFromLibrary()` 把现有书影音照库存一次性聚合喂 `recordSignals`（`SEED_VERSION` 幂等）。
 
 **② 装配（读）** —— `lib/memoryRouter.ts`
-`assembleMemory()` 是**唯一读出口**，四层拼装注入云脑 system：
+`assembleMemory()` 保留为同步的私人记忆读出口；`recallMemory(query)` / `assembleMemoryForQuery(query)` 是按当前问题召回的统一出口。私人部分有四个读取视图：
 
 ```
-L1  getCachedTasteLine   一句话口味气质(ensureNarrative 后台保鲜,fingerprint 缓存)
-L2  getTasteSummary      按评分偏爱地区(taste.ts 从 bookRecords 现算)
-L3  getMoodTrace         情绪足迹(mood/retrospect.ts,独立通道)
-L4  getProfileSummary    标签画像(profile.ts)
+getCachedTasteLine   一句话口味气质(ensureNarrative 后台保鲜,fingerprint 缓存)
+getTasteSummary      按评分偏爱地区(taste.ts 从 bookRecords 现算)
+getMoodTrace         情绪足迹(mood/retrospect.ts,独立通道)
+getProfileSummary    标签画像(profile.ts)
 ```
+
+这些是读取视图，不冒充冷热层级。查询命中“新闻 / 最新 / 核验 / 证据”等公共知识意图时，`publicSemantic.mjs` 再按主题读取 `/api/knowledge`，只接纳 `supported + truthScore≥70 + 有来源` 的记录；服务不可用则静默降级为私人记忆。
 
 `memoryRouter` 放 **app 层**而非内核——因为它要同时聚合内核 `profile` 与应用层 `taste`，放内核会造成「内核反向依赖应用」破坏分层。
 
 **③ 记忆即空气（用）**
-`assembleMemory` 给记忆块冠以 `MEMORY_AIR_RULES`（抄自 OpenHanako）：**自然融进回答、不复述、不说「我记得 / 你之前说过」、冲突以当前对话为准、绝不用旧记忆纠正用户**。记忆像空气一样在场而不出戏。`AgentChat.tsx` 每次对话（普通对话 + 推荐没看过两条路径）都 `assembleMemory()` 注入。
+私人记忆冠以 `MEMORY_AIR_RULES`：**自然融进回答、不复述、不说「我记得 / 你之前说过」、冲突以当前对话为准、绝不用旧记忆纠正用户**。公共语义记忆则带独立证据与版次状态，明确“已锚定”或“候选待锚定”。`AgentChat.tsx` 使用 `assembleMemoryForQuery()`；总 Agent 页面先 `recallMemory()`，再把正文和不泄露内容的召回轨迹交给 FROST Harness。
 
 ### 9.3 两个视图并存 + 反思记忆
 
-- **L2 `taste.ts` 补盲点**：profile 按数量统计会让读得多的（中/美/日）盖过打分极高但量少的（拉美魔幻现实主义）。`taste.ts` 另算「按地区平均评分的最偏爱」，让读得少但极爱的浮上来——两个视图**并存**而非二选一。
-- **L3 `mood/retrospect.ts` 独立通道**：心情是情绪足迹不是口味标签，**有意不走 `recordSignals`/`ProfileDomain`**——混进画像会污染；且排除「此处/随机落点」脏地名不造假地点。
+- **`taste.ts` 评分视图补盲点**：profile 按数量统计会让读得多的（中/美/日）盖过打分极高但量少的（拉美魔幻现实主义）。`taste.ts` 另算「按地区平均评分的最偏爱」，让读得少但极爱的浮上来——两个视图**并存**而非二选一。
+- **`mood/retrospect.ts` 情节通道**：心情是情绪足迹不是口味标签，**有意不走 `recordSignals`/`ProfileDomain`**——混进画像会污染；且排除「此处/随机落点」脏地名不造假地点。
 - **反思记忆**：法庭干净裁决 `saveCase`→判例库→下次 `findSimilarCases` 类案参照；照片临界态软偏置（`lessons`/`distillLessons`/`applySoftBias` 有界软偏置）。
 - **推荐去重**：已看全集当排除集 + 口味源，`checkSeen` 确定性兜底标已看（带年份），prompt 避开经典——治「推荐总推已看」。
 
-**关键文件**：`lib/memoryRouter.ts`（读装配）· `harness/profile.ts`（写+存+摘要）· `lib/taste.ts`（L2）· `lib/mood/retrospect.ts`（L3）· `lib/profileSeed.ts`（播种）· `lib/movie/pin.ts`（回流写口）· `harness/memory.ts`（会话短时）· `components/AgentChat.tsx`（消费端）。
+**关键文件**：`lib/memoryRouter.ts`（类型化读装配）· `lib/memory/{types,publicSemantic}`（契约与公共语义适配器）· `harness/profile.ts`（私人画像写+存+摘要）· `knowledge/{daily-worker,archive}.mjs`（L2 七天缓存与 L3 永久版次）· `harness/memory.ts`（工作记忆）· `components/{AgentChat,FrostBuddyPage}.tsx`（消费端）。
 
 ---
 
