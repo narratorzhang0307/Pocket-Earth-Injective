@@ -51,10 +51,33 @@ for (const anchor of [
   '切换八领域新闻主题',
   '待交叉核验 · 尚未进入 Merkle 版次',
   '候选新闻不会冒充事实',
+  '展开阅读全文',
+  '返回知识卡',
+  'CURATED PUBLIC SIGNAL',
+  'SOURCE NOTES · 源内要点',
+  '打开原始来源',
+  '原始来源已定位',
 ]) assert.ok(knowledgeDetails.includes(anchor), `PublicKnowledgeDetails missing ${anchor}`)
 assert.ok(!knowledgeGlobe.includes('public-news-editorial'), 'knowledge map tab must only render the map')
 assert.ok(!knowledgeDetails.includes('public-news-editorial__visual'), 'detail view should lead with the news instead of a decorative context image')
 assert.ok(knowledgeMap.includes('PUBLIC_KNOWLEDGE_TOPIC_STORIES'), 'detail reader must use the 16-signal topic cache')
+assert.ok(knowledgeMap.includes('PUBLIC_KNOWLEDGE_SOURCE_URLS'), 'detail reader must retain checked source URLs')
+assert.ok(knowledgeMap.includes('publishedAt:'), 'detail reader must distinguish source publication time from edition intake time')
+assert.ok(knowledgeMap.includes('keyFacts:'), 'detail reader must include source-grounded long-read notes')
+assert.ok(!knowledgeMap.includes('news.google.com/rss'), 'news cards must open checked publisher pages instead of opaque RSS redirects')
+for (const sourceDomain of [
+  'commission.europa.eu',
+  'www.ithome.com',
+  'www.thebanker.com',
+  'www.carbonbrief.org',
+  'www.rsna.org',
+  'www.gov.cn',
+  'petrieflom.law.harvard.edu',
+  'www.unesco.org',
+  'curia.europa.eu',
+]) assert.ok(knowledgeMap.includes(sourceDomain), `checked source domain missing ${sourceDomain}`)
+assert.ok(!knowledgeMap.includes('signal-ai-cn-chip'), 'stale May chip story must not masquerade as a July daily signal')
+assert.ok(!knowledgeMap.includes('signal-culture-bangladesh'), 'stale 2025 heritage story must not masquerade as a July daily signal')
 for (const topic of ['ai', 'technology', 'finance', 'climate', 'science', 'health', 'culture', 'policy']) {
   assert.ok(knowledgeMap.includes(`topic: '${topic}'`), `public knowledge map missing ${topic} news card`)
 }
