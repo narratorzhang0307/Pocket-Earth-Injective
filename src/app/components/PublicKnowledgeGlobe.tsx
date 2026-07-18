@@ -184,15 +184,6 @@ export default function PublicKnowledgeGlobe({ onOpenTopic }: Props) {
       </div>
 
       <article className="public-news-editorial" aria-live="polite">
-        <div className="public-news-editorial__visual">
-          <img src={selected.imageUrl} alt={selected.imageAlt} draggable={false} referrerPolicy="no-referrer" />
-          <div className="public-news-editorial__shade" />
-          <div className="public-news-editorial__visual-meta">
-            <span>CONTEXT IMAGE · 非证据图片</span>
-            <strong>{selected.locationLabel}</strong>
-          </div>
-        </div>
-
         <div className="public-news-editorial__paper">
           <header>
             <span>{selected.date}</span>

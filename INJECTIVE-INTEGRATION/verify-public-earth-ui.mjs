@@ -27,11 +27,11 @@ for (const anchor of [
   'occludedOpacity: 0',
   'SIGNAL POINTS · TAP TO APPROACH',
   'IMAGE CARDS · TAP TO READ',
-  'CONTEXT IMAGE · 非证据图片',
   '返回全球',
   '待交叉核验 · 尚未进入 Merkle 版次',
   '候选新闻不会冒充事实',
 ]) assert.ok(knowledgeGlobe.includes(anchor), `PublicKnowledgeGlobe missing ${anchor}`)
+assert.ok(!knowledgeGlobe.includes('public-news-editorial__visual'), 'detail view should lead with the news instead of a decorative context image')
 for (const topic of ['ai', 'technology', 'finance', 'climate', 'science', 'health', 'culture', 'policy']) {
   assert.ok(knowledgeMap.includes(`topic: '${topic}'`), `public knowledge map missing ${topic} news card`)
 }
