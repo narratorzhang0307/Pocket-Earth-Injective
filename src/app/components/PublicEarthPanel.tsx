@@ -26,11 +26,11 @@ interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
 const PORTRAITS: Record<number, { src: string; viewBox: string; background: string }> = {
-  43: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '4 4 504 504', background: '#304781' },
-  44: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 4 504 504', background: '#e95973' },
-  45: { src: '/frost-identities/frost-nft-group-2.png', viewBox: '1028 4 504 504', background: '#bde9e3' },
-  46: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 516 504 504', background: '#f6c34a' },
-  47: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '1028 4 504 504', background: '#7352ef' },
+  43: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '4 4 504 504', background: '#293b7a' },
+  44: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 4 504 504', background: '#e95d72' },
+  45: { src: '/frost-identities/frost-nft-group-2.png', viewBox: '1028 4 504 504', background: '#bdebe4' },
+  46: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 516 504 504', background: '#f2c14e' },
+  47: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '1028 4 504 504', background: '#7a5af8' },
 };
 
 function shortHash(hash: string) {
