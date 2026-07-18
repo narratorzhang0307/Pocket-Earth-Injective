@@ -91,7 +91,7 @@ export default function PublicKnowledgeGlobe() {
         const orbitHeadline = document.createElement('em');
         orbitHeadline.textContent = card.headline;
         const orbitDate = document.createElement('small');
-        orbitDate.textContent = card.date;
+        orbitDate.textContent = `发布 ${card.publishedAt.slice(5).replace('-', '.')}`;
         orbitNote.append(orbitTopic, orbitHeadline, orbitDate);
 
         const paper = document.createElement('span');
@@ -107,7 +107,7 @@ export default function PublicKnowledgeGlobe() {
         image.referrerPolicy = 'no-referrer';
         const visualMeta = document.createElement('span');
         visualMeta.className = 'public-news-marker__visual-meta';
-        visualMeta.textContent = `${card.topicLabel} · ${card.date}`;
+        visualMeta.textContent = `${card.topicLabel} · 发布 ${card.publishedAt.slice(5).replace('-', '.')}`;
         visual.append(image, visualMeta);
 
         const headline = document.createElement('strong');
