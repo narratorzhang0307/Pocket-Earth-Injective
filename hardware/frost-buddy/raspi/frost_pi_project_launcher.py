@@ -139,16 +139,15 @@ def render_agent_page(agent: dict) -> Image.Image:
     draw.text((18, 120), agent["meta"], font=font(9, "mono"), fill=INK)
 
     copy = {
-        "identity": ("链上身份在线", "公开身份可验证，私人记忆留在端侧。"),
-        "knowledge": ("今日知识版次", "资源包在 App 端，Merkle 根由 Injective 见证。"),
-        "ai": ("AI 领域日更", "筛选、交叉验证，再生成可验证知识条目。"),
-        "finance": ("金融领域日更", "只展示经来源核验的公共知识。"),
-        "verify": ("事实核验中枢", "来源交叉检查，输出证据与 Merkle 叶子。"),
-        "dispatch": ("Frost 的链上见闻", "白天出门，夜里把公开事实带回房间。"),
-    }.get(agent["key"], ("READY", "Pocket Earth agent is ready."))
+        "identity": ("链上身份在线", ("公开身份可验证", "私人记忆留在端侧。")),
+        "knowledge": ("今日知识版次", ("资源包保留在 App 端", "Merkle 根由 Injective", "公开见证。")),
+        "ai": ("AI 领域日更", ("筛选并交叉验证", "再生成可验证知识条目。")),
+        "finance": ("金融领域日更", ("只展示经过来源核验的", "公共知识。")),
+        "verify": ("事实核验中枢", ("来源交叉检查", "输出证据与 Merkle 叶子。")),
+        "dispatch": ("Frost 的链上见闻", ("白天出门", "夜里把公开事实带回房间。")),
+    }.get(agent["key"], ("READY", ("Pocket Earth agent is ready.",)))
     draw.text((12, 161), copy[0], font=font(17, "bold"), fill=INK)
-    lines = [copy[1][i:i + 15] for i in range(0, len(copy[1]), 15)]
-    for index, line in enumerate(lines[:3]):
+    for index, line in enumerate(copy[1][:3]):
         draw.text((12, 193 + index * 22), line, font=font(13, "regular"), fill=INK)
     draw.text((12, 263), "HOLD: BACK TO AGENTS", font=font(9, "mono"), fill=GREY)
     return image
