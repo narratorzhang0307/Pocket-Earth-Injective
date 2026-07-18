@@ -396,15 +396,27 @@ class PocketEarthDeviceDriver:
         image = render_evidence_card(actions)
         self._save_snapshot(image)
         state = _text(state_action.get("state"), 32) or "idle"
-        self._set_led(state)
-        shown = self._show(image)
-        spoken = self._speak(tts_action.get("text", "")) if tts_action else False
-        hold_seconds = max(0.0, float(os.environ.get("FROST_DISPLAY_HOLD_SECONDS", "9")))
-        if not self.dry_run and hold_seconds:
-            time.sleep(hold_seconds)
-        if self.board is not None:
-            self.board.release_focus()
-            self.board.set_rgb_fade(0, 0, 0, duration_ms=500)
+        shown = False
+        spoken = False
+        try:
+            try:
+                self._set_led(state)
+            except (OSError, RuntimeError) as exc:
+                # LED is an enhancement; a transient LED failure must not suppress
+                # the evidence card or TTS path.
+                _log(f"LED unavailable: {exc}")
+            shown = self._show(image)
+            spoken = self._speak(tts_action.get("text", "")) if tts_action else False
+            hold_seconds = max(0.0, float(os.environ.get("FROST_DISPLAY_HOLD_SECONDS", "9")))
+            if not self.dry_run and hold_seconds:
+                time.sleep(hold_seconds)
+        finally:
+            if self.board is not None:
+                self.board.release_focus()
+                try:
+                    self.board.set_rgb_fade(0, 0, 0, duration_ms=500)
+                except (OSError, RuntimeError) as exc:
+                    _log(f"LED reset skipped: {exc}")
         _log(f"event applied: screen={shown} tts={spoken} state={state}")
         return {"screen": shown, "tts": spoken, "state": state, "snapshot": str(self.snapshot_path)}
 
