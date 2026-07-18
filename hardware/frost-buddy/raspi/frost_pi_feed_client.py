@@ -74,9 +74,15 @@ def _fetch_once(url, token, cursor, timeout):
 def _arguments(argv):
     parser = argparse.ArgumentParser(description="Consume Pocket Earth public events on a Raspberry Pi")
     parser.add_argument("--once", action="store_true", help="poll once and exit")
+    parser.add_argument(
+        "--device",
+        action="store_true",
+        help="apply actions to the Whisplay screen, RGB LED, and local TTS instead of stdout",
+    )
     parser.add_argument("--cursor-file", type=Path, default=_cursor_file_default())
     parser.add_argument("--poll-seconds", type=float, default=2.0)
     parser.add_argument("--timeout-seconds", type=float, default=15.0)
+    parser.add_argument("--max-retry-seconds", type=float, default=30.0)
     return parser.parse_args(argv)
 
 
@@ -88,26 +94,49 @@ def main(argv=None):
         print("frost_pi_feed_client error: FROST_FEED_URL and FROST_FEED_TOKEN are required", file=sys.stderr)
         return 2
 
-    while True:
-        try:
-            event, next_cursor = _fetch_once(
-                url,
-                token,
-                _read_cursor(args.cursor_file),
-                max(1.0, args.timeout_seconds),
-            )
-            if event is not None:
-                for action in event_to_actions(event):
-                    sys.stdout.write(action_to_json_line(action))
-                sys.stdout.flush()
-                _write_cursor(args.cursor_file, next_cursor)
-        except (ValueError, OSError) as exc:
-            print(f"frost_pi_feed_client error: {exc}", file=sys.stderr)
-            return 2
+    driver = None
+    if args.device:
+        from frost_pi_device_driver import PocketEarthDeviceDriver
 
-        if args.once:
-            return 0
-        time.sleep(max(0.25, args.poll_seconds))
+        driver = PocketEarthDeviceDriver()
+
+    retry_seconds = max(0.25, args.poll_seconds)
+    try:
+        while True:
+            try:
+                event, next_cursor = _fetch_once(
+                    url,
+                    token,
+                    _read_cursor(args.cursor_file),
+                    max(1.0, args.timeout_seconds),
+                )
+                if event is not None:
+                    actions = event_to_actions(event)
+                    if driver is not None:
+                        # The cursor advances only after the physical action group returns.
+                        driver.apply_actions(actions)
+                    else:
+                        for action in actions:
+                            sys.stdout.write(action_to_json_line(action))
+                        sys.stdout.flush()
+                    _write_cursor(args.cursor_file, next_cursor)
+                retry_seconds = max(0.25, args.poll_seconds)
+            except (ValueError, OSError, RuntimeError) as exc:
+                print(f"frost_pi_feed_client error: {exc}", file=sys.stderr, flush=True)
+                if args.once:
+                    return 2
+                time.sleep(retry_seconds)
+                retry_seconds = min(max(retry_seconds * 2, 1.0), max(1.0, args.max_retry_seconds))
+                continue
+
+            if args.once:
+                return 0
+            time.sleep(max(0.25, args.poll_seconds))
+    except KeyboardInterrupt:
+        return 0
+    finally:
+        if driver is not None:
+            driver.close()
 
 
 if __name__ == "__main__":

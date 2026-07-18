@@ -1,0 +1,29 @@
+[Unit]
+Description=Pocket Earth Frost Edge Node
+Wants=network-online.target whisplay-daemon.service
+After=network-online.target whisplay-daemon.service sunset-radio.service
+ConditionPathExists=/opt/pocket-earth-edge/frost_pi_feed_client.py
+ConditionPathExists=/etc/pocket-earth-edge.env
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+SupplementaryGroups=audio video gpio input spi i2c
+WorkingDirectory=/opt/pocket-earth-edge
+EnvironmentFile=/etc/pocket-earth-edge.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/opt/pocket-earth-edge:/home/pi/Whisplay/runtime
+Environment=WHISPLAY_RUNTIME=/home/pi/Whisplay/runtime
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=FROST_MIRROR_PORT=8766
+Environment=FROST_DISPLAY_HOLD_SECONDS=9
+Environment=FROST_TTS_VOLUME=42
+ExecStart=/usr/bin/python3 -u /opt/pocket-earth-edge/frost_pi_feed_client.py --device
+Restart=always
+RestartSec=4
+TimeoutStopSec=15
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
