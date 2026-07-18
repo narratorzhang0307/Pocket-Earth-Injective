@@ -221,7 +221,9 @@ for (const snippet of [
   'phone mirror',
   'PI Home launcher',
   'single-click to move',
-  'double-click to enter',
+  'hold for 1.2 seconds to open',
+  'double-click to go back',
+  'cached evidence cards',
 ]) {
   assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
 }

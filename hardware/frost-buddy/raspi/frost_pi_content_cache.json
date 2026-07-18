@@ -1,0 +1,146 @@
+{
+  "schema": "pocket-earth-edge-content-cache/v1",
+  "generatedAt": "2026-07-18T04:12:00.000Z",
+  "privacy": "public knowledge and public Injective evidence only",
+  "buffer": [
+    {
+      "date": "2026-07-15",
+      "state": "cached",
+      "label": "PUBLIC SIGNAL CACHE",
+      "topics": 8,
+      "signalCount": 37,
+      "provenance": "validated embedded snapshot with Gonka request receipts"
+    },
+    {
+      "date": "2026-07-16",
+      "state": "miss",
+      "label": "CACHE MISS",
+      "topics": 0,
+      "signalCount": 0,
+      "provenance": "no dated public object was published; the device does not invent one"
+    },
+    {
+      "date": "2026-07-17",
+      "state": "anchored",
+      "label": "INJECTIVE EDITION",
+      "topics": 2,
+      "signalCount": 2,
+      "provenance": "reviewed Merkle edition revision 2 anchored on Injective EVM testnet"
+    }
+  ],
+  "identity": {
+    "network": "Injective EVM Testnet",
+    "chainId": 1439,
+    "registry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+    "agentIds": [43, 44, 45, 46, 47],
+    "residences": [
+      { "agentId": 43, "doorplate": "PE-03-0043", "zone": "记忆园" },
+      { "agentId": 44, "doorplate": "PE-01-0044", "zone": "知识馆" },
+      { "agentId": 45, "doorplate": "PE-02-0045", "zone": "创作街" },
+      { "agentId": 46, "doorplate": "PE-02-0046", "zone": "创作街" },
+      { "agentId": 47, "doorplate": "PE-05-0047", "zone": "远行港" }
+    ],
+    "publicEarthContract": "0xac7cbe6ee92298487d4349b54e2b2c876232ee1b"
+  },
+  "knowledgeEdition": {
+    "date": "2026-07-17",
+    "revision": 2,
+    "factCount": 2,
+    "factsRoot": "0x4b932d6f75df1e447ac53a8630654a581819d9ab99cacba1113275cd0c2299cf",
+    "editionRoot": "0x6e62dcc3fe00495d15d2a7600a5dff6a9f396b85f641fd5316ff69b8327491da",
+    "contract": "0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25",
+    "transactionHash": "0x19364a91b7adb1a8eb8daace6fe644d3a901b5a18a575d954c641de7bdf296c7",
+    "blockNumber": "133817598",
+    "records": [
+      {
+        "topic": "ai",
+        "title": "Foundry Model Router",
+        "claim": "Microsoft Foundry Model Router 可作为单一模型端点，并为每次提示选择合适的底层模型。",
+        "verdict": "SUPPORTED",
+        "truthScore": 86,
+        "sourceCount": 2,
+        "sourceLabel": "Microsoft Learn × 2",
+        "recordHash": "0x15f20592e38c185bd748a6da955829737456aa80d3bc81a3d38dca14ccb7a67a"
+      },
+      {
+        "topic": "finance",
+        "title": "Injective EVM",
+        "claim": "Injective EVM 测试网使用 Chain ID 1439，并支持标准 EVM 工具部署和调用 Solidity 合约。",
+        "verdict": "SUPPORTED",
+        "truthScore": 86,
+        "sourceCount": 2,
+        "sourceLabel": "Injective Docs × 2",
+        "recordHash": "0x152132ff50afa87a4b8c716ca4822a3bfc3715647d3801293757d558a0a52021"
+      }
+    ]
+  },
+  "signals": {
+    "date": "2026-07-15",
+    "state": "candidate-not-yet-verified",
+    "requestReceipts": true,
+    "ai": [
+      {
+        "importance": 92,
+        "headline": "中国发布首款 4nm 智驾芯片",
+        "claim": "中国在 07-15 或之前发布首款 4nm 自动驾驶芯片。",
+        "publisher": "财联社",
+        "status": "待进一步核验"
+      },
+      {
+        "importance": 88,
+        "headline": "美国暗示新的芯片与 AI 监管行动",
+        "claim": "监管信号可能影响半导体供应链与模型部署成本。",
+        "publisher": "Crypto Briefing",
+        "status": "待进一步核验"
+      },
+      {
+        "importance": 81,
+        "headline": "苹果探索让压缩模型在 iPhone 本地运行",
+        "claim": "设备端推理可能改变移动 AI 的隐私与成本结构。",
+        "publisher": "CNBC",
+        "status": "待进一步核验"
+      }
+    ],
+    "finance": [
+      {
+        "importance": 92,
+        "headline": "央行释放资本市场稳定工具信号",
+        "claim": "结构性货币政策工具可能用于支持资本市场稳定。",
+        "publisher": "每日经济新闻",
+        "status": "待进一步核验"
+      },
+      {
+        "importance": 78,
+        "headline": "英国金融市场数字化报告",
+        "claim": "报告估算进一步数字化可能带来显著经济增量。",
+        "publisher": "The Banker",
+        "status": "待进一步核验"
+      },
+      {
+        "importance": 76,
+        "headline": "黄金白银波动与市场稳定表态",
+        "claim": "贵金属价格大幅波动后，官方强调维护市场平稳运行。",
+        "publisher": "财联社",
+        "status": "待进一步核验"
+      }
+    ]
+  },
+  "verification": {
+    "stages": [
+      "主张受理",
+      "证据侦察",
+      "调查方",
+      "质疑方",
+      "确定性裁决",
+      "版次入库"
+    ],
+    "policy": "candidate signals are never relabeled as verified; only reviewed records enter a Merkle edition"
+  },
+  "chainDispatch": {
+    "publicEarthResidences": 5,
+    "knowledgeRevision": 2,
+    "knowledgeBlock": "133817598",
+    "eventKinds": ["chain_dispatch", "music_now_playing"],
+    "deviceOutputs": ["Whisplay 240×280", "RGB LED", "local TTS", "phone mirror"]
+  }
+}

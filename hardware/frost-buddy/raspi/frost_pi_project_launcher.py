@@ -10,6 +10,7 @@ menu. The radio API and music playback service remain independent.
 from __future__ import annotations
 
 import os
+import json
 import signal
 import subprocess
 import sys
@@ -69,6 +70,34 @@ AGENTS = (
     {"key": "verify", "label": "FACT VERIFIER", "meta": "SOURCE CROSS-CHECK", "accent": CYAN},
     {"key": "dispatch", "label": "链上见闻", "meta": "INJECTIVE PUBLIC PROOF", "accent": GREEN},
 )
+
+CONTENT_CACHE_PATH = Path(
+    os.environ.get(
+        "POCKET_EARTH_CONTENT_CACHE",
+        str(Path(__file__).with_name("frost_pi_content_cache.json")),
+    )
+)
+
+
+def load_content_cache() -> dict:
+    try:
+        payload = json.loads(CONTENT_CACHE_PATH.read_text(encoding="utf-8"))
+        if payload.get("schema") == "pocket-earth-edge-content-cache/v1":
+            return payload
+    except (OSError, ValueError, TypeError):
+        pass
+    return {
+        "schema": "pocket-earth-edge-content-cache/fallback",
+        "buffer": [],
+        "identity": {"agentIds": [43, 44, 45, 46, 47], "residences": []},
+        "knowledgeEdition": {"date": "OFFLINE", "revision": 0, "factCount": 0, "records": []},
+        "signals": {"date": "OFFLINE", "ai": [], "finance": []},
+        "verification": {"stages": ["主张受理", "证据侦察", "调查方", "质疑方", "确定性裁决", "版次入库"]},
+        "chainDispatch": {"publicEarthResidences": 0, "knowledgeRevision": 0, "eventKinds": []},
+    }
+
+
+CONTENT_CACHE = load_content_cache()
 
 FONT_REGULAR = (
     "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
@@ -136,8 +165,8 @@ def render_root(selected: int) -> Image.Image:
         draw.rectangle((11, y, 229, y + 50), fill=fill, outline=INK, width=3)
         draw.text((20, y + 9), ("> " if active else "  ") + project["label"], font=font(13, "mono"), fill=INK)
         draw.text((22, y + 31), project["path"].replace("/home/pi/", "~/"), font=font(9, "mono"), fill=INK if active else GREY)
-    draw.text((12, 246), "CLICK: MOVE  2X: OPEN", font=font(9, "mono"), fill=INK)
-    draw.text((12, 263), "HOLD: OPEN", font=font(9, "mono"), fill=GREY)
+    draw.text((12, 246), "CLICK: MOVE  HOLD: OPEN", font=font(8, "mono"), fill=INK)
+    draw.text((12, 263), "2X: BACK TO RADIO", font=font(8, "mono"), fill=GREY)
     return image
 
 
@@ -158,32 +187,203 @@ def render_agents(selected: int) -> Image.Image:
         draw.text((17, y + 5), ("> " if active else "  ") + agent["label"], font=font(12, "bold"), fill=INK)
         draw.text((20, y + 23), agent["meta"], font=font(7, "mono"), fill=INK if active else GREY)
 
-    draw.text((12, 254), f"{selected + 1}/{len(AGENTS)} CLICK: MOVE  2X: OPEN", font=font(8, "mono"), fill=INK)
-    draw.text((12, 267), "HOLD: PI HOME", font=font(8, "mono"), fill=GREY)
+    draw.text((12, 254), f"{selected + 1}/{len(AGENTS)} CLICK: MOVE  HOLD: OPEN", font=font(7, "mono"), fill=INK)
+    draw.text((12, 267), "2X: BACK TO PI HOME", font=font(8, "mono"), fill=GREY)
     return image
 
 
-def render_agent_page(agent: dict) -> Image.Image:
+def short_hash(value: str, head: int = 8, tail: int = 6) -> str:
+    text = str(value or "")
+    return f"{text[:head]}…{text[-tail:]}" if len(text) > head + tail + 1 else text
+
+
+def _content_pages(agent: dict) -> list[dict]:
+    key = agent["key"]
+    identity = CONTENT_CACHE.get("identity", {})
+    edition = CONTENT_CACHE.get("knowledgeEdition", {})
+    records = {item.get("topic"): item for item in edition.get("records", [])}
+    signals = CONTENT_CACHE.get("signals", {})
+    buffer = CONTENT_CACHE.get("buffer", [])
+    verifier = CONTENT_CACHE.get("verification", {})
+    dispatch = CONTENT_CACHE.get("chainDispatch", {})
+
+    buffer_lines = [
+        f"{item.get('date', '')[5:]}  {item.get('state', '').upper()}  {item.get('signalCount', 0)} ITEMS"
+        for item in buffer[:3]
+    ]
+    if key == "identity":
+        residences = identity.get("residences", [])
+        return [
+            {
+                "tag": "LIVE IDENTITY",
+                "title": "FROST 链上身份",
+                "badge": "INJECTIVE · 1439",
+                "lines": ["AGENT #43–47 已公开注册", "身份持久、可验证、可审计", f"REG {short_hash(identity.get('registry'))}"],
+            },
+            {
+                "tag": "PUBLIC EARTH",
+                "title": "五个分身已有门牌",
+                "badge": "5 RESIDENCES",
+                "lines": [f"#{item.get('agentId')}  {item.get('doorplate')}  {item.get('zone')}" for item in residences[:4]],
+            },
+            {
+                "tag": "BOUNDARY",
+                "title": "链上放身份",
+                "badge": "PRIVATE BY DEFAULT",
+                "lines": ["端侧留人生与原始记忆", "门牌不是现实地址", "没有土地稀缺、拍卖或炒作"],
+            },
+        ]
+    if key == "knowledge":
+        return [
+            {
+                "tag": "DAILY EDITION",
+                "title": f"{edition.get('date')} · REV {edition.get('revision')}",
+                "badge": f"{edition.get('factCount', 0)} FACTS · ANCHORED",
+                "lines": [f"ROOT {short_hash(edition.get('editionRoot'))}", f"BLOCK {edition.get('blockNumber', '—')}", "资源包在 App · 根在 Injective"],
+            },
+            *_record_pages(records),
+            {
+                "tag": "3-DAY BUFFER",
+                "title": "快开，也诚实标新鲜度",
+                "badge": "HIT / MISS / CHAIN",
+                "lines": buffer_lines or ["暂无日期缓存"],
+            },
+        ]
+    if key in {"ai", "finance"}:
+        verified = records.get(key, {})
+        candidates = signals.get(key, [])
+        topic_title = "AI 已核验知识" if key == "ai" else "金融已核验知识"
+        pages = [{
+            "tag": "VERIFIED · 07-17",
+            "title": topic_title,
+            "badge": f"TRUTH {verified.get('truthScore', '—')} · {verified.get('sourceCount', 0)} SOURCES",
+            "lines": [verified.get("claim", "等待下一版次"), verified.get("sourceLabel", "")],
+        }]
+        pages.extend({
+            "tag": f"SIGNAL {index + 1}/{len(candidates)} · 07-15",
+            "title": item.get("headline", "公开信号"),
+            "badge": f"IMPORTANCE {item.get('importance', '—')} · 待核验",
+            "lines": [item.get("claim", ""), f"SOURCE · {item.get('publisher', 'PUBLIC')}"],
+        } for index, item in enumerate(candidates))
+        pages.append({
+            "tag": "CACHE PROVENANCE",
+            "title": "候选不冒充事实",
+            "badge": "37 SIGNALS · 8 TOPICS",
+            "lines": ["07-15 保留排序回执与来源", "只有复核后的记录进入 Merkle 版次", "07-16 缺失会明确显示 MISS"],
+        })
+        return pages
+    if key == "verify":
+        stages = verifier.get("stages", [])
+        return [
+            {
+                "tag": "VERIFIER NETWORK",
+                "title": "六阶段事实核验",
+                "badge": "FACTATLAS KERNEL",
+                "lines": [" → ".join(stages[:3]), " → ".join(stages[3:]), "候选信号不会直接写入版次"],
+            },
+            *_record_pages(records, proof=True),
+            {
+                "tag": "INTEGRITY RULE",
+                "title": "证据可修订，历史不覆盖",
+                "badge": "APPEND-ONLY",
+                "lines": ["Record Hash 固定证据快照", "Merkle Proof 证明所属版次", "新证据追加新 revision"],
+            },
+        ]
+    return [
+        {
+            "tag": "CHAIN DISPATCH",
+            "title": "Frost 的链上见闻",
+            "badge": "PUBLIC EVENT · LIVE",
+            "lines": [f"公共地球 {dispatch.get('publicEarthResidences', 0)} 个门牌", f"知识版次 REV {dispatch.get('knowledgeRevision', 0)}", f"BLOCK {dispatch.get('knowledgeBlock', '—')}"],
+        },
+        {
+            "tag": "PHYSICAL LOOP",
+            "title": "公开事实回到房间",
+            "badge": "SCREEN · LED · TTS",
+            "lines": ["链上事件 → 白名单 JSONL", "小屏证据卡 → LED 转色", "本地播报 → 手机镜像"],
+        },
+        {
+            "tag": "PRIVACY",
+            "title": "设备只消费公开事件",
+            "badge": "NO KEY · NO SIGNING",
+            "lines": ["不碰私钥，不代签钱包", "不读取原始画像与私人坐标", "白天出门，夜里带回见闻"],
+        },
+    ]
+
+
+def _record_pages(records: dict, proof: bool = False) -> list[dict]:
+    pages = []
+    for topic in ("ai", "finance"):
+        record = records.get(topic)
+        if not record:
+            continue
+        pages.append({
+            "tag": f"{'MERKLE PROOF' if proof else 'VERIFIED'} · {topic.upper()}",
+            "title": record.get("title", topic.upper()),
+            "badge": f"{record.get('verdict', 'SUPPORTED')} · TRUTH {record.get('truthScore', '—')}",
+            "lines": [
+                record.get("claim", "") if not proof else f"RECORD {short_hash(record.get('recordHash'))}",
+                f"{record.get('sourceCount', 0)} SOURCES · {record.get('sourceLabel', '')}",
+                "PROOF VERIFIED · EDITION REV 2" if proof else "已进入 07-17 每日知识版次",
+            ],
+        })
+    return pages
+
+
+def _wrapped_lines(draw: ImageDraw.ImageDraw, text: str, text_font, max_width: int, max_lines: int) -> list[str]:
+    value = str(text or "").strip()
+    if not value:
+        return []
+    units = value.split(" ") if " " in value and not any("\u4e00" <= char <= "\u9fff" for char in value) else list(value)
+    separator = " " if units and len(units) < len(value) else ""
+    lines, current = [], ""
+    for unit in units:
+        candidate = f"{current}{separator if current else ''}{unit}"
+        if current and draw.textlength(candidate, font=text_font) > max_width:
+            lines.append(current)
+            current = unit
+            if len(lines) >= max_lines:
+                break
+        else:
+            current = candidate
+    if len(lines) < max_lines and current:
+        lines.append(current)
+    truncated = len(lines) >= max_lines and "".join(lines).replace(" ", "") != value.replace(" ", "")
+    if truncated and lines:
+        while lines[-1] and draw.textlength(f"{lines[-1]}…", font=text_font) > max_width:
+            lines[-1] = lines[-1][:-1]
+        lines[-1] = f"{lines[-1]}…"
+    return lines[:max_lines]
+
+
+def render_agent_page(agent: dict, page_index: int = 0) -> Image.Image:
     image = Image.new("RGB", (WIDTH, HEIGHT), PAPER)
     draw = ImageDraw.Draw(image)
     draw_header(draw, "POCKET EARTH", agent["accent"])
-    draw.text((12, 51), "AGENT", font=font(10, "mono"), fill=GREY)
-    draw.text((12, 72), agent["label"], font=font(22 if len(agent["label"]) < 12 else 18, "bold"), fill=INK)
-    draw.rectangle((11, 111, 229, 141), fill=agent["accent"], outline=INK, width=2)
-    draw.text((18, 120), agent["meta"], font=font(9, "mono"), fill=INK)
+    pages = _content_pages(agent)
+    current = pages[page_index % len(pages)]
+    draw.text((12, 49), current["tag"], font=font(9, "mono"), fill=GREY)
+    title_lines = _wrapped_lines(draw, current["title"], font(18, "bold"), 216, 2)
+    for index, line in enumerate(title_lines):
+        draw.text((12, 67 + index * 22), line, font=font(18, "bold"), fill=INK)
+    badge_y = 115 if len(title_lines) > 1 else 99
+    draw.rectangle((11, badge_y, 229, badge_y + 28), fill=agent["accent"], outline=INK, width=2)
+    draw.text((17, badge_y + 8), current["badge"], font=font(9, "mono"), fill=INK)
 
-    copy = {
-        "identity": ("链上身份在线", ("公开身份可验证", "私人记忆留在端侧。")),
-        "knowledge": ("今日知识版次", ("资源包保留在 App 端", "Merkle 根由 Injective", "公开见证。")),
-        "ai": ("AI 领域日更", ("筛选并交叉验证", "再生成可验证知识条目。")),
-        "finance": ("金融领域日更", ("只展示经过来源核验的", "公共知识。")),
-        "verify": ("事实核验中枢", ("来源交叉检查", "输出证据与 Merkle 叶子。")),
-        "dispatch": ("Frost 的链上见闻", ("白天出门", "夜里把公开事实带回房间。")),
-    }.get(agent["key"], ("READY", ("Pocket Earth agent is ready.",)))
-    draw.text((12, 161), copy[0], font=font(17, "bold"), fill=INK)
-    for index, line in enumerate(copy[1][:3]):
-        draw.text((12, 193 + index * 22), line, font=font(13, "regular"), fill=INK)
-    draw.text((12, 263), "HOLD: BACK TO AGENTS", font=font(9, "mono"), fill=GREY)
+    y = badge_y + 39
+    body_font = font(12, "regular")
+    remaining = 5
+    for raw in current.get("lines", []):
+        lines = _wrapped_lines(draw, raw, body_font, 216, min(2, remaining))
+        for line in lines:
+            draw.text((12, y), line, font=body_font, fill=INK)
+            y += 19
+            remaining -= 1
+        if remaining <= 0:
+            break
+        y += 2
+    draw.text((12, 251), f"{page_index % len(pages) + 1}/{len(pages)}  CLICK: NEXT", font=font(8, "mono"), fill=INK)
+    draw.text((12, 265), "2X: BACK", font=font(8, "mono"), fill=GREY)
     return image
 
 
@@ -192,19 +392,23 @@ class MenuState:
         self.level = "root"
         self.root_index = 1
         self.agent_index = 0
+        self.page_index = 0
 
     def image(self) -> Image.Image:
         if self.level == "root":
             return render_root(self.root_index)
         if self.level == "agents":
             return render_agents(self.agent_index)
-        return render_agent_page(AGENTS[self.agent_index])
+        return render_agent_page(AGENTS[self.agent_index], self.page_index)
 
     def move(self) -> None:
         if self.level == "root":
             self.root_index = (self.root_index + 1) % len(PROJECTS)
         elif self.level == "agents":
             self.agent_index = (self.agent_index + 1) % len(AGENTS)
+            self.page_index = 0
+        else:
+            self.page_index = (self.page_index + 1) % len(_content_pages(AGENTS[self.agent_index]))
 
     def enter(self) -> str:
         if self.level == "root":
@@ -213,11 +417,13 @@ class MenuState:
             self.level = "agents"
         elif self.level == "agents":
             self.level = "agent"
+            self.page_index = 0
         return "draw"
 
     def back(self) -> str:
         if self.level == "agent":
             self.level = "agents"
+            self.page_index = 0
             return "draw"
         if self.level == "agents":
             self.level = "root"
@@ -347,8 +553,8 @@ class ProjectLauncher:
             if not self.active:
                 return
             if count >= 2:
-                print(f"pocket-launcher: open by {count} clicks", flush=True)
-                result = self.state.enter()
+                print(f"pocket-launcher: back by {count} clicks", flush=True)
+                result = self.state.back()
                 if result == "sunset":
                     self.leave_to_sunset()
                     return
@@ -361,12 +567,12 @@ class ProjectLauncher:
             if not self.active:
                 return
             self.long_fired = True
-            if self.state.level == "root":
+            if self.state.level in {"root", "agents"}:
                 print("pocket-launcher: open by hold", flush=True)
                 result = self.state.enter()
             else:
-                print("pocket-launcher: back by hold", flush=True)
-                result = self.state.back()
+                print("pocket-launcher: detail page has no deeper level", flush=True)
+                result = "draw"
             if result == "sunset":
                 self.leave_to_sunset()
             else:

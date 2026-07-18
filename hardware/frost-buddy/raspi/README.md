@@ -75,7 +75,9 @@ safe two-level Whisplay interface without exposing a destructive file manager:
 
 - hold the orange button for 1.2 seconds to enter `PI HOME`,
 - single-click to move between sibling projects or agents,
-- double-click to enter `SUNSET RADIO`, `POCKET EARTH`, or a selected agent,
+- hold for 1.2 seconds to open `SUNSET RADIO`, `POCKET EARTH`, or a selected agent,
+- double-click to go back one level,
+- single-click inside an agent page to move through its cached evidence cards,
 - hold to go back one level.
 
 Pocket Earth currently exposes six launcher pages: Frost identity, public
