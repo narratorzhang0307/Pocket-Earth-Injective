@@ -1,0 +1,967 @@
+{
+  "run_status": "slides_recorded",
+  "deck_name": "Pocket_Earth_on_Injective_决赛路演_20页硬件强化版",
+  "selected_backend": "built-in image tool",
+  "sample_generation_method": {
+    "backend_used": "built-in image tool",
+    "tool_name": "image_gen",
+    "mode": "generate with strict reference images",
+    "prompt_source": "Slide 09 structured visual brief plus approved standard-page style reference and two live UI screenshots",
+    "size": "1672x941 16:9 landscape",
+    "quality": "built-in high-quality default",
+    "approved_sample_path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+    "input_context_preparation": "Local style and strict source images were inspected with view_image and passed through referenced_image_paths.",
+    "handoff_rule": "Use the same built-in image_gen path with the approved sample as style-only reference; return a blocker if unavailable."
+  },
+  "max_concurrent_slides": 3,
+  "slides": [
+    {
+      "slide_id": "slide_01",
+      "number": 1,
+      "title": "Pocket Earth on Injective",
+      "job": "prompts/slide_01.json",
+      "out": "origin_image/slide_01.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/图13_真机与概念终端对照.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_01",
+        "agent_nickname": "slide_01",
+        "prompt": "prompts/slide_01.json",
+        "prompt_sha256": "724fe1886df6e5e515440aecafc90127fe10e4d7b89e7c69af8240f85565be8a",
+        "dispatched_at": "2026-07-18T17:58:56Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_01",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_01.png",
+        "selected_source_sha256": "d984a08f28ee6e7a48783359e48bf07488b25096ae99749274e8fb793911946d",
+        "final_image": "origin_image/slide_01.png",
+        "final_image_sha256": "d984a08f28ee6e7a48783359e48bf07488b25096ae99749274e8fb793911946d",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "封面信息层级清楚，公共地球实机截图完整置于手机壳，真实 Frost Edge Node 照片保真，文案与视觉红线通过。",
+        "recorded_at": "2026-07-18T18:01:21Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_02",
+      "number": 2,
+      "title": "AI 时代，同时丢失了个人上下文与公共可信度",
+      "job": "prompts/slide_02.json",
+      "out": "origin_image/slide_02.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/private-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-details.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_02",
+        "agent_nickname": "slide_02",
+        "prompt": "prompts/slide_02.json",
+        "prompt_sha256": "7a88ab1b489589361c86d73f3dbde2c7d6086995f9e507827c22b25950ea05da",
+        "dispatched_at": "2026-07-18T17:58:56Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_02.png",
+        "selected_source_sha256": "4babcee8c8a91f8b88202c9438285255702273c6651ac83bb1f2eba3808aa173",
+        "final_image": "origin_image/slide_02.png",
+        "final_image_sha256": "4babcee8c8a91f8b88202c9438285255702273c6651ac83bb1f2eba3808aa173",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "左右两张当前产品实机截图均嵌入手机壳，双重问题与结论清楚，舞台可读性通过。",
+        "recorded_at": "2026-07-18T18:01:21Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_03",
+      "number": 3,
+      "title": "一颗地球，连接四个职责清楚的层",
+      "job": "prompts/slide_03.json",
+      "out": "origin_image/slide_03.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": "slide_03",
+        "prompt": "prompts/slide_03.json",
+        "prompt_sha256": "9020e7a6ed0f5f2a81813521cdd9287ef4374240042b8edfa2682bfce7b8a2f8",
+        "dispatched_at": "2026-07-18T17:58:57Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_03.png",
+        "selected_source_sha256": "dd18a12593d61f04e623de37623ac0aa9dc22538971c206838eef89b2fd84e49",
+        "final_image": "origin_image/slide_03.png",
+        "final_image_sha256": "dd18a12593d61f04e623de37623ac0aa9dc22538971c206838eef89b2fd84e49",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "四层架构、数据边界、Injective 版次指纹与实体消费关系完整，未越过隐私与付费口径红线。",
+        "recorded_at": "2026-07-18T18:01:21Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_04",
+      "number": 4,
+      "title": "私人空间知识库，是 Frost 的个人世界模型",
+      "job": "prompts/slide_04.json",
+      "out": "origin_image/slide_04.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/private-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/photos.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_01",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_04.json",
+        "prompt_sha256": "c46f8cc9dea351e70cda8e808bdcd9159babef85bc4037e8f24383ae3cdbd6b4",
+        "dispatched_at": "2026-07-18T18:02:17Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_01",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_04.png",
+        "selected_source_sha256": "b2c619fcf93a8a6e7a5c7cc589ac70c0bb41407e47e4aaeecb426a2f4dea9746",
+        "final_image": "origin_image/slide_04.png",
+        "final_image_sha256": "b2c619fcf93a8a6e7a5c7cc589ac70c0bb41407e47e4aaeecb426a2f4dea9746",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "六类私人对象、Boundary 流程、短期/长期记忆与端侧隐私清楚；两张真实 UI 均置于手机壳并保真。",
+        "recorded_at": "2026-07-18T18:04:40Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_05",
+      "number": 5,
+      "title": "MAPPING：把一本书读成一张有时间态的地图",
+      "job": "prompts/slide_05.json",
+      "out": "origin_image/slide_05.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/reference/图03_Cosmos总起_把书读成地图.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/reference/图04_古籍书叶与时间态.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_02",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_05.json",
+        "prompt_sha256": "aa3cc94ebcb775f1daf1ad513aeaf696345d3791adfada3e30f08775fd7261b5",
+        "dispatched_at": "2026-07-18T18:02:18Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_05.png",
+        "selected_source_sha256": "99fbf4375853eb2974cf663f1527ff85b4765b4ce27620c3aaf2f8f5683c9395",
+        "final_image": "origin_image/slide_05.png",
+        "final_image_sha256": "99fbf4375853eb2974cf663f1527ff85b4765b4ce27620c3aaf2f8f5683c9395",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "古籍全文、地名时间态、空间落点与可漫游 skill 流程清楚；两张参考实机界面均用手机壳承载。",
+        "recorded_at": "2026-07-18T18:08:36Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_06",
+      "number": 6,
+      "title": "Frost 用路由、委派、边界与记忆组织 Agent",
+      "job": "prompts/slide_06.json",
+      "out": "origin_image/slide_06.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/agents-private.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/reference/图02_FROST_AGENTS控制台与RunTrace.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_06.json",
+        "prompt_sha256": "a6a5e13a637d713c7ced2edc063e8aaef59e592bdc146e16a6f7f74049f91ebc",
+        "dispatched_at": "2026-07-18T18:02:18Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_06.png",
+        "selected_source_sha256": "10763fddad1a4ac4a6cc1ed953dc866415de7f717e4352a7289ce2801b8e8fd0",
+        "final_image": "origin_image/slide_06.png",
+        "final_image_sha256": "10763fddad1a4ac4a6cc1ed953dc866415de7f717e4352a7289ce2801b8e8fd0",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Router、Memory、Delegate、Boundary、RunTrace 五个工程动作完整；真实 Agents 与 RunTrace 界面嵌入手机壳。",
+        "recorded_at": "2026-07-18T18:05:47Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_07",
+      "number": 7,
+      "title": "Agent Forge / Plaza：从一句需求到可安装 Agent",
+      "job": "prompts/slide_07.json",
+      "out": "origin_image/slide_07.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/agent-forge.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/agent-plaza.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_01",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_07.json",
+        "prompt_sha256": "8e3e4b9b30178847b30baa9817fafec05aac92db2742ce3ea6f9a13d69a89431",
+        "dispatched_at": "2026-07-18T18:05:06Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_01",
+        "backend_used": "built-in image tool + targeted edit",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_07.png",
+        "selected_source_sha256": "855aa9d8cc864f47d08f7175c5bfb9813ae3187d2b92e74e5f438c9e42d08681",
+        "final_image": "origin_image/slide_07.png",
+        "final_image_sha256": "855aa9d8cc864f47d08f7175c5bfb9813ae3187d2b92e74e5f438c9e42d08681",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Forge/Plaza 真实截图与闭环清楚；首轮 QA 发现并定点修复“结果”误字，其余视觉保持不变。",
+        "recorded_at": "2026-07-18T18:14:50Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_08",
+      "number": 8,
+      "title": "Frost #43–47：公开 Agent 拥有可核对的身份与人格",
+      "job": "prompts/slide_08.json",
+      "out": "origin_image/slide_08.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-cards.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/public/frost-identities/frost-nft-group-1.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_08.json",
+        "prompt_sha256": "9a3af821d32afa51ab263ac1eafa525e103c535a32112f5b40d603d1141752c3",
+        "dispatched_at": "2026-07-18T18:06:15Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_08.png",
+        "selected_source_sha256": "177a47b2abc9a0a6573e03276529f91625cef29c3bc94ebe48308fa86200a64f",
+        "final_image": "origin_image/slide_08.png",
+        "final_image_sha256": "177a47b2abc9a0a6573e03276529f91625cef29c3bc94ebe48308fa86200a64f",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "#43–47 五个 Frost 身份人格与真实身份卡 UI 清楚；只陈述持久、可核对身份，不声称 soulbound。",
+        "recorded_at": "2026-07-18T18:08:36Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_09",
+      "number": 9,
+      "title": "公开知识回到空间，公开事实留在 Injective",
+      "job": "prompts/slide_09.json",
+      "out": "origin_image/slide_09.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-details.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "accepted",
+      "dispatch": null,
+      "result": {
+        "final_image": "origin_image/slide_09.png",
+        "accepted_sample": true
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_10",
+      "number": 10,
+      "title": "一个 Harness，八个领域 Agent，每天形成一版知识",
+      "job": "prompts/slide_10.json",
+      "out": "origin_image/slide_10.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/agents-public.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_02",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_10.json",
+        "prompt_sha256": "847b06da1b0766d8d2c565e582921ddd240f87fbdc1ccf8cca0b08341eea6041",
+        "dispatched_at": "2026-07-18T18:09:21Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_10.png",
+        "selected_source_sha256": "c9a814fe715f87446597da0d93bdee4b543ffbd5332cbef5290f533f2d167d1e",
+        "final_image": "origin_image/slide_10.png",
+        "final_image_sha256": "c9a814fe715f87446597da0d93bdee4b543ffbd5332cbef5290f533f2d167d1e",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "共享 Harness、八领域配置、候选收集、调查/质疑、规则 truthScore、人工批准与冷热分区完整；明确候选不等于事实。",
+        "recorded_at": "2026-07-18T18:14:50Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_11",
+      "number": 11,
+      "title": "每天一版：可下载、可离线复验、可持续修订",
+      "job": "prompts/slide_11.json",
+      "out": "origin_image/slide_11.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_11.json",
+        "prompt_sha256": "45e49e91fb21521c3cce463cbe90437e40b2b8c339471a62097250bbac810d8b",
+        "dispatched_at": "2026-07-18T18:09:21Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_11.png",
+        "selected_source_sha256": "45a6faf72f98714ad99093aa99796a9fa0041f67fc97e80e7cb5ce73e5371b16",
+        "final_image": "origin_image/slide_11.png",
+        "final_image_sha256": "45a6faf72f98714ad99093aa99796a9fa0041f67fc97e80e7cb5ce73e5371b16",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "资源包、ClaimKey、recordHash、Merkle proof、editionRoot/revision 与四步离线复验完整，技术术语通过。",
+        "recorded_at": "2026-07-18T18:14:50Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_12",
+      "number": 12,
+      "title": "Injective 固定四类公开事实",
+      "job": "prompts/slide_12.json",
+      "out": "origin_image/slide_12.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_12.json",
+        "prompt_sha256": "ec2b5e090bffdf9df687c6fcd82762160c37184a4036109795496f116bd668d1",
+        "dispatched_at": "2026-07-18T18:15:56Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool + factual edit",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_12.png",
+        "selected_source_sha256": "91adbc83b9d5d78aabe3ba27c8731e901e25c362218735e9ddea260fd00f8631",
+        "final_image": "origin_image/slide_12.png",
+        "final_image_sha256": "91adbc83b9d5d78aabe3ba27c8731e901e25c362218735e9ddea260fd00f8631",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "四类公开事实与最小上链边界清楚；将初稿中的示例日期/版本改为显式 SCHEMA 占位字段，避免被误读为真实证据。",
+        "recorded_at": "2026-07-18T18:23:33Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_13",
+      "number": 13,
+      "title": "这些合约、交易、API 与 proof 现在就能核对",
+      "job": "prompts/slide_13.json",
+      "out": "origin_image/slide_13.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/evidence/injective-evidence-mobile.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/evidence/blockscout-chronicle-tx.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_01",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_13.json",
+        "prompt_sha256": "961e9611d249ddd5661d7901c226976381e68dcb6b9638336ef7c209685bfd0b",
+        "dispatched_at": "2026-07-18T18:15:56Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_01",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_13.png",
+        "selected_source_sha256": "1d4881cd01774420e9247b245b5267e2cef15389790b8058458badf177dc8851",
+        "final_image": "origin_image/slide_13.png",
+        "final_image_sha256": "1d4881cd01774420e9247b245b5267e2cef15389790b8058458badf177dc8851",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "真实 Injective testnet 身份、门牌、版次与握手事实及 Blockscout 成功交易清楚；交易哈希、合约与 revision 2 可读。",
+        "recorded_at": "2026-07-18T18:19:00Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_14",
+      "number": 14,
+      "title": "Microsoft Azure 按任务调度云端推理",
+      "job": "prompts/slide_14.json",
+      "out": "origin_image/slide_14.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_02",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_14.json",
+        "prompt_sha256": "16795a334457a16a2002374750dc1f836f010bbf8fd6a37e0556b11b14763f18",
+        "dispatched_at": "2026-07-18T18:15:56Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_14.png",
+        "selected_source_sha256": "7a8341c606eec0c5c4c921023681cc344337b4909b5c142e20c7334a4d595cf8",
+        "final_image": "origin_image/slide_14.png",
+        "final_image_sha256": "7a8341c606eec0c5c4c921023681cc344337b4909b5c142e20c7334a4d595cf8",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Azure 路由、统一端点、大小模型、降级与 RunTrace 架构完整；明确 adapter/offline tests 已完成，strict live 未验证且未伪造。",
+        "recorded_at": "2026-07-18T18:19:00Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_15",
+      "number": 15,
+      "title": "Frost Edge Node：公开 Agent 长出一具身体",
+      "job": "prompts/slide_15.json",
+      "out": "origin_image/slide_15.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/图13_真机与概念终端对照.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_01",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_15.json",
+        "prompt_sha256": "cb20a9c11f62934984e03300fc1be27bac0f53a78171e3d8d5eb9c634945e9c4",
+        "dispatched_at": "2026-07-18T18:20:19Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_01",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_15.png",
+        "selected_source_sha256": "c9923cde4ba3a36ae8427804c8d9ffc8a49889ed34f513b73f2d1408e00d3926",
+        "final_image": "origin_image/slide_15.png",
+        "final_image_sha256": "c9923cde4ba3a36ae8427804c8d9ffc8a49889ed34f513b73f2d1408e00d3926",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "真实 Frost Edge Node 最大，Whisplay/RGB/TTS/按键清楚；概念终端明确标 CONCEPT 与非量产实物。",
+        "recorded_at": "2026-07-18T18:23:33Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_16",
+      "number": 16,
+      "title": "屏幕、灯光、声音与按键形成同一套物理语言",
+      "job": "prompts/slide_16.json",
+      "out": "origin_image/slide_16.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/图14_硬件功能.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/launcher.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_02",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_16.json",
+        "prompt_sha256": "f95ceab7e7827599ed64ac5103c3fb69022738e950cf5efd710d66389d862e15",
+        "dispatched_at": "2026-07-18T18:20:19Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_16.png",
+        "selected_source_sha256": "b34f8f94e904fa4e7a0528ff59d81351a3d46b3cc6408840d264c04db63e45c9",
+        "final_image": "origin_image/slide_16.png",
+        "final_image_sha256": "b34f8f94e904fa4e7a0528ff59d81351a3d46b3cc6408840d264c04db63e45c9",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "真实硬件主视觉串联 Whisplay、RGB、TTS/耳机、麦克风和按键；显式标为链路说明，不冒充已完成实时联调。",
+        "recorded_at": "2026-07-18T18:25:38Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_17",
+      "number": 17,
+      "title": "一个 launcher，已经承载三个可运行应用",
+      "job": "prompts/slide_17.json",
+      "out": "origin_image/slide_17.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/launcher.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/sunset-dice.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/ai-news.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/earth-answer.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_17.json",
+        "prompt_sha256": "a9d229d463c5221ea4365fb83009934fad43bf6232d7b29d825e2da8aee7180a",
+        "dispatched_at": "2026-07-18T18:20:19Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_17.png",
+        "selected_source_sha256": "f86c47c29522ce78f1d71ccd363c5026e5346e264b7d60eea63d99baceaee459",
+        "final_image": "origin_image/slide_17.png",
+        "final_image_sha256": "f86c47c29522ce78f1d71ccd363c5026e5346e264b7d60eea63d99baceaee459",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "Launcher 与日落电台、口袋播客、地球答案三类应用用真实设备屏幕呈现；长按进入、双击返回规则清楚。",
+        "recorded_at": "2026-07-18T18:23:34Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_18",
+      "number": 18,
+      "title": "本地运行时只消费白名单公开事件",
+      "job": "prompts/slide_18.json",
+      "out": "origin_image/slide_18.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/图18_树莓派终端内部分层.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_01",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_18.json",
+        "prompt_sha256": "46e89ab605e4e2da3fea905b8ab74736a4e13dc374086504714893f126d7b92e",
+        "dispatched_at": "2026-07-18T18:24:40Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_01",
+        "backend_used": "built-in image tool + targeted edit",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_18.png",
+        "selected_source_sha256": "7ad17de97967a3caa491428d054d9564f73c25cfb2a582407fab131ebe85f142",
+        "final_image": "origin_image/slide_18.png",
+        "final_image_sha256": "7ad17de97967a3caa491428d054d9564f73c25cfb2a582407fab131ebe85f142",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "READ→ENVELOPE→FEED→CURSOR→ADAPTER→DRIVER 与安全边界完整；两轮定点修复 token“保护事件流”措辞，未夸大实时联调。",
+        "recorded_at": "2026-07-18T18:37:37Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_19",
+      "number": 19,
+      "title": "50 秒：一条公开知识走到房间里的 Frost",
+      "job": "prompts/slide_19.json",
+      "out": "origin_image/slide_19.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-details.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/evidence/blockscout-chronicle-tx.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/ai-news.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_03",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_19.json",
+        "prompt_sha256": "a5936ace39d4c8fa07a6fc2a4fd3d6dec445579b38ed73a03329f8a379321735",
+        "dispatched_at": "2026-07-18T18:24:40Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_03",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_19.png",
+        "selected_source_sha256": "f8709ee2c4964fdf29390bdc740b2b7b29b34c1f58f0b3ca1ee3048ec1f528c8",
+        "final_image": "origin_image/slide_19.png",
+        "final_image_sha256": "f8709ee2c4964fdf29390bdc740b2b7b29b34c1f58f0b3ca1ee3048ec1f528c8",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "50 秒演示分镜连接手机、Injective、Public Earth 与实体终端三类证据；现场失败时用已录备份视频的降级策略明确。",
+        "recorded_at": "2026-07-18T18:37:37Z"
+      },
+      "blocker": null
+    },
+    {
+      "slide_id": "slide_20",
+      "number": 20,
+      "title": "空间留在 Pocket Earth，时间由 Injective 见证",
+      "job": "prompts/slide_20.json",
+      "out": "origin_image/slide_20.png",
+      "input_images": [
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+          "role": "approved sample slide style reference",
+          "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/ui/public-earth-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/evidence/blockscout-chronicle-tx.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/assets/hardware/ai-news.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "requires_context_images": true,
+      "status": "recorded",
+      "dispatch": {
+        "agent_id": "/root/ppt_slide_02",
+        "agent_nickname": null,
+        "prompt": "prompts/slide_20.json",
+        "prompt_sha256": "594d4f91c098744764457a0fadbc6a3c498c722bf74c3ef30453f8b501565a52",
+        "dispatched_at": "2026-07-18T18:26:18Z"
+      },
+      "result": {
+        "agent_id": "/root/ppt_slide_02",
+        "backend_used": "built-in image tool",
+        "selected_source": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_20.png",
+        "selected_source_sha256": "7e4e4eed552534c7290815c463018e801690cfe0e8ac08b430dc0efc597ba638",
+        "final_image": "origin_image/slide_20.png",
+        "final_image_sha256": "7e4e4eed552534c7290815c463018e801690cfe0e8ac08b430dc0efc597ba638",
+        "expected_backend": "built-in image tool",
+        "expected_backend_labels": [
+          "built-in image tool",
+          "image_gen"
+        ],
+        "sample_generation_method_matched": true,
+        "qa_note": "最终收束用空间/时间/现实三联证据和四个成果闭环，未出现付费、发币、其他链或 Azure strict live 夸大。",
+        "recorded_at": "2026-07-18T18:37:37Z"
+      },
+      "blocker": null
+    }
+  ],
+  "updated_at": "2026-07-18T18:37:37Z"
+}

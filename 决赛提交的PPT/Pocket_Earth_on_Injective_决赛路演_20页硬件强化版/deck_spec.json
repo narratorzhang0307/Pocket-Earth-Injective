@@ -1,0 +1,769 @@
+{
+  "deck_name": "Pocket_Earth_on_Injective_决赛路演_20页硬件强化版",
+  "language": "Chinese",
+  "goal": "8 分钟决赛路演：用一条从私人空间知识、公共 Agent、Injective 可验证版次到真实 Frost Edge Node 的闭环，证明产品完成度、链上深度、Azure 架构位置与硬件差异化。",
+  "deck_context": {
+    "source_summary": "Pocket Earth 是空间 Agent 平台。私人生活留在端侧；公共内容进入资源包；Injective 保存身份、象征性门牌、每日知识 editionRoot/revision 与公开事件；Microsoft Azure 负责云端模型路由；Frost Edge Node 只消费白名单公开事件。",
+    "core_claim": "渲染在端上，内容在包里，指纹在 Injective；空间留在 Pocket Earth，时间由 Injective 见证。",
+    "canonical_terms": [
+      "Injective",
+      "每日知识版次",
+      "editionRoot",
+      "revision",
+      "Frost Edge Node",
+      "Microsoft Foundry Model Router"
+    ],
+    "redlines": [
+      "不提其他链",
+      "不谈付费与代币",
+      "不把身份称为 soulbound",
+      "不把门牌称为虚拟土地",
+      "不声称 Azure strict live 已通过"
+    ]
+  },
+  "selected_image_backend": "built-in image tool",
+  "max_concurrent_slides": 3,
+  "sample_generation_method": {
+    "backend_used": "built-in image tool",
+    "tool_name": "image_gen",
+    "mode": "generate with strict reference images",
+    "prompt_source": "Slide 09 structured visual brief plus approved standard-page style reference and two live UI screenshots",
+    "size": "1672x941 16:9 landscape",
+    "quality": "built-in high-quality default",
+    "approved_sample_path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+    "input_context_preparation": "Local style and strict source images were inspected with view_image and passed through referenced_image_paths.",
+    "handoff_rule": "Use the same built-in image_gen path with the approved sample as style-only reference; return a blocker if unavailable."
+  },
+  "style": {
+    "name": "Pocket Earth 浅灰网格技术杂志风",
+    "visual_direction": "浅灰网格纸、粗黑边框、纸张卡片、像素英文小标题；标准页左 35% 结论、右 65% 两台手机；架构页全宽 4–6 步；硬件页真实原型最大。",
+    "color_palette": "off-white #f5f5f2, light gray grid, black; Injective green #2E7D5B; Azure blue #198FD1; hardware orange #F4511E; Merkle purple #8D6AC8",
+    "typography": "大号简洁中文黑体标题；像素英文标签；正文短句；每页一个可复述标题、3–5 条事实、一个底部结论",
+    "texture_and_finish": "flat editorial print, graph paper, crisp phone mockups, exact screenshots, no glossy crypto aesthetic",
+    "deck_consistency": "同一配色、字体气质、网格、边框与编号系统；页面构图随角色变化。"
+  },
+  "approved_style_reference": {
+    "path": "/Users/zhangcheng/Desktop/Pocket-Earth-Injective/决赛提交的PPT/Pocket_Earth_on_Injective_决赛路演_20页硬件强化版/origin_image/slide_09.png",
+    "role": "approved sample slide style reference",
+    "fidelity": "match palette, typography mood, grid, border language, density and finish only; do not copy content"
+  },
+  "slides": [
+    {
+      "number": 1,
+      "title": "Pocket Earth on Injective",
+      "role": "cover",
+      "intent": "第一句话同时建立产品、Injective、Azure 与实体终端",
+      "key_points": [
+        "私人记忆钉在地球",
+        "公共知识凝成每日版次",
+        "Agent 身份由 Injective 见证",
+        "Microsoft Azure 调度云端推理",
+        "Frost Edge Node 把公开见闻带回现实"
+      ],
+      "layout": {
+        "composition": "极简封面；左侧大标题与三行定位，右侧一台手机和真实 Frost Edge Node；真机视觉最大"
+      },
+      "visual_elements": {
+        "main_visual": "真实 Public Earth 手机界面与真实树莓派终端形成软件到现实的对照",
+        "supporting_elements": "底部三个小标签：LIVE DEMO / INJECTIVE / EDGE NODE"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/public-earth-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/图13_真机与概念终端对照.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "AI 时代，同时丢失了个人上下文与公共可信度",
+      "role": "problem framing",
+      "intent": "建立私人侧与公共侧的对称问题",
+      "key_points": [
+        "PRIVATE · 书、照片、行程与心情彼此割裂",
+        "PUBLIC · 来源、版本、修订与 Agent 身份持续漂移",
+        "长期 Agent 同时需要个人世界模型与稳定公共证据"
+      ],
+      "layout": {
+        "composition": "左侧上下两张问题卡，右侧两台手机；底部一条箭头：个人世界模型 → 公共证据 → 现实行动"
+      },
+      "visual_elements": {
+        "main_visual": "私人地图和公共知识详情的强对照"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/private-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/ui/public-earth-details.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "一颗地球，连接四个职责清楚的层",
+      "role": "architecture",
+      "intent": "建立全局架构并明确 Injective 的位置与数据边界",
+      "key_points": [
+        "01 私人空间层 · 六类对象与长期画像",
+        "02 公共 Agent 层 · 身份、门牌、卡片与握手",
+        "03 公共知识层 · 核验记录、每日版次与资源包",
+        "04 实体交互层 · Whisplay、RGB、TTS 与按键",
+        "渲染在端上 · 内容在包里 · 指纹在 Injective"
+      ],
+      "layout": {
+        "composition": "全宽四层架构图，层与层之间用清晰数据流连接；私人青、知识紫、Injective 绿、硬件橙"
+      },
+      "visual_elements": {
+        "main_visual": "端侧、资源包、Injective 与硬件的四层数据边界图"
+      },
+      "required_images": [],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "私人空间知识库，是 Frost 的个人世界模型",
+      "role": "product evidence",
+      "intent": "补足六类对象、长期记忆与端侧隐私",
+      "key_points": [
+        "书 · 电影 · 音乐 · 照片 · 行程 · 心情",
+        "建议 → Boundary 校验 → 用户确认 → 写入地图",
+        "工作记忆保持当前任务；长期画像保存脱敏偏好",
+        "照片、票据与精确位置优先留在端侧"
+      ],
+      "layout": {
+        "composition": "左侧 35% 文字，右侧 65% 两台手机：私人地图与 Photos；底部小型工作记忆/长期画像卡"
+      },
+      "visual_elements": {
+        "main_visual": "私人地球和照片端侧整理界面"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/private-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/ui/photos.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "MAPPING：把一本书读成一张有时间态的地图",
+      "role": "case study",
+      "intent": "用杭州古籍场景证明空间知识能力",
+      "key_points": [
+        "全文 · 书页照片 · .skill 内容包",
+        "读全文 → 提地名 → 古今考据 → 落坐标 → 生成漫游路线",
+        "每处地点标注：尚在 / 重建 / 已无",
+        "输出：古籍书叶 · MY MAP · ZINE · 可分发 .skill"
+      ],
+      "layout": {
+        "composition": "左侧案例结论，右侧严格沿用两张参考图中的手机界面和编号标注；底部五阶段流程条"
+      },
+      "visual_elements": {
+        "main_visual": "把书读成地图与古籍书叶时间态双图"
+      },
+      "required_images": [
+        {
+          "path": "assets/reference/图03_Cosmos总起_把书读成地图.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/reference/图04_古籍书叶与时间态.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Frost 用路由、委派、边界与记忆组织 Agent",
+      "role": "technical explainer",
+      "intent": "讲清 Agent Harness 的工程方法与 RunTrace",
+      "key_points": [
+        "ROUTER · 规则、端侧与云端任务分流",
+        "MEMORY · 当前任务与长期画像",
+        "DELEGATE · 多领域 Agent 在隔离上下文工作",
+        "BOUNDARY · 动作白名单与显式确认",
+        "RUNTRACE · provider、耗时、状态与降级路径可见"
+      ],
+      "layout": {
+        "composition": "左侧五个动词卡，右侧两台手机：Agents 控制台与 RunTrace；角落保留 Frost 像素头像"
+      },
+      "visual_elements": {
+        "main_visual": "Frost Harness 动作链与真实控制台"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/agents-private.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/reference/图02_FROST_AGENTS控制台与RunTrace.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Agent Forge / Plaza：从一句需求到可安装 Agent",
+      "role": "platform workflow",
+      "intent": "补足创建、审核、发布、安装与运行的生态闭环",
+      "key_points": [
+        "CREATE · 用自然语言描述空间或知识问题",
+        "COMPILE · 生成领域、工具、权限与输出 manifest",
+        "REVIEW · 拒绝危险 URL、可执行代码与越界权限",
+        "PUBLISH → INSTALL → RUN · 结果回流用户自己的地球"
+      ],
+      "layout": {
+        "composition": "左侧四步闭环，右侧两台手机严格使用 Forge 与 Plaza 真实截图"
+      },
+      "visual_elements": {
+        "main_visual": "创建界面与广场安装界面"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/agent-forge.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/ui/agent-plaza.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Frost #43–47：公开 Agent 拥有可核对的身份与人格",
+      "role": "identity evidence",
+      "intent": "让公开身份形成视觉记忆点",
+      "key_points": [
+        "#43 Core · 平台主身份",
+        "#44 Literature · #45 Noir · #46 Jazz · #47 Aurora",
+        "卡片包含 agentId、象征性门牌、cardHash、revision 与公开标签",
+        "身份、公开贡献与握手可跨客户端核对"
+      ],
+      "layout": {
+        "composition": "左侧回答“我是谁 / 我在哪 / 我发现了什么 / 我与谁相遇”，右侧身份卡手机与五个 Frost 形象；#43 居中放大"
+      },
+      "visual_elements": {
+        "main_visual": "Frost 身份卡牌与统一轮廓、个体细节的形象系统"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/public-earth-cards.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "../../public/frost-identities/frost-nft-group-1.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "公开知识回到空间，公开事实留在 Injective",
+      "role": "product evidence",
+      "intent": "把链上证据转成普通用户能理解的地图体验",
+      "key_points": [
+        "知识地图 · 地点便签与来源",
+        "知识详情 · truthScore、正反证据与 Merkle proof",
+        "身份卡牌 · agentId、门牌、revision 与 verified",
+        "公共地球在手机，公共事实在 Injective"
+      ],
+      "layout": {
+        "composition": "已批准样张：左侧结论，右侧两台手机，底部淡绿结论卡"
+      },
+      "visual_elements": {
+        "main_visual": "Public Earth 地图与知识详情"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/public-earth-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/ui/public-earth-details.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "sample_approved": true,
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "一个 Harness，八个领域 Agent，每天形成一版知识",
+      "role": "process",
+      "intent": "证明公共知识系统有真实流程与人工责任",
+      "key_points": [
+        "AI、科技、金融、气候、科学、健康、文化、政策",
+        "发现 → 去重 → 直接来源 → 调查方 / 质疑方 → truthScore",
+        "draft_review_required → approved → committed",
+        "七日热缓存保留过程；长期精选保留批准记录、proof 与 root"
+      ],
+      "layout": {
+        "composition": "全宽四阶段流程图，右下角嵌入真实公共 Agent 网络截图"
+      },
+      "visual_elements": {
+        "main_visual": "八领域分流、交叉核验与人工批准闸门"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/agents-public.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "每天一版：可下载、可离线复验、可持续修订",
+      "role": "technical architecture",
+      "intent": "讲清知识包、ClaimKey、recordHash、Merkle proof 与 revision",
+      "key_points": [
+        "ClaimKey · 同一语义主张的稳定身份",
+        "recordHash · 标题、正文、来源、日期与评分的精确快照",
+        "Merkle proof · 证明一条记录属于当天版次",
+        "editionRoot + revision · 提交 Injective，旧版本持续保留",
+        "本地重算哈希与根，再读取 Injective root 比较"
+      ],
+      "layout": {
+        "composition": "全宽技术图：资源包 → 叶子 → Merkle Tree → DailyKnowledgeChronicle；底部四步离线验证"
+      },
+      "visual_elements": {
+        "main_visual": "紫色知识证据链与绿色 Injective 根锚点"
+      },
+      "required_images": [],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Injective 固定四类公开事实",
+      "role": "evidence framework",
+      "intent": "用四个问题解释链上技术价值",
+      "key_points": [
+        "WHO · ERC-8004 身份：这个 Agent 是谁",
+        "WHERE · PublicEarthRegistry：象征性门牌在哪里",
+        "WHEN / WHICH VERSION · DailyKnowledgeChronicle：哪一天、哪个 revision",
+        "WHO MET WHOM · SocialHandshake：两个分身是否相遇",
+        "Agent 理解与创造；Injective 固定身份、版本与公开事件"
+      ],
+      "layout": {
+        "composition": "2×2 四张证据卡，以绿色横线连接，底部明确 Injective EVM Testnet"
+      },
+      "visual_elements": {
+        "main_visual": "WHO / WHERE / WHEN / WHO MET WHOM 四问框架"
+      },
+      "required_images": [],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "这些合约、交易、API 与 proof 现在就能核对",
+      "role": "live evidence",
+      "intent": "用真实地址与读取结果建立完成度可信度",
+      "key_points": [
+        "IdentityRegistry · 0x8004…BD9e · agentId 43–47",
+        "PublicEarthRegistry · 0xac7c…ee1b · 5 个 residence",
+        "DailyKnowledgeChronicle · 0x3f0e…0c25 · 20260717 / revision 2",
+        "SocialHandshake · 0xe533…3aee · 43 ↔ 44 / score 88"
+      ],
+      "layout": {
+        "composition": "左侧四条状态，右侧手机证据页与桌面 Blockscout 交易页；地址只显示缩写"
+      },
+      "visual_elements": {
+        "main_visual": "产品证据入口与真实成功交易并列"
+      },
+      "required_images": [
+        {
+          "path": "assets/evidence/injective-evidence-mobile.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/evidence/blockscout-chronicle-tx.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Microsoft Azure 按任务调度云端推理",
+      "role": "cloud architecture",
+      "intent": "给微软评委一个真实、清楚且不稀释 Injective 主线的技术位置",
+      "key_points": [
+        "EDGE SELECTOR · 端侧意图、检索与隐私敏感任务",
+        "PROVIDER COMPAT · 统一请求 / 响应契约",
+        "MICROSOFT FOUNDRY MODEL ROUTER · 单一部署入口",
+        "RUNTRACE · model、延迟、request id 与降级原因",
+        "当前：适配器与离线契约测试已完成；strict live 待真实账号验收"
+      ],
+      "layout": {
+        "composition": "Azure 蓝全宽架构：端侧 → provider adapter → Model Router → structured output → RunTrace；右下角诚实状态卡"
+      },
+      "visual_elements": {
+        "main_visual": "Azure 模型路由架构，Injective 绿色证据层作为独立底座"
+      },
+      "required_images": [],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Frost Edge Node：公开 Agent 长出一具身体",
+      "role": "hardware hero",
+      "intent": "把真实硬件提升为决赛视觉中心",
+      "key_points": [
+        "Raspberry Pi 5 + Whisplay HAT · 240×280 屏幕",
+        "RGB、按键、本地 TTS、离线兜底、手机镜像、systemd、replay cursor",
+        "只读取白名单公开事件，不持私钥与私人画像",
+        "真机证明能力；概念终端说明下一阶段便携形态"
+      ],
+      "layout": {
+        "composition": "沿用硬件参考语言；真实原型占 60% 以上并标注 NOW / WORKING PROTOTYPE；概念外壳次要并标注 CONCEPT"
+      },
+      "visual_elements": {
+        "main_visual": "真实 Frost Edge Node 与概念形态的边界明确对照"
+      },
+      "required_images": [
+        {
+          "path": "assets/hardware/图13_真机与概念终端对照.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 16,
+      "title": "屏幕、灯光、声音与按键形成同一套物理语言",
+      "role": "hardware anatomy",
+      "intent": "补足硬件 anatomy 与统一操作规则",
+      "key_points": [
+        "Whisplay · 显示身份、版次、主题与一句摘要",
+        "RGB LED · 用颜色表达主题、状态与错误",
+        "麦克风 / 扬声器 · 用户确认后输入与播报",
+        "单击移动 · 长按 1.2 秒进入 / 确认 · 双击返回",
+        "公共场所支持静音与耳机输出"
+      ],
+      "layout": {
+        "composition": "中间真实设备正面，周围 6 个编号功能框；橙色物理路径，黑色粗线，底部操作规则"
+      },
+      "visual_elements": {
+        "main_visual": "Whisplay、RGB、按键、麦克风、扬声器与耳机的硬件拆解"
+      },
+      "required_images": [
+        {
+          "path": "assets/hardware/图14_硬件功能.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/launcher.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 17,
+      "title": "一个 launcher，已经承载三个可运行应用",
+      "role": "hardware applications",
+      "intent": "展示硬件产品深度与复用能力",
+      "key_points": [
+        "日落电台 · 跟随全球日落播放城市音乐",
+        "口袋播客 · 把每日知识版次编成可听节目",
+        "地球答案 · 每天解锁一条经过审阅的行动提示",
+        "静默首页 · 时间、连接状态与克制提示",
+        "决赛主闭环使用“口袋播客 / 链上见闻”"
+      ],
+      "layout": {
+        "composition": "左侧三张功能卡；右侧四张真实 Whisplay 照片组成设备状态墙；底部一句“同一个 Frost，同一套硬件运行时”"
+      },
+      "visual_elements": {
+        "main_visual": "launcher、日落电台、口袋播客/AI News、地球答案四种真机状态"
+      },
+      "required_images": [
+        {
+          "path": "assets/hardware/launcher.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/sunset-dice.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/ai-news.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/earth-answer.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 18,
+      "title": "本地运行时只消费白名单公开事件",
+      "role": "hardware architecture",
+      "intent": "说透 Injective、服务端与硬件之间的安全合同",
+      "key_points": [
+        "READ · 服务端只读 Injective 公开证据",
+        "ENVELOPE · 生成白名单 JSONL 事件",
+        "FEED · 设备 token 暴露事件流",
+        "CURSOR · Pi sidecar 防止重播",
+        "ADAPTER · 只允许 state / display / tts",
+        "DRIVER · Whisplay、RGB 与 TTS 执行"
+      ],
+      "layout": {
+        "composition": "全宽六步架构图：Injective 绿色 → 服务端灰蓝 → 设备橙色；底部安全边界"
+      },
+      "visual_elements": {
+        "main_visual": "JSONL feed、cursor、adapter 与 driver 的可审计路径",
+        "supporting_elements": "无私钥 · 无私人画像 · 无任意链上文本直读"
+      },
+      "required_images": [
+        {
+          "path": "assets/hardware/图18_树莓派终端内部分层.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 19,
+      "title": "50 秒：一条公开知识走到房间里的 Frost",
+      "role": "live demo storyboard",
+      "intent": "让软件、Injective、Azure 与实体硬件在同一画面闭环",
+      "key_points": [
+        "01 Agent 发现并核验真实信号",
+        "02 人工批准，生成资源包、recordHash 与 Merkle proof",
+        "03 editionRoot 提交 Injective",
+        "04 Public Earth 展开来源、proof 与 revision",
+        "05 Frost #43 读取公开事件",
+        "06 Edge Node 亮灯、显示并播报；手机镜像同步大屏"
+      ],
+      "layout": {
+        "composition": "六步横向闭环；右侧三个实时画面：Public Earth、Blockscout、真实硬件；步骤 03 与 06 强调色"
+      },
+      "visual_elements": {
+        "main_visual": "从知识卡到实体播报的 50 秒导演板"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/public-earth-details.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/evidence/blockscout-chronicle-tx.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/ai-news.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    },
+    {
+      "number": 20,
+      "title": "空间留在 Pocket Earth，时间由 Injective 见证",
+      "role": "closing",
+      "intent": "用四个结果收束产品并留下可核验入口",
+      "key_points": [
+        "私人记忆留在设备，形成个人空间知识",
+        "公共知识形成带来源、proof 与 revision 的每日版次",
+        "Agent 身份、门牌与公开相遇由 Injective 持续见证",
+        "Microsoft Azure 调度云端推理，模型变化不会覆盖公开证据",
+        "Frost Edge Node 把经过验证的世界带回现实空间"
+      ],
+      "layout": {
+        "composition": "左侧大结论，右侧三张竖向证据卡：手机、Injective 交易、真实 Edge Node；底部三个入口标签"
+      },
+      "visual_elements": {
+        "main_visual": "空间、时间与现实终端三联画",
+        "supporting_elements": "LIVE DEMO · CONTRACTS · KNOWLEDGE PACK"
+      },
+      "required_images": [
+        {
+          "path": "assets/ui/public-earth-map.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/evidence/blockscout-chronicle-tx.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        },
+        {
+          "path": "assets/hardware/ai-news.png",
+          "role": "strict input asset; use visibly in the requested slide composition",
+          "fidelity": "preserve the supplied screenshot, evidence, hardware photo or reference content; do not redraw, relabel or invent a replacement"
+        }
+      ],
+      "constraints": [
+        "所有可见中文必须准确清晰，不出现乱码",
+        "全程只出现 Injective，不出现其他链名",
+        "不出现付费、代币、抽成、收入、稀有度、卡包、对战或升值表达",
+        "手机或证据截图是严格输入资产，不重画、不改字、不编造数据",
+        "浅灰网格纸、粗黑边、纸张卡片与像素小标题保持统一"
+      ]
+    }
+  ]
+}
