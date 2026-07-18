@@ -24,6 +24,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 from frost_pi_device_driver import rgb565_bytes
+from frost_pi_earth_answers import EarthAnswerState
 from frost_pi_sunset_bridge import (
     load_catalog as load_sunset_catalog,
     queue_city as queue_sunset_city,
@@ -69,8 +70,9 @@ VENDOR_APPS = {
 }
 
 PROJECTS = (
-    {"key": "sunset", "label": "SUNSET RADIO", "path": "/home/pi/sunset-radio", "accent": ORANGE},
-    {"key": "pocket", "label": "POCKET EARTH", "path": "/home/pi/pocket-earth", "accent": GREEN},
+    {"key": "sunset", "label": "日落电台", "path": "/home/pi/sunset-radio", "accent": ORANGE},
+    {"key": "pocket", "label": "口袋播客", "path": "/home/pi/pocket-earth", "accent": GREEN},
+    {"key": "answers", "label": "地球答案", "path": "/home/pi/earth-answers", "accent": CYAN},
 )
 
 AGENTS = (
@@ -100,6 +102,11 @@ POCKET_MODES = (
     {"key": "quiet", "label": "静默地球", "meta": "时间、Frost 与公共状态", "accent": GREEN},
     {"key": "agents", "label": "AGENTS", "meta": "身份、知识与事实核验", "accent": CYAN},
     {"key": "daybook", "label": "今日一页", "meta": "日历与一句原创选择", "accent": MAGENTA},
+)
+
+PODCAST_MODES = (
+    {"key": "podcast", "label": "播客模式", "meta": "每日知识版次 · 后续接入语音", "accent": MAGENTA},
+    {"key": "reading", "label": "阅读模式", "meta": "按领域阅读现有核验内容", "accent": CYAN},
 )
 
 CONTENT_CACHE_PATH = Path(
@@ -237,17 +244,18 @@ def render_root(selected: int) -> Image.Image:
     image = Image.new("RGB", (WIDTH, HEIGHT), PAPER)
     draw = ImageDraw.Draw(image)
     draw_header(draw, "PI HOME", GREEN)
-    draw.text((12, 49), "/home/pi", font=font(11, "mono"), fill=GREY)
-    draw.text((12, 69), "选择一个项目", font=font(18, "bold"), fill=INK)
+    draw.text((12, 45), "/home/pi", font=font(10, "mono"), fill=GREY)
+    draw.text((12, 62), "口袋地球", font=font(16, "bold"), fill=INK)
     for index, project in enumerate(PROJECTS):
-        y = 105 + index * 62
+        y = 88 + index * 52
         active = index == selected
         fill = project["accent"] if active else PAPER
-        draw.rectangle((11, y, 229, y + 50), fill=fill, outline=INK, width=3)
-        draw.text((20, y + 9), ("> " if active else "  ") + project["label"], font=font(13, "mono"), fill=INK)
-        draw.text((22, y + 31), project["path"].replace("/home/pi/", "~/"), font=font(9, "mono"), fill=INK if active else GREY)
-    draw.text((12, 246), "CLICK: MOVE  HOLD: OPEN", font=font(8, "mono"), fill=INK)
-    draw.text((12, 263), "2X: BACK TO RADIO", font=font(8, "mono"), fill=GREY)
+        draw.rectangle((11, y, 229, y + 43), fill=fill, outline=INK, width=2)
+        label = ("> " if active else "  ") + project["label"]
+        draw.text((20, y + 5), label, font=font_for_text(label, 13, "bold"), fill=INK)
+        draw.text((22, y + 27), project["path"].replace("/home/pi/", "~/"), font=font(8, "mono"), fill=INK if active else GREY)
+    draw.text((12, 248), "CLICK: MOVE  HOLD 1.2S: OPEN", font=font(7, "mono"), fill=INK)
+    draw.text((12, 264), "2X: BACK TO RADIO", font=font(8, "mono"), fill=GREY)
     return image
 
 
@@ -506,17 +514,50 @@ def render_sunset_modes(selected: int, catalog: list[dict]) -> Image.Image:
     total_tracks = sum(len(city.get("tracks", [])) for city in catalog)
     items = [dict(mode) for mode in SUNSET_MODES]
     items[0]["meta"] = f"{len(catalog)} 座城市 · {total_tracks} 首歌"
-    return _render_sunset_list("SUNSET RADIO", "~/sunset-radio  /  选择模式", items, selected)
+    return _render_sunset_list("日落电台", "~/sunset-radio  /  选择模式", items, selected, centered_title=True)
 
 
 def render_pocket_modes(selected: int) -> Image.Image:
     return _render_sunset_list(
-        "POCKET EARTH",
-        "~/pocket-earth  /  选择空间",
+        "阅读模式",
+        "~/pocket-earth  /  选择阅读空间",
         [dict(mode) for mode in POCKET_MODES],
         selected,
         accent=GREEN,
+        centered_title=True,
     )
+
+
+def render_podcast_modes(selected: int) -> Image.Image:
+    return _render_sunset_list(
+        "口袋播客",
+        "~/pocket-earth  /  选择模式",
+        [dict(mode) for mode in PODCAST_MODES],
+        selected,
+        accent=GREEN,
+        centered_title=True,
+    )
+
+
+def render_podcast_preview() -> Image.Image:
+    edition = CONTENT_CACHE.get("knowledgeEdition", {})
+    records = edition.get("records", [])
+    image = Image.new("RGB", (WIDTH, HEIGHT), PAPER)
+    draw = ImageDraw.Draw(image)
+    draw_header(draw, "播客模式", MAGENTA, centered=True)
+    draw.text((12, 49), "DAILY KNOWLEDGE PODCAST", font=font(8, "mono"), fill=GREY)
+    draw.text((12, 70), f"{edition.get('date', '—')} · REV {edition.get('revision', 0)}", font=font(17, "bold"), fill=INK)
+    draw.rectangle((11, 101, 229, 132), fill=MAGENTA, outline=INK, width=2)
+    draw.text((17, 110), f"{edition.get('factCount', 0)} 条核验知识 · 今日脚本", font=font(11, "bold"), fill=INK)
+    y = 148
+    for record in records[:2]:
+        title = _wrapped_lines(draw, record.get("title", "知识条目"), font(11, "bold"), 210, 1)
+        draw.text((14, y), f"- {title[0] if title else '知识条目'}", font=font(11, "bold"), fill=INK)
+        y += 28
+    draw.text((14, 216), "语音叙事 Agent 将把版次组织成播客语感", font=font(9), fill=GREY)
+    draw.text((12, 251), "PODCAST AGENT · NEXT ITERATION", font=font(7, "mono"), fill=INK)
+    draw.text((175, 265), "2X: BACK", font=font(7, "mono"), fill=GREY)
+    return image
 
 
 def flatten_sunset_tracks(catalog: list[dict]) -> list[dict]:
@@ -584,6 +625,46 @@ def _draw_dice(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], value:
         draw.ellipse((x - 3, y - 3, x + 3, y + 3), fill=colour)
 
 
+def render_earth_answer(state: EarthAnswerState) -> Image.Image:
+    state.sync_day()
+    item = state.selected
+    image = Image.new("RGB", (WIDTH, HEIGHT), (247, 242, 231))
+    draw = ImageDraw.Draw(image)
+    draw_header(draw, "地球答案", CYAN, centered=True)
+    draw.text((12, 48), item["date"].replace("-", "."), font=font(25, "mono"), fill=INK)
+
+    if state.phase == "rolling":
+        draw.text((14, 80), "ASKING THE EARTH…", font=font(9, "mono"), fill=(46, 108, 246))
+        _draw_dice(draw, (93, 111, 147, 165), state.dice_value, (46, 108, 246))
+        draw.text((55, 186), "地球正在回答", font=font(15, "bold"), fill=INK)
+        draw.text((72, 216), "掷骰子 · 今日一次", font=font(9), fill=GREY)
+        footer = "ROLLING…"
+    elif not state.today_revealed:
+        draw.text((14, 80), f"TODAY'S ANSWER · {state.today_index + 1}/365", font=font(8, "mono"), fill=(46, 108, 246))
+        _draw_dice(draw, (93, 111, 147, 165), 1, (143, 143, 139))
+        draw.text((45, 187), "今天的答案尚未揭晓", font=font(14, "bold"), fill=INK)
+        draw.text((50, 216), "长按 1.2 秒，向地球提问", font=font(9), fill=GREY)
+        footer = "HOLD 1.2S: REVEAL"
+    else:
+        status = "TODAY'S ANSWER" if state.viewing_today else "HISTORY"
+        draw.text((14, 80), f"{status} · {state.selected_index + 1}/365", font=font(8, "mono"), fill=(46, 108, 246))
+        draw.rectangle((13, 101, 227, 106), fill=GREEN)
+        quote_font = font_for_text(item["quote"], 12, "regular")
+        quote_lines = _wrapped_lines(draw, item["quote"], quote_font, 202, 6)
+        y = 116
+        for line in quote_lines:
+            draw.text((19, y), line, font=quote_font, fill=INK)
+            y += 19
+        credit = f"— {item['author']}"
+        draw.text((19, min(224, y + 3)), credit, font=font_for_text(credit, 9, "bold"), fill=(46, 108, 246))
+        footer = "CLICK: PREVIOUS"
+
+    draw.line((12, 249, 228, 249), fill=(184, 179, 168), width=1)
+    draw.text((13, 257), footer, font=font(7, "mono"), fill=INK)
+    draw.text((175, 257), "2X: BACK", font=font(7, "mono"), fill=GREY)
+    return image
+
+
 def render_sunset_dice(state) -> Image.Image:
     night = (4, 5, 6)
     amber = (246, 173, 85)
@@ -648,6 +729,7 @@ class MenuState:
     def __init__(self, sunset_catalog: list[dict] | None = None):
         self.level = "root"
         self.root_index = 1
+        self.podcast_mode_index = 0
         self.pocket_mode_index = 0
         self.agent_index = 0
         self.page_index = 0
@@ -662,12 +744,17 @@ class MenuState:
         self.dice_code = "0000 · 0000"
         self.dice_city = None
         self.dice_track = None
+        self.earth_answer = EarthAnswerState()
 
     def image(self) -> Image.Image:
         if self.level == "root":
             return render_root(self.root_index)
         if self.level == "pocket_modes":
             return render_pocket_modes(self.pocket_mode_index)
+        if self.level == "podcast_modes":
+            return render_podcast_modes(self.podcast_mode_index)
+        if self.level == "podcast_preview":
+            return render_podcast_preview()
         if self.level == "pocket_idle":
             return render_quiet_home(datetime.now().astimezone(), CONTENT_CACHE, font, font_for_text)
         if self.level == "daybook":
@@ -686,6 +773,8 @@ class MenuState:
             return render_sunset_times(self.sunset_events, self.sunset_event_index)
         if self.level == "sunset_dice":
             return render_sunset_dice(self)
+        if self.level == "earth_answer":
+            return render_earth_answer(self.earth_answer)
         if self.level == "agents":
             return render_agents(self.agent_index)
         return render_agent_page(AGENTS[self.agent_index], self.page_index)
@@ -695,6 +784,8 @@ class MenuState:
             self.root_index = (self.root_index + 1) % len(PROJECTS)
         elif self.level == "pocket_modes":
             self.pocket_mode_index = (self.pocket_mode_index + 1) % len(POCKET_MODES)
+        elif self.level == "podcast_modes":
+            self.podcast_mode_index = (self.podcast_mode_index + 1) % len(PODCAST_MODES)
         elif self.level == "agents":
             self.agent_index = (self.agent_index + 1) % len(AGENTS)
             self.page_index = 0
@@ -706,13 +797,22 @@ class MenuState:
             self.sunset_track_index = (self.sunset_track_index + 1) % len(self.sunset_tracks)
         elif self.level == "sunset_times" and self.sunset_events:
             self.sunset_event_index = (self.sunset_event_index + 1) % len(self.sunset_events)
+        elif self.level == "earth_answer":
+            self.earth_answer.previous()
 
     def enter(self):
         if self.level == "root":
-            if PROJECTS[self.root_index]["key"] == "sunset":
+            project = PROJECTS[self.root_index]["key"]
+            if project == "sunset":
                 self.level = "sunset_modes"
                 return "draw"
-            self.level = "pocket_modes"
+            if project == "answers":
+                self.level = "earth_answer"
+                return "draw"
+            self.level = "podcast_modes"
+        elif self.level == "podcast_modes":
+            mode = PODCAST_MODES[self.podcast_mode_index]["key"]
+            self.level = "podcast_preview" if mode == "podcast" else "pocket_modes"
         elif self.level == "pocket_modes":
             mode = POCKET_MODES[self.pocket_mode_index]["key"]
             self.level = {"quiet": "pocket_idle", "agents": "agents", "daybook": "daybook"}[mode]
@@ -735,6 +835,8 @@ class MenuState:
             if self.dice_phase == "landed" and self.dice_track:
                 return ("play_track", self.dice_track)
             return "roll_dice"
+        elif self.level == "earth_answer":
+            return "roll_answer" if self.earth_answer.start_roll() else "draw"
         return "draw"
 
     def set_dice_frame(self) -> None:
@@ -746,6 +848,12 @@ class MenuState:
         self.dice_city, self.dice_track = choose_random_sunset_track(self.sunset_catalog)
         self.dice_phase = "landed"
         self.dice_value = random.randint(1, 6)
+
+    def set_answer_roll_frame(self) -> None:
+        self.earth_answer.set_roll_frame(random.randint(1, 6))
+
+    def reveal_answer(self) -> None:
+        self.earth_answer.reveal_today()
 
     def back(self) -> str:
         if self.level == "agent":
@@ -759,6 +867,12 @@ class MenuState:
             self.level = "pocket_modes"
             return "draw"
         if self.level == "pocket_modes":
+            self.level = "podcast_modes"
+            return "draw"
+        if self.level == "podcast_preview":
+            self.level = "podcast_modes"
+            return "draw"
+        if self.level == "podcast_modes":
             self.level = "root"
             return "draw"
         if self.level == "sunset_tracks":
@@ -768,6 +882,9 @@ class MenuState:
             self.level = "sunset_modes"
             return "draw"
         if self.level == "sunset_modes":
+            self.level = "root"
+            return "draw"
+        if self.level == "earth_answer":
             self.level = "root"
             return "draw"
         return "sunset"
@@ -929,6 +1046,9 @@ class ProjectLauncher:
         if result == "roll_dice":
             self._animate_dice()
             return
+        if result == "roll_answer":
+            self._animate_earth_answer()
+            return
         if isinstance(result, tuple) and len(result) == 2:
             action, payload = result
             try:
@@ -956,6 +1076,15 @@ class ProjectLauncher:
             self.draw()
             time.sleep(0.08)
         self.state.land_dice()
+        self.draw()
+
+    def _animate_earth_answer(self) -> None:
+        for _ in range(18):
+            self.state.set_answer_roll_frame()
+            self.draw()
+            time.sleep(0.08)
+        self.state.reveal_answer()
+        self.board.set_rgb_fade(30, 202, 255, duration_ms=300)
         self.draw()
 
     def _foreground_app(self) -> str:
@@ -996,7 +1125,7 @@ class ProjectLauncher:
                 self.active = True
                 self.empty_foreground_since = None
                 self.recovery_requested_for = ""
-                if self.state.level in {"pocket_idle", "daybook"}:
+                if self.state.level in {"pocket_idle", "daybook", "earth_answer"}:
                     minute = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
                     if minute != self.last_clock_minute:
                         self.draw()

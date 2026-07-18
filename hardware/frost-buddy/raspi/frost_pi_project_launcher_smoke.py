@@ -9,6 +9,7 @@ from frost_pi_project_launcher import (
     CONTENT_CACHE,
     DAYBOOK_ENTRIES,
     MenuState,
+    PODCAST_MODES,
     POCKET_MODES,
     PROJECTS,
     SAFE_FOREGROUND_APPS,
@@ -49,10 +50,16 @@ def main() -> int:
     assert len(flattened) == 3
     assert flattened[0]["cityNameZh"] == "洛杉矶"
     assert state.level == "root"
-    assert [item["path"] for item in PROJECTS] == ["/home/pi/sunset-radio", "/home/pi/pocket-earth"]
+    assert [item["label"] for item in PROJECTS] == ["日落电台", "口袋播客", "地球答案"]
+    assert [item["path"] for item in PROJECTS] == [
+        "/home/pi/sunset-radio",
+        "/home/pi/pocket-earth",
+        "/home/pi/earth-answers",
+    ]
     assert len(AGENTS) == 12
     assert len(TOPIC_AGENT_KEYS) == 8
     assert [item["label"] for item in POCKET_MODES] == ["静默地球", "AGENTS", "今日一页"]
+    assert [item["label"] for item in PODCAST_MODES] == ["播客模式", "阅读模式"]
     assert len(DAYBOOK_ENTRIES) == 31
     assert CONTENT_CACHE["schema"] == "pocket-earth-edge-content-cache/v1"
     assert [item["state"] for item in CONTENT_CACHE["buffer"]] == ["cached", "miss", "anchored"]
@@ -66,6 +73,9 @@ def main() -> int:
     assert state.image().size == (240, 280)
 
     assert PROJECTS[state.root_index]["key"] == "pocket"
+    assert state.enter() == "draw" and state.level == "podcast_modes"
+    state.move()
+    assert PODCAST_MODES[state.podcast_mode_index]["key"] == "reading"
     assert state.enter() == "draw" and state.level == "pocket_modes"
     assert state.image().size == (240, 280)
     assert state.enter() == "draw" and state.level == "pocket_idle"
@@ -95,11 +105,18 @@ def main() -> int:
     assert state.enter() == "draw" and state.level == "daybook"
     assert state.image().size == (240, 280)
     assert state.back() == "draw" and state.level == "pocket_modes"
+    assert state.back() == "draw" and state.level == "podcast_modes"
     assert state.back() == "draw" and state.level == "root"
     assert state.back() == "sunset"
 
     state = MenuState(SUNSET_CATALOG)
-    state.move()
+    assert state.enter() == "draw" and state.level == "podcast_modes"
+    assert state.enter() == "draw" and state.level == "podcast_preview"
+    assert state.image().size == (240, 280)
+    assert state.back() == "draw" and state.level == "podcast_modes"
+
+    state = MenuState(SUNSET_CATALOG)
+    state.root_index = 0
     assert PROJECTS[state.root_index]["key"] == "sunset"
     assert state.enter() == "draw" and state.level == "sunset_modes"
     assert state.image().size == (240, 280)
@@ -124,6 +141,13 @@ def main() -> int:
     assert state.dice_phase == "landed" and state.dice_track
     assert state.enter()[0] == "play_track"
     assert state.back() == "draw" and state.level == "sunset_modes"
+
+    state = MenuState(SUNSET_CATALOG)
+    state.root_index = 2
+    assert PROJECTS[state.root_index]["key"] == "answers"
+    assert state.enter() == "draw" and state.level == "earth_answer"
+    assert state.image().size == (240, 280)
+    assert state.back() == "draw" and state.level == "root"
 
     with TemporaryDirectory() as directory:
         output = Path(directory) / "launcher.png"

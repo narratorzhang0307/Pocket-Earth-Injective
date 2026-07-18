@@ -71,7 +71,8 @@ The installed filesystem and process boundary is documented in
 ## PI Home launcher
 
 `frost_pi_project_launcher.py` turns the clear `/home/pi` project tree into a
-safe two-level Whisplay interface without exposing a destructive file manager:
+safe Whisplay interface without exposing a destructive file manager. Its `口袋地球`
+home presents three sibling capabilities: `日落电台`, `口袋播客`, and `地球答案`.
 
 - hold the orange button for 1.2 seconds to enter `PI HOME`,
 - single-click to move between sibling projects, modes, cities, songs, or agents,
@@ -80,7 +81,7 @@ safe two-level Whisplay interface without exposing a destructive file manager:
 - single-click inside an agent page to move through its cached evidence cards,
 - double-click from `PI HOME` to return to the radio status screen.
 
-`SUNSET RADIO` opens three device-native modes: `歌曲目录` directly flattens
+`日落电台` opens three device-native modes: `歌曲目录` directly flattens
 the existing 96-city/621-track resource tree into one song list (no UTC or city
 directory layer), `日落时刻` reuses Sunset Radio's real solar sunset calculator,
 and `随机骰子` adapts the app's amber-on-night dice ritual. The song-directory
@@ -89,13 +90,22 @@ plays the selected result; double-click still returns without playback. PI Home 
 radio catalog and posts a targeted command to its local API; it does not take
 ownership of the radio database or player.
 
-`POCKET EARTH` first opens three sibling spaces: `静默地球` is a clock-first,
-sound-free home with a pixel globe, the shared Frost silhouette, and public
-agent/knowledge status; `AGENTS` contains twelve evidence readers; `今日一页`
-is an offline calendar with one of 31 original Pocket Earth decision prompts.
+`口袋播客` opens `播客模式` and `阅读模式`. The podcast page previews the current
+verified knowledge edition without auto-playing audio; the narrative/TTS agent
+is deliberately a later iteration. Reading mode preserves the existing three
+spaces: `静默地球` is a clock-first, sound-free home with a pixel globe, the
+shared Frost silhouette, and public agent/knowledge status; `AGENTS` contains
+twelve evidence readers; `今日一页` is an offline calendar with one of 31
+original Pocket Earth decision prompts.
 The clock and date refresh once per minute without network calls or TTS. This
 borrows the low-distraction product logic of a pocket decision device, not its
 brand, copy, fortune-telling, or visual assets.
+
+`地球答案` is a separate annual action-guidance edition. It loads 365 reviewed
+source excerpts from `/home/pi/earth-answers`, hides today's text until the user
+holds for 1.2 seconds, persists the reveal locally, and lets a single click move
+only backwards through history. Double-click always returns to `口袋地球`; no
+button path can reveal tomorrow.
 
 Pocket Earth exposes twelve agent pages: Frost identity, public knowledge, all
 eight FactAtlas topic agents (AI, technology, finance, climate, science,
@@ -106,8 +116,8 @@ candidate as truth or invent the missing 07-16 edition. The launcher is
 an independent `pocket-earth-launcher.service`; it subscribes to the existing
 Whisplay button stream and switches foreground ownership through Whisplay IPC.
 It does not import or edit Sunset Radio source code. Run its offline navigation
-and 240×280 render checks with `python3 frost_pi_project_launcher_smoke.py` and
-`python3 frost_pi_quiet_home_smoke.py`.
+and 240×280 render checks with `python3 frost_pi_project_launcher_smoke.py`,
+`python3 frost_pi_earth_answers_smoke.py`, and `python3 frost_pi_quiet_home_smoke.py`.
 
 `whisplay_pi_home_guard.py` suppresses the vendor Bluetooth/Wi-Fi/demo app
 desktop once PI HOME is registered. It keeps a `.pre-pocket-earth` backup and

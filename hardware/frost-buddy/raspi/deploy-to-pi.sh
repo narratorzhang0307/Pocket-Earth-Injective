@@ -15,6 +15,9 @@ FILES=(
   frost_pi_feed_client.py
   frost_pi_device_driver.py
   frost_pi_device_driver_smoke.py
+  frost_pi_earth_answers.py
+  frost_pi_earth_answers_smoke.py
+  earth_answers_365.json
   frost_pi_live_preflight.py
   frost_pi_content_cache.json
   frost_pi_project_launcher.py
@@ -38,11 +41,14 @@ done
 scp -q "${FILES[@]/#/$SCRIPT_DIR/}" "$PI_HOST:$STAGE/"
 
 ssh "$PI_HOST" "set -euo pipefail
-  sudo install -d -m 0755 -o pi -g pi /home/pi/pocket-earth /home/pi/pocket-earth/agents
+  sudo install -d -m 0755 -o pi -g pi /home/pi/pocket-earth /home/pi/pocket-earth/agents /home/pi/earth-answers
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_event_adapter.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_feed_client.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_earth_answers.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_earth_answers_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/earth_answers_365.json' /home/pi/earth-answers/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_live_preflight.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_content_cache.json' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_project_launcher.py' /home/pi/pocket-earth/
@@ -66,6 +72,7 @@ ssh "$PI_HOST" "set -euo pipefail
   fi
   cd /home/pi/pocket-earth
   /usr/bin/python3 frost_pi_device_driver_smoke.py
+  /usr/bin/python3 frost_pi_earth_answers_smoke.py
   /usr/bin/python3 frost_pi_sunset_bridge_smoke.py
   /usr/bin/python3 frost_pi_project_launcher_smoke.py
   /usr/bin/python3 frost_pi_quiet_home_smoke.py
