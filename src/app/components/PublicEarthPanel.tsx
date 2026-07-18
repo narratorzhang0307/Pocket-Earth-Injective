@@ -85,10 +85,10 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
           type: 'circle',
           source: PUBLIC_RESIDENCE_SOURCE,
           paint: {
-            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 24, 15],
+            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 14, 8],
             'circle-color': ['get', 'color'],
-            'circle-opacity': ['case', ['boolean', ['get', 'active'], false], 0.42, 0.24],
-            'circle-blur': 0.65,
+            'circle-opacity': ['case', ['boolean', ['get', 'active'], false], 0.28, 0.15],
+            'circle-blur': 0.72,
           },
         });
       }
@@ -98,10 +98,10 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
           type: 'circle',
           source: PUBLIC_RESIDENCE_SOURCE,
           paint: {
-            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 12, 8],
+            'circle-radius': ['case', ['boolean', ['get', 'active'], false], 6, 4.5],
             'circle-color': ['get', 'color'],
             'circle-stroke-color': '#d8eee4',
-            'circle-stroke-width': ['case', ['boolean', ['get', 'active'], false], 2.5, 1.5],
+            'circle-stroke-width': ['case', ['boolean', ['get', 'active'], false], 1.2, 0.75],
           },
         });
       }
@@ -112,14 +112,16 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
           source: PUBLIC_RESIDENCE_SOURCE,
           layout: {
             'text-field': ['get', 'idLabel'],
-            'text-size': 7,
+            'text-size': 7.5,
+            'text-offset': [0, -1.15],
+            'text-anchor': 'bottom',
             'text-allow-overlap': true,
             'text-ignore-placement': true,
           },
           paint: {
-            'text-color': '#ffffff',
+            'text-color': '#a7c8b8',
             'text-halo-color': '#08100e',
-            'text-halo-width': 0.8,
+            'text-halo-width': 1.2,
           },
         });
       }
@@ -131,7 +133,7 @@ function MapboxGlobeView({ data, selected, onSelect }: { data: PublicEarthRespon
           layout: {
             'text-field': ['get', 'label'],
             'text-size': 9,
-            'text-offset': [0, 1.5],
+            'text-offset': [0, 1.05],
             'text-anchor': 'top',
             'text-allow-overlap': true,
             'text-ignore-placement': true,
