@@ -631,37 +631,48 @@ def render_earth_answer(state: EarthAnswerState) -> Image.Image:
     image = Image.new("RGB", (WIDTH, HEIGHT), (247, 242, 231))
     draw = ImageDraw.Draw(image)
     draw_header(draw, "地球答案", CYAN, centered=True)
-    draw.text((12, 48), item["date"].replace("-", "."), font=font(25, "mono"), fill=INK)
+    draw.text((12, 46), item["date"].replace("-", "."), font=font(28, "mono"), fill=INK)
 
     if state.phase == "rolling":
-        draw.text((14, 80), "ASKING THE EARTH…", font=font(9, "mono"), fill=(46, 108, 246))
+        draw.text((14, 80), "ASKING THE EARTH…", font=font(10, "mono"), fill=(46, 108, 246))
         _draw_dice(draw, (93, 111, 147, 165), state.dice_value, (46, 108, 246))
-        draw.text((55, 186), "地球正在回答", font=font(15, "bold"), fill=INK)
-        draw.text((72, 216), "掷骰子 · 今日一次", font=font(9), fill=GREY)
+        draw.text((51, 184), "地球正在回答", font=font(17, "bold"), fill=INK)
+        draw.text((67, 216), "掷骰子 · 今日一次", font=font(10), fill=GREY)
         footer = "ROLLING…"
     elif not state.today_revealed:
-        draw.text((14, 80), f"TODAY'S ANSWER · {state.today_index + 1}/365", font=font(8, "mono"), fill=(46, 108, 246))
+        draw.text((14, 80), f"TODAY'S ANSWER · {state.today_index + 1}/365", font=font(9, "mono"), fill=(46, 108, 246))
         _draw_dice(draw, (93, 111, 147, 165), 1, (143, 143, 139))
-        draw.text((45, 187), "今天的答案尚未揭晓", font=font(14, "bold"), fill=INK)
-        draw.text((50, 216), "长按 1.2 秒，向地球提问", font=font(9), fill=GREY)
+        draw.text((36, 184), "今天的答案尚未揭晓", font=font(16, "bold"), fill=INK)
+        draw.text((44, 216), "长按 1.2 秒，向地球提问", font=font(10), fill=GREY)
         footer = "HOLD 1.2S: REVEAL"
     else:
         status = "TODAY'S ANSWER" if state.viewing_today else "HISTORY"
-        draw.text((14, 80), f"{status} · {state.selected_index + 1}/365", font=font(8, "mono"), fill=(46, 108, 246))
+        draw.text((14, 80), f"{status} · {state.selected_index + 1}/365", font=font(9, "mono"), fill=(46, 108, 246))
         draw.rectangle((13, 101, 227, 106), fill=GREEN)
-        quote_font = font_for_text(item["quote"], 12, "regular")
-        quote_lines = _wrapped_lines(draw, item["quote"], quote_font, 202, 6)
-        y = 116
+        quote_size = 10
+        quote_lines = []
+        for candidate_size in range(16, 9, -1):
+            candidate_font = font_for_text(item["quote"], candidate_size, "regular")
+            candidate_lines = _wrapped_lines(draw, item["quote"], candidate_font, 202, 50)
+            if len(candidate_lines) * (candidate_size + 5) <= 98:
+                quote_size = candidate_size
+                quote_lines = candidate_lines
+                break
+        quote_font = font_for_text(item["quote"], quote_size, "regular")
+        line_step = quote_size + 5
+        if not quote_lines:
+            quote_lines = _wrapped_lines(draw, item["quote"], quote_font, 202, 98 // line_step)
+        y = 112
         for line in quote_lines:
             draw.text((19, y), line, font=quote_font, fill=INK)
-            y += 19
+            y += line_step
         credit = f"— {item['author']}"
-        draw.text((19, min(224, y + 3)), credit, font=font_for_text(credit, 9, "bold"), fill=(46, 108, 246))
+        draw.text((19, min(226, y + 2)), credit, font=font_for_text(credit, 11, "bold"), fill=(46, 108, 246))
         footer = "CLICK: PREVIOUS"
 
     draw.line((12, 249, 228, 249), fill=(184, 179, 168), width=1)
-    draw.text((13, 257), footer, font=font(7, "mono"), fill=INK)
-    draw.text((175, 257), "2X: BACK", font=font(7, "mono"), fill=GREY)
+    draw.text((13, 256), footer, font=font(8, "mono"), fill=INK)
+    draw.text((171, 256), "2X: BACK", font=font(8, "mono"), fill=GREY)
     return image
 
 
