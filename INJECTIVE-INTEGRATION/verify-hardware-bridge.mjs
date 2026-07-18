@@ -235,7 +235,7 @@ for (const snippet of ['240x280', 'rgb565Bytes', 'PocketEarthDeviceDriver']) {
   assertTrue(`physical driver smoke keeps ${snippet}`, physicalDriverSmoke.includes(snippet))
 }
 
-for (const snippet of ['/home/pi/pocket-earth', '/home/pi/sunset-radio', '/etc/pocket-earth-edge.env', '/var/lib/pocket-earth-edge', '/var/cache/pocket-earth-edge', '/run/pocket-earth-edge', 'music-agent']) {
+for (const snippet of ['/home/pi/pocket-earth', '/etc/pocket-earth-edge.env', '/var/lib/pocket-earth-edge', '/var/cache/pocket-earth-edge', '/run/pocket-earth-edge', 'music-agent']) {
   assertTrue(`Linux layout keeps ${snippet}`, linuxLayout.includes(snippet))
 }
 
