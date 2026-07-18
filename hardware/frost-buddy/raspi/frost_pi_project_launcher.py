@@ -36,6 +36,25 @@ RUNTIME_PATH = os.environ.get("WHISPLAY_RUNTIME", "/home/pi/Whisplay/runtime")
 SNAPSHOT_PATH = Path(os.environ.get("FROST_MIRROR_PATH", "/run/pocket-earth-edge/live.png"))
 LONG_PRESS_SECONDS = float(os.environ.get("POCKET_LAUNCHER_LONG_PRESS_SECONDS", "1.2"))
 DOUBLE_CLICK_SECONDS = float(os.environ.get("POCKET_LAUNCHER_DOUBLE_CLICK_SECONDS", "0.42"))
+FOREGROUND_GRACE_SECONDS = float(os.environ.get("POCKET_LAUNCHER_FOREGROUND_GRACE_SECONDS", "0.0"))
+FOREGROUND_POLL_SECONDS = float(os.environ.get("POCKET_LAUNCHER_FOREGROUND_POLL_SECONDS", "0.25"))
+STARTUP_GRACE_SECONDS = float(os.environ.get("POCKET_LAUNCHER_STARTUP_GRACE_SECONDS", "1.0"))
+
+SAFE_FOREGROUND_APPS = {
+    "sunset-radio-status",
+    "pocket-earth-launcher",
+    "pocket-earth-edge",
+}
+VENDOR_APPS = {
+    "whisplay-bluetooth",
+    "whisplay-wifi",
+    "whisplay-volume",
+    "whisplay-jump",
+    "whisplay-flappy-bird",
+    "whisplay-play-mp4",
+    "whisplay-run-test",
+    "dummy-test",
+}
 
 PROJECTS = (
     {"key": "sunset", "label": "SUNSET RADIO", "path": "/home/pi/sunset-radio", "accent": ORANGE},
@@ -74,6 +93,21 @@ def font(size: int, family: str = "regular"):
         if Path(candidate).exists():
             return ImageFont.truetype(candidate, size)
     return ImageFont.load_default()
+
+
+def cjk_font_status() -> tuple[bool, str]:
+    """Prove that the selected regular font contains real Chinese glyphs."""
+    selected = font(16, "regular")
+    path = str(getattr(selected, "path", "PIL-default"))
+    try:
+        missing = (selected.getmask(chr(0x10FFFF)).size, bytes(selected.getmask(chr(0x10FFFF))))
+        for character in "口袋地球身份知识链上见闻事实核验":
+            mask = selected.getmask(character)
+            if not any(bytes(mask)) or (mask.size, bytes(mask)) == missing:
+                return False, path
+    except (AttributeError, OSError, ValueError):
+        return False, path
+    return True, path
 
 
 def save_snapshot(image: Image.Image) -> None:
@@ -206,6 +240,11 @@ class ProjectLauncher:
         self.click_count = 0
         self.long_fired = False
         self.ignore_next_release = False
+        self.started_at = time.monotonic()
+        self.fallback_suspended_until = self.started_at + STARTUP_GRACE_SECONDS
+        self.empty_foreground_since = None
+        self.recovery_requested_for = ""
+        self.recovery_requested_at = 0.0
 
         self.board = WhisplayDaemonProxy(
             socket_path=SOCKET_PATH,
@@ -214,12 +253,15 @@ class ProjectLauncher:
             icon="PI",
             launch_command="sudo -n systemctl kill --kill-whom=main -s SIGUSR1 pocket-earth-launcher.service",
             launch_cwd="/home/pi/pocket-earth",
-            priority=100,
+            # Keep PI HOME at desktop index zero. The vendor desktop otherwise
+            # defaults to Bluetooth whenever foreground ownership has a gap.
+            priority=1000,
             persist=True,
         )
         self.board.register()
         self.board.on_button_press(self._launcher_press)
         self.board.on_button_release(self._launcher_release)
+        self.board.on_focus_revoked(self._launcher_focus_revoked)
         self.board.start_event_listener()
 
         self.sunset_watch = WhisplayDaemonProxy(
@@ -232,9 +274,13 @@ class ProjectLauncher:
         self.sunset_watch.start_event_listener()
 
     @staticmethod
-    def _systemctl(action: str, unit: str) -> None:
+    def _systemctl(action: str, unit: str, *, no_block: bool = False) -> None:
+        command = ["sudo", "-n", "systemctl"]
+        if no_block:
+            command.append("--no-block")
+        command.extend([action, unit])
         subprocess.run(
-            ["sudo", "-n", "systemctl", action, unit],
+            command,
             check=False,
             timeout=15,
             stdout=subprocess.DEVNULL,
@@ -283,6 +329,11 @@ class ProjectLauncher:
             self.click_timer.daemon = True
             self.click_timer.start()
 
+    def _launcher_focus_revoked(self, _payload=None) -> None:
+        with self.lock:
+            self.active = False
+            self.empty_foreground_since = time.monotonic()
+
     def _settle_clicks(self) -> None:
         with self.lock:
             count = self.click_count
@@ -315,6 +366,61 @@ class ProjectLauncher:
             return str(self.board._send_request("health.ping").get("payload", {}).get("foreground_app_id") or "")
         except Exception:
             return ""
+
+    def _request_vendor_exit(self, app_id: str) -> None:
+        now = time.monotonic()
+        if self.recovery_requested_for == app_id and now - self.recovery_requested_at < 2.5:
+            return
+        self.recovery_requested_for = app_id
+        self.recovery_requested_at = now
+        try:
+            self.board._send_request("app.exit.request", {"app_id": app_id})
+            print(f"pocket-launcher: recovering foreground from {app_id}", flush=True)
+        except Exception as exc:
+            print(f"pocket-launcher: could not exit {app_id}: {exc}", flush=True)
+
+    def maintain_foreground(self) -> None:
+        """Prevent the user from falling through to vendor or demo screens."""
+        with self.lock:
+            if self.transitioning:
+                return
+            now = time.monotonic()
+            if now < self.fallback_suspended_until:
+                return
+            foreground = self._foreground_app()
+            if self.active and foreground != "pocket-earth-launcher":
+                # The daemon can revoke focus independently (for example its
+                # built-in quad-click exit). Trust live ownership, not the
+                # process-local flag, or the launcher can remain falsely active
+                # while the user is stranded on the vendor desktop.
+                self.active = False
+                self.board.release_focus()
+            if foreground == "pocket-earth-launcher":
+                self.active = True
+                self.empty_foreground_since = None
+                self.recovery_requested_for = ""
+                return
+            if foreground in SAFE_FOREGROUND_APPS:
+                self.empty_foreground_since = None
+                self.recovery_requested_for = ""
+                return
+            if foreground in VENDOR_APPS:
+                self.empty_foreground_since = None
+                self._request_vendor_exit(foreground)
+                return
+            if foreground:
+                # Do not terminate an unknown third-party process. Raising PI
+                # HOME to desktop index zero prevents it being launched by an
+                # accidental hold; known vendor/demo apps are handled above.
+                self.empty_foreground_since = None
+                return
+            if self.empty_foreground_since is None:
+                self.empty_foreground_since = now
+                return
+            if now - self.empty_foreground_since >= FOREGROUND_GRACE_SECONDS:
+                print("pocket-launcher: foreground gap recovered to PI HOME", flush=True)
+                self.empty_foreground_since = None
+                self.enter_home()
 
     def _release_sunset_focus_if_needed(self) -> None:
         if self._foreground_app() != "sunset-radio-status":
@@ -355,6 +461,8 @@ class ProjectLauncher:
 
     def leave_to_sunset(self) -> None:
         self.active = False
+        self.fallback_suspended_until = time.monotonic() + 6.0
+        self.empty_foreground_since = None
         try:
             self.board.set_rgb_fade(0, 0, 0, duration_ms=250)
         finally:
@@ -373,7 +481,8 @@ class ProjectLauncher:
                 self.click_timer.cancel()
             if self.active:
                 self.board.release_focus()
-                self._systemctl("restart", "sunset-radio-whisplay.service")
+                # Avoid a systemd stop cycle waiting on a nested restart job.
+                self._systemctl("restart", "sunset-radio-whisplay.service", no_block=True)
             self.board.cleanup()
             self.sunset_watch.cleanup()
 
@@ -385,8 +494,8 @@ def main() -> int:
     signal.signal(signal.SIGTERM, lambda *_args: stopping.set())
     signal.signal(signal.SIGINT, lambda *_args: stopping.set())
     try:
-        while not stopping.wait(1.0):
-            pass
+        while not stopping.wait(FOREGROUND_POLL_SECONDS):
+            launcher.maintain_foreground()
     finally:
         launcher.close()
     return 0

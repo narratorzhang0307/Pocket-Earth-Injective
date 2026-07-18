@@ -32,17 +32,49 @@ def _wifi():
     return ""
 
 
-def _whisplay():
+def _whisplay_request(cmd="health.ping", payload=None):
     path = "/tmp/whisplay-daemon.sock"
     try:
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
             client.settimeout(3)
             client.connect(path)
-            request = json.dumps({"version": 1, "cmd": "health.ping", "payload": {}}) + "\n"
+            request = json.dumps({"version": 1, "cmd": cmd, "payload": payload or {}}) + "\n"
             client.sendall(request.encode())
             response = json.loads(client.makefile("r").readline())
-        return response.get("ok") is True
+        return response if response.get("ok") is True else {}
     except (OSError, ValueError, json.JSONDecodeError):
+        return {}
+
+
+def _whisplay_state():
+    health = _whisplay_request()
+    apps = _whisplay_request("app.list").get("payload", {}).get("apps", [])
+    selected = next((app.get("app_id", "") for app in apps if app.get("selected")), "")
+    return {
+        "responding": bool(health),
+        "foreground": health.get("payload", {}).get("foreground_app_id", ""),
+        "safeForeground": health.get("payload", {}).get("foreground_app_id", "") in {
+            "sunset-radio-status", "pocket-earth-launcher", "pocket-earth-edge"
+        },
+        "desktopDefault": selected,
+        "safeDesktopDefault": selected == "pocket-earth-launcher",
+    }
+
+
+def _cjk_font():
+    try:
+        from frost_pi_device_driver import cjk_font_status
+        ok, path = cjk_font_status()
+        return {"glyphs": ok, "path": path}
+    except (ImportError, OSError, ValueError) as exc:
+        return {"glyphs": False, "path": str(exc)}
+
+
+def _vendor_desktop_suppressed():
+    try:
+        from whisplay_pi_home_guard import guarded
+        return guarded(Path("/home/pi/Whisplay/daemon/whisplay_daemon.py"))
+    except (ImportError, OSError, ValueError):
         return False
 
 
@@ -67,6 +99,8 @@ def main(argv=None):
         "FROST_MIRROR_PATH",
         str(runtime_snapshot if runtime_snapshot.exists() else legacy_snapshot),
     ))
+    whisplay = _whisplay_state()
+    cjk = _cjk_font()
     report = {
         "ok": True,
         "hostname": socket.gethostname(),
@@ -80,7 +114,14 @@ def main(argv=None):
             "projectLauncher": _active("pocket-earth-launcher.service"),
         },
         "hardware": {
-            "whisplayResponding": _whisplay(),
+            "whisplayResponding": whisplay["responding"],
+            "foreground": whisplay["foreground"],
+            "safeForeground": whisplay["safeForeground"],
+            "desktopDefault": whisplay["desktopDefault"],
+            "safeDesktopDefault": whisplay["safeDesktopDefault"],
+            "vendorDesktopSuppressed": _vendor_desktop_suppressed(),
+            "cjkFont": cjk["path"],
+            "cjkGlyphs": cjk["glyphs"],
             "speakerPlayer": bool(shutil.which("ffplay")),
             "offlineTts": bool(shutil.which("espeak-ng") or shutil.which("espeak")),
         },
@@ -99,6 +140,9 @@ def main(argv=None):
         report["services"]["pocketEarthEdge"],
         report["services"]["projectLauncher"],
         report["hardware"]["whisplayResponding"],
+        report["hardware"]["safeForeground"],
+        report["hardware"]["vendorDesktopSuppressed"],
+        report["hardware"]["cjkGlyphs"],
         report["hardware"]["speakerPlayer"],
         report["hardware"]["offlineTts"],
         report["eventLane"]["mirrorResponding"],

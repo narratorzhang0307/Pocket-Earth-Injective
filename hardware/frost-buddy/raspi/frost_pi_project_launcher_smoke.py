@@ -4,7 +4,7 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from frost_pi_project_launcher import AGENTS, MenuState, PROJECTS
+from frost_pi_project_launcher import AGENTS, MenuState, PROJECTS, SAFE_FOREGROUND_APPS, VENDOR_APPS, cjk_font_status
 
 
 def main() -> int:
@@ -12,6 +12,8 @@ def main() -> int:
     assert state.level == "root"
     assert [item["path"] for item in PROJECTS] == ["/home/pi/sunset-radio", "/home/pi/pocket-earth"]
     assert len(AGENTS) == 6
+    assert "pocket-earth-edge" in SAFE_FOREGROUND_APPS
+    assert {"whisplay-bluetooth", "whisplay-wifi"}.issubset(VENDOR_APPS)
     assert state.image().size == (240, 280)
 
     assert PROJECTS[state.root_index]["key"] == "pocket"
@@ -30,7 +32,11 @@ def main() -> int:
         state.image().save(output)
         assert output.stat().st_size > 1024
 
-    print("frost_pi_project_launcher smoke passed. (15 checks)")
+    cjk_ok, cjk_font = cjk_font_status()
+    if Path(cjk_font).exists() and ("wqy" in cjk_font.lower() or "cjk" in cjk_font.lower()):
+        assert cjk_ok, f"Chinese glyph smoke failed for {cjk_font}"
+
+    print(f"frost_pi_project_launcher smoke passed; cjkFont={cjk_font} cjkGlyphs={cjk_ok}")
     return 0
 
 

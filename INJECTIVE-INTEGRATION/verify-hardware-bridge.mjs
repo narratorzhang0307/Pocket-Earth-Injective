@@ -145,6 +145,7 @@ const physicalDriver = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_
 const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py', 'utf8')
 const projectLauncher = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher.py', 'utf8')
 const projectLauncherSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py', 'utf8')
+const piHomeGuard = readFileSync('hardware/frost-buddy/raspi/whisplay_pi_home_guard.py', 'utf8')
 const linuxLayout = readFileSync('hardware/frost-buddy/raspi/LINUX-LAYOUT.md', 'utf8')
 
 for (const snippet of [
@@ -260,6 +261,10 @@ for (const snippet of ['len(AGENTS) == 6', 'state.enter()', 'state.back()', '(24
   assertTrue(`project launcher smoke keeps ${snippet}`, projectLauncherSmoke.includes(snippet))
 }
 
+for (const snippet of ['POCKET_EARTH_PI_HOME_GUARD', 'pocket-earth-launcher', '.pre-pocket-earth', 'def restore']) {
+  assertTrue(`PI HOME desktop guard keeps ${snippet}`, piHomeGuard.includes(snippet))
+}
+
 for (const snippet of ['/home/pi/pocket-earth', '/etc/pocket-earth-edge.env', '/var/lib/pocket-earth-edge', '/var/cache/pocket-earth-edge', '/run/pocket-earth-edge', 'music-agent']) {
   assertTrue(`Linux layout keeps ${snippet}`, linuxLayout.includes(snippet))
 }
@@ -298,5 +303,8 @@ execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.p
 
 console.log('\nRaspberry Pi project launcher smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nWhisplay PI HOME desktop guard smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/whisplay_pi_home_guard_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nOK Frost Buddy hardware bridge can carry music-agent and Injective chain-dispatch events safely.')

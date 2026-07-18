@@ -5,7 +5,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from frost_pi_device_driver import PocketEarthDeviceDriver, render_evidence_card, rgb565_bytes
+from frost_pi_device_driver import PocketEarthDeviceDriver, cjk_font_status, render_evidence_card, rgb565_bytes
 
 
 ACTIONS = [
@@ -35,6 +35,9 @@ def main() -> int:
     image = render_evidence_card(ACTIONS)
     assert image.size == (240, 280)
     assert len(rgb565_bytes(image)) == 240 * 280 * 2
+    cjk_ok, cjk_font = cjk_font_status()
+    if Path(cjk_font).exists() and ("wqy" in cjk_font.lower() or "cjk" in cjk_font.lower()):
+        assert cjk_ok, f"Chinese glyph smoke failed for {cjk_font}"
     with tempfile.TemporaryDirectory(prefix="frost-edge-smoke-") as directory:
         driver = PocketEarthDeviceDriver(dry_run=True, mirror_port=0)
         driver.snapshot_path = Path(directory) / "live.png"
@@ -45,7 +48,7 @@ def main() -> int:
         assert result["screen"] is True
         assert result["state"] == "attention"
         assert driver.snapshot_path.stat().st_size > 1024
-    print(json.dumps({"ok": True, "screen": "240x280", "rgb565Bytes": 134400}))
+    print(json.dumps({"ok": True, "screen": "240x280", "rgb565Bytes": 134400, "cjkFont": cjk_font, "cjkGlyphs": cjk_ok}))
     return 0
 
 

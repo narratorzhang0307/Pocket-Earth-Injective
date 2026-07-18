@@ -85,6 +85,14 @@ Whisplay button stream and switches foreground ownership through Whisplay IPC.
 It does not import or edit Sunset Radio source code. Run its offline navigation
 and 240×280 render check with `python3 frost_pi_project_launcher_smoke.py`.
 
+`whisplay_pi_home_guard.py` suppresses the vendor Bluetooth/Wi-Fi/demo app
+desktop once PI HOME is registered. It keeps a `.pre-pocket-earth` backup and
+does not remove the maintenance implementations. Deployment installs this
+small, reversible guard; strict live preflight requires it to remain active.
+The launcher also listens for daemon-side focus revocation, so Whisplay's
+quad-click gesture cannot leave its process falsely marked active while the
+screen has already fallen back elsewhere.
+
 ## Adapter Contract Matrix
 
 | Layer | Owns | Must not own |

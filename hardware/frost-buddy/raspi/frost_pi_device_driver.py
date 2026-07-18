@@ -76,6 +76,21 @@ def _font(size: int, family: str = "regular"):
     return ImageFont.load_default()
 
 
+def cjk_font_status() -> tuple[bool, str]:
+    """Return whether the physical evidence-card font has Chinese glyphs."""
+    selected = _font(16, "regular")
+    path = str(getattr(selected, "path", "PIL-default"))
+    try:
+        missing = (selected.getmask(chr(0x10FFFF)).size, bytes(selected.getmask(chr(0x10FFFF))))
+        for character in "口袋地球身份知识链上见闻事实核验":
+            mask = selected.getmask(character)
+            if not any(bytes(mask)) or (mask.size, bytes(mask)) == missing:
+                return False, path
+    except (AttributeError, OSError, ValueError):
+        return False, path
+    return True, path
+
+
 def _text(value, limit=220) -> str:
     return " ".join(str(value or "").split()).strip()[:limit]
 
