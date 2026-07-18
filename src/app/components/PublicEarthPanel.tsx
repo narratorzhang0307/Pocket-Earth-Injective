@@ -25,13 +25,12 @@ type PublicEarthResponse = {
 interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
-const PORTRAIT_SPRITE = '/frost-identities/frost-identity-sprite-2026-07-19.png';
-const PORTRAIT_CROPS: Record<number, string> = {
-  43: '423 8 407 614',
-  44: '8 8 407 614',
-  45: '839 8 407 614',
-  46: '839 631 407 614',
-  47: '423 631 407 614',
+const PORTRAITS: Record<number, { src: string; viewBox: string }> = {
+  43: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '4 4 504 504' },
+  44: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 4 504 504' },
+  45: { src: '/frost-identities/frost-nft-group-2.png', viewBox: '1028 4 504 504' },
+  46: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '516 516 504 504' },
+  47: { src: '/frost-identities/frost-nft-group-1.png', viewBox: '1028 4 504 504' },
 };
 
 function shortHash(hash: string) {
@@ -75,10 +74,10 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
                 <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
               </div>
               <div className="mt-3 h-[118px] border-2 border-black bg-black overflow-hidden">
-                <svg viewBox={PORTRAIT_CROPS[item.agentId]} preserveAspectRatio="xMidYMid slice" role="img"
+                <svg viewBox={PORTRAITS[item.agentId].viewBox} preserveAspectRatio="xMidYMid slice" role="img"
                   aria-label={`${item.displayName} Frost 身份肖像`} className="h-full w-full">
                   <title>{item.displayName} Frost 身份肖像</title>
-                  <image href={PORTRAIT_SPRITE} width="1254" height="1254" />
+                  <image href={PORTRAITS[item.agentId].src} width="1536" height="1024" />
                 </svg>
               </div>
               <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
