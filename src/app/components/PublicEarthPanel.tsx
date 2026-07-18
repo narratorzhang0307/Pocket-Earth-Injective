@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Globe2, IdCard, Link2, Newspaper, ShieldCheck } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight, Globe2, IdCard, Link2, Newspaper, ShieldCheck } from 'lucide-react';
 import PublicKnowledgeGlobe from './PublicKnowledgeGlobe';
 import PublicKnowledgeDetails from './PublicKnowledgeDetails';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
@@ -39,6 +39,20 @@ function shortHash(hash: string) {
 
 function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; selected: Residence; onSelect: (item: Residence) => void }) {
   const selectedIndex = Math.max(0, data.residences.findIndex((item) => item.agentId === selected.agentId));
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    trackRef.current?.querySelector<HTMLElement>(`[data-agent-id="${selected.agentId}"]`)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
+  }, [selected.agentId]);
+
+  const moveCard = (direction: -1 | 1) => {
+    const nextIndex = (selectedIndex + direction + data.residences.length) % data.residences.length;
+    onSelect(data.residences[nextIndex]);
+  };
 
   return (
     <div>
@@ -46,35 +60,45 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
         <span>IDENTITY DECK · {data.residences.length} CARDS</span>
         <span>{selectedIndex + 1} / {data.residences.length} · SWIPE →</span>
       </div>
-      <div className="flex gap-2 overflow-x-auto pt-2 pb-2 snap-x snap-mandatory">
-        {data.residences.map((item) => (
-          <button type="button" key={item.agentId} onClick={() => onSelect(item)} aria-label={`选择 ${item.displayName} 身份卡 ${item.doorplate}`}
-            aria-pressed={item.agentId === selected.agentId}
-            className={`snap-center shrink-0 w-[220px] min-h-[285px] text-left border-[3px] border-black p-3 shadow-[4px_4px_0_#000] ${item.agentId === selected.agentId ? 'bg-white' : 'bg-[#dddcd6]'}`}>
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <div className="font-pixel text-[7px] tracking-widest text-black/45">FROST IDENTITY CARD</div>
-                <div className="font-pixel text-[13px] mt-1 leading-tight">{item.displayName}</div>
+      <div className="relative">
+        <div ref={trackRef} className="flex gap-2 overflow-x-auto px-7 pt-2 pb-2 snap-x snap-mandatory">
+          {data.residences.map((item) => (
+            <button type="button" key={item.agentId} data-agent-id={item.agentId} onClick={() => onSelect(item)} aria-label={`选择 ${item.displayName} 身份卡 ${item.doorplate}`}
+              aria-pressed={item.agentId === selected.agentId}
+              className={`snap-center shrink-0 w-[220px] min-h-[285px] text-left border-[3px] border-black p-3 shadow-[4px_4px_0_#000] ${item.agentId === selected.agentId ? 'bg-white' : 'bg-[#dddcd6]'}`}>
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="font-pixel text-[7px] tracking-widest text-black/45">FROST IDENTITY CARD</div>
+                  <div className="font-pixel text-[13px] mt-1 leading-tight">{item.displayName}</div>
+                </div>
+                <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
               </div>
-              <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
-            </div>
-            <div className="mt-3 h-[96px] border-2 border-black bg-black overflow-hidden">
-              <img src={PORTRAITS[item.agentId]} alt={`${item.displayName} Frost 身份肖像`} loading="lazy" draggable={false}
-                className="h-full w-full object-cover" style={{ objectPosition: 'center 38%' }} />
-            </div>
-            <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
-              <span className="font-pixel text-[7px]">{item.doorplate}</span>
-              <span className="text-[9px]">{item.zoneInfo?.name}</span>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-1">
-              {item.publicTraits.map((trait) => <span key={trait} className="text-[8px] border border-black px-1.5 py-0.5 bg-[#f0eee7]">{trait}</span>)}
-            </div>
-            <div className="mt-3 text-[8px] text-black/50 leading-relaxed">
-              CARD v{item.cardVersion} · CHAIN REV {item.revision}<br />HASH {shortHash(item.cardHash)}
-            </div>
-            <div className="mt-2 flex items-center gap-1 text-[8px] text-[#315e4b] font-bold"><ShieldCheck className="w-3 h-3" />INJECTIVE VERIFIED</div>
-          </button>
-        ))}
+              <div className="mt-3 h-[96px] border-2 border-black bg-black overflow-hidden">
+                <img src={PORTRAITS[item.agentId]} alt={`${item.displayName} Frost 身份肖像`} loading="lazy" draggable={false}
+                  className="h-full w-full object-cover" style={{ objectPosition: 'center 38%' }} />
+              </div>
+              <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
+                <span className="font-pixel text-[7px]">{item.doorplate}</span>
+                <span className="text-[9px]">{item.zoneInfo?.name}</span>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1">
+                {item.publicTraits.map((trait) => <span key={trait} className="text-[8px] border border-black px-1.5 py-0.5 bg-[#f0eee7]">{trait}</span>)}
+              </div>
+              <div className="mt-3 text-[8px] text-black/50 leading-relaxed">
+                CARD v{item.cardVersion} · CHAIN REV {item.revision}<br />HASH {shortHash(item.cardHash)}
+              </div>
+              <div className="mt-2 flex items-center gap-1 text-[8px] text-[#315e4b] font-bold"><ShieldCheck className="w-3 h-3" />INJECTIVE VERIFIED</div>
+            </button>
+          ))}
+        </div>
+        <button type="button" onClick={() => moveCard(-1)} aria-label="上一张身份卡"
+          className="absolute left-0 top-1/2 z-10 flex h-12 w-8 -translate-y-1/2 items-center justify-center border-2 border-black bg-[#f3f0e7] shadow-[2px_2px_0_#000] active:translate-x-[2px] active:shadow-none">
+          <ChevronLeft className="h-6 w-6" strokeWidth={3} aria-hidden="true" />
+        </button>
+        <button type="button" onClick={() => moveCard(1)} aria-label="下一张身份卡"
+          className="absolute right-0 top-1/2 z-10 flex h-12 w-8 -translate-y-1/2 items-center justify-center border-2 border-black bg-[#f3f0e7] shadow-[2px_2px_0_#000] active:translate-x-[2px] active:shadow-none">
+          <ChevronRight className="h-6 w-6" strokeWidth={3} aria-hidden="true" />
+        </button>
       </div>
       <div className="text-[9px] text-black/50 leading-relaxed mt-1">
         卡面记录公开身份、门牌与可验证版本；它不代表代码、私人记忆或现实地址。
