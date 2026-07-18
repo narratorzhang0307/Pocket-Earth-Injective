@@ -240,6 +240,7 @@ class PocketEarthDeviceDriver:
         self.dry_run = dry_run
         self.snapshot_path = DEFAULT_SNAPSHOT
         self.board = None
+        self._previous_app_id = ""
         self._mirror = None
         self._mirror_thread = None
         port = int(os.environ.get("FROST_MIRROR_PORT", "8766")) if mirror_port is None else mirror_port
@@ -317,10 +318,53 @@ class PocketEarthDeviceDriver:
         }
         board.set_rgb_fade(*colors.get(state, colors["idle"]), duration_ms=420)
 
+    def _prepare_foreground(self, board) -> None:
+        response = board._send_request("health.ping").get("payload", {})
+        foreground = _text(response.get("foreground_app_id"), 80)
+        if not foreground or foreground == "pocket-earth-edge":
+            return
+        allowed = {
+            item.strip()
+            for item in os.environ.get("FROST_PREEMPT_APP_IDS", "sunset-radio-status").split(",")
+            if item.strip()
+        }
+        if foreground not in allowed:
+            raise RuntimeError(f"Whisplay foreground is busy with {foreground}")
+        self._previous_app_id = foreground
+        board._send_request("app.exit.request", {"app_id": foreground})
+        deadline = time.monotonic() + float(os.environ.get("FROST_FOCUS_RELEASE_TIMEOUT", "4"))
+        while time.monotonic() < deadline:
+            current = board._send_request("health.ping").get("payload", {}).get("foreground_app_id")
+            if not current:
+                return
+            time.sleep(0.2)
+        raise RuntimeError(f"Whisplay foreground {foreground} did not release")
+
+    def _restore_previous_app(self) -> None:
+        app_id = self._previous_app_id
+        self._previous_app_id = ""
+        if not app_id or self.board is None or self.dry_run:
+            return
+        try:
+            self.board._send_request("app.launch", {"app_id": app_id})
+            _log(f"returned Whisplay to {app_id}")
+            return
+        except (OSError, RuntimeError) as exc:
+            _log(f"Whisplay app.launch failed for {app_id}: {exc}")
+        if app_id == "sunset-radio-status":
+            subprocess.run(
+                ["sudo", "-n", "systemctl", "restart", "sunset-radio-whisplay.service"],
+                timeout=15,
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+
     def _show(self, image: Image.Image) -> bool:
         if self.dry_run:
             return True
         board = self._connect_board()
+        self._prepare_foreground(board)
         board.acquire_foreground(timeout_sec=7.0)
         board.set_backlight(int(os.environ.get("FROST_SCREEN_BRIGHTNESS", "82")))
         board.draw_image(0, 0, WIDTH, HEIGHT, rgb565_bytes(image))
@@ -417,6 +461,7 @@ class PocketEarthDeviceDriver:
                     self.board.set_rgb_fade(0, 0, 0, duration_ms=500)
                 except (OSError, RuntimeError) as exc:
                     _log(f"LED reset skipped: {exc}")
+                self._restore_previous_app()
         _log(f"event applied: screen={shown} tts={spoken} state={state}")
         return {"screen": shown, "tts": spoken, "state": state, "snapshot": str(self.snapshot_path)}
 
