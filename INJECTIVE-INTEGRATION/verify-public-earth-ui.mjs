@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 
 const panel = readFileSync(new URL('../src/app/components/PublicEarthPanel.tsx', import.meta.url), 'utf8')
 const knowledgeGlobe = readFileSync(new URL('../src/app/components/PublicKnowledgeGlobe.tsx', import.meta.url), 'utf8')
+const knowledgeDetails = readFileSync(new URL('../src/app/components/PublicKnowledgeDetails.tsx', import.meta.url), 'utf8')
 const knowledgeMap = readFileSync(new URL('../src/app/data/publicKnowledgeMap.ts', import.meta.url), 'utf8')
 const plaza = readFileSync(new URL('../src/app/components/PublicPlazaPage.tsx', import.meta.url), 'utf8')
 
@@ -11,8 +12,9 @@ for (const anchor of [
   'PublicKnowledgeGlobe',
   '8 KNOWLEDGE AGENTS · 5 CHAIN IDENTITIES',
   '/api/injective?tool=get-public-earth',
-  '知识 · 地球',
-  '身份 · 卡牌',
+  '知识地图',
+  '知识详情',
+  '身份卡牌',
   'FROST IDENTITY CARD',
   'INJECTIVE VERIFIED',
   '知识卡是信息分发层 · 身份卡是可验证身份层',
@@ -28,10 +30,19 @@ for (const anchor of [
   'SIGNAL POINTS · TAP TO APPROACH',
   'IMAGE CARDS · TAP TO READ',
   '返回全球',
+]) assert.ok(knowledgeGlobe.includes(anchor), `PublicKnowledgeGlobe missing ${anchor}`)
+for (const anchor of [
+  'PUBLIC_KNOWLEDGE_TOPIC_STORIES',
+  'moveWithinTopic',
+  '上一条',
+  '下一条',
+  '切换八领域新闻主题',
   '待交叉核验 · 尚未进入 Merkle 版次',
   '候选新闻不会冒充事实',
-]) assert.ok(knowledgeGlobe.includes(anchor), `PublicKnowledgeGlobe missing ${anchor}`)
-assert.ok(!knowledgeGlobe.includes('public-news-editorial__visual'), 'detail view should lead with the news instead of a decorative context image')
+]) assert.ok(knowledgeDetails.includes(anchor), `PublicKnowledgeDetails missing ${anchor}`)
+assert.ok(!knowledgeGlobe.includes('public-news-editorial'), 'knowledge map tab must only render the map')
+assert.ok(!knowledgeDetails.includes('public-news-editorial__visual'), 'detail view should lead with the news instead of a decorative context image')
+assert.ok(knowledgeMap.includes('PUBLIC_KNOWLEDGE_TOPIC_STORIES'), 'detail reader must use the 16-signal topic cache')
 for (const topic of ['ai', 'technology', 'finance', 'climate', 'science', 'health', 'culture', 'policy']) {
   assert.ok(knowledgeMap.includes(`topic: '${topic}'`), `public knowledge map missing ${topic} news card`)
 }
