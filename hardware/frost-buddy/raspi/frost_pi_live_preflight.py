@@ -77,6 +77,7 @@ def main(argv=None):
             "whisplay": _active("whisplay-daemon.service"),
             "sunsetRadio": _active("sunset-radio.service"),
             "pocketEarthEdge": _active("pocket-earth-edge.service"),
+            "projectLauncher": _active("pocket-earth-launcher.service"),
         },
         "hardware": {
             "whisplayResponding": _whisplay(),
@@ -96,6 +97,7 @@ def main(argv=None):
         report["services"]["ssh"],
         report["services"]["whisplay"],
         report["services"]["pocketEarthEdge"],
+        report["services"]["projectLauncher"],
         report["hardware"]["whisplayResponding"],
         report["hardware"]["speakerPlayer"],
         report["hardware"]["offlineTts"],

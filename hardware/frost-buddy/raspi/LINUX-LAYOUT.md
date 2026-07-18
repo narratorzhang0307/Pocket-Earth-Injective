@@ -59,6 +59,7 @@ to `/home/pi/pocket-earth/agents/music-agent/` in a separate migration.
 | `sunset-radio-whisplay.service` | Existing animated music-agent screen |
 | `whisplay-daemon.service` · `/tmp/whisplay-daemon.sock` | Vendor-owned screen, LED, and button protocol |
 | `pocket-earth-edge.service` · `:8766` | Authenticated feed consumer and public phone mirror |
+| `pocket-earth-launcher.service` | Two-level `PI HOME` / Pocket Earth agent launcher; owns no feed, wallet, or radio business logic |
 
 `pocket-earth-edge.service` runs as the unprivileged `pi` user and receives only
 the supplementary device groups required by the HAT. The feed token is read by

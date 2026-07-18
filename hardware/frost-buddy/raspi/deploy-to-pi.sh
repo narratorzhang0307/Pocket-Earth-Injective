@@ -16,7 +16,10 @@ FILES=(
   frost_pi_device_driver.py
   frost_pi_device_driver_smoke.py
   frost_pi_live_preflight.py
+  frost_pi_project_launcher.py
+  frost_pi_project_launcher_smoke.py
   pocket-earth-edge.service
+  pocket-earth-launcher.service
 )
 
 for file in "${FILES[@]}"; do
@@ -32,7 +35,10 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_live_preflight.py' /home/pi/pocket-earth/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_project_launcher.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_project_launcher_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 '$STAGE/pocket-earth-edge.service' /etc/systemd/system/pocket-earth-edge.service
+  sudo install -m 0644 '$STAGE/pocket-earth-launcher.service' /etc/systemd/system/pocket-earth-launcher.service
   sudo install -d -m 0750 -o pi -g pi /var/lib/pocket-earth-edge /var/cache/pocket-earth-edge
   legacy_cursor=/home/pi/.local/state/pocket-earth/frost-feed.cursor
   state_cursor=/var/lib/pocket-earth-edge/frost-feed.cursor
@@ -42,9 +48,11 @@ ssh "$PI_HOST" "set -euo pipefail
   fi
   cd /home/pi/pocket-earth
   /usr/bin/python3 frost_pi_device_driver_smoke.py
+  /usr/bin/python3 frost_pi_project_launcher_smoke.py
   sudo systemctl daemon-reload
   if sudo test -f /etc/pocket-earth-edge.env; then
     sudo systemctl enable --now pocket-earth-edge.service
+    sudo systemctl enable --now pocket-earth-launcher.service
   else
     echo 'Pocket Earth code installed; /etc/pocket-earth-edge.env is required before service start.'
   fi

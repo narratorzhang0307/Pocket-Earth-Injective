@@ -68,6 +68,23 @@ The installed filesystem and process boundary is documented in
 `python3 frost_pi_device_driver_smoke.py`; on the Pi, run
 `/home/pi/pocket-earth/frost_pi_live_preflight.py --strict`.
 
+## PI Home launcher
+
+`frost_pi_project_launcher.py` turns the clear `/home/pi` project tree into a
+safe two-level Whisplay interface without exposing a destructive file manager:
+
+- hold the orange button for 1.2 seconds to enter `PI HOME`,
+- single-click to move between sibling projects or agents,
+- double-click to enter `SUNSET RADIO`, `POCKET EARTH`, or a selected agent,
+- hold to go back one level.
+
+Pocket Earth currently exposes six launcher pages: Frost identity, public
+knowledge, AI news, finance, fact verifier, and chain dispatch. The launcher is
+an independent `pocket-earth-launcher.service`; it subscribes to the existing
+Whisplay button stream and switches foreground ownership through Whisplay IPC.
+It does not import or edit Sunset Radio source code. Run its offline navigation
+and 240×280 render check with `python3 frost_pi_project_launcher_smoke.py`.
+
 ## Adapter Contract Matrix
 
 | Layer | Owns | Must not own |

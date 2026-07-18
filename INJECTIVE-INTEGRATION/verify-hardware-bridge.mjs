@@ -143,6 +143,8 @@ const piAdapter = readFileSync('hardware/frost-buddy/raspi/frost_pi_event_adapte
 const piAdapterSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py', 'utf8')
 const physicalDriver = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver.py', 'utf8')
 const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py', 'utf8')
+const projectLauncher = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher.py', 'utf8')
+const projectLauncherSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py', 'utf8')
 const linuxLayout = readFileSync('hardware/frost-buddy/raspi/LINUX-LAYOUT.md', 'utf8')
 
 for (const snippet of [
@@ -216,6 +218,9 @@ for (const snippet of [
   'hardware boundary from the final deck',
   'frost_pi_device_driver.py',
   'phone mirror',
+  'PI Home launcher',
+  'single-click to move',
+  'double-click to enter',
 ]) {
   assertTrue(`raspi README keeps router boundary ${snippet}`, raspiReadme.includes(snippet))
 }
@@ -233,6 +238,26 @@ for (const snippet of [
 
 for (const snippet of ['240x280', 'rgb565Bytes', 'PocketEarthDeviceDriver']) {
   assertTrue(`physical driver smoke keeps ${snippet}`, physicalDriverSmoke.includes(snippet))
+}
+
+for (const snippet of [
+  'class MenuState',
+  '/home/pi/sunset-radio',
+  '/home/pi/pocket-earth',
+  'FROST 身份',
+  '公共知识',
+  'AI NEWS',
+  'FINANCE',
+  'FACT VERIFIER',
+  '链上见闻',
+  'LONG_PRESS_SECONDS',
+  'DOUBLE_CLICK_SECONDS',
+]) {
+  assertTrue(`project launcher keeps ${snippet}`, projectLauncher.includes(snippet))
+}
+
+for (const snippet of ['len(AGENTS) == 6', 'state.enter()', 'state.back()', '(240, 280)']) {
+  assertTrue(`project launcher smoke keeps ${snippet}`, projectLauncherSmoke.includes(snippet))
 }
 
 for (const snippet of ['/home/pi/pocket-earth', '/etc/pocket-earth-edge.env', '/var/lib/pocket-earth-edge', '/var/cache/pocket-earth-edge', '/run/pocket-earth-edge', 'music-agent']) {
@@ -270,5 +295,8 @@ execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.p
 
 console.log('\nRaspberry Pi physical driver smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi project launcher smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nOK Frost Buddy hardware bridge can carry music-agent and Injective chain-dispatch events safely.')
