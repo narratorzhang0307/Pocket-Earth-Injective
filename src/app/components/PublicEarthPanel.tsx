@@ -25,12 +25,13 @@ type PublicEarthResponse = {
 interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
-const PORTRAITS: Record<number, string> = {
-  43: '/frost-identities/frost-43-core.png',
-  44: '/frost-identities/frost-44-literature.png',
-  45: '/frost-identities/frost-45-noir.png',
-  46: '/frost-identities/frost-46-jazz.png',
-  47: '/frost-identities/frost-47-aurora.png',
+const PORTRAIT_SPRITE = '/frost-identities/frost-identity-sprite-2026-07-19.png';
+const PORTRAIT_CROPS: Record<number, string> = {
+  43: '423 8 407 614',
+  44: '8 8 407 614',
+  45: '839 8 407 614',
+  46: '839 631 407 614',
+  47: '423 631 407 614',
 };
 
 function shortHash(hash: string) {
@@ -73,9 +74,12 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
                 </div>
                 <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
               </div>
-              <div className="mt-3 h-[96px] border-2 border-black bg-black overflow-hidden">
-                <img src={PORTRAITS[item.agentId]} alt={`${item.displayName} Frost 身份肖像`} loading="lazy" draggable={false}
-                  className="h-full w-full object-cover" style={{ objectPosition: 'center 50%' }} />
+              <div className="mt-3 h-[118px] border-2 border-black bg-black overflow-hidden">
+                <svg viewBox={PORTRAIT_CROPS[item.agentId]} preserveAspectRatio="xMidYMid slice" role="img"
+                  aria-label={`${item.displayName} Frost 身份肖像`} className="h-full w-full">
+                  <title>{item.displayName} Frost 身份肖像</title>
+                  <image href={PORTRAIT_SPRITE} width="1254" height="1254" />
+                </svg>
               </div>
               <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
                 <span className="font-pixel text-[7px]">{item.doorplate}</span>
