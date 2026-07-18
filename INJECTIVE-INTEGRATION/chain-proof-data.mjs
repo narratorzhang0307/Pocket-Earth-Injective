@@ -181,7 +181,7 @@ export const HARDWARE_BRIDGE_PROOF = {
     servicePath: 'hardware/frost-buddy/raspi/pocket-earth-edge.service',
     outputs: ['Whisplay 240x280 display', 'RGB LED', 'local MiniMax TTS', 'offline espeak fallback', 'phone mirror'],
     smoke: 'python3 hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py',
-    livePreflight: '/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict',
+    livePreflight: '/home/pi/pocket-earth/frost_pi_live_preflight.py --strict',
     isolation: 'hardware/frost-buddy/raspi/LINUX-LAYOUT.md',
   },
   privacyBoundary: [

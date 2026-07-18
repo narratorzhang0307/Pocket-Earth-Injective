@@ -66,7 +66,7 @@ remain replaceable future transports after the same action contract.
 The installed filesystem and process boundary is documented in
 [`LINUX-LAYOUT.md`](LINUX-LAYOUT.md). Run the offline driver smoke with
 `python3 frost_pi_device_driver_smoke.py`; on the Pi, run
-`/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict`.
+`/home/pi/pocket-earth/frost_pi_live_preflight.py --strict`.
 
 ## Adapter Contract Matrix
 

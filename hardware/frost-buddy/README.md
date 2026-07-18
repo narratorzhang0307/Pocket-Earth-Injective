@@ -102,7 +102,7 @@ python3 hardware/frost-buddy/raspi/frost_pi_skill_agent_smoke.py
 python3 hardware/frost-buddy/raspi/frost_pi_event_adapter_smoke.py
 ```
 
-完整硬件快检 `npm run verify:hardware` 会同时跑技能路由、事件适配和物理 driver 离线渲染，防止硬件叙事停留在 Markdown。真机另运行 `/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict`。
+完整硬件快检 `npm run verify:hardware` 会同时跑技能路由、事件适配和物理 driver 离线渲染，防止硬件叙事停留在 Markdown。真机另运行 `/home/pi/pocket-earth/frost_pi_live_preflight.py --strict`。
 
 真实 HTTP 联调使用 `raspi/frost_pi_feed_client.py`，完整的软件—物理 sidecar 责任边界、启动命令和 cursor 防重播验收见 [`raspi/LIVE-HANDOFF.md`](raspi/LIVE-HANDOFF.md)。软件侧运行 `npm run verify:hardware-handoff`，不会依赖屏幕、LED 或 TTS 驱动。
 

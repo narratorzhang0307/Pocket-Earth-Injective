@@ -46,7 +46,7 @@ python3 hardware/frost-buddy/raspi/frost_pi_feed_client.py --once \
 
 ```bash
 hardware/frost-buddy/raspi/deploy-to-pi.sh sunset-pi
-ssh sunset-pi '/opt/pocket-earth-edge/frost_pi_live_preflight.py --strict'
+ssh sunset-pi '/home/pi/pocket-earth/frost_pi_live_preflight.py --strict'
 ```
 
 ## 解耦边界
