@@ -1,14 +1,24 @@
-import { Bot, Database, RadioTower, ShieldCheck } from 'lucide-react';
+import { Bot, Database, Radio, RadioTower, ShieldCheck } from 'lucide-react';
 import { PUBLIC_SIGNAL_AGENTS, VERIFICATION_AGENTS } from '../data/publicKnowledgeAgents';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 
 interface Props {
   onOpenTopic: (topic: KnowledgeTopic) => void;
+  onOpenPodcast: () => void;
 }
 
-export default function PublicKnowledgeAgents({ onOpenTopic }: Props) {
+export default function PublicKnowledgeAgents({ onOpenTopic, onOpenPodcast }: Props) {
   return (
     <div className="flex-1 min-h-0 overflow-y-auto px-3 py-3 space-y-4" data-testid="public-knowledge-agents">
+      <button type="button" onClick={onOpenPodcast}
+        className="w-full text-left border-[3px] border-black bg-[#f3f0e7] p-3 shadow-[3px_3px_0_#000] active:translate-x-px active:translate-y-px">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 border-2 border-black bg-[#315e4b] text-white grid place-items-center shrink-0"><Radio className="w-5 h-5" /></div>
+          <div className="min-w-0 flex-1"><div className="font-pixel text-[10px]">口袋播客 · POCKET PODCAST</div><p className="text-[9px] text-black/55 leading-relaxed mt-1">把当天已核验的公共知识组织成播客；可听，也可逐条阅读来源。</p></div>
+          <span className="font-pixel text-[7px] border-2 border-black bg-black text-[#7CFFB2] px-1.5 py-1">RUN</span>
+        </div>
+        <div className="mt-2 grid grid-cols-2 gap-2 text-center font-pixel text-[7px]"><span className="border border-black bg-white py-1.5">播客模式</span><span className="border border-black bg-white py-1.5">文字模式</span></div>
+      </button>
       <button
         type="button"
         onClick={() => onOpenTopic('ai')}

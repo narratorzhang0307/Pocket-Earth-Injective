@@ -107,6 +107,7 @@ Public Knowledge Earth 在 Pocket Earth App 端渲染。正文、来源、评分
 - `GET /api/knowledge?tool=archive&date=YYYY-MM-DD`：永久精选档案。
 - `GET /api/knowledge?tool=archive&topic=finance&date=YYYY-MM-DD`：精选档案的单领域视图。
 - `GET /api/knowledge?tool=pack&date=YYYY-MM-DD`：可下载验证包。
+- `GET /api/knowledge?tool=podcast&date=YYYY-MM-DD`：从已核验记录编排出的口袋播客与文字稿；每段保留来源、分数和运行轨迹。
 - `GET /api/knowledge?tool=proof&recordHash=0x...`：Merkle proof。
 - `POST /api/knowledge?tool=refresh&topic=ai`：仅本机或 Bearer 管理员可触发。
 

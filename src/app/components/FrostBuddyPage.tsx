@@ -5,7 +5,7 @@ import type { FrostIntent } from '../../../frost-agent/harness/types';
 import { getSuggestion, subscribeHeartbeat, adoptSuggestion } from '../../../frost-agent/harness/heartbeat';
 import { derive, STATE_LABEL, type FrostState } from '../../../frost-agent/buddy/poses';
 import { themeFor, THEME_LABEL, type FrostTheme } from '../../../frost-agent/buddy/themes';
-import FrostBuddy, { FrostAvatar } from './FrostBuddy';
+import FrostNftAvatar from './FrostNftAvatar';
 import UserZhaIcon from './UserZhaIcon';
 import { recallMemory } from '../lib/memoryRouter';
 
@@ -137,7 +137,13 @@ export default function FrostBuddyPage({ onBack, onRun }: Props) {
           一道隐形线：线以上 buddy 随便动，线以下对话位置纹丝不动；对话增多则在线下独立滚动看全。 */}
       <div className="shrink-0 flex flex-col items-center px-4 pt-4 pb-2 overflow-hidden" style={{ background: '#EAEAEA' }}>
         <div className="flex items-center justify-center" style={{ height: 178 }}>
-          <FrostBuddy state={buddyState} theme={theme} size={26} color="#1d3e57" warmColor="#9a7b2e" glow={false} />
+          <FrostNftAvatar
+            agentId={43}
+            label={`Frost · ${STATE_LABEL[buddyState]}`}
+            className="w-[168px] h-[168px] border-[3px] border-black shadow-[4px_4px_0_#000]"
+            style={{ filter: buddyState === 'thinking' ? 'saturate(.7)' : buddyState === 'celebrate' ? 'saturate(1.2)' : undefined }}
+            imageStyle={{ inset: 4 }}
+          />
         </div>
         <div className="flex items-center justify-center" style={{ height: 16 }}>
           <span className="font-pixel text-[7px] tracking-[0.3em] uppercase" style={{ color: buddyState === 'celebrate' ? '#9a7b2e' : '#234a63' }}>
@@ -161,7 +167,7 @@ export default function FrostBuddyPage({ onBack, onRun }: Props) {
         {turns.length === 0 && (
           <div className="flex flex-col gap-2">
             <div className="flex items-start gap-2 max-w-[96%]">
-              <div className="shrink-0 mt-0.5"><FrostAvatar size={26} /></div>
+              <FrostNftAvatar agentId={43} label="Frost" className="shrink-0 mt-0.5 w-[28px] h-[28px] border-2 border-black" imageStyle={{ inset: 1 }} />
               <div className="flex flex-col gap-2 min-w-0 flex-1">
                 <div className="font-pixel text-[7px] tracking-[0.2em] text-black/50">FROST</div>
                 <div className="bg-white text-black border-2 border-black px-3 py-2 text-[12px] leading-relaxed whitespace-pre-wrap shadow-[2px_2px_0_rgba(0,0,0,0.85)]">
@@ -182,7 +188,7 @@ export default function FrostBuddyPage({ onBack, onRun }: Props) {
           </div>
         ) : (
           <div key={i} className="flex items-start gap-2 max-w-[96%]">
-            <div className="shrink-0 mt-0.5"><FrostAvatar size={26} /></div>
+            <FrostNftAvatar agentId={43} label="Frost" className="shrink-0 mt-0.5 w-[28px] h-[28px] border-2 border-black" imageStyle={{ inset: 1 }} />
             <div className="flex flex-col gap-2 min-w-0 flex-1">
               <div className="font-pixel text-[7px] tracking-[0.2em] text-black/50">FROST</div>
               {turn.text && (

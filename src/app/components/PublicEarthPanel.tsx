@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Globe2, IdCard, Link2, Newspaper, ShieldCheck } from 'lucide-react';
 import PublicKnowledgeGlobe from './PublicKnowledgeGlobe';
 import PublicKnowledgeDetails from './PublicKnowledgeDetails';
+import FrostNftAvatar from './FrostNftAvatar';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 
 type Zone = { id: number; name: string; english: string; color: string };
@@ -25,14 +26,6 @@ type PublicEarthResponse = {
 interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
 
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
-const PORTRAITS: Record<number, { src: string; position: string; background: string }> = {
-  43: { src: '/frost-identities/frost-nft-group-1.png', position: '0% 0%', background: '#293b7a' },
-  44: { src: '/frost-identities/frost-nft-group-1.png', position: '50% 0%', background: '#e95d72' },
-  45: { src: '/frost-identities/frost-nft-group-2.png', position: '100% 0%', background: '#bdebe4' },
-  46: { src: '/frost-identities/frost-nft-group-1.png', position: '50% 100%', background: '#f2c14e' },
-  47: { src: '/frost-identities/frost-nft-group-1.png', position: '100% 0%', background: '#7a5af8' },
-};
-
 function shortHash(hash: string) {
   return hash ? `${hash.slice(0, 8)}…${hash.slice(-6)}` : '—';
 }
@@ -73,17 +66,8 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
                 </div>
                 <span className="font-pixel text-[8px] text-white border-2 border-black px-1.5 py-1" style={{ background: COLORS[item.agentId] }}>#{item.agentId}</span>
               </div>
-              <div className="mt-3 flex h-[170px] items-center justify-center overflow-hidden border-2 border-black" style={{ background: PORTRAITS[item.agentId].background }}>
-                <div
-                  role="img"
-                  aria-label={`${item.displayName} Frost 身份肖像`}
-                  className="h-[164px] w-[164px] shrink-0 bg-no-repeat"
-                  style={{
-                    backgroundImage: `url(${PORTRAITS[item.agentId].src})`,
-                    backgroundPosition: PORTRAITS[item.agentId].position,
-                    backgroundSize: '300% 200%',
-                  }}
-                />
+              <div className="mt-3 flex h-[170px] items-center justify-center overflow-hidden border-2 border-black">
+                <FrostNftAvatar agentId={item.agentId} label={`${item.displayName} Frost 身份肖像`} className="h-full w-full" imageStyle={{ inset: 3 }} />
               </div>
               <div className="mt-3 flex items-center justify-between border-y border-black py-1.5">
                 <span className="font-pixel text-[7px]">{item.doorplate}</span>

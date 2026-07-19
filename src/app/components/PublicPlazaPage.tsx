@@ -3,10 +3,9 @@ import { ChevronLeft, Users, Moon, FileText, Star, Check, Clock, Link2, External
 import { motion } from 'motion/react';
 import { getProfile, profileFingerprint, summarizeTaste } from '../../../frost-agent/harness/profile';
 import { getFrostBrain } from '../../../frost-agent/harness/brain';
-import FrostBuddy from './FrostBuddy';
+import FrostNftAvatar from './FrostNftAvatar';
 import PublicEarthPanel from './PublicEarthPanel';
 import { markPlace } from '../lib/skills/markPlace';
-import type { FrostTheme } from '../../../frost-agent/buddy/themes';
 
 // public-plaza —— agent 代理社交 · 公共广场（前瞻接口）
 // 叙事：你白天上班，把自己的 frost-agent 委派到 agent 公共广场。Frost 带着你的长期口味画像出门，
@@ -22,10 +21,6 @@ const FIELD_LABEL: Record<string, string> = {
   artists: '同听艺人', genres: '同一种流派', moods: '同一种情绪', cities: '走过同一座城', aesthetics: '同一种风格',
 };
 // 共享兴趣 → FROST 换装主题：广场里遇见的人，穿着「你俩共同兴趣」的装（戴耳机/捧书/背包…）
-const FIELD_THEME: Record<string, FrostTheme> = {
-  genres: 'music', artists: 'music', directors: 'movie', countries: 'movie',
-  authors: 'book', storyPlaces: 'book', cities: 'travel', moods: 'mood', aesthetics: 'culture',
-};
 // 别人的 FROST 特使配色（中深色，浅底上看得清；按 tag 哈希确定性分配，每个人一种色）
 const PALETTE = ['#1d3e57', '#7a4dd6', '#0a7d4a', '#b06a00', '#b03a5b', '#2a6f8f', '#6b4f9e', '#3a7d5e'];
 const ALIASES = ['北纬三十度的旅人', '深夜放映员', '末班地铁上的人', '海边的读者', '胶片收集者', '城市慢游者', '黑胶整理员', '清晨写信的人', '旧书店常客', '边走边听的人', '屋顶看云的人', '地图上的标记者'];
@@ -37,7 +32,7 @@ function hash(s: string): number {
   return h >>> 0;
 }
 
-interface Neighbor { tag: string; field: string; alias: string; blurb: string; sim: number; color: string; theme: FrostTheme; agentId?: string; scanUrl?: string; onChain?: boolean }
+interface Neighbor { tag: string; field: string; alias: string; blurb: string; sim: number; color: string; agentId?: string; scanUrl?: string; onChain?: boolean }
 
 // ERC-8004 IdentityRegistry 合约（Injective testnet）在 blockscout 的页面——所有 Frost 身份都注册在这里。
 const INJ_REGISTRY_URL = 'https://testnet.blockscout.injective.network/token/0x8004A818BFB912233c491871b3d84c89A494BD9e';
@@ -67,7 +62,7 @@ function chainAgentToNeighbor(a: { agentId?: unknown; identityTuple?: string; na
     field: 'agent',
     alias: card.name || a?.name || `链上 Agent #${a?.agentId ?? '?'}`,
     blurb: (card.description || '一个在 Injective 链上注册了身份的 agent').slice(0, 30),
-    sim, color: '#7c5cff', theme: 'none', onChain: true,
+    sim, color: '#7c5cff', onChain: true,
     agentId: String(a?.agentId ?? ''),
     // 链上验证链接：Injective blockscout 的 ERC-8004 身份 NFT instance 页（该 agent 的链上身份，可查证）
     scanUrl: a?.agentId != null ? `${INJ_REGISTRY_URL}/instance/${a.agentId}` : INJ_REGISTRY_URL,
@@ -97,8 +92,7 @@ export default function PublicPlazaPage({ onBack }: Props) {
     return () => { alive = false; };
   }, []);
 
-  // 广场聚集场景的「轻浮动」关键帧（注一次）。用纯 CSS 而非 motion：FrostBuddy 内部 200ms tick
-  // 会频繁重渲染，把 motion 的入场 opacity 动画反复打断、停不到 1；CSS 动画不受 React 重渲染影响。
+  // 广场聚集场景只保留轻微浮动；身份肖像本身来自统一 Frost NFT 视觉源。
   useEffect(() => {
     const id = 'pe-plaza-bob-style';
     if (document.getElementById(id)) return;
@@ -130,7 +124,6 @@ export default function PublicPlazaPage({ onBack }: Props) {
         blurb: BLURBS[pick(h >> 5, BLURBS.length, usedB)],
         sim: 72 + (h % 26), // 72–97%
         color: PALETTE[h % PALETTE.length],
-        theme: FIELD_THEME[t.field] || 'none',
       };
     }).sort((a, b) => b.sim - a.sim);
     return { neighbors, myTags: top.slice(0, 5).map((t) => t.tag) };
@@ -220,10 +213,10 @@ export default function PublicPlazaPage({ onBack }: Props) {
       <div className="px-3 pt-3 shrink-0">
         <div className="border-2 border-black bg-white p-3 shadow-[2px_2px_0_rgba(0,0,0,0.85)]">
           <div className="flex items-start gap-3">
-            {/* 你的特使：活的 FROST 线条形象。白天轮换装束（外出社交中），夜间安静发光归来 */}
+            {/* 你的特使与身份卡、硬件共用 #43 Frost 视觉。 */}
             <div className="shrink-0 flex items-center justify-center overflow-hidden"
               style={{ width: 86, height: 74, border: '2px solid #000', background: '#fff' }}>
-              <FrostBuddy state="idle" cycle={phase === 'day'} color="#1d3e57" glow={false} size={10} />
+              <FrostNftAvatar agentId={43} label="你的 Frost 特使" className="h-full w-full" imageStyle={{ inset: 3 }} />
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -289,10 +282,9 @@ export default function PublicPlazaPage({ onBack }: Props) {
                   <button key={`scene-${n.tag}`}
                     onClick={() => { const el = document.getElementById(`plaza-card-${i}`); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }}
                     className="flex flex-col items-center active:opacity-60" style={{ width: 56 }}>
-                    {/* 纯 CSS 轻浮动（错峰），不受 FrostBuddy tick 重渲染影响 */}
-                    <div className="overflow-hidden flex items-center justify-center"
-                      style={{ width: 50, height: 42, animation: `pe-plaza-bob ${(2.4 + (i % 4) * 0.45).toFixed(2)}s ease-in-out ${(i * 0.25).toFixed(2)}s infinite` }}>
-                      <FrostBuddy state="idle" theme={n.theme} color={n.color} glow={false} size={6} />
+                    <div className="overflow-hidden flex items-center justify-center border border-black"
+                      style={{ width: 42, height: 42, animation: `pe-plaza-bob ${(2.4 + (i % 4) * 0.45).toFixed(2)}s ease-in-out ${(i * 0.25).toFixed(2)}s infinite` }}>
+                      <FrostNftAvatar agentId={n.agentId} fallbackIndex={i} label={n.alias} className="h-full w-full" imageStyle={{ inset: 1 }} />
                     </div>
                     <span className="text-[8px] truncate w-full text-center leading-tight" style={{ color: n.color }}>{n.alias}</span>
                   </button>
@@ -304,9 +296,8 @@ export default function PublicPlazaPage({ onBack }: Props) {
           <motion.div key={n.tag} id={`plaza-card-${i}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
             className="border-2 border-black bg-white p-3 shadow-[2px_2px_0_rgba(0,0,0,0.85)]">
             <div className="flex items-center gap-2.5">
-              {/* 别人的 FROST 特使：穿着你俩共同兴趣的装、各自配色 */}
               <div className="shrink-0 flex items-center justify-center overflow-hidden" style={{ width: 42, height: 42, border: '2px solid #000', background: '#fff' }}>
-                <FrostBuddy state="idle" theme={n.theme} color={n.color} glow={false} size={6} />
+                <FrostNftAvatar agentId={n.agentId} fallbackIndex={i} label={n.alias} className="h-full w-full" imageStyle={{ inset: 1 }} />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-[12px] font-bold truncate" style={{ color: n.color }}>{n.alias}</div>
@@ -336,7 +327,7 @@ export default function PublicPlazaPage({ onBack }: Props) {
             {/* FROST 归来复盘（叙事 · 白底黑线，简洁干净） */}
             <div className="border-2 border-black bg-white p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)] flex items-start gap-2.5">
               <div className="shrink-0 flex items-center justify-center overflow-hidden" style={{ width: 54, height: 52, border: '2px solid #000', background: '#fff' }}>
-                <FrostBuddy state="idle" color="#1d3e57" glow={false} size={7} />
+                <FrostNftAvatar agentId={43} label="Frost 今晚归来" className="h-full w-full" imageStyle={{ inset: 2 }} />
               </div>
               <div className="min-w-0 flex-1 pt-0.5">
                 <div className="font-pixel text-[7px] tracking-widest mb-1" style={{ color: ACCENT }}>◍ FROST · 今晚归来</div>
@@ -352,7 +343,7 @@ export default function PublicPlazaPage({ onBack }: Props) {
                   className="border-2 border-black bg-white p-3 shadow-[2px_2px_0_rgba(0,0,0,0.85)]">
                   <div className="flex items-center gap-2.5 mb-1.5">
                     <div className="shrink-0 flex items-center justify-center overflow-hidden" style={{ width: 42, height: 42, border: '2px solid #000', background: '#fff' }}>
-                      <FrostBuddy state="idle" theme={n.theme} color={n.color} glow={false} size={6} />
+                      <FrostNftAvatar agentId={n.agentId} fallbackIndex={i} label={n.alias} className="h-full w-full" imageStyle={{ inset: 1 }} />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-[12px] font-bold truncate" style={{ color: n.color }}>{n.alias}</div>

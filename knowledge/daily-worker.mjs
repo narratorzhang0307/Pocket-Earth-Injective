@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createDailyKnowledgeService } from './daily-service.mjs'
 import { archiveReviewedEdition } from './archive.mjs'
+import { buildPocketPodcast } from './podcast-agent.mjs'
 import { KNOWLEDGE_TOPICS, PUBLIC_TOPIC_KEYS } from './topics.mjs'
 
 const WORKER_SCHEMA = 'pocket-earth-knowledge-worker/v1'
@@ -106,6 +107,8 @@ export async function runKnowledgeCycle({
   }
   const startedAt = now.toISOString()
   const results = []
+  const podcastBundles = []
+  let podcast = { state: 'pending', segmentCount: 0, podcastId: null }
   let retention = { keepDays: retentionDays(env.KNOWLEDGE_RETENTION_DAYS), state: 'pending', removed: [] }
   const chainPolicy = {
     automaticWrite: false,
@@ -129,6 +132,7 @@ export async function runKnowledgeCycle({
     chainPolicy,
     retention,
     reviewedArchive,
+    podcast,
   })
   await atomicJson(resolve(outputDir, 'status.json'), makeManifest('running'))
 
@@ -154,6 +158,7 @@ export async function runKnowledgeCycle({
         ...(bundle.error ? { error: bundle.error } : {}),
       }
       await atomicJson(resolve(dateDir, `${topic}.json`), snapshot)
+      podcastBundles.push({ ...snapshot, topic })
       results.push({
         topic,
         agentId: KNOWLEDGE_TOPICS[topic].agentId,
@@ -178,6 +183,14 @@ export async function runKnowledgeCycle({
       })
     }
     await atomicJson(resolve(outputDir, 'status.json'), makeManifest('running'))
+  }
+
+  try {
+    const artifact = buildPocketPodcast({ date: runDate, bundles: podcastBundles })
+    await atomicJson(resolve(dateDir, 'podcast.json'), artifact)
+    podcast = { state: artifact.state, segmentCount: artifact.segments.length, podcastId: artifact.podcastId }
+  } catch (error) {
+    podcast = { state: 'failed', segmentCount: 0, podcastId: null, error: String(error instanceof Error ? error.message : error).slice(0, 300) }
   }
 
   try {

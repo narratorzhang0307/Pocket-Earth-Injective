@@ -5,6 +5,7 @@ import { buildLlmRequest, getLlmProviders } from '../frost-agent/provider-compat
 import { runKnowledgeTopicAgent } from './agent-harness.mjs'
 import { readLatestReviewedEdition } from './archive.mjs'
 import { searchDailySignals, searchNewsEvidence } from './evidence.mjs'
+import { buildPocketPodcast, POCKET_PODCAST_SCHEMA } from './podcast-agent.mjs'
 import { calculateTruthScore } from './scoring.mjs'
 import { ANCHORED_TOPIC_KEYS, KNOWLEDGE_TOPICS, PUBLIC_TOPIC_KEYS, isKnowledgeTopic } from './topics.mjs'
 
@@ -242,6 +243,17 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
   const adminToken = env.KNOWLEDGE_ADMIN_TOKEN || ''
   const workerDataDir = resolve(process.cwd(), env.KNOWLEDGE_DATA_DIR || 'var/knowledge')
 
+  function readPodcastSnapshot(date) {
+    const file = resolve(workerDataDir, date, 'podcast.json')
+    if (!existsSync(file)) return null
+    try {
+      const snapshot = JSON.parse(readFileSync(file, 'utf8'))
+      return snapshot?.schema === POCKET_PODCAST_SCHEMA && snapshot?.date === date ? snapshot : null
+    } catch {
+      return null
+    }
+  }
+
   function readWorkerSnapshot(topic, date) {
     const file = resolve(workerDataDir, date, `${topic}.json`)
     if (!existsSync(file)) return null
@@ -448,6 +460,13 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     }
   }
 
+  async function getPodcast(date) {
+    const snapshot = readPodcastSnapshot(date)
+    if (snapshot) return snapshot
+    const bundles = await Promise.all(PUBLIC_TOPIC_KEYS.map((topic) => get(topic, date)))
+    return buildPocketPodcast({ date, bundles })
+  }
+
   async function handle(req, res, url) {
     const tool = url.searchParams.get('tool') || 'today'
     const requestedTopic = url.searchParams.get('topic')
@@ -466,6 +485,7 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
       if (!archive) return json(res, { error: 'reviewed_archive_not_found' }, 404)
       return json(res, requestedTopic ? { ...archive, records: archive.records.filter((record) => record.topic === topic) } : archive)
     }
+    if (tool === 'podcast' && req.method === 'GET') return json(res, await getPodcast(date))
     if (!topic && tool !== 'proof' && tool !== 'pack') return json(res, { error: 'unsupported_topic' }, 400)
     if (tool === 'today' && req.method === 'GET') return json(res, await get(topic, date))
     if (tool === 'edition' && req.method === 'GET') return json(res, (await get(topic, date)).edition)
@@ -483,5 +503,5 @@ export function createDailyKnowledgeService({ env = process.env } = {}) {
     return json(res, { error: 'method_not_allowed' }, 405)
   }
 
-  return { handle, get, refresh, findProof, buildPublicPack, topics: PUBLIC_TOPIC_KEYS }
+  return { handle, get, refresh, findProof, buildPublicPack, getPodcast, topics: PUBLIC_TOPIC_KEYS }
 }

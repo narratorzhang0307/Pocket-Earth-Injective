@@ -9,7 +9,7 @@ import TravelRunPage from './TravelRunPage';
 import CouncilPage from './CouncilPage';
 import PublicPlazaPage from './PublicPlazaPage';
 import FrostBuddyPage from './FrostBuddyPage';
-import FrostBuddy from './FrostBuddy';
+import FrostNftAvatar from './FrostNftAvatar';
 import OnDeviceBrainPanel from './OnDeviceBrainPanel';
 import AgentForgePage from './AgentForgePage';
 import AgentPlazaPage from './AgentPlazaPage';
@@ -17,6 +17,7 @@ import UniversalCaptureRunPage from './UniversalCaptureRunPage';
 import DailyKnowledgePage from './DailyKnowledgePage';
 import PublicKnowledgeAgents from './PublicKnowledgeAgents';
 import EarthAnswerAgentPage from './EarthAnswerAgentPage';
+import PocketPodcastPage from './PocketPodcastPage';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 import { getCustomAgents, subscribeCustomAgents, type AgentManifest } from '../lib/agent';
 import { getLearnedSkills, subscribeSkills, type LearnedSkill } from '../../../frost-agent/harness/skillForge';
@@ -61,7 +62,7 @@ const GROUPS: { title: string; sub: string; items: AgentItem[] }[] = [
 ];
 
 
-type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | 'knowledge' | 'earthanswer' | null;
+type Running = 'frost' | 'music' | 'movies' | 'books' | 'photos' | 'travel' | 'council' | 'plaza' | 'agentforge' | 'jot' | 'spaceplaza' | 'knowledge' | 'earthanswer' | 'podcast' | null;
 const RUN_BY_NAME: Record<string, Running> = {
   'earth-answer-agent': 'earthanswer',
   'music-agent': 'music', 'movies-agent': 'movies',
@@ -69,6 +70,7 @@ const RUN_BY_NAME: Record<string, Running> = {
   'council-room': 'council', 'jot-agent': 'jot',
   'public-plaza': 'plaza', 'agent-plaza': 'spaceplaza',
   'daily-knowledge': 'knowledge',
+  'pocket-podcast': 'podcast',
 };
 // FROST 总 agent 可直达的「非 agent」hero 入口（不计入上面 AGENTS 计数）：造物主 AGENT-FORGE。
 // 让 FROST 的快捷入口能像调子 agent 一样把活派给它（route A：显式委派）。
@@ -103,6 +105,7 @@ export default function MusicAgentsTab() {
   if (running === 'jot') return <UniversalCaptureRunPage onBack={() => setRunning(null)} />;
   if (running === 'knowledge') return <DailyKnowledgePage initialTopic={knowledgeTopic} onBack={() => setRunning(null)} />;
   if (running === 'earthanswer') return <EarthAnswerAgentPage onBack={() => setRunning(null)} />;
+  if (running === 'podcast') return <PocketPodcastPage onBack={() => setRunning(null)} />;
 
   return (
     <div className="h-full flex flex-col bg-[#EAEAEA] font-sans">
@@ -141,7 +144,7 @@ export default function MusicAgentsTab() {
 
       {/* agent 分组列表（可滚动） */}
       {agentScope === 'public' ? (
-        <PublicKnowledgeAgents onOpenTopic={(topic) => { setKnowledgeTopic(topic); setRunning('knowledge'); }} />
+        <PublicKnowledgeAgents onOpenPodcast={() => setRunning('podcast')} onOpenTopic={(topic) => { setKnowledgeTopic(topic); setRunning('knowledge'); }} />
       ) : (
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
         {/* 端侧引擎开关（基础设施·非 agent）：默认收起的小开关，紧贴状态条；点开才展开加载面板 */}
@@ -154,7 +157,7 @@ export default function MusicAgentsTab() {
           className="w-full text-left flex items-center gap-3 border-2 border-black p-2.5 shadow-[3px_3px_0_rgba(0,0,0,0.85)] active:translate-y-px"
           style={{ background: '#d9d9d9' }}
         >
-          <div className="shrink-0 flex items-center justify-center" style={{ width: 100, height: 76 }}><FrostBuddy state="idle" cycle color="#1d3e57" glow={false} size={11} /></div>
+          <FrostNftAvatar agentId={43} label="Frost 总 Agent" className="shrink-0 w-[76px] h-[76px] border-2 border-black" imageStyle={{ inset: 2 }} />
           <div className="min-w-0 flex-1">
             <div className="font-pixel text-[11px] tracking-wider text-black">FROST</div>
             <div className="text-[10.5px] text-black/60 leading-snug mt-0.5">我是弗洛斯特。在上界司命所创造的一切事物中，弗洛斯特是最完美的，最有威力的，也是最难以理解的。</div>
