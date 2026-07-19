@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Globe2, IdCard, Link2, Newspaper, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Globe2, IdCard, Link2, Newspaper, Radio, ShieldCheck } from 'lucide-react';
 import PublicKnowledgeGlobe from './PublicKnowledgeGlobe';
 import PublicKnowledgeDetails from './PublicKnowledgeDetails';
 import FrostNftAvatar from './FrostNftAvatar';
@@ -23,7 +23,10 @@ type PublicEarthResponse = {
   residences: Residence[];
 };
 
-interface Props { onOpenTopic?: (topic: KnowledgeTopic) => void }
+interface Props {
+  onOpenTopic?: (topic: KnowledgeTopic) => void;
+  onOpenPodcast?: () => void;
+}
 
 const COLORS: Record<number, string> = { 43: '#273F58', 44: '#486B8A', 45: '#A05E47', 46: '#6E5A8A', 47: '#86713F' };
 function shortHash(hash: string) {
@@ -99,7 +102,7 @@ function CardView({ data, selected, onSelect }: { data: PublicEarthResponse; sel
   );
 }
 
-export default function PublicEarthPanel({ onOpenTopic = () => {} }: Props) {
+export default function PublicEarthPanel({ onOpenTopic = () => {}, onOpenPodcast }: Props) {
   const [view, setView] = useState<'map' | 'details' | 'cards'>('map');
   const [data, setData] = useState<PublicEarthResponse | null>(null);
   const [selectedId, setSelectedId] = useState(43);
@@ -130,7 +133,7 @@ export default function PublicEarthPanel({ onOpenTopic = () => {} }: Props) {
         </span>}
       </div>
 
-      <div className="grid grid-cols-3 gap-1.5 mt-3" aria-label="公共地球内容视图">
+      <div className={`grid ${onOpenPodcast ? 'grid-cols-4' : 'grid-cols-3'} gap-1.5 mt-3`} aria-label="公共地球内容视图">
         <button type="button" onClick={() => setView('map')} aria-pressed={view === 'map'} className={`border-2 border-black py-2 font-pixel text-[7px] flex items-center justify-center gap-1 ${view === 'map' ? 'bg-[#07110f] text-[#7CFFB2]' : 'bg-white'}`}>
           <Globe2 className="w-3 h-3" aria-hidden="true" />知识地图
         </button>
@@ -140,6 +143,9 @@ export default function PublicEarthPanel({ onOpenTopic = () => {} }: Props) {
         <button type="button" onClick={() => setView('cards')} aria-pressed={view === 'cards'} className={`border-2 border-black py-2 font-pixel text-[7px] flex items-center justify-center gap-1 ${view === 'cards' ? 'bg-black text-white' : 'bg-white'}`}>
           <IdCard className="w-3 h-3" aria-hidden="true" />身份卡牌
         </button>
+        {onOpenPodcast && <button type="button" onClick={onOpenPodcast} className="border-2 border-black bg-white py-2 font-pixel text-[7px] flex items-center justify-center gap-1">
+          <Radio className="w-3 h-3" aria-hidden="true" />口袋播客
+        </button>}
       </div>
 
       {view === 'map' && <PublicKnowledgeGlobe />}
