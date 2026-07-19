@@ -145,6 +145,7 @@ const physicalDriver = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_
 const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_device_driver_smoke.py', 'utf8')
 const projectLauncher = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher.py', 'utf8')
 const projectLauncherSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py', 'utf8')
+const projectLauncherService = readFileSync('hardware/frost-buddy/raspi/pocket-earth-launcher.service', 'utf8')
 const quietHome = readFileSync('hardware/frost-buddy/raspi/frost_pi_quiet_home.py', 'utf8')
 const livePreflight = readFileSync('hardware/frost-buddy/raspi/frost_pi_live_preflight.py', 'utf8')
 const podcastSync = readFileSync('hardware/frost-buddy/raspi/frost_pi_podcast_sync.py', 'utf8')
@@ -336,6 +337,11 @@ assertEqual('Pocket Earth original daybook count', daybook.entries?.length, 31)
 for (const snippet of ['len(AGENTS) == 12', 'len(TOPIC_AGENT_KEYS) == 8', 'state.enter()', 'state.back()', '(240, 280)']) {
   assertTrue(`project launcher smoke keeps ${snippet}`, projectLauncherSmoke.includes(snippet))
 }
+
+assertTrue(
+  'project launcher service loads the shared quiet-mode environment',
+  projectLauncherService.includes('EnvironmentFile=-/etc/pocket-earth-edge.env'),
+)
 
 for (const snippet of ['POCKET_EARTH_PI_HOME_GUARD', 'pocket-earth-launcher', '.pre-pocket-earth', 'def restore']) {
   assertTrue(`PI HOME desktop guard keeps ${snippet}`, piHomeGuard.includes(snippet))

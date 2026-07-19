@@ -10,6 +10,7 @@ User=pi
 Group=pi
 SupplementaryGroups=audio video gpio input spi i2c
 WorkingDirectory=/home/pi/pocket-earth
+EnvironmentFile=-/etc/pocket-earth-edge.env
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONPATH=/home/pi/pocket-earth:/home/pi/Whisplay/runtime
 Environment=WHISPLAY_RUNTIME=/home/pi/Whisplay/runtime
