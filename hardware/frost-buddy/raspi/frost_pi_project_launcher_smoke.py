@@ -59,7 +59,7 @@ def main() -> int:
     assert len(AGENTS) == 12
     assert len(TOPIC_AGENT_KEYS) == 8
     assert [item["label"] for item in POCKET_MODES] == ["静默地球", "AGENTS", "今日一页"]
-    assert [item["label"] for item in PODCAST_MODES] == ["播客模式", "阅读模式"]
+    assert [item["label"] for item in PODCAST_MODES] == ["播客模式", "文字模式"]
     assert len(DAYBOOK_ENTRIES) == 31
     assert CONTENT_CACHE["schema"] == "pocket-earth-edge-content-cache/v1"
     assert [item["state"] for item in CONTENT_CACHE["buffer"]] == ["cached", "miss", "anchored"]
@@ -113,6 +113,12 @@ def main() -> int:
     assert state.enter() == "draw" and state.level == "podcast_modes"
     assert state.enter() == "draw" and state.level == "podcast_preview"
     assert state.image().size == (240, 280)
+    assert len(state.podcast["segments"]) >= 2
+    first_podcast_index = state.podcast_index
+    state.move()
+    assert state.podcast_index != first_podcast_index
+    podcast_action = state.enter()
+    assert podcast_action[0] == "play_podcast" and podcast_action[1]
     assert state.back() == "draw" and state.level == "podcast_modes"
 
     state = MenuState(SUNSET_CATALOG)

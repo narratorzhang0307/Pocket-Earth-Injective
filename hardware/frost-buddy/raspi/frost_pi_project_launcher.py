@@ -19,12 +19,14 @@ import threading
 import time
 import unicodedata
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from frost_pi_device_driver import rgb565_bytes
+from frost_pi_device_driver import PocketEarthDeviceDriver, rgb565_bytes
 from frost_pi_earth_answers import EarthAnswerState
+from frost_pi_podcast_sync import load_podcast_cache
 from frost_pi_sunset_bridge import (
     load_catalog as load_sunset_catalog,
     queue_city as queue_sunset_city,
@@ -105,8 +107,15 @@ POCKET_MODES = (
 )
 
 PODCAST_MODES = (
-    {"key": "podcast", "label": "播客模式", "meta": "每日知识版次 · 后续接入语音", "accent": MAGENTA},
-    {"key": "reading", "label": "阅读模式", "meta": "按领域阅读现有核验内容", "accent": CYAN},
+    {"key": "podcast", "label": "播客模式", "meta": "已核验知识 · 长按播报当前条目", "accent": MAGENTA},
+    {"key": "reading", "label": "文字模式", "meta": "按领域阅读来源与核验记录", "accent": CYAN},
+)
+
+FROST_NFT_SHEET = Path(
+    os.environ.get(
+        "FROST_NFT_SHEET",
+        "/home/pi/pocket-earth/assets/frost-nft-group-1.png",
+    )
 )
 
 CONTENT_CACHE_PATH = Path(
@@ -539,24 +548,56 @@ def render_podcast_modes(selected: int) -> Image.Image:
     )
 
 
-def render_podcast_preview() -> Image.Image:
-    edition = CONTENT_CACHE.get("knowledgeEdition", {})
-    records = edition.get("records", [])
+@lru_cache(maxsize=2)
+def _frost_podcast_portrait(path: str) -> Image.Image | None:
+    try:
+        sheet = Image.open(path).convert("RGB")
+        cell_width, cell_height = sheet.width // 3, sheet.height // 2
+        portrait = sheet.crop((0, 0, cell_width, cell_height))
+        resampling = getattr(Image, "Resampling", Image)
+        return portrait.resize((58, 58), resampling.LANCZOS)
+    except OSError:
+        return None
+
+
+def render_podcast_preview(podcast: dict, selected: int = 0) -> Image.Image:
+    segments = podcast.get("segments", []) if isinstance(podcast, dict) else []
     image = Image.new("RGB", (WIDTH, HEIGHT), PAPER)
     draw = ImageDraw.Draw(image)
     draw_header(draw, "播客模式", MAGENTA, centered=True)
-    draw.text((12, 49), "DAILY KNOWLEDGE PODCAST", font=font(8, "mono"), fill=GREY)
-    draw.text((12, 70), f"{edition.get('date', '—')} · REV {edition.get('revision', 0)}", font=font(17, "bold"), fill=INK)
-    draw.rectangle((11, 101, 229, 132), fill=MAGENTA, outline=INK, width=2)
-    draw.text((17, 110), f"{edition.get('factCount', 0)} 条核验知识 · 今日脚本", font=font(11, "bold"), fill=INK)
-    y = 148
-    for record in records[:2]:
-        title = _wrapped_lines(draw, record.get("title", "知识条目"), font(11, "bold"), 210, 1)
-        draw.text((14, y), f"- {title[0] if title else '知识条目'}", font=font(11, "bold"), fill=INK)
-        y += 28
-    draw.text((14, 216), "语音叙事 Agent 将把版次组织成播客语感", font=font(9), fill=GREY)
-    draw.text((12, 251), "PODCAST AGENT · NEXT ITERATION", font=font(7, "mono"), fill=INK)
-    draw.text((175, 265), "2X: BACK", font=font(7, "mono"), fill=GREY)
+    portrait = _frost_podcast_portrait(str(FROST_NFT_SHEET))
+    if portrait:
+        image.paste(portrait, (12, 48))
+        draw.rectangle((11, 47, 70, 106), outline=INK, width=2)
+    else:
+        draw.rectangle((11, 47, 70, 106), fill=(41, 59, 122), outline=INK, width=2)
+        draw.text((24, 67), "F", font=font(25, "mono"), fill=PAPER)
+    draw.text((80, 49), "FROST · DAILY HOST", font=font(8, "mono"), fill=GREY)
+    draw.text((80, 67), str(podcast.get("date") or "OFFLINE"), font=font(14, "bold"), fill=INK)
+    draw.text((80, 89), f"{len(segments)} 条 · 7D 热缓存", font=font_for_text("条热缓存", 9, "bold"), fill=MAGENTA)
+
+    if not segments:
+        draw.text((12, 132), "今天尚无达到播报门槛的内容", font=font_for_text("今天尚无达到播报门槛的内容", 14, "bold"), fill=INK)
+        draw.text((12, 163), "Agent 会等待，不用候选新闻填充事实。", font=font_for_text("候选新闻", 11), fill=GREY)
+    else:
+        index = selected % len(segments)
+        segment = segments[index]
+        draw.rectangle((11, 116, 229, 142), fill=MAGENTA, outline=INK, width=2)
+        draw.text((17, 124), f"{index + 1}/{len(segments)} · {segment.get('label', '知识')} · TRUTH {segment.get('truthScore', '—')}", font=font(8, "mono"), fill=INK)
+        title_font = font_for_text(str(segment.get("title") or "知识条目"), 13, "bold")
+        y = 151
+        for line in _wrapped_lines(draw, segment.get("title", "知识条目"), title_font, 214, 2):
+            draw.text((12, y), line, font=title_font, fill=INK)
+            y += 19
+        summary_font = font_for_text(str(segment.get("summary") or ""), 10)
+        y += 3
+        for line in _wrapped_lines(draw, segment.get("summary", ""), summary_font, 214, 3):
+            draw.text((12, y), line, font=summary_font, fill=GREY)
+            y += 15
+        publishers = " / ".join(dict.fromkeys(str(item.get("publisher") or "") for item in segment.get("sources", []) if item.get("publisher")))
+        draw.text((12, 235), f"SOURCE · {publishers[:31]}", font=font(7, "mono"), fill=INK)
+    draw.text((12, 251), "CLICK: NEXT  HOLD 1.2S: PLAY", font=font(7, "mono"), fill=INK)
+    draw.text((12, 265), "2X: BACK", font=font(8, "mono"), fill=GREY)
     return image
 
 
@@ -744,6 +785,8 @@ class MenuState:
         self.level = "root"
         self.root_index = 1
         self.podcast_mode_index = 0
+        self.podcast_index = 0
+        self.podcast = load_podcast_cache()
         self.pocket_mode_index = 0
         self.agent_index = 0
         self.page_index = 0
@@ -768,7 +811,7 @@ class MenuState:
         if self.level == "podcast_modes":
             return render_podcast_modes(self.podcast_mode_index)
         if self.level == "podcast_preview":
-            return render_podcast_preview()
+            return render_podcast_preview(self.podcast, self.podcast_index)
         if self.level == "pocket_idle":
             return render_quiet_home(datetime.now().astimezone(), CONTENT_CACHE, font, font_for_text)
         if self.level == "daybook":
@@ -800,6 +843,8 @@ class MenuState:
             self.pocket_mode_index = (self.pocket_mode_index + 1) % len(POCKET_MODES)
         elif self.level == "podcast_modes":
             self.podcast_mode_index = (self.podcast_mode_index + 1) % len(PODCAST_MODES)
+        elif self.level == "podcast_preview" and self.podcast.get("segments"):
+            self.podcast_index = (self.podcast_index + 1) % len(self.podcast["segments"])
         elif self.level == "agents":
             self.agent_index = (self.agent_index + 1) % len(AGENTS)
             self.page_index = 0
@@ -826,7 +871,16 @@ class MenuState:
             self.level = "podcast_modes"
         elif self.level == "podcast_modes":
             mode = PODCAST_MODES[self.podcast_mode_index]["key"]
-            self.level = "podcast_preview" if mode == "podcast" else "pocket_modes"
+            if mode == "podcast":
+                self.podcast = load_podcast_cache()
+                self.podcast_index = 0
+                self.level = "podcast_preview"
+            else:
+                self.level = "pocket_modes"
+        elif self.level == "podcast_preview":
+            segments = self.podcast.get("segments", [])
+            if segments:
+                return ("play_podcast", str(segments[self.podcast_index % len(segments)].get("narration") or ""))
         elif self.level == "pocket_modes":
             mode = POCKET_MODES[self.pocket_mode_index]["key"]
             self.level = {"quiet": "pocket_idle", "agents": "agents", "daybook": "daybook"}[mode]
@@ -1070,6 +1124,17 @@ class ProjectLauncher:
                     queue_sunset_track(payload, self.state.sunset_catalog)
                 elif action == "play_city":
                     queue_sunset_city(payload)
+                elif action == "play_podcast":
+                    self.board.set_rgb_fade(255, 20, 199, duration_ms=250)
+                    speaker = PocketEarthDeviceDriver(mirror_port=0)
+                    try:
+                        spoken = speaker.speak(payload, max_chars=1200)
+                    finally:
+                        speaker.close()
+                    print(f"pocket-launcher: podcast spoken={spoken}", flush=True)
+                    self.board.set_rgb_fade(0, 244, 139, duration_ms=250)
+                    self.draw()
+                    return
                 else:
                     raise ValueError(f"unknown Sunset action: {action}")
                 print(f"pocket-launcher: queued {action}", flush=True)

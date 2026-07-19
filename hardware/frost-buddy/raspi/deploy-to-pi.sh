@@ -19,7 +19,11 @@ FILES=(
   frost_pi_earth_answers_smoke.py
   earth_answers_365.json
   frost_pi_live_preflight.py
+  frost_pi_live_preflight_smoke.py
   frost_pi_content_cache.json
+  frost_pi_podcast_sync.py
+  frost_pi_podcast_sync_smoke.py
+  frost_pi_podcast_cache.json
   frost_pi_project_launcher.py
   frost_pi_project_launcher_smoke.py
   frost_pi_quiet_home.py
@@ -32,16 +36,22 @@ FILES=(
   whisplay_pi_home_guard_smoke.py
   pocket-earth-edge.service
   pocket-earth-launcher.service
+  pocket-earth-podcast-sync.service
+  pocket-earth-podcast-sync.timer
 )
+
+NFT_SHEET="$SCRIPT_DIR/../../../public/frost-identities/frost-nft-group-1.png"
 
 for file in "${FILES[@]}"; do
   test -f "$SCRIPT_DIR/$file"
 done
+test -f "$NFT_SHEET"
 
 scp -q "${FILES[@]/#/$SCRIPT_DIR/}" "$PI_HOST:$STAGE/"
+scp -q "$NFT_SHEET" "$PI_HOST:$STAGE/frost-nft-group-1.png"
 
 ssh "$PI_HOST" "set -euo pipefail
-  sudo install -d -m 0755 -o pi -g pi /home/pi/pocket-earth /home/pi/pocket-earth/agents /home/pi/earth-answers
+  sudo install -d -m 0755 -o pi -g pi /home/pi/pocket-earth /home/pi/pocket-earth/agents /home/pi/pocket-earth/assets /home/pi/earth-answers
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_event_adapter.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_feed_client.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_device_driver.py' /home/pi/pocket-earth/
@@ -50,7 +60,12 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_earth_answers_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/earth_answers_365.json' /home/pi/earth-answers/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_live_preflight.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_live_preflight_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_content_cache.json' /home/pi/pocket-earth/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_podcast_sync.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_podcast_sync_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_podcast_cache.json' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost-nft-group-1.png' /home/pi/pocket-earth/assets/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_project_launcher.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_project_launcher_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_quiet_home.py' /home/pi/pocket-earth/
@@ -63,6 +78,8 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 -o pi -g pi '$STAGE/whisplay_pi_home_guard_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 '$STAGE/pocket-earth-edge.service' /etc/systemd/system/pocket-earth-edge.service
   sudo install -m 0644 '$STAGE/pocket-earth-launcher.service' /etc/systemd/system/pocket-earth-launcher.service
+  sudo install -m 0644 '$STAGE/pocket-earth-podcast-sync.service' /etc/systemd/system/pocket-earth-podcast-sync.service
+  sudo install -m 0644 '$STAGE/pocket-earth-podcast-sync.timer' /etc/systemd/system/pocket-earth-podcast-sync.timer
   sudo install -d -m 0750 -o pi -g pi /var/lib/pocket-earth-edge /var/cache/pocket-earth-edge
   legacy_cursor=/home/pi/.local/state/pocket-earth/frost-feed.cursor
   state_cursor=/var/lib/pocket-earth-edge/frost-feed.cursor
@@ -76,9 +93,12 @@ ssh "$PI_HOST" "set -euo pipefail
   /usr/bin/python3 frost_pi_sunset_bridge_smoke.py
   /usr/bin/python3 frost_pi_project_launcher_smoke.py
   /usr/bin/python3 frost_pi_quiet_home_smoke.py
+  /usr/bin/python3 frost_pi_live_preflight_smoke.py
+  /usr/bin/python3 frost_pi_podcast_sync_smoke.py
   /usr/bin/python3 whisplay_pi_home_guard_smoke.py
   sudo /usr/bin/python3 whisplay_pi_home_guard.py --install
   sudo systemctl daemon-reload
+  sudo systemctl enable --now pocket-earth-podcast-sync.timer
   if sudo test -f /etc/pocket-earth-edge.env; then
     sudo systemctl enable pocket-earth-edge.service pocket-earth-launcher.service
     sudo systemctl restart whisplay-daemon.service

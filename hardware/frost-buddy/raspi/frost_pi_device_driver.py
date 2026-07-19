@@ -461,8 +461,9 @@ class PocketEarthDeviceDriver:
         output.write_bytes(data)
         return output
 
-    def _speak(self, text: str) -> bool:
-        text = _text(text, 160)
+    def speak(self, text: str, max_chars: int = 160) -> bool:
+        """Speak user-requested public text without changing display focus."""
+        text = _text(text, max(1, min(2000, int(max_chars))))
         if not text or self.dry_run or os.environ.get("FROST_DISABLE_TTS", "").lower() in {"1", "true", "yes"}:
             return bool(text)
         DEFAULT_TTS_MARKER.write_text(str(int(time.time())), encoding="utf-8")
@@ -486,6 +487,9 @@ class PocketEarthDeviceDriver:
                 DEFAULT_TTS_MARKER.unlink()
             except OSError:
                 pass
+
+    def _speak(self, text: str) -> bool:
+        return self.speak(text)
 
     def apply_actions(self, actions: list[dict]) -> dict:
         """Apply one complete event. Cursor persistence happens only after return."""

@@ -146,6 +146,11 @@ const physicalDriverSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_de
 const projectLauncher = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher.py', 'utf8')
 const projectLauncherSmoke = readFileSync('hardware/frost-buddy/raspi/frost_pi_project_launcher_smoke.py', 'utf8')
 const quietHome = readFileSync('hardware/frost-buddy/raspi/frost_pi_quiet_home.py', 'utf8')
+const livePreflight = readFileSync('hardware/frost-buddy/raspi/frost_pi_live_preflight.py', 'utf8')
+const podcastSync = readFileSync('hardware/frost-buddy/raspi/frost_pi_podcast_sync.py', 'utf8')
+const podcastService = readFileSync('hardware/frost-buddy/raspi/pocket-earth-podcast-sync.service', 'utf8')
+const podcastTimer = readFileSync('hardware/frost-buddy/raspi/pocket-earth-podcast-sync.timer', 'utf8')
+const podcastCache = JSON.parse(readFileSync('hardware/frost-buddy/raspi/frost_pi_podcast_cache.json', 'utf8'))
 const daybook = JSON.parse(readFileSync('hardware/frost-buddy/raspi/frost_pi_daybook.json', 'utf8'))
 const sunsetBridge = readFileSync('hardware/frost-buddy/raspi/frost_pi_sunset_bridge.py', 'utf8')
 const sunsetHints = JSON.parse(readFileSync('hardware/frost-buddy/raspi/frost_pi_sunset_hints.json', 'utf8'))
@@ -236,6 +241,17 @@ for (const snippet of [
 }
 
 for (const snippet of [
+  'pisugar-server.service',
+  'pisugar-poweroff.service',
+  'batteryReadable',
+  'safeShutdown',
+  'temperatureHealthy',
+  'portableReady',
+]) {
+  assertTrue(`live power preflight keeps ${snippet}`, livePreflight.includes(snippet))
+}
+
+for (const snippet of [
   'PocketEarthDeviceDriver',
   'render_evidence_card',
   'WhisplayDaemonProxy',
@@ -277,8 +293,32 @@ for (const snippet of [
   'play landed dice result by click',
   '静默地球',
   '今日一页',
+  '播客模式',
+  '文字模式',
+  'play_podcast',
+  'frost-nft-group-1.png',
 ]) {
   assertTrue(`project launcher keeps ${snippet}`, projectLauncher.includes(snippet))
+}
+
+for (const snippet of [
+  'pocket-earth-daily-podcast/v1',
+  'POCKET_EARTH_API_BASE',
+  'pocket-podcast.json',
+  'frost_pi_podcast_cache.json',
+  'podcast segment requires two public sources',
+  'temporary.replace(output)',
+]) {
+  assertTrue(`podcast sync keeps ${snippet}`, podcastSync.includes(snippet))
+}
+assertEqual('Pocket Podcast cache schema', podcastCache.schema, 'pocket-earth-daily-podcast/v1')
+assertTrue('Pocket Podcast cache has at least two segments', podcastCache.segments?.length >= 2)
+assertTrue('Pocket Podcast cache keeps two sources per segment', podcastCache.segments.every((segment) => segment.sources?.length >= 2))
+for (const snippet of ['EnvironmentFile=-/etc/pocket-earth-edge.env', 'frost_pi_podcast_sync.py']) {
+  assertTrue(`podcast sync service keeps ${snippet}`, podcastService.includes(snippet))
+}
+for (const snippet of ['OnBootSec=2min', 'OnCalendar=*-*-* 08:20:00 Asia/Shanghai', 'Persistent=true']) {
+  assertTrue(`podcast sync timer keeps ${snippet}`, podcastTimer.includes(snippet))
 }
 
 for (const snippet of ['load_catalog', 'catalog_groups', 'upcoming_sunsets', 'command_hint', 'queue_city', 'queue_track', 'target": "pi"']) {
@@ -345,6 +385,12 @@ execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_quiet_home_smoke.py']
 
 console.log('\nRaspberry Pi Sunset bridge smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_sunset_bridge_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi live power preflight smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_live_preflight_smoke.py'], { stdio: 'inherit' })
+
+console.log('\nRaspberry Pi Pocket Podcast sync smoke')
+execFileSync(python, ['hardware/frost-buddy/raspi/frost_pi_podcast_sync_smoke.py'], { stdio: 'inherit' })
 
 console.log('\nWhisplay PI HOME desktop guard smoke')
 execFileSync(python, ['hardware/frost-buddy/raspi/whisplay_pi_home_guard_smoke.py'], { stdio: 'inherit' })

@@ -1,0 +1,53 @@
+{
+  "schema": "pocket-earth-daily-podcast/v1",
+  "podcastId": "podcast_bundled_verified_20260719",
+  "date": "2026-07-19",
+  "generatedAt": "2026-07-19T00:10:00.000Z",
+  "state": "ready",
+  "modes": ["podcast", "text"],
+  "title": "2026-07-19 · 口袋播客",
+  "intro": "早上好，这里是 2026-07-19 的口袋播客。今天从已核验的公共知识中选出两条内容。",
+  "outro": "完整来源、核验记录与 Merkle 证明请在 Pocket Earth 文字模式中查看。",
+  "script": "",
+  "segments": [
+    {
+      "id": "verified-ai-model-router",
+      "topic": "ai",
+      "label": "AI",
+      "title": "Microsoft Foundry Model Router 可以作为单一模型端点部署，并为每次提示选择合适的底层对话模型。",
+      "claim": "Microsoft Foundry Model Router 可以作为单一模型端点部署，并为每次提示选择合适的底层对话模型。",
+      "summary": "两份 Microsoft 官方文档共同说明了单部署入口、逐请求路由与成本和质量模式。",
+      "verdict": "supported",
+      "truthScore": 86,
+      "recordHash": "0xbf2205a7fe8fd1297f16d08c0b3da08ae363d72bd5462b771955e453d6c54c83",
+      "sources": [
+        {"title": "How to use model router for Microsoft Foundry", "publisher": "Microsoft Learn", "publishedAt": null, "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/model-router"},
+        {"title": "Model router for Microsoft Foundry concepts", "publisher": "Microsoft Learn", "publishedAt": null, "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router"}
+      ],
+      "narration": "今天的第一站是人工智能。Microsoft Foundry Model Router 可以作为单一模型端点部署，并为每次提示选择合适的底层对话模型。两份 Microsoft 官方文档共同说明了单部署入口、逐请求路由与成本和质量模式。"
+    },
+    {
+      "id": "verified-injective-evm",
+      "topic": "finance",
+      "label": "金融",
+      "title": "Injective EVM 测试网使用 Chain ID 1439，并支持通过标准 EVM 工具部署、验证和调用 Solidity 智能合约。",
+      "claim": "Injective EVM 测试网使用 Chain ID 1439，并支持通过标准 EVM 工具部署、验证和调用 Solidity 智能合约。",
+      "summary": "Injective 官方开发文档给出了测试网参数，以及从编译、部署、验证到调用 Solidity 合约的完整路径。",
+      "verdict": "supported",
+      "truthScore": 86,
+      "recordHash": "0x8b1c3a510df8f3a95cf7a4e8885f776f9b06ee0b86ed8aa79655e4dddf0ccab8",
+      "sources": [
+        {"title": "EVM Network Information", "publisher": "Injective Docs", "publishedAt": null, "url": "https://docs.injective.network/developers-evm/network-information"},
+        {"title": "Your First EVM Smart Contract", "publisher": "Injective Docs", "publishedAt": null, "url": "https://docs.injective.network/developers-evm/smart-contracts"}
+      ],
+      "narration": "接着看 Injective。Injective EVM 测试网使用 Chain ID 1439，并支持通过标准 EVM 工具部署、验证和调用 Solidity 智能合约。两份 Injective 官方文档共同给出了完整路径。"
+    }
+  ],
+  "memory": {
+    "hotWindowDays": 7,
+    "editionRoots": [],
+    "anchoredRoots": [],
+    "policy": "完整新闻保留七天；通过复核的记录与版次根进入长期精选层。"
+  },
+  "run": {"schema": "pocket-earth-podcast-agent-run/v1", "agentId": "pocket-podcast.orchestrator.v1", "state": "complete", "events": []}
+}

@@ -68,6 +68,30 @@ The installed filesystem and process boundary is documented in
 `python3 frost_pi_device_driver_smoke.py`; on the Pi, run
 `/home/pi/pocket-earth/frost_pi_live_preflight.py --strict`.
 
+## Portable power gate
+
+The strict live preflight also owns the PiSugar software boundary. A portable
+node is ready only when the official `pisugar-server` is active and enabled,
+the PiSugar 3 model uses I2C bus 1, the battery percentage is readable, the
+shutdown-time `pisugar-poweroff` hook is enabled, and low-battery shutdown is
+configured for 10% with a 30-second delay. CPU temperature must remain below
+80°C. PiSugar chip temperature is reported separately when its I2C link is
+available; it must not be confused with the Raspberry Pi CPU temperature.
+
+`pisugar-poweroff.service` is expected to be inactive during normal operation:
+it is a shutdown hook, so the strict check requires it to be **enabled**, not
+running. If `power.batteryRaw` says `I2C not connected`, software installation
+is complete but the physical battery board is not visible at the documented
+PiSugar 3 addresses (`0x57`/`0x68`). Check with:
+
+```bash
+sudo /usr/sbin/i2cdetect -y 1
+python3 /home/pi/pocket-earth/frost_pi_live_preflight.py --strict
+```
+
+Installation and socket commands follow the [official PiSugar 3 guide](https://docs.pisugar.com/docs/product-wiki/battery/pisugar3/pisugar-3-series)
+and [PiSugar Power Manager guide](https://docs.pisugar.com/docs/product-wiki/battery/pisugar-power-manager).
+
 ## PI Home launcher
 
 `frost_pi_project_launcher.py` turns the clear `/home/pi` project tree into a
@@ -90,16 +114,24 @@ plays the selected result; double-click still returns without playback. PI Home 
 radio catalog and posts a targeted command to its local API; it does not take
 ownership of the radio database or player.
 
-`口袋播客` opens `播客模式` and `阅读模式`. The podcast page previews the current
-verified knowledge edition without auto-playing audio; the narrative/TTS agent
-is deliberately a later iteration. Reading mode preserves the existing three
+`口袋播客` opens `播客模式` and `文字模式`. Both the software and the Pi consume
+the same reviewed daily artifact. The Pi validates it, writes it atomically,
+and keeps the last valid copy while offline. Single-click moves through the
+verified segments; holding for 1.2 seconds speaks only the selected segment.
+`FROST_DISABLE_TTS=1` keeps the audio lane silent during library or CI tests.
+Text mode preserves the existing three
 spaces: `静默地球` is a clock-first, sound-free home with a pixel globe, the
 shared Frost silhouette, and public agent/knowledge status; `AGENTS` contains
-twelve evidence readers; `今日一页` is an offline calendar with one of 31
-original Pocket Earth decision prompts.
+twelve evidence readers; `今日一页` is an offline calendar with one of 31 original Pocket Earth decision prompts.
 The clock and date refresh once per minute without network calls or TTS. This
 borrows the low-distraction product logic of a pocket decision device, not its
 brand, copy, fortune-telling, or visual assets.
+
+`pocket-earth-podcast-sync.timer` refreshes the public artifact after boot and
+at 08:20 Asia/Shanghai. Full candidate news remains in the server's seven-day
+hot cache; the Pi receives only the reviewed podcast projection and its source
+ledger. The bundled last-good artifact keeps the demo honest when the network
+is unavailable.
 
 `地球答案` is a separate annual action-guidance edition. It loads 365 reviewed
 source excerpts from `/home/pi/earth-answers`, hides today's text until the user
