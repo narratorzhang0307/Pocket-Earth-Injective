@@ -1,0 +1,1116 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/zvw6s9",
+    "id": "zvw6s9",
+    "slide": 2,
+    "layoutId": "ef1e89cd-36bd-4262-a601-f916c3f13a9b",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "5ef57dd9-c10d-4faf-b9c1-6a3d7fb8be45",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "ef1e89cd-36bd-4262-a601-f916c3f13a9b",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "5ef57dd9-c10d-4faf-b9c1-6a3d7fb8be45",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "5ef57dd9-c10d-4faf-b9c1-6a3d7fb8be45",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hkryt43m",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ah0zi9kv",
+      "id": "2",
+      "bbox": [
+        50,
+        76,
+        178,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vi9grelg",
+      "id": "3",
+      "bbox": [
+        64,
+        82,
+        150,
+        22
+      ],
+      "geometry": "rect",
+      "text": "WHY NOW · 问题",
+      "textPreview": "WHY NOW · 问题",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY NOW · 问题"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY NOW · 问题",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY NOW · 问题",
+              "fontSize": 15,
+              "color": "#FFFFFF"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nihoj2d",
+      "id": "4",
+      "bbox": [
+        50,
+        146,
+        415,
+        124
+      ],
+      "geometry": "rect",
+      "text": "AI 时代，同时丢失了\n两件东西",
+      "textPreview": "AI 时代，同时丢失了 | 两件东西",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "fontSize": 39,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AI 时代，同时丢失了"
+          },
+          {
+            "index": 2,
+            "text": "两件东西"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AI 时代，同时丢失了",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AI 时代，同时丢失了",
+              "fontSize": 39,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "两件东西",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "两件东西",
+              "fontSize": 39,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5orixo3i",
+      "id": "5",
+      "bbox": [
+        50,
+        292,
+        410,
+        50
+      ],
+      "geometry": "rect",
+      "text": "个人上下文，以及公共信息的可信度",
+      "textPreview": "个人上下文，以及公共信息的可信度",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "个人上下文，以及公共信息的可信度"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "个人上下文，以及公共信息的可信度",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "个人上下文，以及公共信息的可信度",
+              "fontSize": 20,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/il0zm9k7",
+      "id": "6",
+      "bbox": [
+        50,
+        374,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm90vels",
+      "id": "7",
+      "bbox": [
+        68,
+        366,
+        372,
+        40
+      ],
+      "geometry": "rect",
+      "text": "个人知识散落在相册、地点与对话里",
+      "textPreview": "个人知识散落在相册、地点与对话里",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "个人知识散落在相册、地点与对话里"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "个人知识散落在相册、地点与对话里",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "个人知识散落在相册、地点与对话里",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sr2hs329",
+      "id": "8",
+      "bbox": [
+        50,
+        421,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsbi183u",
+      "id": "9",
+      "bbox": [
+        68,
+        413,
+        372,
+        40
+      ],
+      "geometry": "rect",
+      "text": "公共信息高速增长，出处与版本难以复核",
+      "textPreview": "公共信息高速增长，出处与版本难以复核",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公共信息高速增长，出处与版本难以复核"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公共信息高速增长，出处与版本难以复核",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公共信息高速增长，出处与版本难以复核",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gj2pkzq",
+      "id": "10",
+      "bbox": [
+        50,
+        468,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0falwfi5",
+      "id": "11",
+      "bbox": [
+        68,
+        460,
+        372,
+        40
+      ],
+      "geometry": "rect",
+      "text": "Agent 需要可追溯的输入、时间与发布边界",
+      "textPreview": "Agent 需要可追溯的输入、时间与发布边界",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Agent 需要可追溯的输入、时间与发布边界"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Agent 需要可追溯的输入、时间与发布边界",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Agent 需要可追溯的输入、时间与发布边界",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fehknahk",
+      "id": "12",
+      "bbox": [
+        50,
+        520,
+        394,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#C6DBD1",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/et8ju50z",
+      "id": "13",
+      "bbox": [
+        50,
+        520,
+        5,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pkj2tkz2",
+      "id": "14",
+      "bbox": [
+        68,
+        534,
+        359,
+        24
+      ],
+      "geometry": "rect",
+      "text": "AI 时代不缺数据，缺的是可信知识。",
+      "textPreview": "AI 时代不缺数据，缺的是可信知识。",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AI 时代不缺数据，缺的是可信知识。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AI 时代不缺数据，缺的是可信知识。",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#2A604F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AI 时代不缺数据，缺的是可信知识。",
+              "fontSize": 17,
+              "color": "#2A604F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ojal0fih",
+      "id": "15",
+      "bbox": [
+        68,
+        567,
+        359,
+        34
+      ],
+      "geometry": "rect",
+      "text": "一边重建人的长期上下文，一边保存公共知识的来源、证据和版本。",
+      "textPreview": "一边重建人的长期上下文，一边保存公共知识的来源、证据和版本。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "一边重建人的长期上下文，一边保存公共知识的来源、证据"
+          },
+          {
+            "index": 2,
+            "text": "和版本。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "一边重建人的长期上下文，一边保存公共知识的来源、证据和版本。",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "一边重建人的长期上下文，一边保存公共知识的来源、证据和版本。",
+              "fontSize": 13,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ni1krahw",
+      "id": "16",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hs3yp0b",
+      "id": "17",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "02 / WHY NOW",
+      "textPreview": "02 / WHY NOW",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02 / WHY NOW"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02 / WHY NOW",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "02 / WHY NOW",
+              "fontSize": 11,
+              "color": "#8B918D"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5oz2h0zi",
+      "id": "18",
+      "bbox": [
+        507,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/7yh4jitw",
+      "id": "19",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Private map",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "25dde5ad-4594-41e8-b410-c3a77328388b",
+        "contentType": "image/jpeg",
+        "byteLength": 60439
+      }
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7al4vqt",
+      "id": "20",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h8j2d07e",
+      "id": "21",
+      "bbox": [
+        931,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/x4f2tore",
+      "id": "22",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Expanded knowledge article",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "dbd72a4e-6e3d-4737-979a-4698c701c5c7",
+        "contentType": "image/jpeg",
+        "byteLength": 48713
+      }
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v61kbqp8",
+      "id": "23",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vul8vq5",
+      "id": "24",
+      "bbox": [
+        503,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#2D62DD",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#2D62DD",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#2D62DD",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5w32h07q",
+      "id": "25",
+      "bbox": [
+        523,
+        637,
+        300,
+        36
+      ],
+      "geometry": "rect",
+      "text": "PRIVATE MAP · 个人经历重新回到地点",
+      "textPreview": "PRIVATE MAP · 个人经历重新回到地点",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PRIVATE MAP · 个人经历重新回到地点"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PRIVATE MAP · 个人经历重新回到地点",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PRIVATE MAP · 个人经历重新回到地点",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/itc3658z",
+      "id": "26",
+      "bbox": [
+        927,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/julkfapk",
+      "id": "27",
+      "bbox": [
+        947,
+        637,
+        295,
+        36
+      ],
+      "geometry": "rect",
+      "text": "KNOWLEDGE DETAIL · 从摘要展开证据与来源",
+      "textPreview": "KNOWLEDGE DETAIL · 从摘要展开证据与来源",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "KNOWLEDGE DETAIL ·"
+          },
+          {
+            "index": 2,
+            "text": "从摘要展开证据与来源"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "KNOWLEDGE DETAIL · 从摘要展开证据与来源",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "KNOWLEDGE DETAIL · 从摘要展开证据与来源",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

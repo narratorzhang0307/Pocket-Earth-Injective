@@ -4,8 +4,8 @@ import { Presentation, PresentationFile } from "@oai/artifact-tool";
 
 const PROJECT = "/Users/zhangcheng/Desktop/Pocket-Earth-Injective";
 const LIB = path.join(PROJECT, "决赛提交的PPT", "PocketEarth_Injective_决赛产品全景截图库_2026-07-19");
-const OUT = path.join(PROJECT, "决赛提交的PPT", "前5页样稿预览-v2-2026-07-19");
-const PPTX = path.join(PROJECT, "决赛提交的PPT", "Pocket Earth on Injective-决赛路演PPT-前5页样稿-v2-2026-07-19.pptx");
+const OUT = path.join(PROJECT, "决赛提交的PPT", "前5页样稿预览-v3-无网格底-2026-07-19");
+const PPTX = path.join(PROJECT, "决赛提交的PPT", "Pocket Earth on Injective-决赛路演PPT-前5页样稿-v3-无网格底-2026-07-19.pptx");
 
 const IMG = {
   publicMap: path.join(LIB, "02_公共地球", "01_公共知识地图.png"),
@@ -72,8 +72,6 @@ function textBox(slide, text, x, y, w, h, size, color = C.ink, bold = false, fam
 
 function grid(slide) {
   slide.background.fill = C.bg;
-  for (let x = 0; x <= 1280; x += 32) rect(slide, x, 0, 1, 720, C.grid);
-  for (let y = 0; y <= 720; y += 32) rect(slide, 0, y, 1280, 1, C.grid);
 }
 
 function topRule(slide) {
