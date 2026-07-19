@@ -4,17 +4,18 @@ import { Presentation, PresentationFile } from "@oai/artifact-tool";
 
 const PROJECT = "/Users/zhangcheng/Desktop/Pocket-Earth-Injective";
 const LIB = path.join(PROJECT, "决赛提交的PPT", "PocketEarth_Injective_决赛产品全景截图库_2026-07-19");
-const OUT = path.join(PROJECT, "决赛提交的PPT", "前5页样稿预览-v3-无网格底-2026-07-19");
-const PPTX = path.join(PROJECT, "决赛提交的PPT", "Pocket Earth on Injective-决赛路演PPT-前5页样稿-v3-无网格底-2026-07-19.pptx");
+const HIRES = path.join(LIB, "10_PPT高清源图_2x");
+const OUT = path.join(PROJECT, "决赛提交的PPT", "前5页样稿预览-v4-高清无网格底-2026-07-19");
+const PPTX = path.join(PROJECT, "决赛提交的PPT", "Pocket Earth on Injective-决赛路演PPT-前5页样稿-v4-高清无网格底-2026-07-19.pptx");
 
 const IMG = {
-  publicMap: path.join(LIB, "02_公共地球", "01_公共知识地图.png"),
-  publicAgents: path.join(LIB, "05_Agent网络", "01_公共Agent网络总览.png"),
-  privateMap: path.join(LIB, "01_私人空间", "01_私人地图总览.png"),
-  article: path.join(LIB, "03_公共知识", "02_AI新闻全文展开.png"),
-  mapNote: path.join(LIB, "02_公共地球", "02_地图新闻便签展开.png"),
-  merkle: path.join(LIB, "03_公共知识", "12_AI可验证版次与Merkle证明.png"),
-  identity: path.join(LIB, "04_Frost身份卡", "01_Frost_43_记忆园.png"),
+  publicMap: path.join(HIRES, "02_公共知识地图_2x.png"),
+  publicAgents: path.join(HIRES, "03_公共Agent网络总览_2x.png"),
+  privateMap: path.join(HIRES, "01_私人地图总览_2x.png"),
+  article: path.join(HIRES, "04_AI新闻全文展开_2x.png"),
+  mapNote: path.join(HIRES, "05_地图新闻便签展开_2x.png"),
+  merkle: path.join(HIRES, "06_AI可验证版次与Merkle证明_2x.png"),
+  identity: path.join(HIRES, "07_Frost_43_记忆园_2x.png"),
   hardware: path.join(LIB, "09_硬件终端", "10_树莓派真机地球答案.jpg"),
 };
 

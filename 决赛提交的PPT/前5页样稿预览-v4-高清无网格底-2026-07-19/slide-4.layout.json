@@ -1,0 +1,981 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/dsf1hy",
+    "id": "dsf1hy",
+    "slide": 4,
+    "layoutId": "4955d0bc-d9cc-4aac-8cb6-0969d8ee2df9",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "945c882d-4d09-4d05-a5f3-8f9fc7c2bbd2",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "4955d0bc-d9cc-4aac-8cb6-0969d8ee2df9",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "945c882d-4d09-4d05-a5f3-8f9fc7c2bbd2",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "945c882d-4d09-4d05-a5f3-8f9fc7c2bbd2",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jmlc3itk",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nudwnap",
+      "id": "2",
+      "bbox": [
+        50,
+        76,
+        285,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o3u5sba",
+      "id": "3",
+      "bbox": [
+        64,
+        82,
+        257,
+        22
+      ],
+      "geometry": "rect",
+      "text": "PUBLIC EARTH · 公共知识层",
+      "textPreview": "PUBLIC EARTH · 公共知识层",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PUBLIC EARTH · 公共知识层"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PUBLIC EARTH · 公共知识层",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PUBLIC EARTH · 公共知识层",
+              "fontSize": 15,
+              "color": "#FFFFFF"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uhsbqdsn",
+      "id": "4",
+      "bbox": [
+        50,
+        146,
+        420,
+        112
+      ],
+      "geometry": "rect",
+      "text": "把信息炼成一张\n知识地图",
+      "textPreview": "把信息炼成一张 | 知识地图",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "fontSize": 39,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "把信息炼成一张"
+          },
+          {
+            "index": 2,
+            "text": "知识地图"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "把信息炼成一张",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "把信息炼成一张",
+              "fontSize": 39,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "知识地图",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "知识地图",
+              "fontSize": 39,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vi1czit8",
+      "id": "5",
+      "bbox": [
+        50,
+        287,
+        420,
+        52
+      ],
+      "geometry": "rect",
+      "text": "卡片负责发现，详情负责理解，版次负责验真",
+      "textPreview": "卡片负责发现，详情负责理解，版次负责验真",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "卡片负责发现，详情负责理解，版次负责验真"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "卡片负责发现，详情负责理解，版次负责验真",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "卡片负责发现，详情负责理解，版次负责验真",
+              "fontSize": 20,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjatsnat",
+      "id": "6",
+      "bbox": [
+        50,
+        366,
+        392,
+        140
+      ],
+      "geometry": "rect",
+      "text": "新闻信号以便签落回真实地点；点开后得到摘要、意义、来源与核验状态。\n\n进入每日版次的条目可以下载资源包，在本地重新计算记录哈希、Merkle 路径与版次根。",
+      "textPreview": "新闻信号以便签落回真实地点；点开后得到摘要、意义、来源与核验状态。 |  | 进入每日版次的条目可以下载资源包，在本地重新计算记录哈希、Merkle 路径与版次根。",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "新闻信号以便签落回真实地点；点开后得到摘要、意"
+          },
+          {
+            "index": 2,
+            "text": "义、来源与核验状态。"
+          },
+          {
+            "index": 3,
+            "text": ""
+          },
+          {
+            "index": 4,
+            "text": "进入每日版次的条目可以下载资源包，在本地重新计"
+          },
+          {
+            "index": 5,
+            "text": "算记录哈希、Merkle 路径与版次根。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "新闻信号以便签落回真实地点；点开后得到摘要、意义、来源与核验状态。",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "新闻信号以便签落回真实地点；点开后得到摘要、意义、来源与核验状态。",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "进入每日版次的条目可以下载资源包，在本地重新计算记录哈希、Merkle 路径与版次根。",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "进入每日版次的条目可以下载资源包，在本地重新计算记录哈希、Merkle 路径与版次根。",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3u1sbe",
+      "id": "7",
+      "bbox": [
+        50,
+        520,
+        394,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#C6DBD1",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtsbmdsr",
+      "id": "8",
+      "bbox": [
+        50,
+        520,
+        5,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u1cvytc",
+      "id": "9",
+      "bbox": [
+        68,
+        534,
+        359,
+        24
+      ],
+      "geometry": "rect",
+      "text": "渲染在端上，内容在包里，指纹在链上。",
+      "textPreview": "渲染在端上，内容在包里，指纹在链上。",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "渲染在端上，内容在包里，指纹在链上。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "渲染在端上，内容在包里，指纹在链上。",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#2A604F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "渲染在端上，内容在包里，指纹在链上。",
+              "fontSize": 17,
+              "color": "#2A604F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/by58redk",
+      "id": "10",
+      "bbox": [
+        68,
+        567,
+        359,
+        34
+      ],
+      "geometry": "rect",
+      "text": "公共地球节省链上存储成本，同时保留可下载、可迁移、可复验的知识。",
+      "textPreview": "公共地球节省链上存储成本，同时保留可下载、可迁移、可复验的知识。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公共地球节省链上存储成本，同时保留可下载、可迁移、可"
+          },
+          {
+            "index": 2,
+            "text": "复验的知识。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公共地球节省链上存储成本，同时保留可下载、可迁移、可复验的知识。",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公共地球节省链上存储成本，同时保留可下载、可迁移、可复验的知识。",
+              "fontSize": 13,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxw7i9wf",
+      "id": "11",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dknqt4vq",
+      "id": "12",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "04 / PUBLIC KNOWLEDGE LAYER",
+      "textPreview": "04 / PUBLIC KNOWLEDGE LAYER",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04 / PUBLIC KNOWLEDGE LAYER"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04 / PUBLIC KNOWLEDGE LAYER",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "04 / PUBLIC KNOWLEDGE LAYER",
+              "fontSize": 11,
+              "color": "#8B918D"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cjepkje5",
+      "id": "13",
+      "bbox": [
+        507,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/wnix87yx",
+      "id": "14",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Expanded news note on the map",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "bd10bf1a-a221-484a-8060-a41b68e01dfa",
+        "contentType": "image/png",
+        "byteLength": 177504
+      }
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylg7m9wb",
+      "id": "15",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lo7qxov2",
+      "id": "16",
+      "bbox": [
+        931,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/vm9gz2xc",
+      "id": "17",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Merkle proof and daily edition",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "3405b02d-32ae-4edb-9001-945accc69cb2",
+        "contentType": "image/png",
+        "byteLength": 160066
+      }
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fqlojuds",
+      "id": "18",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upc7apw7",
+      "id": "19",
+      "bbox": [
+        503,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#2D62DD",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#2D62DD",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#2D62DD",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ilkbixgf",
+      "id": "20",
+      "bbox": [
+        523,
+        637,
+        300,
+        36
+      ],
+      "geometry": "rect",
+      "text": "知识地图 · 便签落回新闻发生地",
+      "textPreview": "知识地图 · 便签落回新闻发生地",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "知识地图 · 便签落回新闻发生地"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "知识地图 · 便签落回新闻发生地",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "知识地图 · 便签落回新闻发生地",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jmtsr2x0",
+      "id": "21",
+      "bbox": [
+        927,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kn2tk7el",
+      "id": "22",
+      "bbox": [
+        947,
+        637,
+        295,
+        36
+      ],
+      "geometry": "rect",
+      "text": "每日版次 · 下载包并复验 Merkle 证明",
+      "textPreview": "每日版次 · 下载包并复验 Merkle 证明",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "每日版次 · 下载包并复验 Merkle 证明"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "每日版次 · 下载包并复验 Merkle 证明",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "每日版次 · 下载包并复验 Merkle 证明",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
