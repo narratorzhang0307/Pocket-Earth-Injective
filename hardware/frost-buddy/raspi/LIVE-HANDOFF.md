@@ -56,5 +56,6 @@ ssh sunset-pi '/home/pi/pocket-earth/frost_pi_live_preflight.py --strict'
 | Injective 实时只读、server-side `speak`、Bearer token、cursor | Pocket Earth / Codex | `npm run verify:hardware-handoff` |
 | JSONL → `state/tts/display` | 仓库内 Pi adapter | 同一条守门自动覆盖 |
 | LED、Whisplay、TTS、镜像 | 仓库内 physical driver / Pi 真机 | `frost_pi_live_preflight.py --strict` + 现场观察 |
+| PiSugar 电量、10%/30 秒安全关机、CPU 温度 | PiSugar 官方服务 / Pocket Earth 严格预检 | `power.portableReady=true` + `power.temperatureHealthy=true` |
 
 Pi 断电、离线或删除整个物理 driver 都不会影响 Pocket Earth 软件；Pocket Earth 前端升级也不要求改动屏幕、LED 或 TTS driver。

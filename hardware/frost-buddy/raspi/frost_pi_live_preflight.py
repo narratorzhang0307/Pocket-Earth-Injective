@@ -4,6 +4,7 @@
 import argparse
 import json
 import os
+import re
 import shutil
 import socket
 import subprocess
@@ -22,6 +23,10 @@ def _command(*args):
 
 def _active(unit):
     return _command("systemctl", "is-active", unit).stdout.strip() == "active"
+
+
+def _enabled(unit):
+    return _command("systemctl", "is-enabled", unit).stdout.strip() == "enabled"
 
 
 def _wifi():
@@ -86,6 +91,120 @@ def _mirror():
         return False
 
 
+def _pisugar_request(command):
+    path = os.environ.get("PISUGAR_SOCKET_PATH", "/tmp/pisugar-server.sock")
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+            client.settimeout(2)
+            client.connect(path)
+            client.sendall((command.strip() + "\n").encode())
+            return client.recv(4096).decode("utf-8", "replace").strip()
+    except OSError:
+        return ""
+
+
+def _metric(response, name):
+    match = re.fullmatch(rf"{re.escape(name)}:\s*(-?\d+(?:\.\d+)?)", response.strip(), re.I)
+    return float(match.group(1)) if match else None
+
+
+def _boolean_metric(response, name):
+    match = re.fullmatch(rf"{re.escape(name)}:\s*(true|false)", response.strip(), re.I)
+    return match.group(1).lower() == "true" if match else None
+
+
+def _text_metric(response, name):
+    match = re.fullmatch(rf"{re.escape(name)}:\s*(.+)", response.strip(), re.I)
+    return match.group(1).strip() if match else ""
+
+
+def _cpu_temperature():
+    result = _command("vcgencmd", "measure_temp")
+    match = re.search(r"temp=([0-9.]+)", result.stdout)
+    if match:
+        return round(float(match.group(1)), 1)
+    try:
+        return round(float(Path("/sys/class/thermal/thermal_zone0/temp").read_text().strip()) / 1000, 1)
+    except (OSError, ValueError):
+        return None
+
+
+def _pisugar_config():
+    path = Path(os.environ.get("PISUGAR_CONFIG_PATH", "/etc/pisugar-server/config.json"))
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else {}
+    except (OSError, ValueError, json.JSONDecodeError):
+        return {}
+
+
+def _safe_shutdown(config, hook_enabled):
+    level = config.get("auto_shutdown_level")
+    delay = config.get("auto_shutdown_delay")
+    soft_poweroff = config.get("soft_poweroff") is True
+    shell = str(config.get("soft_poweroff_shell") or "").strip()
+    command = "expected" if shell == "shutdown --poweroff 0" else ("custom" if shell else "missing")
+    return {
+        "levelPercent": level,
+        "delaySeconds": delay,
+        "softPoweroff": soft_poweroff,
+        "command": command,
+        "shutdownHookEnabled": hook_enabled,
+        "configured": (
+            level == 10
+            and delay == 30
+            and soft_poweroff
+            and command == "expected"
+            and hook_enabled
+        ),
+    }
+
+
+def _power_state():
+    config = _pisugar_config()
+    server_active = _active("pisugar-server.service")
+    server_enabled = _enabled("pisugar-server.service")
+    hook_enabled = _enabled("pisugar-poweroff.service")
+    model_raw = _pisugar_request("get model") if server_active else ""
+    battery_raw = _pisugar_request("get battery") if server_active else ""
+    plugged_raw = _pisugar_request("get battery_power_plugged") if server_active else ""
+    temperature_raw = _pisugar_request("get temperature") if server_active else ""
+    battery = _metric(battery_raw, "battery")
+    cpu_temperature = _cpu_temperature()
+    safe_shutdown = _safe_shutdown(config, hook_enabled)
+    model = _text_metric(model_raw, "model")
+    model_ok = model == "PiSugar 3"
+    bus_ok = config.get("i2c_bus") == 1
+    battery_readable = battery is not None and 0 <= battery <= 100
+    temperature_healthy = cpu_temperature is not None and cpu_temperature < 80
+    portable_ready = all([
+        server_active,
+        server_enabled,
+        model_ok,
+        bus_ok,
+        battery_readable,
+        safe_shutdown["configured"],
+    ])
+    return {
+        "serverActive": server_active,
+        "serverEnabled": server_enabled,
+        "model": model,
+        "modelCorrect": model_ok,
+        "i2cBus": config.get("i2c_bus"),
+        "i2cBusCorrect": bus_ok,
+        "batteryReadable": battery_readable,
+        "batteryPercent": round(battery, 1) if battery_readable else None,
+        "batteryRaw": battery_raw[:120],
+        "externalPower": _boolean_metric(plugged_raw, "battery_power_plugged"),
+        "pisugarTemperatureC": _metric(temperature_raw, "temperature"),
+        "cpuTemperatureC": cpu_temperature,
+        "temperatureHealthy": temperature_healthy,
+        "safeShutdown": safe_shutdown,
+        "enduranceTelemetryReady": battery_readable,
+        "portableReady": portable_ready,
+    }
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Check the live Pocket Earth Raspberry Pi lane")
     parser.add_argument("--strict", action="store_true")
@@ -101,6 +220,7 @@ def main(argv=None):
     ))
     whisplay = _whisplay_state()
     cjk = _cjk_font()
+    power = _power_state()
     report = {
         "ok": True,
         "hostname": socket.gethostname(),
@@ -125,6 +245,7 @@ def main(argv=None):
             "speakerPlayer": bool(shutil.which("ffplay")),
             "offlineTts": bool(shutil.which("espeak-ng") or shutil.which("espeak")),
         },
+        "power": power,
         "eventLane": {
             "cursorPath": str(cursor),
             "snapshotPath": str(snapshot),
@@ -145,6 +266,8 @@ def main(argv=None):
         report["hardware"]["cjkGlyphs"],
         report["hardware"]["speakerPlayer"],
         report["hardware"]["offlineTts"],
+        report["power"]["portableReady"],
+        report["power"]["temperatureHealthy"],
         report["eventLane"]["mirrorResponding"],
     ]
     report["ok"] = all(critical)

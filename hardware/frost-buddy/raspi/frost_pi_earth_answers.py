@@ -37,9 +37,10 @@ def load_answers(path: Path | None = None) -> list[dict]:
 class EarthAnswerState:
     """Keep tomorrow hidden, reveal today once, and browse only backwards."""
 
-    def __init__(self, answers: list[dict] | None = None, state_path: Path | None = None):
+    def __init__(self, answers: list[dict] | None = None, state_path: Path | None = None, clock=None):
         self.answers = answers if answers is not None else load_answers()
         self.state_path = state_path or STATE_PATH
+        self.clock = clock or (lambda: datetime.now().astimezone())
         self.revealed_dates = self._load_revealed_dates()
         self.day_key = ""
         self.today_index = 0
@@ -72,7 +73,7 @@ class EarthAnswerState:
         temporary.replace(self.state_path)
 
     def sync_day(self, now: datetime | None = None) -> None:
-        current = (now or datetime.now().astimezone()).astimezone()
+        current = (now or self.clock()).astimezone()
         day_key = current.strftime("%Y-%m-%d")
         if day_key == self.day_key:
             return

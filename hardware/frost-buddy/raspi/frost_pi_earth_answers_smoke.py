@@ -16,8 +16,8 @@ def main() -> int:
 
     with TemporaryDirectory() as directory:
         state_path = Path(directory) / "state.json"
-        state = EarthAnswerState(answers, state_path)
-        state.sync_day(datetime(2026, 7, 18).astimezone())
+        fixed_now = datetime(2026, 7, 18).astimezone()
+        state = EarthAnswerState(answers, state_path, clock=lambda: fixed_now)
         assert state.selected["date"] == "07-18"
         assert not state.today_revealed
         assert state.start_roll()
