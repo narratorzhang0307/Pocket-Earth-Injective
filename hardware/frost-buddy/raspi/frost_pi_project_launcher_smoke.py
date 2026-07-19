@@ -116,7 +116,10 @@ def main() -> int:
     assert len(state.podcast["segments"]) >= 1
     first_podcast_index = state.podcast_index
     state.move()
-    assert state.podcast_index != first_podcast_index
+    if len(state.podcast["segments"]) > 1:
+        assert state.podcast_index != first_podcast_index
+    else:
+        assert state.podcast_index == first_podcast_index
     podcast_action = state.enter()
     assert podcast_action[0] == "play_podcast" and podcast_action[1]
     assert state.back() == "draw" and state.level == "podcast_modes"
