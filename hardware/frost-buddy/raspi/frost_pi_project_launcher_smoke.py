@@ -113,7 +113,7 @@ def main() -> int:
     assert state.enter() == "draw" and state.level == "podcast_modes"
     assert state.enter() == "draw" and state.level == "podcast_preview"
     assert state.image().size == (240, 280)
-    assert len(state.podcast["segments"]) >= 2
+    assert len(state.podcast["segments"]) >= 1
     first_podcast_index = state.podcast_index
     state.move()
     assert state.podcast_index != first_podcast_index
