@@ -1,0 +1,1939 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/fi1b18",
+    "id": "fi1b18",
+    "slide": 5,
+    "layoutId": "5a3416fe-96e5-4196-9e85-24bba3854e42",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "5a3416fe-96e5-4196-9e85-24bba3854e42",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/76d0vu94",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87m14zap",
+      "id": "2",
+      "bbox": [
+        50,
+        65,
+        285,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/98vix4ra",
+      "id": "3",
+      "bbox": [
+        64,
+        71,
+        257,
+        22
+      ],
+      "geometry": "rect",
+      "text": "POCKET EARTH ON INJECTIVE",
+      "textPreview": "POCKET EARTH ON INJECTIVE",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "POCKET EARTH ON INJECTIVE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "POCKET EARTH ON INJECTIVE",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "POCKET EARTH ON INJECTIVE",
+              "fontSize": 15,
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9oj69sf",
+      "id": "4",
+      "bbox": [
+        50,
+        126,
+        430,
+        100
+      ],
+      "geometry": "rect",
+      "text": "把人生放回空间，\n把公共知识交给时间证明",
+      "textPreview": "把人生放回空间， | 把公共知识交给时间证明",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "把人生放回空间，"
+          },
+          {
+            "index": 2,
+            "text": "把公共知识交给时间证明"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "把人生放回空间，",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#171918",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "把人生放回空间，",
+              "fontSize": 34,
+              "color": "#171918",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "把公共知识交给时间证明",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#171918",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "把公共知识交给时间证明",
+              "fontSize": 34,
+              "color": "#171918",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vax0ze90",
+      "id": "5",
+      "bbox": [
+        50,
+        250,
+        415,
+        62
+      ],
+      "geometry": "rect",
+      "text": "一颗私人地球 · 一个公开 Agent 世界 · 一台房间里的 Frost",
+      "textPreview": "一颗私人地球 · 一个公开 Agent 世界 · 一台房间里的 Frost",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "一颗私人地球 · 一个公开 Agent 世界 · 一台房间里的"
+          },
+          {
+            "index": 2,
+            "text": "Frost"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "一颗私人地球 · 一个公开 Agent 世界 · 一台房间里的 Frost",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#21936D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "一颗私人地球 · 一个公开 Agent 世界 · 一台房间里的 Frost",
+              "fontSize": 17,
+              "color": "#21936D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb618jal",
+      "id": "6",
+      "bbox": [
+        50,
+        340,
+        102,
+        49
+      ],
+      "geometry": "rect",
+      "fillColor": "#0C0F0E",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcfi14r6",
+      "id": "7",
+      "bbox": [
+        55,
+        355,
+        92,
+        18
+      ],
+      "geometry": "rect",
+      "text": "SPACE",
+      "textPreview": "SPACE",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#7CFFB0",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "SPACE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "SPACE",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#7CFFB0",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "SPACE",
+              "fontSize": 10,
+              "color": "#7CFFB0",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idoja9sr",
+      "id": "8",
+      "bbox": [
+        170,
+        343,
+        64,
+        22
+      ],
+      "geometry": "rect",
+      "text": "空间",
+      "textPreview": "空间",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "空间"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "空间",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "空间",
+              "fontSize": 17,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jex03e9c",
+      "id": "9",
+      "bbox": [
+        242,
+        343,
+        218,
+        42
+      ],
+      "geometry": "rect",
+      "text": "记忆与知识回到真实地点",
+      "textPreview": "记忆与知识回到真实地点",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "记忆与知识回到真实地点"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "记忆与知识回到真实地点",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "记忆与知识回到真实地点",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmd47it8",
+      "id": "10",
+      "bbox": [
+        50,
+        412,
+        102,
+        49
+      ],
+      "geometry": "rect",
+      "fillColor": "#2A604F",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/el43eds3",
+      "id": "11",
+      "bbox": [
+        55,
+        427,
+        92,
+        18
+      ],
+      "geometry": "rect",
+      "text": "TRUST",
+      "textPreview": "TRUST",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TRUST"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TRUST",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "TRUST",
+              "fontSize": 10,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1ofm9sbe",
+      "id": "12",
+      "bbox": [
+        170,
+        415,
+        64,
+        22
+      ],
+      "geometry": "rect",
+      "text": "信任",
+      "textPreview": "信任",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "信任"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "信任",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "信任",
+              "fontSize": 17,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gnmlgnat",
+      "id": "13",
+      "bbox": [
+        242,
+        415,
+        218,
+        42
+      ],
+      "geometry": "rect",
+      "text": "身份、门牌和版次可公开复核",
+      "textPreview": "身份、门牌和版次可公开复核",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "身份、门牌和版次可公开复核"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "身份、门牌和版次可公开复核",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "身份、门牌和版次可公开复核",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rid43ytc",
+      "id": "14",
+      "bbox": [
+        50,
+        484,
+        102,
+        49
+      ],
+      "geometry": "rect",
+      "fillColor": "#0C0F0E",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6h43adsr",
+      "id": "15",
+      "bbox": [
+        55,
+        499,
+        92,
+        18
+      ],
+      "geometry": "rect",
+      "text": "PRESENCE",
+      "textPreview": "PRESENCE",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#7CFFB0",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PRESENCE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PRESENCE",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#7CFFB0",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PRESENCE",
+              "fontSize": 10,
+              "color": "#7CFFB0",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tkvm58bi",
+      "id": "16",
+      "bbox": [
+        170,
+        487,
+        64,
+        22
+      ],
+      "geometry": "rect",
+      "text": "在场",
+      "textPreview": "在场",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "在场"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "在场",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "在场",
+              "fontSize": 17,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sjmlc3ax",
+      "id": "17",
+      "bbox": [
+        242,
+        487,
+        218,
+        42
+      ],
+      "geometry": "rect",
+      "text": "同一个 Frost 从软件走进房间",
+      "textPreview": "同一个 Frost 从软件走进房间",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "同一个 Frost 从软件走进房间"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "同一个 Frost 从软件走进房间",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "同一个 Frost 从软件走进房间",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bex4f29g",
+      "id": "18",
+      "bbox": [
+        50,
+        576,
+        410,
+        54
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#BDD8CB",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ado3mxsv",
+      "id": "19",
+      "bbox": [
+        65,
+        593,
+        380,
+        20
+      ],
+      "geometry": "rect",
+      "text": "pocketearth-injective.throughtheglass.art",
+      "textPreview": "pocketearth-injective.throughtheglass.art",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "pocketearth-injective.throughtheglass.art"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "pocketearth-injective.throughtheglass.art",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#2A604F",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "pocketearth-injective.throughtheglass.art",
+              "fontSize": 13,
+              "color": "#2A604F",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6lcfu5gf",
+      "id": "20",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7mlg3qx0",
+      "id": "21",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "25 / POCKET EARTH ON INJECTIVE",
+      "textPreview": "25 / POCKET EARTH ON INJECTIVE",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "25 / POCKET EARTH ON INJECTIVE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "25 / POCKET EARTH ON INJECTIVE",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "25 / POCKET EARTH ON INJECTIVE",
+              "fontSize": 11,
+              "color": "#8B918D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nuxwvyl",
+      "id": "22",
+      "bbox": [
+        512,
+        101,
+        214,
+        465
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/qx4vqh4z",
+      "id": "23",
+      "bbox": [
+        505,
+        92,
+        214,
+        465
+      ],
+      "geometry": "roundRect",
+      "alt": "Public Earth policy knowledge signal card",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 5607"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "9ad0128b-6aee-46ff-83be-db8b5efbb6b3",
+        "contentType": "image/png",
+        "byteLength": 246094
+      }
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upcfy5gr",
+      "id": "24",
+      "bbox": [
+        505,
+        92,
+        214,
+        465
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vqlg7axc",
+      "id": "25",
+      "bbox": [
+        770,
+        101,
+        214,
+        465
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/3udwf258",
+      "id": "26",
+      "bbox": [
+        763,
+        92,
+        214,
+        465
+      ],
+      "geometry": "roundRect",
+      "alt": "Injective Blockscout successful Public Earth residence transaction",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 5607"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "785d5009-5530-44c2-8fc7-10589dddb6fc",
+        "contentType": "image/png",
+        "byteLength": 168213
+      }
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcny9kf2",
+      "id": "27",
+      "bbox": [
+        763,
+        92,
+        214,
+        465
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/atsfmlg7",
+      "id": "28",
+      "bbox": [
+        1021,
+        92,
+        208,
+        465
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bu1wv6hs",
+      "id": "29",
+      "bbox": [
+        1041,
+        113,
+        168,
+        24
+      ],
+      "geometry": "rect",
+      "fillColor": "#0C0F0E",
+      "lineColor": "#171918",
+      "lineWidth": 1
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d87i1oza",
+      "id": "30",
+      "bbox": [
+        1048,
+        117,
+        154,
+        16
+      ],
+      "geometry": "rect",
+      "text": "FROST EDGE NODE",
+      "textPreview": "FROST EDGE NODE",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#7CFFB0",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FROST EDGE NODE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FROST EDGE NODE",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#7CFFB0",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FROST EDGE NODE",
+              "fontSize": 10,
+              "color": "#7CFFB0",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/nmpk7eho",
+      "id": "31",
+      "bbox": [
+        1034,
+        153,
+        182,
+        243
+      ],
+      "geometry": "roundRect",
+      "alt": "Frost Edge Node physical hardware showing Pocket Earth menu",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4396"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "8187bf3c-075a-4106-9387-048068b567a3",
+        "contentType": "image/jpeg",
+        "byteLength": 172855
+      }
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r6p0zehk",
+      "id": "32",
+      "bbox": [
+        1034,
+        153,
+        182,
+        243
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#171918",
+      "lineWidth": 1
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qlgjq90z",
+      "id": "33",
+      "bbox": [
+        1041,
+        423,
+        168,
+        48
+      ],
+      "geometry": "rect",
+      "text": "公开身份与知识菜单\n在房间里保持可见",
+      "textPreview": "公开身份与知识菜单 | 在房间里保持可见",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公开身份与知识菜单"
+          },
+          {
+            "index": 2,
+            "text": "在房间里保持可见"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公开身份与知识菜单",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公开身份与知识菜单",
+              "fontSize": 14,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "在房间里保持可见",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "在房间里保持可见",
+              "fontSize": 14,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cri5ozm",
+      "id": "34",
+      "bbox": [
+        1041,
+        489,
+        168,
+        18
+      ],
+      "geometry": "rect",
+      "text": "DISPLAY · RGB · BUTTONS",
+      "textPreview": "DISPLAY · RGB · BUTTONS",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#F28A4B",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "DISPLAY · RGB · BUTTONS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "DISPLAY · RGB · BUTTONS",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#F28A4B",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "DISPLAY · RGB · BUTTONS",
+              "fontSize": 10,
+              "color": "#F28A4B",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0by1wji1",
+      "id": "35",
+      "bbox": [
+        508,
+        576,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#2D62DD",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#2D62DD",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#2D62DD",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fap03ehg",
+      "id": "36",
+      "bbox": [
+        528,
+        575,
+        180,
+        38
+      ],
+      "geometry": "rect",
+      "text": "公共地球",
+      "textPreview": "公共地球",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "公共地球"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "公共地球",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公共地球",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9gjut0v",
+      "id": "37",
+      "bbox": [
+        766,
+        576,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgnit4j2",
+      "id": "38",
+      "bbox": [
+        786,
+        575,
+        185,
+        38
+      ],
+      "geometry": "rect",
+      "text": "Injective 证据",
+      "textPreview": "Injective 证据",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Injective 证据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Injective 证据",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Injective 证据",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfehkzix",
+      "id": "39",
+      "bbox": [
+        1024,
+        576,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#F28A4B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#F28A4B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#F28A4B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kbmls725",
+      "id": "40",
+      "bbox": [
+        1044,
+        575,
+        185,
+        38
+      ],
+      "geometry": "rect",
+      "text": "Frost Edge Node",
+      "textPreview": "Frost Edge Node",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frost Edge Node"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frost Edge Node",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frost Edge Node",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwvm1cjq",
+      "id": "41",
+      "bbox": [
+        505,
+        625,
+        724,
+        33
+      ],
+      "geometry": "rect",
+      "fillColor": "#0C0F0E",
+      "lineWidth": 0
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y9k3qxkf",
+      "id": "42",
+      "bbox": [
+        515,
+        634,
+        704,
+        17
+      ],
+      "geometry": "rect",
+      "text": "口袋地球装记忆，公共地球住分身。谢谢。",
+      "textPreview": "口袋地球装记忆，公共地球住分身。谢谢。",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "口袋地球装记忆，公共地球住分身。谢谢。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "口袋地球装记忆，公共地球住分身。谢谢。",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "口袋地球装记忆，公共地球住分身。谢谢。",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

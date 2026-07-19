@@ -1,0 +1,1144 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/luqvzv",
+    "id": "luqvzv",
+    "slide": 1,
+    "layoutId": "5a3416fe-96e5-4196-9e85-24bba3854e42",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "5a3416fe-96e5-4196-9e85-24bba3854e42",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yh8vyd0f",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l4je9szq",
+      "id": "2",
+      "bbox": [
+        50,
+        76,
+        205,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/03qd0ni5",
+      "id": "3",
+      "bbox": [
+        64,
+        82,
+        177,
+        22
+      ],
+      "geometry": "rect",
+      "text": "FROST EDGE NODE",
+      "textPreview": "FROST EDGE NODE",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FROST EDGE NODE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FROST EDGE NODE",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FROST EDGE NODE",
+              "fontSize": 15,
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n61wbihw",
+      "id": "4",
+      "bbox": [
+        50,
+        142,
+        430,
+        100
+      ],
+      "geometry": "rect",
+      "text": "链上身份进入房间，\n公开见闻变成灯光、画面和声音",
+      "textPreview": "链上身份进入房间， | 公开见闻变成灯光、画面和声音",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "链上身份进入房间，"
+          },
+          {
+            "index": 2,
+            "text": "公开见闻变成灯光、画面和"
+          },
+          {
+            "index": 3,
+            "text": "声音"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "链上身份进入房间，",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#171918",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "链上身份进入房间，",
+              "fontSize": 32,
+              "color": "#171918",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "公开见闻变成灯光、画面和声音",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#171918",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "公开见闻变成灯光、画面和声音",
+              "fontSize": 32,
+              "color": "#171918",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m5sf2x0b",
+      "id": "5",
+      "bbox": [
+        50,
+        265,
+        418,
+        56
+      ],
+      "geometry": "rect",
+      "text": "Raspberry Pi 5 + Whisplay HAT · 240×280 · RGB · buttons · mic · speaker",
+      "textPreview": "Raspberry Pi 5 + Whisplay HAT · 240×280 · RGB · buttons · mic · speaker",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Raspberry Pi 5 + Whisplay HAT · 240×280 · RGB ·"
+          },
+          {
+            "index": 2,
+            "text": "buttons · mic · speaker"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Raspberry Pi 5 + Whisplay HAT · 240×280 · RGB · buttons · mic · speaker",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#21936D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Raspberry Pi 5 + Whisplay HAT · 240×280 · RGB · buttons · mic · speaker",
+              "fontSize": 16,
+              "color": "#21936D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/98jedsz2",
+      "id": "6",
+      "bbox": [
+        50,
+        350,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ax4nih",
+      "id": "7",
+      "bbox": [
+        68,
+        342,
+        392,
+        49
+      ],
+      "geometry": "rect",
+      "text": "屏幕显示公开身份、知识与版次状态",
+      "textPreview": "屏幕显示公开身份、知识与版次状态",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "屏幕显示公开身份、知识与版次状态"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "屏幕显示公开身份、知识与版次状态",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "屏幕显示公开身份、知识与版次状态",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/va1wf2hs",
+      "id": "8",
+      "bbox": [
+        50,
+        405,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9sf6x07",
+      "id": "9",
+      "bbox": [
+        68,
+        397,
+        392,
+        49
+      ],
+      "geometry": "rect",
+      "text": "RGB 用颜色提示空闲、读取、播报与异常",
+      "textPreview": "RGB 用颜色提示空闲、读取、播报与异常",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RGB 用颜色提示空闲、读取、播报与异常"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RGB 用颜色提示空闲、读取、播报与异常",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "RGB 用颜色提示空闲、读取、播报与异常",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ojut43yh",
+      "id": "10",
+      "bbox": [
+        50,
+        460,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pk3ud8z2",
+      "id": "11",
+      "bbox": [
+        68,
+        452,
+        392,
+        49
+      ],
+      "geometry": "rect",
+      "text": "本地 TTS 具备离线降级；手机镜像放大现场画面",
+      "textPreview": "本地 TTS 具备离线降级；手机镜像放大现场画面",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "本地 TTS 具备离线降级；手机镜像放大现场画面"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "本地 TTS 具备离线降级；手机镜像放大现场画面",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "本地 TTS 具备离线降级；手机镜像放大现场画面",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hcb2tgr",
+      "id": "12",
+      "bbox": [
+        50,
+        535,
+        404,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#C6DBD1",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ilcbyhw",
+      "id": "13",
+      "bbox": [
+        50,
+        535,
+        5,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cnut8nyt",
+      "id": "14",
+      "bbox": [
+        68,
+        549,
+        369,
+        24
+      ],
+      "geometry": "rect",
+      "text": "硬件的价值在于身份与在场感。",
+      "textPreview": "硬件的价值在于身份与在场感。",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "硬件的价值在于身份与在场感。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "硬件的价值在于身份与在场感。",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#2A604F",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "硬件的价值在于身份与在场感。",
+              "fontSize": 17,
+              "color": "#2A604F",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xo3uh8ze",
+      "id": "15",
+      "bbox": [
+        68,
+        582,
+        369,
+        34
+      ],
+      "geometry": "rect",
+      "text": "同一个 Frost 在 App、公共地球和房间里保持可识别。",
+      "textPreview": "同一个 Frost 在 App、公共地球和房间里保持可识别。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "同一个 Frost 在 App、公共地球和房间里保持可识别。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "同一个 Frost 在 App、公共地球和房间里保持可识别。",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "同一个 Frost 在 App、公共地球和房间里保持可识别。",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qlcb6dgn",
+      "id": "16",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bmlcfih8",
+      "id": "17",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "21 / FROST EDGE NODE",
+      "textPreview": "21 / FROST EDGE NODE",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "21 / FROST EDGE NODE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "21 / FROST EDGE NODE",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "21 / FROST EDGE NODE",
+              "fontSize": 11,
+              "color": "#8B918D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kredcnyp",
+      "id": "18",
+      "bbox": [
+        517,
+        81,
+        370,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/ylkripcv",
+      "id": "19",
+      "bbox": [
+        510,
+        72,
+        370,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Frost Edge Node real hardware showing verified knowledge",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 3243"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "6bd7d131-7147-40a2-b1ef-4f989c40de2a",
+        "contentType": "image/jpeg",
+        "byteLength": 154860
+      }
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t8jups7e",
+      "id": "20",
+      "bbox": [
+        510,
+        72,
+        370,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87atwnqt",
+      "id": "21",
+      "bbox": [
+        955,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/oj2twzet",
+      "id": "22",
+      "bbox": [
+        948,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Pocket Podcast daily host software interface",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "2804633f-fea5-4096-bb45-0843b2a42caa",
+        "contentType": "image/png",
+        "byteLength": 173287
+      }
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65sbud83",
+      "id": "23",
+      "bbox": [
+        948,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hc3uts7q",
+      "id": "24",
+      "bbox": [
+        518,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbut0nq5",
+      "id": "25",
+      "bbox": [
+        538,
+        637,
+        340,
+        38
+      ],
+      "geometry": "rect",
+      "text": "真机 · Whisplay 屏幕与 RGB 状态",
+      "textPreview": "真机 · Whisplay 屏幕与 RGB 状态",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "真机 · Whisplay 屏幕与 RGB 状态"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "真机 · Whisplay 屏幕与 RGB 状态",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "真机 · Whisplay 屏幕与 RGB 状态",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/va1cr2pk",
+      "id": "26",
+      "bbox": [
+        936,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#2D62DD",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#2D62DD",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#2D62DD",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9sbyx8z",
+      "id": "27",
+      "bbox": [
+        956,
+        637,
+        280,
+        38
+      ],
+      "geometry": "rect",
+      "text": "软件镜像 · 同一知识版次可读可听",
+      "textPreview": "软件镜像 · 同一知识版次可读可听",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "软件镜像 · 同一知识版次可读可听"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "软件镜像 · 同一知识版次可读可听",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "软件镜像 · 同一知识版次可读可听",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

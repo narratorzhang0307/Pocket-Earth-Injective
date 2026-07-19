@@ -1,0 +1,1718 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/b12i9b",
+    "id": "b12i9b",
+    "slide": 3,
+    "layoutId": "5a3416fe-96e5-4196-9e85-24bba3854e42",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "5a3416fe-96e5-4196-9e85-24bba3854e42",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "5eef8908-3595-43ce-aec0-a9e815f8a958",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqd0vmhw",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/krm1oryh",
+      "id": "2",
+      "bbox": [
+        50,
+        55,
+        252,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lsvixwz2",
+      "id": "3",
+      "bbox": [
+        64,
+        61,
+        224,
+        22
+      ],
+      "geometry": "rect",
+      "text": "POCKET EARTH LAUNCHER",
+      "textPreview": "POCKET EARTH LAUNCHER",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "POCKET EARTH LAUNCHER"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "POCKET EARTH LAUNCHER",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "POCKET EARTH LAUNCHER",
+              "fontSize": 15,
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtojq1g7",
+      "id": "4",
+      "bbox": [
+        50,
+        110,
+        420,
+        94
+      ],
+      "geometry": "rect",
+      "text": "音乐、知识与行动提示，\n共用一套清楚的桌面交互",
+      "textPreview": "音乐、知识与行动提示， | 共用一套清楚的桌面交互",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "音乐、知识与行动提示，"
+          },
+          {
+            "index": 2,
+            "text": "共用一套清楚的桌面交互"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "音乐、知识与行动提示，",
+          "resolvedTextStyle": {
+            "fontSize": 33,
+            "color": "#171918",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "音乐、知识与行动提示，",
+              "fontSize": 33,
+              "color": "#171918",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "共用一套清楚的桌面交互",
+          "resolvedTextStyle": {
+            "fontSize": 33,
+            "color": "#171918",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "共用一套清楚的桌面交互",
+              "fontSize": 33,
+              "color": "#171918",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ux0z6xs",
+      "id": "5",
+      "bbox": [
+        50,
+        225,
+        420,
+        34
+      ],
+      "geometry": "rect",
+      "text": "单击移动 · 长按 1.2 秒进入 · 快速双击返回",
+      "textPreview": "单击移动 · 长按 1.2 秒进入 · 快速双击返回",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "单击移动 · 长按 1.2 秒进入 · 快速双击返回"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "单击移动 · 长按 1.2 秒进入 · 快速双击返回",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#21936D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "单击移动 · 长按 1.2 秒进入 · 快速双击返回",
+              "fontSize": 17,
+              "color": "#21936D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v61sryd",
+      "id": "6",
+      "bbox": [
+        50,
+        308,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gfi1wfy",
+      "id": "7",
+      "bbox": [
+        68,
+        300,
+        382,
+        43
+      ],
+      "geometry": "rect",
+      "text": "日落电台：歌曲目录、日落时刻、随机骰子",
+      "textPreview": "日落电台：歌曲目录、日落时刻、随机骰子",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "日落电台：歌曲目录、日落时刻、随机骰子"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "日落电台：歌曲目录、日落时刻、随机骰子",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "日落电台：歌曲目录、日落时刻、随机骰子",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uhoju1gj",
+      "id": "8",
+      "bbox": [
+        50,
+        357,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vix036x4",
+      "id": "9",
+      "bbox": [
+        68,
+        349,
+        382,
+        43
+      ],
+      "geometry": "rect",
+      "text": "口袋播客：每日版次可听，也保留文字阅读",
+      "textPreview": "口袋播客：每日版次可听，也保留文字阅读",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "口袋播客：每日版次可听，也保留文字阅读"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "口袋播客：每日版次可听，也保留文字阅读",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "口袋播客：每日版次可听，也保留文字阅读",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ve9s7i1g",
+      "id": "10",
+      "bbox": [
+        50,
+        406,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ud0bed0v",
+      "id": "11",
+      "bbox": [
+        68,
+        398,
+        382,
+        43
+      ],
+      "geometry": "rect",
+      "text": "地球答案：00:00 解锁，可回看过去",
+      "textPreview": "地球答案：00:00 解锁，可回看过去",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "地球答案：00:00 解锁，可回看过去"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "地球答案：00:00 解锁，可回看过去",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "地球答案：00:00 解锁，可回看过去",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgra98jm",
+      "id": "12",
+      "bbox": [
+        50,
+        455,
+        7,
+        7
+      ],
+      "geometry": "rect",
+      "fillColor": "#A8AFAB",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfitgni1",
+      "id": "13",
+      "bbox": [
+        68,
+        447,
+        382,
+        43
+      ],
+      "geometry": "rect",
+      "text": "静默首页：时间、日期、连接状态与今日一页",
+      "textPreview": "静默首页：时间、日期、连接状态与今日一页",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "静默首页：时间、日期、连接状态与今日一页"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "静默首页：时间、日期、连接状态与今日一页",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "静默首页：时间、日期、连接状态与今日一页",
+              "fontSize": 15,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qps3y1k",
+      "id": "14",
+      "bbox": [
+        50,
+        528,
+        404,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#C6DBD1",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6pgrat0z",
+      "id": "15",
+      "bbox": [
+        50,
+        528,
+        5,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsra58ja",
+      "id": "16",
+      "bbox": [
+        68,
+        542,
+        369,
+        24
+      ],
+      "geometry": "rect",
+      "text": "统一手势，减少现场记忆成本。",
+      "textPreview": "统一手势，减少现场记忆成本。",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "统一手势，减少现场记忆成本。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "统一手势，减少现场记忆成本。",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#2A604F",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "统一手势，减少现场记忆成本。",
+              "fontSize": 17,
+              "color": "#2A604F",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8rytc3i5",
+      "id": "17",
+      "bbox": [
+        68,
+        575,
+        369,
+        34
+      ],
+      "geometry": "rect",
+      "text": "默认静音；声音只在用户明确进入播报时触发。",
+      "textPreview": "默认静音；声音只在用户明确进入播报时触发。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "默认静音；声音只在用户明确进入播报时触发。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "默认静音；声音只在用户明确进入播报时触发。",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "默认静音；声音只在用户明确进入播报时触发。",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmtsf21o",
+      "id": "18",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qlkbmx03",
+      "id": "19",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "23 / POCKET EARTH LAUNCHER",
+      "textPreview": "23 / POCKET EARTH LAUNCHER",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "23 / POCKET EARTH LAUNCHER"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "23 / POCKET EARTH LAUNCHER",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "23 / POCKET EARTH LAUNCHER",
+              "fontSize": 11,
+              "color": "#8B918D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtonulon",
+      "id": "20",
+      "bbox": [
+        507,
+        101,
+        290,
+        526
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/wre1on6t",
+      "id": "21",
+      "bbox": [
+        500,
+        92,
+        290,
+        526
+      ],
+      "geometry": "roundRect",
+      "alt": "Frost Edge Node launcher with three projects",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4138"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "53fbce79-fba5-4a09-932a-ec126cccf61a",
+        "contentType": "image/jpeg",
+        "byteLength": 139761
+      }
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8f65wv6t",
+      "id": "22",
+      "bbox": [
+        500,
+        92,
+        290,
+        526
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gzm507e",
+      "id": "23",
+      "bbox": [
+        522,
+        105,
+        246,
+        24
+      ],
+      "geometry": "rect",
+      "fillColor": "#0C0F0E",
+      "lineColor": "#171918",
+      "lineWidth": 1
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ah8ny5oj",
+      "id": "24",
+      "bbox": [
+        529,
+        109,
+        232,
+        16
+      ],
+      "geometry": "rect",
+      "text": "/home/pi · 三个平行入口",
+      "textPreview": "/home/pi · 三个平行入口",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "+mn-lt",
+        "color": "#7CFFB0",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "/home/pi · 三个平行入口"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "/home/pi · 三个平行入口",
+          "resolvedTextStyle": {
+            "fontSize": 10,
+            "color": "#7CFFB0",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "/home/pi · 三个平行入口",
+              "fontSize": 10,
+              "color": "#7CFFB0",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vih47ap4",
+      "id": "25",
+      "bbox": [
+        840,
+        92,
+        350,
+        145
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#171918",
+      "lineWidth": 1.1
+    },
+    {
+      "order": 26,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/n2l0bi5w",
+      "id": "26",
+      "bbox": [
+        850,
+        102,
+        128,
+        125
+      ],
+      "geometry": "rect",
+      "alt": "口袋播客",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "rect"
+      },
+      "asset": {
+        "assetId": "12021c85-08be-4000-9071-4adcbd7369a4",
+        "contentType": "image/png",
+        "byteLength": 11336
+      }
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xkzm907a",
+      "id": "27",
+      "bbox": [
+        992,
+        112,
+        8,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ql43m1of",
+      "id": "28",
+      "bbox": [
+        1011,
+        104,
+        162,
+        28
+      ],
+      "geometry": "rect",
+      "text": "口袋播客",
+      "textPreview": "口袋播客",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "口袋播客"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "口袋播客",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "口袋播客",
+              "fontSize": 17,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bmd4v6p0",
+      "id": "29",
+      "bbox": [
+        1011,
+        142,
+        162,
+        62
+      ],
+      "geometry": "rect",
+      "text": "播客模式 / 文字模式\n知识版次共用一套入口",
+      "textPreview": "播客模式 / 文字模式 | 知识版次共用一套入口",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "播客模式 / 文字模式"
+          },
+          {
+            "index": 2,
+            "text": "知识版次共用一套入口"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "播客模式 / 文字模式",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "播客模式 / 文字模式",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "知识版次共用一套入口",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "知识版次共用一套入口",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tg3q14ri",
+      "id": "30",
+      "bbox": [
+        840,
+        251,
+        350,
+        145
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#171918",
+      "lineWidth": 1.1
+    },
+    {
+      "order": 31,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/b61gjelo",
+      "id": "31",
+      "bbox": [
+        850,
+        261,
+        128,
+        125
+      ],
+      "geometry": "rect",
+      "alt": "随机骰子",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "rect"
+      },
+      "asset": {
+        "assetId": "f52c13b9-c4f9-4d2f-ab33-1c4211f7bfde",
+        "contentType": "image/jpeg",
+        "byteLength": 106942
+      }
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7e18ze9c",
+      "id": "32",
+      "bbox": [
+        992,
+        271,
+        8,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#F28A4B",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6ds7q98r",
+      "id": "33",
+      "bbox": [
+        1011,
+        263,
+        162,
+        28
+      ],
+      "geometry": "rect",
+      "text": "随机骰子",
+      "textPreview": "随机骰子",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "随机骰子"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "随机骰子",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "随机骰子",
+              "fontSize": 17,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h43q5ore",
+      "id": "34",
+      "bbox": [
+        1011,
+        301,
+        162,
+        62
+      ],
+      "geometry": "rect",
+      "text": "轻触滚动选择\n长按进入歌曲",
+      "textPreview": "轻触滚动选择 | 长按进入歌曲",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "轻触滚动选择"
+          },
+          {
+            "index": 2,
+            "text": "长按进入歌曲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "轻触滚动选择",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "轻触滚动选择",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "长按进入歌曲",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "长按进入歌曲",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gjupwjq9",
+      "id": "35",
+      "bbox": [
+        840,
+        410,
+        350,
+        145
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#171918",
+      "lineWidth": 1.1
+    },
+    {
+      "order": 36,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/o3qxozmd",
+      "id": "36",
+      "bbox": [
+        850,
+        420,
+        128,
+        125
+      ],
+      "geometry": "rect",
+      "alt": "地球答案",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "rect"
+      },
+      "asset": {
+        "assetId": "f87f3a6a-95c6-4e8c-a7e7-9cfb5692f836",
+        "contentType": "image/png",
+        "byteLength": 21618
+      }
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uhc7u983",
+      "id": "37",
+      "bbox": [
+        992,
+        430,
+        8,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#2D62DD",
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x8j6tkra",
+      "id": "38",
+      "bbox": [
+        1011,
+        422,
+        162,
+        28
+      ],
+      "geometry": "rect",
+      "text": "地球答案",
+      "textPreview": "地球答案",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "地球答案"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "地球答案",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#171918",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "地球答案",
+              "fontSize": 17,
+              "color": "#171918",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wnapkfqp",
+      "id": "39",
+      "bbox": [
+        1011,
+        460,
+        162,
+        62
+      ],
+      "geometry": "rect",
+      "text": "今日行动提示\n未来日期保持锁定",
+      "textPreview": "今日行动提示 | 未来日期保持锁定",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "今日行动提示"
+          },
+          {
+            "index": 2,
+            "text": "未来日期保持锁定"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "今日行动提示",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "今日行动提示",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "未来日期保持锁定",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "未来日期保持锁定",
+              "fontSize": 13,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/03ytsnad",
+      "id": "40",
+      "bbox": [
+        514,
+        635,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l47a1sby",
+      "id": "41",
+      "bbox": [
+        534,
+        634,
+        670,
+        38
+      ],
+      "geometry": "rect",
+      "text": "真机启动器 · 日落电台 / 口袋播客 / 地球答案",
+      "textPreview": "真机启动器 · 日落电台 / 口袋播客 / 地球答案",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "真机启动器 · 日落电台 / 口袋播客 / 地球答案"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "真机启动器 · 日落电台 / 口袋播客 / 地球答案",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "真机启动器 · 日落电台 / 口袋播客 / 地球答案",
+              "fontSize": 14,
+              "color": "#666D69",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
