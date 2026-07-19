@@ -1,0 +1,2013 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/vy1pmo",
+    "id": "vy1pmo",
+    "slide": 5,
+    "layoutId": "8fcd74e4-a184-4736-8851-3ad608fca4dd",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "aa317f69-1d68-4266-bb5d-d543d8b81adf",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "8fcd74e4-a184-4736-8851-3ad608fca4dd",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "aa317f69-1d68-4266-bb5d-d543d8b81adf",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "aa317f69-1d68-4266-bb5d-d543d8b81adf",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yh8z6d8j",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lkjih87u",
+      "id": "2",
+      "bbox": [
+        32,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjah83q9",
+      "id": "3",
+      "bbox": [
+        64,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7m10jip0",
+      "id": "4",
+      "bbox": [
+        96,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mlszad8f",
+      "id": "5",
+      "bbox": [
+        128,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/98jils76",
+      "id": "6",
+      "bbox": [
+        160,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ahcn6l",
+      "id": "7",
+      "bbox": [
+        192,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3qhg7epg",
+      "id": "8",
+      "bbox": [
+        224,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2pozy98b",
+      "id": "9",
+      "bbox": [
+        256,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0nq5876t",
+      "id": "10",
+      "bbox": [
+        288,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1oz6hcne",
+      "id": "11",
+      "bbox": [
+        320,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/el8n6xon",
+      "id": "12",
+      "bbox": [
+        352,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zmh4f258",
+      "id": "13",
+      "bbox": [
+        384,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orq5cr6p",
+      "id": "14",
+      "bbox": [
+        416,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cj6lwna",
+      "id": "15",
+      "bbox": [
+        448,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp8nahoz",
+      "id": "16",
+      "bbox": [
+        480,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqhojm5k",
+      "id": "17",
+      "bbox": [
+        512,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4v650n6l",
+      "id": "18",
+      "bbox": [
+        544,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wfm9s76",
+      "id": "19",
+      "bbox": [
+        576,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0nuhkvy",
+      "id": "20",
+      "bbox": [
+        608,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzetofud",
+      "id": "21",
+      "bbox": [
+        640,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jy5cfuds",
+      "id": "22",
+      "bbox": [
+        672,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ydwbmpc7",
+      "id": "23",
+      "bbox": [
+        704,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t47ul4vu",
+      "id": "24",
+      "bbox": [
+        736,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83etszu9",
+      "id": "25",
+      "bbox": [
+        768,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/725cjudo",
+      "id": "26",
+      "bbox": [
+        800,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61wbqpc3",
+      "id": "27",
+      "bbox": [
+        832,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h87up4vq",
+      "id": "28",
+      "bbox": [
+        864,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7ydwzul",
+      "id": "29",
+      "bbox": [
+        896,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/edsrq1s3",
+      "id": "30",
+      "bbox": [
+        928,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ze18j6t8",
+      "id": "31",
+      "bbox": [
+        960,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0fa9sbat",
+      "id": "32",
+      "bbox": [
+        992,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gjqlgbe",
+      "id": "33",
+      "bbox": [
+        1024,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhsrulsz",
+      "id": "34",
+      "bbox": [
+        1056,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ni1snqtk",
+      "id": "35",
+      "bbox": [
+        1088,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oja9wba5",
+      "id": "36",
+      "bbox": [
+        1120,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/943apgbq",
+      "id": "37",
+      "bbox": [
+        1152,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5crylsv",
+      "id": "38",
+      "bbox": [
+        1184,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b6lsrqtg",
+      "id": "39",
+      "bbox": [
+        1216,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2h8bqlk",
+      "id": "40",
+      "bbox": [
+        1248,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i18rilkf",
+      "id": "41",
+      "bbox": [
+        1280,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zqd03q",
+      "id": "42",
+      "bbox": [
+        0,
+        0,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 43,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/k3q9kv25",
+      "id": "43",
+      "bbox": [
+        0,
+        32,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 44,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qh8fqlw",
+      "id": "44",
+      "bbox": [
+        0,
+        64,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6p8rm5kb",
+      "id": "45",
+      "bbox": [
+        0,
+        96,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 46,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsjah032",
+      "id": "46",
+      "bbox": [
+        0,
+        128,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 47,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sra9ov2h",
+      "id": "47",
+      "bbox": [
+        0,
+        160,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 48,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nux836ls",
+      "id": "48",
+      "bbox": [
+        0,
+        192,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 49,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtora1k7",
+      "id": "49",
+      "bbox": [
+        0,
+        224,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 50,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s32xo3et",
+      "id": "50",
+      "bbox": [
+        0,
+        256,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 51,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dobex8fy",
+      "id": "51",
+      "bbox": [
+        0,
+        288,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 52,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q10fmdwn",
+      "id": "52",
+      "bbox": [
+        0,
+        320,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 53,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r29wvyx8",
+      "id": "53",
+      "bbox": [
+        0,
+        352,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 54,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4zixk3eh",
+      "id": "54",
+      "bbox": [
+        0,
+        384,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 55,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/50ret8f2",
+      "id": "55",
+      "bbox": [
+        0,
+        416,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 56,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ix0fitwb",
+      "id": "56",
+      "bbox": [
+        0,
+        448,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 57,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3y9wryxw",
+      "id": "57",
+      "bbox": [
+        0,
+        480,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 58,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ovmxwne1",
+      "id": "58",
+      "bbox": [
+        0,
+        512,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 59,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9wvy5sf6",
+      "id": "59",
+      "bbox": [
+        0,
+        544,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 60,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xcre9sna",
+      "id": "60",
+      "bbox": [
+        0,
+        576,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 61,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wbixgn65",
+      "id": "61",
+      "bbox": [
+        0,
+        608,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 62,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/va9w7ipk",
+      "id": "62",
+      "bbox": [
+        0,
+        640,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 63,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a90fedoz",
+      "id": "63",
+      "bbox": [
+        0,
+        672,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 64,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9o7e5s7e",
+      "id": "64",
+      "bbox": [
+        0,
+        704,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 65,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nyxcn6t",
+      "id": "65",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 66,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nmpw3ip8",
+      "id": "66",
+      "bbox": [
+        50,
+        76,
+        238,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 67,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mlgfadon",
+      "id": "67",
+      "bbox": [
+        64,
+        82,
+        210,
+        22
+      ],
+      "geometry": "rect",
+      "text": "FROST · AGENT IDENTITY",
+      "textPreview": "FROST · AGENT IDENTITY",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FROST · AGENT IDENTITY"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FROST · AGENT IDENTITY",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FROST · AGENT IDENTITY",
+              "fontSize": 15,
+              "color": "#FFFFFF"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 68,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lk7e187i",
+      "id": "68",
+      "bbox": [
+        50,
+        146,
+        420,
+        112
+      ],
+      "geometry": "rect",
+      "text": "Frost：一台努力理解\n人类的机器",
+      "textPreview": "Frost：一台努力理解 | 人类的机器",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "fontSize": 38,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frost：一台努力理解"
+          },
+          {
+            "index": 2,
+            "text": "人类的机器"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frost：一台努力理解",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frost：一台努力理解",
+              "fontSize": 38,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "人类的机器",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "人类的机器",
+              "fontSize": 38,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 69,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0jyd836x",
+      "id": "69",
+      "bbox": [
+        50,
+        286,
+        420,
+        58
+      ],
+      "geometry": "rect",
+      "text": "同一角色贯穿 App、公共地球、身份卡与实体设备",
+      "textPreview": "同一角色贯穿 App、公共地球、身份卡与实体设备",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "同一角色贯穿"
+          },
+          {
+            "index": 2,
+            "text": "App、公共地球、身份卡与实体设备"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "同一角色贯穿 App、公共地球、身份卡与实体设备",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "同一角色贯穿 App、公共地球、身份卡与实体设备",
+              "fontSize": 19,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 70,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpcbi94f",
+      "id": "70",
+      "bbox": [
+        50,
+        365,
+        395,
+        148
+      ],
+      "geometry": "rect",
+      "text": "Frost 的灵感来自《趁生命气息逗留》。统一的方形轮廓提供品牌识别度；每个人的记忆生成不同细节。\n\n#43–47 拥有公开可验证的 Agent 身份；实体 Frost 会把当天知识和链上见闻带回房间。",
+      "textPreview": "Frost 的灵感来自《趁生命气息逗留》。统一的方形轮廓提供品牌识别度；每个人的记忆生成不同细节。 |  | #43–47 拥有公开可验证的 Agent 身份；实体 Frost 会把当天知识和链上见闻带回房间。",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frost"
+          },
+          {
+            "index": 2,
+            "text": "的灵感来自《趁生命气息逗留》。统一的方形轮廓提"
+          },
+          {
+            "index": 3,
+            "text": "供品牌识别度；每个人的记忆生成不同细节。"
+          },
+          {
+            "index": 4,
+            "text": ""
+          },
+          {
+            "index": 5,
+            "text": "#43–47 拥有公开可验证的 Agent 身份；实体 Frost"
+          },
+          {
+            "index": 6,
+            "text": "会把当天知识和链上见闻带回房间。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frost 的灵感来自《趁生命气息逗留》。统一的方形轮廓提供品牌识别度；每个人的记忆生成不同细节。",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frost 的灵感来自《趁生命气息逗留》。统一的方形轮廓提供品牌识别度；每个人的记忆生成不同细节。",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "#43–47 拥有公开可验证的 Agent 身份；实体 Frost 会把当天知识和链上见闻带回房间。",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "#43–47 拥有公开可验证的 Agent 身份；实体 Frost 会把当天知识和链上见闻带回房间。",
+              "fontSize": 16,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 71,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rq5cbe50",
+      "id": "71",
+      "bbox": [
+        50,
+        520,
+        394,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#C6DBD1",
+      "lineWidth": 1
+    },
+    {
+      "order": 72,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cretkjml",
+      "id": "72",
+      "bbox": [
+        50,
+        520,
+        5,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 73,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsnudo36",
+      "id": "73",
+      "bbox": [
+        68,
+        534,
+        359,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Frost 是产品本身。",
+      "textPreview": "Frost 是产品本身。",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frost 是产品本身。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frost 是产品本身。",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#2A604F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frost 是产品本身。",
+              "fontSize": 17,
+              "color": "#2A604F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 74,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2lcbep4j",
+      "id": "74",
+      "bbox": [
+        68,
+        567,
+        359,
+        34
+      ],
+      "geometry": "rect",
+      "text": "形象、声音、长期记忆、链上身份和实体身体属于同一个 Agent。",
+      "textPreview": "形象、声音、长期记忆、链上身份和实体身体属于同一个 Agent。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "形象、声音、长期记忆、链上身份和实体身体属于同一个"
+          },
+          {
+            "index": 2,
+            "text": "Agent。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "形象、声音、长期记忆、链上身份和实体身体属于同一个 Agent。",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "形象、声音、长期记忆、链上身份和实体身体属于同一个 Agent。",
+              "fontSize": 13,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 75,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3mlc7u54",
+      "id": "75",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 76,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nutgzmp",
+      "id": "76",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "05 / FROST IDENTITY",
+      "textPreview": "05 / FROST IDENTITY",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "05 / FROST IDENTITY"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "05 / FROST IDENTITY",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "05 / FROST IDENTITY",
+              "fontSize": 11,
+              "color": "#8B918D"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 77,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/po3u94na",
+      "id": "77",
+      "bbox": [
+        507,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 78,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/9w3a54fu",
+      "id": "78",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Frost identity card 43",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "9047ec65-7e21-4929-99b8-f6ab79c6574f",
+        "contentType": "image/jpeg",
+        "byteLength": 51736
+      }
+    },
+    {
+      "order": 79,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fy1c3u5s",
+      "id": "79",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 80,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm54r210",
+      "id": "80",
+      "bbox": [
+        931,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 81,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/1kz6p8jy",
+      "id": "81",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Physical Frost Edge Node showing Earth Answer",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 3175"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "ccd4a5c7-c4e7-4338-ac69-aea9507a767a",
+        "contentType": "image/jpeg",
+        "byteLength": 159561
+      }
+    },
+    {
+      "order": 82,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5onmtcj6",
+      "id": "82",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 83,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kne5072l",
+      "id": "83",
+      "bbox": [
+        503,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#2D62DD",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#2D62DD",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#2D62DD",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 84,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vil4ni1o",
+      "id": "84",
+      "bbox": [
+        523,
+        637,
+        300,
+        36
+      ],
+      "geometry": "rect",
+      "text": "身份卡 · 链上公开身份与个体差异",
+      "textPreview": "身份卡 · 链上公开身份与个体差异",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "身份卡 · 链上公开身份与个体差异"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "身份卡 · 链上公开身份与个体差异",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "身份卡 · 链上公开身份与个体差异",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 85,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahcnudkj",
+      "id": "85",
+      "bbox": [
+        927,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 86,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xknmpsju",
+      "id": "86",
+      "bbox": [
+        947,
+        637,
+        295,
+        36
+      ],
+      "geometry": "rect",
+      "text": "实体终端 · 同一个 Frost 在房间里开口",
+      "textPreview": "实体终端 · 同一个 Frost 在房间里开口",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "实体终端 · 同一个 Frost 在房间里开口"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "实体终端 · 同一个 Frost 在房间里开口",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "实体终端 · 同一个 Frost 在房间里开口",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

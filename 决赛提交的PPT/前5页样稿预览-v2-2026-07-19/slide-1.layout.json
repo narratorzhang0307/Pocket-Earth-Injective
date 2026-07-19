@@ -1,0 +1,2037 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/8vnbyn",
+    "id": "8vnbyn",
+    "slide": 1,
+    "layoutId": "8fcd74e4-a184-4736-8851-3ad608fca4dd",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "aa317f69-1d68-4266-bb5d-d543d8b81adf",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F4F5F2",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "8fcd74e4-a184-4736-8851-3ad608fca4dd",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "aa317f69-1d68-4266-bb5d-d543d8b81adf",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "aa317f69-1d68-4266-bb5d-d543d8b81adf",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h8zyp8zy",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulofetgn",
+      "id": "2",
+      "bbox": [
+        32,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmxgnyh8",
+      "id": "3",
+      "bbox": [
+        64,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4bqhknyp",
+      "id": "4",
+      "bbox": [
+        96,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pczyd8za",
+      "id": "5",
+      "bbox": [
+        128,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/298fidgj",
+      "id": "6",
+      "bbox": [
+        160,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ahgrih4",
+      "id": "7",
+      "bbox": [
+        192,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kfmx8jy5",
+      "id": "8",
+      "bbox": [
+        224,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gvyhozq",
+      "id": "9",
+      "bbox": [
+        256,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3adkf6",
+      "id": "10",
+      "bbox": [
+        288,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu94zel",
+      "id": "11",
+      "bbox": [
+        320,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3elsbux0",
+      "id": "12",
+      "bbox": [
+        352,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2tcr2pwf",
+      "id": "13",
+      "bbox": [
+        384,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dknah4f2",
+      "id": "14",
+      "bbox": [
+        416,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cjet8zeh",
+      "id": "15",
+      "bbox": [
+        448,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rilsfuxw",
+      "id": "16",
+      "bbox": [
+        480,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qhcb6pwr",
+      "id": "17",
+      "bbox": [
+        512,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1onal4fe",
+      "id": "18",
+      "bbox": [
+        544,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0netcjet",
+      "id": "19",
+      "bbox": [
+        576,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/krmd8nmp",
+      "id": "20",
+      "bbox": [
+        608,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lsvuhs3a",
+      "id": "21",
+      "bbox": [
+        640,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yp4v6d4z",
+      "id": "22",
+      "bbox": [
+        672,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqdcfilk",
+      "id": "23",
+      "bbox": [
+        704,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6dcnm1",
+      "id": "24",
+      "bbox": [
+        736,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twfuls3m",
+      "id": "25",
+      "bbox": [
+        768,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6t4vax4v",
+      "id": "26",
+      "bbox": [
+        800,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7udcjilg",
+      "id": "27",
+      "bbox": [
+        832,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oz2t03mx",
+      "id": "28",
+      "bbox": [
+        864,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p0bu9832",
+      "id": "29",
+      "bbox": [
+        896,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rq1ovq9w",
+      "id": "30",
+      "bbox": [
+        928,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qps725sb",
+      "id": "31",
+      "bbox": [
+        960,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ds36x0r2",
+      "id": "32",
+      "bbox": [
+        992,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crup4vah",
+      "id": "33",
+      "bbox": [
+        1024,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3m1orq90",
+      "id": "34",
+      "bbox": [
+        1056,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/21snylsf",
+      "id": "35",
+      "bbox": [
+        1088,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/poj6t0rq",
+      "id": "36",
+      "bbox": [
+        1120,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap0val",
+      "id": "37",
+      "bbox": [
+        1152,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyhon69o",
+      "id": "38",
+      "bbox": [
+        1184,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ux8nuls3",
+      "id": "39",
+      "bbox": [
+        1216,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5sry9o3",
+      "id": "40",
+      "bbox": [
+        1248,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v6ls7ep8",
+      "id": "41",
+      "bbox": [
+        1280,
+        0,
+        1,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7ut0j6t",
+      "id": "42",
+      "bbox": [
+        0,
+        0,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 43,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x83a9one",
+      "id": "43",
+      "bbox": [
+        0,
+        32,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 44,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1sru9or",
+      "id": "44",
+      "bbox": [
+        0,
+        64,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n21s3epc",
+      "id": "45",
+      "bbox": [
+        0,
+        96,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 46,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83a9wz6x",
+      "id": "46",
+      "bbox": [
+        0,
+        128,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 47,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94ja547i",
+      "id": "47",
+      "bbox": [
+        0,
+        160,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 48,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd8rqpov",
+      "id": "48",
+      "bbox": [
+        0,
+        192,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 49,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ze1szupg",
+      "id": "49",
+      "bbox": [
+        0,
+        224,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 50,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1s7u5s7y",
+      "id": "50",
+      "bbox": [
+        0,
+        256,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 51,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/grydwnqd",
+      "id": "51",
+      "bbox": [
+        0,
+        288,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 52,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fqpc3ips",
+      "id": "52",
+      "bbox": [
+        0,
+        320,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 53,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epgvux87",
+      "id": "53",
+      "bbox": [
+        0,
+        352,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 54,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tonu1srm",
+      "id": "54",
+      "bbox": [
+        0,
+        384,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 55,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s3edsnq1",
+      "id": "55",
+      "bbox": [
+        0,
+        416,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 56,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r25czi9g",
+      "id": "56",
+      "bbox": [
+        0,
+        448,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 57,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61wvqd8b",
+      "id": "57",
+      "bbox": [
+        0,
+        480,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 58,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/50nux8rq",
+      "id": "58",
+      "bbox": [
+        0,
+        512,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 59,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4zedo3q5",
+      "id": "59",
+      "bbox": [
+        0,
+        544,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 60,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjid4ny1",
+      "id": "60",
+      "bbox": [
+        0,
+        576,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 61,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4red8zm",
+      "id": "61",
+      "bbox": [
+        0,
+        608,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 62,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahgv2dgv",
+      "id": "62",
+      "bbox": [
+        0,
+        640,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 63,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi9cbihg",
+      "id": "63",
+      "bbox": [
+        0,
+        672,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 64,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ofyd03yp",
+      "id": "64",
+      "bbox": [
+        0,
+        704,
+        1280,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E3E6E2",
+      "lineWidth": 0
+    },
+    {
+      "order": 65,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9g7u98za",
+      "id": "65",
+      "bbox": [
+        0,
+        0,
+        1280,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#171918",
+      "lineWidth": 0
+    },
+    {
+      "order": 66,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mdgvytgz",
+      "id": "66",
+      "bbox": [
+        50,
+        76,
+        235,
+        34
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#21936D",
+      "lineColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 67,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nepc7yh4",
+      "id": "67",
+      "bbox": [
+        64,
+        82,
+        207,
+        22
+      ],
+      "geometry": "rect",
+      "text": "FINAL · POCKET EARTH",
+      "textPreview": "FINAL · POCKET EARTH",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FINAL · POCKET EARTH"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FINAL · POCKET EARTH",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "FINAL · POCKET EARTH",
+              "fontSize": 15,
+              "color": "#FFFFFF"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 68,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sb2dc7y9",
+      "id": "68",
+      "bbox": [
+        50,
+        144,
+        400,
+        60
+      ],
+      "geometry": "rect",
+      "text": "Pocket Earth",
+      "textPreview": "Pocket Earth",
+      "resolvedFontSize": 49,
+      "resolvedTextStyle": {
+        "fontSize": 49,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pocket Earth"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pocket Earth",
+          "resolvedTextStyle": {
+            "fontSize": 49,
+            "color": "#171918",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pocket Earth",
+              "fontSize": 49,
+              "color": "#171918",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 69,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcbelsfe",
+      "id": "69",
+      "bbox": [
+        50,
+        199,
+        400,
+        58
+      ],
+      "geometry": "rect",
+      "text": "on Injective",
+      "textPreview": "on Injective",
+      "resolvedFontSize": 47,
+      "resolvedTextStyle": {
+        "fontSize": 47,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "on Injective"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "on Injective",
+          "resolvedTextStyle": {
+            "fontSize": 47,
+            "color": "#2A604F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "on Injective",
+              "fontSize": 47,
+              "color": "#2A604F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 70,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36dgb61w",
+      "id": "70",
+      "bbox": [
+        50,
+        292,
+        410,
+        90
+      ],
+      "geometry": "rect",
+      "text": "空间知识库 · 公共知识层\n链上身份 · 实体 Frost",
+      "textPreview": "空间知识库 · 公共知识层 | 链上身份 · 实体 Frost",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "color": "#171918",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "空间知识库 · 公共知识层"
+          },
+          {
+            "index": 2,
+            "text": "链上身份 · 实体 Frost"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "空间知识库 · 公共知识层",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "空间知识库 · 公共知识层",
+              "fontSize": 26,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "链上身份 · 实体 Frost",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "color": "#171918"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "链上身份 · 实体 Frost",
+              "fontSize": 26,
+              "color": "#171918"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 71,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/254fi10b",
+      "id": "71",
+      "bbox": [
+        50,
+        405,
+        390,
+        78
+      ],
+      "geometry": "rect",
+      "text": "私人经历在端侧形成长期记忆；公共知识经过 Agent 核验，形成可下载、可复验的每日版次。",
+      "textPreview": "私人经历在端侧形成长期记忆；公共知识经过 Agent 核验，形成可下载、可复验的每日版次。",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "私人经历在端侧形成长期记忆；公共知识经过"
+          },
+          {
+            "index": 2,
+            "text": "Agent 核验，形成可下载、可复验的每日版次。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "私人经历在端侧形成长期记忆；公共知识经过 Agent 核验，形成可下载、可复验的每日版次。",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "私人经历在端侧形成长期记忆；公共知识经过 Agent 核验，形成可下载、可复验的每日版次。",
+              "fontSize": 17,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 72,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p8vydwjm",
+      "id": "72",
+      "bbox": [
+        50,
+        520,
+        394,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2F1EA",
+      "lineColor": "#C6DBD1",
+      "lineWidth": 1
+    },
+    {
+      "order": 73,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47mhkrih",
+      "id": "73",
+      "bbox": [
+        50,
+        520,
+        5,
+        91
+      ],
+      "geometry": "rect",
+      "fillColor": "#21936D",
+      "lineWidth": 0
+    },
+    {
+      "order": 74,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ruxgf6hs",
+      "id": "74",
+      "bbox": [
+        68,
+        534,
+        359,
+        24
+      ],
+      "geometry": "rect",
+      "text": "身份与知识版次已经在 Injective 上留下证据",
+      "textPreview": "身份与知识版次已经在 Injective 上留下证据",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#2A604F",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "身份与知识版次已经在 Injective 上留下证据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "身份与知识版次已经在 Injective 上留下证据",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#2A604F",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "身份与知识版次已经在 Injective 上留下证据",
+              "fontSize": 17,
+              "color": "#2A604F",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 75,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtozm107",
+      "id": "75",
+      "bbox": [
+        68,
+        567,
+        359,
+        34
+      ],
+      "geometry": "rect",
+      "text": "同一产品覆盖手机、Agent 网络、链上证明与树莓派实体终端。",
+      "textPreview": "同一产品覆盖手机、Agent 网络、链上证明与树莓派实体终端。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "同一产品覆盖手机、Agent"
+          },
+          {
+            "index": 2,
+            "text": "网络、链上证明与树莓派实体终端。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "同一产品覆盖手机、Agent 网络、链上证明与树莓派实体终端。",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "同一产品覆盖手机、Agent 网络、链上证明与树莓派实体终端。",
+              "fontSize": 13,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 76,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dwfyhgzy",
+      "id": "76",
+      "bbox": [
+        50,
+        663,
+        375,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#C8CDCA",
+      "lineWidth": 0
+    },
+    {
+      "order": 77,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cv6hobid",
+      "id": "77",
+      "bbox": [
+        50,
+        673,
+        360,
+        22
+      ],
+      "geometry": "rect",
+      "text": "01 / OPENING",
+      "textPreview": "01 / OPENING",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "+mn-lt",
+        "color": "#8B918D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01 / OPENING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01 / OPENING",
+          "resolvedTextStyle": {
+            "fontSize": 11,
+            "color": "#8B918D"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "01 / OPENING",
+              "fontSize": 11,
+              "color": "#8B918D"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 78,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ytg3m1o",
+      "id": "78",
+      "bbox": [
+        507,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 79,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/lkb6d0za",
+      "id": "79",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Public Earth knowledge map",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "1cff089b-2456-48bd-b54f-f201954b0ba0",
+        "contentType": "image/jpeg",
+        "byteLength": 48846
+      }
+    },
+    {
+      "order": 80,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/up0nelo3",
+      "id": "80",
+      "bbox": [
+        500,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 81,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vq9onq5o",
+      "id": "81",
+      "bbox": [
+        931,
+        81,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#D9DDDA",
+      "lineWidth": 0
+    },
+    {
+      "order": 82,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/buxwfihs",
+      "id": "82",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "alt": "Public Agent network",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "imageMask": {
+        "geometry": "roundRect",
+        "adjustmentList": [
+          {
+            "name": "adj",
+            "formula": "val 4762"
+          }
+        ]
+      },
+      "asset": {
+        "assetId": "92bcfc8b-02d0-4037-9619-005b1f47c72c",
+        "contentType": "image/jpeg",
+        "byteLength": 56935
+      }
+    },
+    {
+      "order": 83,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hsr6p0nu",
+      "id": "83",
+      "bbox": [
+        924,
+        72,
+        252,
+        548
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#4F5753",
+      "lineWidth": 1.25
+    },
+    {
+      "order": 84,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/it0ni5oz",
+      "id": "84",
+      "bbox": [
+        503,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#2D62DD",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#2D62DD",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#2D62DD",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 85,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9ora5k",
+      "id": "85",
+      "bbox": [
+        523,
+        637,
+        300,
+        36
+      ],
+      "geometry": "rect",
+      "text": "PUBLIC EARTH · 知识信号回到地点",
+      "textPreview": "PUBLIC EARTH · 知识信号回到地点",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PUBLIC EARTH · 知识信号回到地点"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PUBLIC EARTH · 知识信号回到地点",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PUBLIC EARTH · 知识信号回到地点",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 86,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fipkv65",
+      "id": "86",
+      "bbox": [
+        927,
+        638,
+        18,
+        24
+      ],
+      "geometry": "rect",
+      "text": "▲",
+      "textPreview": "▲",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#21936D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "▲"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "▲",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#21936D",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "▲",
+              "fontSize": 14,
+              "color": "#21936D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 87,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gr6t0nq",
+      "id": "87",
+      "bbox": [
+        947,
+        637,
+        295,
+        36
+      ],
+      "geometry": "rect",
+      "text": "AGENT NETWORK · 8 领域发现 + 6 步核验",
+      "textPreview": "AGENT NETWORK · 8 领域发现 + 6 步核验",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#666D69",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AGENT NETWORK · 8 领域发现 + 6 步核验"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AGENT NETWORK · 8 领域发现 + 6 步核验",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#666D69"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AGENT NETWORK · 8 领域发现 + 6 步核验",
+              "fontSize": 14,
+              "color": "#666D69"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
