@@ -1,4 +1,5 @@
-import { Bot, Database, Radio, RadioTower, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
+import { Bot, ChevronDown, Database, Radio, RadioTower, ShieldCheck } from 'lucide-react';
 import { PUBLIC_SIGNAL_AGENTS, VERIFICATION_AGENTS } from '../data/publicKnowledgeAgents';
 import type { KnowledgeTopic } from '../lib/chronicle/types';
 
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export default function PublicKnowledgeAgents({ onOpenTopic, onOpenPodcast }: Props) {
+  const [expandedVerification, setExpandedVerification] = useState<string | null>(null);
+
   return (
     <div className="flex-1 min-h-0 overflow-y-auto px-3 py-3 space-y-4" data-testid="public-knowledge-agents">
       <button type="button" onClick={onOpenPodcast}
@@ -87,22 +90,57 @@ export default function PublicKnowledgeAgents({ onOpenTopic, onOpenPodcast }: Pr
         </div>
         <div className="border-2 border-black bg-[#315e4b] text-white p-2.5 mb-2 flex items-center gap-2.5 shadow-[2px_2px_0_#000]">
           <div className="w-9 h-9 border-2 border-white/70 flex items-center justify-center shrink-0"><ShieldCheck className="w-4 h-4" aria-hidden="true" /></div>
-          <div className="min-w-0 flex-1"><span className="font-pixel text-[7px] text-white/50">MAIN AGENT</span><b className="block text-[11px] mt-0.5">FactRelay Supervisor · 事实核验主理人</b><small className="block text-[8px] text-white/60 mt-0.5">把单条主张送入有边界的核验程序</small></div>
+          <div className="min-w-0 flex-1"><span className="font-pixel text-[7px] text-white/50">MAIN AGENT</span><b className="block text-[11px] mt-0.5">FactRelay Supervisor · 事实核验主理人</b><small className="block text-[8px] text-white/70 mt-0.5">点击任一步，查看输入、处理、输出与发布边界</small></div>
         </div>
-        <ol className="relative space-y-2 before:absolute before:bottom-4 before:left-[17px] before:top-4 before:w-0.5 before:bg-black" aria-label="六步事实核验流程">
-          {VERIFICATION_AGENTS.map((agent, index) => (
-            <li key={agent.id} className="relative border-2 border-black bg-white p-2.5 shadow-[2px_2px_0_rgba(0,0,0,0.85)] flex items-start gap-2.5">
-              <div className="w-9 h-9 border-2 border-black bg-black text-[#7CFF6B] flex flex-col items-center justify-center shrink-0">
-                <Bot className="w-3.5 h-3.5" aria-hidden="true" />
-                <span className="font-pixel text-[6px] mt-0.5">{String(index + 1).padStart(2, '0')}</span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="font-pixel text-[8px] leading-tight">{agent.name} · {agent.label}</div>
-                <div className="text-[9px] text-black/55 leading-snug mt-1">{agent.role}</div>
-              </div>
-              <span className="font-pixel text-[6px] border border-black bg-[#EAEAEA] px-1 py-1 shrink-0 max-w-[74px] text-center leading-tight">{agent.skill}</span>
-            </li>
-          ))}
+        <ol className="space-y-2" aria-label="六步事实核验流程">
+          {VERIFICATION_AGENTS.map((agent, index) => {
+            const isExpanded = expandedVerification === agent.id;
+            const panelId = `verification-step-${agent.id}`;
+            return (
+              <li key={agent.id} className={`border-2 border-black bg-white shadow-[2px_2px_0_rgba(0,0,0,0.85)] ${isExpanded ? 'shadow-[3px_3px_0_#315e4b]' : ''}`}>
+                <button
+                  type="button"
+                  aria-expanded={isExpanded}
+                  aria-controls={panelId}
+                  data-testid={`verification-trigger-${agent.id}`}
+                  onClick={() => setExpandedVerification((current) => current === agent.id ? null : agent.id)}
+                  className="w-full p-2.5 flex items-start gap-2.5 text-left transition-colors hover:bg-[#f3f0e7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[#315e4b]"
+                >
+                  <span className={`w-9 h-9 border-2 border-black flex flex-col items-center justify-center shrink-0 ${isExpanded ? 'bg-[#315e4b] text-white' : 'bg-black text-[#7CFF6B]'}`}>
+                    <Bot className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span className="font-pixel text-[6px] mt-0.5">{String(index + 1).padStart(2, '0')}</span>
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="font-pixel text-[8px] leading-tight block">{agent.name} · {agent.label}</span>
+                    <span className="text-[9px] text-black/55 leading-snug mt-1 block">{agent.role}</span>
+                    <span className="font-pixel text-[6px] text-[#315e4b] mt-1.5 block">{isExpanded ? '收起步骤' : '展开步骤'} · {agent.skill}</span>
+                  </span>
+                  <ChevronDown className={`w-4 h-4 shrink-0 mt-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`} strokeWidth={3} aria-hidden="true" />
+                </button>
+                {isExpanded && (
+                  <div id={panelId} data-testid={`verification-panel-${agent.id}`} className="border-t-2 border-black bg-[#f3f0e7] p-2.5">
+                    <dl className="grid gap-2">
+                      <div className="border border-black bg-white p-2">
+                        <dt className="font-pixel text-[6px] text-black/45">INPUT · 输入</dt>
+                        <dd className="text-[9px] leading-relaxed mt-1">{agent.input}</dd>
+                      </div>
+                      <div className="border border-black bg-white p-2">
+                        <dt className="font-pixel text-[6px] text-black/45">PROCESS · 处理规则</dt>
+                        <dd className="text-[9px] leading-relaxed mt-1">{agent.process}</dd>
+                      </div>
+                      <div className="border border-black bg-white p-2">
+                        <dt className="font-pixel text-[6px] text-black/45">OUTPUT · 输出</dt>
+                        <dd className="text-[9px] leading-relaxed mt-1">{agent.output}</dd>
+                      </div>
+                    </dl>
+                    <div className="mt-2 border-l-4 border-[#315e4b] bg-[#dff8e9] px-2 py-1.5 text-[8px] leading-relaxed">
+                      <b>BOUNDARY · 边界：</b>{agent.guardrail}
+                    </div>
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ol>
       </section>
 
