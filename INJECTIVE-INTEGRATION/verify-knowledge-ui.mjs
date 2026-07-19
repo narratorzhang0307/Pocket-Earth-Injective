@@ -16,6 +16,7 @@ const checks = [
   ['mobile action targets stay usable', page.includes('min-h-10') && page.includes('min-h-11') && page.includes('min-h-14')],
   ['edition actions use a no-overflow mobile grid', page.includes('grid grid-cols-2 gap-2') && page.includes('data-testid="knowledge-edition-card"')],
   ['record confidence and proof roots are visible', page.includes('aria-label={`可信度') && page.includes('EDITION {shortHash(proof.editionRoot')],
+  ['unqualified domains show honest seven-day source cache', page.includes('7-DAY SIGNAL CACHE') && page.includes('等待独立来源交叉核验后才会进入 Merkle 版次') && page.includes('PUBLIC_KNOWLEDGE_TOPIC_STORIES.filter')],
   ['agent console routes to knowledge page', tab.includes("'daily-knowledge': 'knowledge'") && tab.includes('<DailyKnowledgePage')],
   ['plaza card links real Chronicle contract', catalog.includes('0x3f0e5daeb81eea1b41ca80ae483acdb8de0f0c25') && catalog.includes("runTarget: 'daily-knowledge'")],
   ['final plaza UI has no payment pitch', !/(付费|支付|结算|售价|创作者收入)/.test(plaza) && !/(付费|支付|结算|售价|创作者收入)/.test(tab)],

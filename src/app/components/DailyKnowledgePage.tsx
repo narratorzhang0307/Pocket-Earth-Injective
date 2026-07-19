@@ -6,6 +6,9 @@ import {
 import type {
   DailyKnowledgeResponse, KnowledgeRecord, KnowledgeTopic, KnowledgeVerdict,
 } from '../lib/chronicle/types';
+import {
+  PUBLIC_KNOWLEDGE_SOURCE_URLS, PUBLIC_KNOWLEDGE_TOPIC_STORIES,
+} from '../data/publicKnowledgeMap';
 
 interface Props { onBack: () => void; initialTopic?: KnowledgeTopic }
 
@@ -123,6 +126,51 @@ function RecordCard({ record }: { record: KnowledgeRecord }) {
   );
 }
 
+function CachedSignals({ topic }: { topic: KnowledgeTopic }) {
+  const stories = PUBLIC_KNOWLEDGE_TOPIC_STORIES.filter((story) => story.topic === topic);
+
+  if (!stories.length) return (
+    <div className="border-2 border-black bg-[#fff4d7] p-4 text-center shadow-[2px_2px_0_#000]">
+      <RadioTower className="w-5 h-5 mx-auto mb-2" />
+      <p className="font-pixel text-[8px]">NO QUALIFIED EDITION</p>
+      <p className="text-[10px] text-black/55 leading-relaxed mt-2">这个领域今天还没有达到多来源核验门槛。Agent 不会为了填满信息流而虚构知识卡。</p>
+    </div>
+  );
+
+  return (
+    <section className="space-y-2" data-testid="knowledge-cached-signals">
+      <div className="border-2 border-black bg-[#fff4d7] p-3 shadow-[2px_2px_0_#000]">
+        <div className="flex items-center gap-2">
+          <RadioTower className="w-4 h-4 shrink-0" />
+          <div>
+            <p className="font-pixel text-[8px]">7-DAY SIGNAL CACHE</p>
+            <p className="text-[9px] text-black/55 leading-relaxed mt-1">本领域今日尚无合格版次。以下是真实来源候选信号，等待独立来源交叉核验后才会进入 Merkle 版次。</p>
+          </div>
+        </div>
+      </div>
+      {stories.map((story) => (
+        <article key={story.id} className="relative overflow-hidden border-2 border-black bg-white p-3 pt-4 shadow-[3px_3px_0_rgba(0,0,0,0.85)]">
+          <div className="absolute inset-x-0 top-0 h-1 bg-[#f4c542]" />
+          <div className="flex items-center justify-between gap-2 text-[8px] text-black/45">
+            <span className="font-pixel">CANDIDATE · {story.publishedAt.slice(5)}</span>
+            <span className="truncate">{story.publisher}</span>
+          </div>
+          <h2 className="text-[13px] font-bold leading-snug mt-2">{story.headline}</h2>
+          <p className="text-[10px] text-black/65 leading-[1.55] mt-2">{story.claim}</p>
+          <div className="mt-2 border-l-4 border-[#4f9b84] bg-[#efede5] p-2">
+            <div className="font-pixel text-[7px] text-[#386b5b]">WHY IT MATTERS</div>
+            <p className="text-[9px] text-black/65 leading-relaxed mt-1">{story.why}</p>
+          </div>
+          <a href={PUBLIC_KNOWLEDGE_SOURCE_URLS[story.id]} target="_blank" rel="noreferrer"
+            className="mt-2 min-h-10 border-2 border-black bg-black px-3 py-2 font-pixel text-[7px] text-[#7CFF6B] inline-flex items-center gap-1.5 active:translate-y-px">
+            <ExternalLink className="w-3 h-3" />查看原始来源
+          </a>
+        </article>
+      ))}
+    </section>
+  );
+}
+
 export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Props) {
   const [topic, setTopic] = useState<KnowledgeTopic>(initialTopic);
   const [data, setData] = useState<DailyKnowledgeResponse | null>(null);
@@ -215,13 +263,7 @@ export default function DailyKnowledgePage({ onBack, initialTopic = 'ai' }: Prop
           </div>
         )}
 
-        {!loading && !error && data && !data.edition && (
-          <div className="border-2 border-black bg-[#fff4d7] p-4 text-center shadow-[2px_2px_0_#000]">
-            <RadioTower className="w-5 h-5 mx-auto mb-2" />
-            <p className="font-pixel text-[8px]">NO QUALIFIED EDITION</p>
-            <p className="text-[10px] text-black/55 leading-relaxed mt-2">这个领域今天还没有达到多来源核验门槛。Agent 不会为了填满信息流而虚构知识卡。</p>
-          </div>
-        )}
+        {!loading && !error && data && !data.edition && <CachedSignals topic={topic} />}
 
         {data?.edition && (
           <>
