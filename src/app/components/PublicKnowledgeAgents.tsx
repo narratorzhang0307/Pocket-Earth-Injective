@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function PublicKnowledgeAgents({ onOpenTopic, onOpenPodcast }: Props) {
-  const [expandedVerification, setExpandedVerification] = useState<string | null>(null);
+  const [factRelayOpen, setFactRelayOpen] = useState(false);
 
   return (
     <div className="flex-1 min-h-0 overflow-y-auto px-3 py-3 space-y-4" data-testid="public-knowledge-agents">
@@ -88,66 +88,50 @@ export default function PublicKnowledgeAgents({ onOpenTopic, onOpenPodcast }: Pr
           </div>
           <span className="font-pixel text-[7px] border border-black bg-black text-[#7CFF6B] px-1.5 py-1">6 STAGES</span>
         </div>
-        <div className="border-2 border-black bg-[#315e4b] text-white p-2.5 mb-2 flex items-center gap-2.5 shadow-[2px_2px_0_#000]">
-          <div className="w-9 h-9 border-2 border-white/70 flex items-center justify-center shrink-0"><ShieldCheck className="w-4 h-4" aria-hidden="true" /></div>
-          <div className="min-w-0 flex-1"><span className="font-pixel text-[7px] text-white/50">MAIN AGENT</span><b className="block text-[11px] mt-0.5">FactRelay Supervisor · 事实核验主理人</b><small className="block text-[8px] text-white/70 mt-0.5">点击任一步，查看输入、处理、输出与发布边界</small></div>
-        </div>
-        <ol className="space-y-2" aria-label="六步事实核验流程">
-          {VERIFICATION_AGENTS.map((agent, index) => {
-            const isExpanded = expandedVerification === agent.id;
-            const panelId = `verification-step-${agent.id}`;
-            return (
-              <li key={agent.id} className={`border-2 border-black bg-white shadow-[2px_2px_0_rgba(0,0,0,0.85)] ${isExpanded ? 'shadow-[3px_3px_0_#315e4b]' : ''}`}>
-                <button
-                  type="button"
-                  aria-expanded={isExpanded}
-                  aria-controls={panelId}
-                  data-testid={`verification-trigger-${agent.id}`}
-                  onClick={() => setExpandedVerification((current) => current === agent.id ? null : agent.id)}
-                  className="w-full p-2.5 flex items-start gap-2.5 text-left transition-colors hover:bg-[#f3f0e7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[#315e4b]"
-                >
-                  <span className={`w-9 h-9 border-2 border-black flex flex-col items-center justify-center shrink-0 ${isExpanded ? 'bg-[#315e4b] text-white' : 'bg-black text-[#7CFF6B]'}`}>
-                    <Bot className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span className="font-pixel text-[6px] mt-0.5">{String(index + 1).padStart(2, '0')}</span>
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="font-pixel text-[8px] leading-tight block">{agent.name} · {agent.label}</span>
-                    <span className="text-[9px] text-black/55 leading-snug mt-1 block">{agent.role}</span>
-                    <span className="font-pixel text-[6px] text-[#315e4b] mt-1.5 block">{isExpanded ? '收起步骤' : '展开步骤'} · {agent.skill}</span>
-                  </span>
-                  <ChevronDown className={`w-4 h-4 shrink-0 mt-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`} strokeWidth={3} aria-hidden="true" />
-                </button>
-                {isExpanded && (
-                  <div id={panelId} data-testid={`verification-panel-${agent.id}`} className="border-t-2 border-black bg-[#f3f0e7] p-2.5">
-                    <dl className="grid gap-2">
-                      <div className="border border-black bg-white p-2">
-                        <dt className="font-pixel text-[6px] text-black/45">INPUT · 输入</dt>
-                        <dd className="text-[9px] leading-relaxed mt-1">{agent.input}</dd>
-                      </div>
-                      <div className="border border-black bg-white p-2">
-                        <dt className="font-pixel text-[6px] text-black/45">PROCESS · 处理规则</dt>
-                        <dd className="text-[9px] leading-relaxed mt-1">{agent.process}</dd>
-                      </div>
-                      <div className="border border-black bg-white p-2">
-                        <dt className="font-pixel text-[6px] text-black/45">OUTPUT · 输出</dt>
-                        <dd className="text-[9px] leading-relaxed mt-1">{agent.output}</dd>
-                      </div>
-                    </dl>
-                    <div className="mt-2 border-l-4 border-[#315e4b] bg-[#dff8e9] px-2 py-1.5 text-[8px] leading-relaxed">
-                      <b>BOUNDARY · 边界：</b>{agent.guardrail}
-                    </div>
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </section>
+        <div className={`border-2 border-black bg-white shadow-[2px_2px_0_#000] ${factRelayOpen ? 'shadow-[3px_3px_0_#315e4b]' : ''}`}>
+          <button
+            type="button"
+            aria-expanded={factRelayOpen}
+            aria-controls="fact-relay-flow"
+            data-testid="fact-relay-trigger"
+            onClick={() => setFactRelayOpen((open) => !open)}
+            className="w-full bg-[#315e4b] text-white p-2.5 flex items-center gap-2.5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white"
+          >
+            <span className="w-9 h-9 border-2 border-white/70 flex items-center justify-center shrink-0"><ShieldCheck className="w-4 h-4" aria-hidden="true" /></span>
+            <span className="min-w-0 flex-1">
+              <span className="font-pixel text-[7px] text-white/55 block">FactRelay Supervisor</span>
+              <b className="block text-[11px] mt-0.5">六步事实核验流程</b>
+              <small className="block text-[8px] text-white/70 mt-0.5">{factRelayOpen ? '收起方法说明' : '展开查看角色、职责与产物'}</small>
+            </span>
+            <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${factRelayOpen ? 'rotate-180' : ''}`} strokeWidth={3} aria-hidden="true" />
+          </button>
 
-      <div className="border-2 border-black bg-[#dff8e9] p-2.5 flex items-start gap-2 text-[9px] leading-relaxed">
-        <ShieldCheck className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
-        <p><b>边界：</b>重要性评分不等于真实度。领域 Agent 只负责发现信号；进入公共知识版次前，仍需证据检索、双角色交叉核验与确定性评分。</p>
-      </div>
+          {factRelayOpen && (
+            <div id="fact-relay-flow" data-testid="fact-relay-panel" className="border-t-2 border-black bg-[#f3f0e7] p-2.5">
+              <ol aria-label="六步事实核验流程" className="border-2 border-black bg-white divide-y divide-black">
+                {VERIFICATION_AGENTS.map((agent, index) => (
+                  <li key={agent.id} className="grid grid-cols-[34px_1fr] gap-2 p-2">
+                    <span className="w-[34px] h-[34px] border-2 border-black bg-black text-[#7CFF6B] grid place-items-center font-pixel text-[7px]">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="min-w-0">
+                      <span className="font-pixel text-[7px] leading-tight block">{agent.name} · {agent.label}</span>
+                      <span className="text-[9px] leading-snug mt-1 block">{agent.role}</span>
+                      <span className="text-[8px] text-black/45 leading-snug mt-1 block"><b>产物：</b>{agent.output}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-2 border border-black bg-white p-2 text-[8px] leading-relaxed">
+                <b className="font-pixel text-[6px] text-[#315e4b]">INPUT → PROCESS → OUTPUT</b>
+                <p className="mt-1">候选主张与原始来源 → 六个角色按边界核验 → 可复核的知识记录与每日版次候选。</p>
+              </div>
+              <div className="mt-2 border-l-4 border-[#315e4b] bg-[#dff8e9] px-2 py-1.5 text-[8px] leading-relaxed">
+                <b>发布边界：</b>重要性不等于真实性；缺少原始出处不能进入裁决，模型也无权自动发布或签署链上交易。
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
