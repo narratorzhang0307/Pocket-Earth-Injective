@@ -21,16 +21,14 @@ for (const anchor of [
   'INJECTIVE VERIFIED',
   '知识卡是信息分发层 · 身份卡是可验证身份层',
 ]) assert.ok(panel.includes(anchor), `PublicEarthPanel missing ${anchor}`)
-for (const portrait of [
-  'frost-43-core.png',
-  'frost-44-literature.png',
-  'frost-45-noir.png',
-  'frost-46-jazz.png',
-  'frost-47-aurora.png',
-]) {
-  assert.ok(panel.includes(`/frost-identities/${portrait}`), `PublicEarthPanel missing portrait ${portrait}`)
-  assert.ok(existsSync(new URL(`../public/frost-identities/${portrait}`, import.meta.url)), `portrait file missing ${portrait}`)
+for (const portrait of ['frost-nft-group-1.png', 'frost-nft-group-2.png']) {
+  assert.ok(panel.includes(`/frost-identities/${portrait}`), `PublicEarthPanel missing NFT source ${portrait}`)
+  assert.ok(existsSync(new URL(`../public/frost-identities/${portrait}`, import.meta.url)), `NFT source file missing ${portrait}`)
 }
+for (const position of ['0% 0%', '50% 0%', '100% 0%', '50% 100%']) {
+  assert.ok(panel.includes(`position: '${position}'`), `PublicEarthPanel missing NFT sprite position ${position}`)
+}
+assert.ok(panel.includes("backgroundSize: '300% 200%'"), 'PublicEarthPanel must crop the two 3x2 Frost NFT source sheets with CSS')
 for (const anchor of [
   '<EarthMap',
   'Mapbox 公共知识新闻地图',
