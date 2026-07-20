@@ -107,7 +107,7 @@ def _ahakey():
                 event_paths.append(f"/dev/input/{name_file.parents[1].name}")
         except OSError:
             continue
-    return {
+    state = {
         "mac": mac,
         "paired": "Paired: yes" in info,
         "trusted": "Trusted: yes" in info,
@@ -117,6 +117,17 @@ def _ahakey():
         "routerActive": _active("pocket-earth-ahakey.service"),
         "reconnectActive": _active("pocket-earth-ahakey-reconnect.service"),
     }
+    state["ready"] = all([
+        state["paired"],
+        state["trusted"],
+        state["connected"],
+        state["configurationWritten"],
+        bool(state["inputPaths"]),
+        state["routerActive"],
+        state["reconnectActive"],
+    ])
+    state["pairingRequired"] = not state["paired"]
+    return state
 
 
 def _pisugar_request(command):

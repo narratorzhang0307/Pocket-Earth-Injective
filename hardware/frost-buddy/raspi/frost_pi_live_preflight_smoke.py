@@ -23,6 +23,8 @@ try:
     assert ahakey["connected"] is True
     assert ahakey["routerActive"] is True
     assert ahakey["reconnectActive"] is True
+    assert ahakey["ready"] is False  # no synthetic /sys input device in this offline check
+    assert ahakey["pairingRequired"] is False
 finally:
     preflight._command = original_command
     preflight._active = original_active
