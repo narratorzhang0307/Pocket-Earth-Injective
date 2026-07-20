@@ -17,6 +17,8 @@ PAIR_RETRY_SECONDS = float(os.environ.get("AHAKEY_PAIR_RETRY_SECONDS", "15"))
 AUTO_PAIR = os.environ.get("AHAKEY_AUTO_PAIR", "1").strip().lower() not in {"0", "false", "no"}
 DISCOVERY_SECONDS = int(os.environ.get("AHAKEY_DISCOVERY_SECONDS", "4"))
 HID_SETTLE_SECONDS = float(os.environ.get("AHAKEY_HID_SETTLE_SECONDS", "8"))
+KEEPALIVE_SECONDS = float(os.environ.get("AHAKEY_KEEPALIVE_SECONDS", "4"))
+CONNECT_TIMEOUT_SECONDS = float(os.environ.get("AHAKEY_CONNECT_TIMEOUT_SECONDS", "18"))
 CONFIGURATION_VERSION = "mode4-f13-f16-led-off-v1"
 CONFIGURATION_STAMP = Path(
     os.environ.get(
@@ -91,7 +93,19 @@ def connect_with_discovery() -> subprocess.CompletedProcess[str]:
         timeout=DISCOVERY_SECONDS + 3,
     )
     try:
-        return bluetoothctl("connect", AHAKEY_MAC)
+        try:
+            return bluetoothctl("connect", AHAKEY_MAC, timeout=CONNECT_TIMEOUT_SECONDS)
+        except subprocess.TimeoutExpired:
+            # Killing bluetoothctl does not cancel BlueZ's asynchronous LE
+            # attempt. Cancel it explicitly so the next pass cannot inherit an
+            # org.bluez.Error.InProgress pseudo-connection.
+            bluetoothctl("disconnect", AHAKEY_MAC, timeout=5.0)
+            return subprocess.CompletedProcess(
+                args=["bluetoothctl", "connect", AHAKEY_MAC],
+                returncode=124,
+                stdout="",
+                stderr="connection timeout",
+            )
     finally:
         bluetoothctl("scan", "off")
 
@@ -110,6 +124,22 @@ def write_pocket_earth_configuration() -> bool:
         print(f"ahakey-reconnect: configuration failed: {detail[:300]}", flush=True)
         return False
     return True
+
+
+def send_keepalive() -> bool:
+    """Keep an awake AhaKey connected using its official status query."""
+    script = Path(__file__).with_name("frost_pi_ahakey_configure.py")
+    try:
+        result = subprocess.run(
+            [sys.executable, str(script), "--keepalive"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+    except subprocess.TimeoutExpired:
+        return False
+    return result.returncode == 0
 
 
 def ensure_configuration(
@@ -164,6 +194,7 @@ def reconnect_once(
 def main() -> int:
     previous = ""
     next_pair_attempt = 0.0
+    next_keepalive = 0.0
     while True:
         try:
             ensure_adapter_powered()
@@ -183,6 +214,14 @@ def main() -> int:
                         status = configuration
                     elif configuration == "configured-now":
                         status = "connected-configured"
+                    if configuration != "configuration-retry":
+                        keepalive_now = time.monotonic()
+                        if keepalive_now >= next_keepalive:
+                            if send_keepalive():
+                                next_keepalive = keepalive_now + KEEPALIVE_SECONDS
+                            else:
+                                status = "keepalive-retry"
+                                next_keepalive = keepalive_now + RETRY_SECONDS
         except (OSError, subprocess.TimeoutExpired) as exc:
             status = f"error:{exc}"
         if status != previous:

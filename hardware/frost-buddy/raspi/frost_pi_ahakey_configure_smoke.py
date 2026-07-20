@@ -5,6 +5,7 @@ import frost_pi_ahakey_configure as configure
 
 
 def main() -> int:
+    assert configure.status_query().hex() == "aabb00ccdd"
     commands = configure.pocket_earth_commands()
     assert len(commands) == 16
     assert commands[1].hex() == "aabb7373030068ccdd"

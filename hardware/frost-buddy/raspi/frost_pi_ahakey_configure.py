@@ -21,6 +21,11 @@ def frame(command: int, *payload: int) -> bytes:
     return bytes((0xAA, 0xBB, command, *payload, 0xCC, 0xDD))
 
 
+def status_query() -> bytes:
+    """Return the official device-status query used as a quiet keepalive."""
+    return frame(0x00)
+
+
 def mapping(key_index: int, hid_code: int) -> bytes:
     return frame(0x73, 0x73, MODE, key_index, hid_code)
 
@@ -118,14 +123,20 @@ def write_commands(commands: list[bytes]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--keepalive",
+        action="store_true",
+        help="send one silent device-status query without changing configuration",
+    )
     args = parser.parse_args()
-    commands = pocket_earth_commands()
+    commands = [status_query()] if args.keepalive else pocket_earth_commands()
     if args.dry_run:
         for command in commands:
             print(command.hex(" "))
         return 0
     write_commands(commands)
-    print("AhaKey Mode 4 configured: F13/F14/F15/F16; LED effects off", flush=True)
+    if not args.keepalive:
+        print("AhaKey Mode 4 configured: F13/F14/F15/F16; LED effects off", flush=True)
     return 0
 
 

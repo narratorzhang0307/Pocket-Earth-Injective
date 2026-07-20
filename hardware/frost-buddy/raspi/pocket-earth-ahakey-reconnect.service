@@ -14,6 +14,8 @@ Environment=PYTHONUNBUFFERED=1
 Environment=AHAKEY_MAC=D4:6C:50:5C:F6:93
 Environment=AHAKEY_AUTO_PAIR=1
 Environment=AHAKEY_PAIR_RETRY_SECONDS=15
+Environment=AHAKEY_KEEPALIVE_SECONDS=4
+Environment=AHAKEY_CONNECT_TIMEOUT_SECONDS=18
 ExecStart=/usr/bin/python3 -u /home/pi/pocket-earth/frost_pi_ahakey_reconnect.py
 Restart=always
 RestartSec=3

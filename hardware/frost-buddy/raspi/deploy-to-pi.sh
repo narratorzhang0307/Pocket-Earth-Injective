@@ -118,7 +118,8 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo /usr/bin/python3 whisplay_pi_home_guard.py --install
   sudo systemctl daemon-reload
   sudo systemctl enable --now pocket-earth-podcast-sync.timer
-  sudo systemctl enable --now pocket-earth-ahakey-reconnect.service pocket-earth-ahakey.service
+  sudo systemctl enable pocket-earth-ahakey-reconnect.service pocket-earth-ahakey.service
+  sudo systemctl restart pocket-earth-ahakey-reconnect.service pocket-earth-ahakey.service
   if sudo test -f /etc/pocket-earth-edge.env; then
     sudo systemctl enable pocket-earth-edge.service pocket-earth-launcher.service
     sudo systemctl restart whisplay-daemon.service

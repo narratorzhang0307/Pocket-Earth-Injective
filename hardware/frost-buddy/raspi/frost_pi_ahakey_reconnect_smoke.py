@@ -10,6 +10,7 @@ import frost_pi_ahakey_reconnect as reconnect
 def main() -> int:
     original_state = reconnect.device_state
     original_bluetoothctl = reconnect.bluetoothctl
+    original_run = reconnect.subprocess.run
     try:
         adapter_calls = []
         def fake_bluetoothctl(*args, **kwargs):
@@ -64,6 +65,24 @@ def main() -> int:
             ("scan", "off"),
         ]
 
+        def timeout_bluetoothctl(*args, **kwargs):
+            adapter_calls.append(args)
+            if args and args[0] == "connect":
+                raise reconnect.subprocess.TimeoutExpired(args, 1)
+            return type("Result", (), {"stdout": "", "returncode": 0})()
+
+        reconnect.bluetoothctl = timeout_bluetoothctl
+        adapter_calls.clear()
+        timed_out = reconnect.connect_with_discovery()
+        assert timed_out.returncode == 124
+        assert adapter_calls == [
+            ("--timeout", str(reconnect.DISCOVERY_SECONDS), "scan", "on"),
+            ("connect", reconnect.AHAKEY_MAC),
+            ("disconnect", reconnect.AHAKEY_MAC),
+            ("scan", "off"),
+        ]
+        reconnect.bluetoothctl = fake_bluetoothctl
+
         with TemporaryDirectory() as directory:
             stamp = Path(directory) / "ahakey.configured"
             calls = []
@@ -82,9 +101,15 @@ def main() -> int:
             stamp.unlink()
             assert reconnect.ensure_configuration(lambda: False, stamp) == "configuration-retry"
             assert not stamp.exists()
+
+        reconnect.subprocess.run = lambda *args, **kwargs: type(
+            "Result", (), {"returncode": 0, "stdout": "", "stderr": ""}
+        )()
+        assert reconnect.send_keepalive()
     finally:
         reconnect.device_state = original_state
         reconnect.bluetoothctl = original_bluetoothctl
+        reconnect.subprocess.run = original_run
 
     print("frost_pi_ahakey_reconnect smoke passed")
     return 0
