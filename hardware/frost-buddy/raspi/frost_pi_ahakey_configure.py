@@ -12,8 +12,8 @@ import time
 AHAKEY_MAC = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
 COMMAND_UUID = "00007343-0000-1000-8000-00805f9b34fb"
 MODE = 3
-CONNECT_RETRIES = 4
-SERVICES_TIMEOUT_SECONDS = 12.0
+CONNECT_WINDOW_SECONDS = 45.0
+CONNECT_RETRY_SECONDS = 0.8
 
 
 def frame(command: int, *payload: int) -> bytes:
@@ -70,18 +70,20 @@ def connected_and_ready() -> bool:
 
 
 def ensure_connected() -> None:
-    for attempt in range(CONNECT_RETRIES):
-        if not connected_and_ready():
-            bluetoothctl("connect", AHAKEY_MAC)
-        deadline = time.monotonic() + SERVICES_TIMEOUT_SECONDS
-        while time.monotonic() < deadline:
-            if connected_and_ready():
-                return
-            time.sleep(0.4)
-        if attempt + 1 < CONNECT_RETRIES:
-            bluetoothctl("disconnect", AHAKEY_MAC)
-            time.sleep(0.5)
-    raise RuntimeError("AhaKey did not expose its GATT service after reconnect retries")
+    deadline = time.monotonic() + CONNECT_WINDOW_SECONDS
+    attempts = 0
+    while time.monotonic() < deadline:
+        if connected_and_ready():
+            return
+        attempts += 1
+        bluetoothctl("connect", AHAKEY_MAC, timeout=6.0)
+        if connected_and_ready():
+            return
+        time.sleep(CONNECT_RETRY_SECONDS)
+    info = bluetoothctl("info", AHAKEY_MAC).stdout.strip().replace("\n", "; ")
+    raise RuntimeError(
+        f"AhaKey GATT service not ready after {attempts} attempts; {info[:500]}"
+    )
 
 
 def write_commands(commands: list[bytes]) -> str:
