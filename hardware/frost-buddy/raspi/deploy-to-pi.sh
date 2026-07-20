@@ -27,6 +27,7 @@ FILES=(
   frost_pi_ahakey_router.py
   frost_pi_ahakey_router_smoke.py
   frost_pi_ahakey_reconnect.py
+  frost_pi_ahakey_reconnect_smoke.py
   frost_pi_ahakey_configure.py
   frost_pi_ahakey_configure_smoke.py
   frost_pi_project_launcher.py
@@ -75,6 +76,7 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_ahakey_router.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_ahakey_router_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_ahakey_reconnect.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_ahakey_reconnect_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_ahakey_configure.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_ahakey_configure_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost-nft-group-1.png' /home/pi/pocket-earth/assets/
@@ -110,6 +112,7 @@ ssh "$PI_HOST" "set -euo pipefail
   /usr/bin/python3 frost_pi_live_preflight_smoke.py
   /usr/bin/python3 frost_pi_podcast_sync_smoke.py
   /usr/bin/python3 frost_pi_ahakey_router_smoke.py
+  /usr/bin/python3 frost_pi_ahakey_reconnect_smoke.py
   /usr/bin/python3 frost_pi_ahakey_configure_smoke.py
   /usr/bin/python3 whisplay_pi_home_guard_smoke.py
   sudo /usr/bin/python3 whisplay_pi_home_guard.py --install

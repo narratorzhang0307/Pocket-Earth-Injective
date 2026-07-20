@@ -91,6 +91,27 @@ def _mirror():
         return False
 
 
+def _ahakey():
+    mac = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
+    info = _command("bluetoothctl", "info", mac).stdout
+    event_paths = []
+    for name_file in Path("/sys/class/input").glob("event*/device/name"):
+        try:
+            if "ahakey" in name_file.read_text(encoding="utf-8", errors="ignore").casefold():
+                event_paths.append(f"/dev/input/{name_file.parents[1].name}")
+        except OSError:
+            continue
+    return {
+        "mac": mac,
+        "paired": "Paired: yes" in info,
+        "trusted": "Trusted: yes" in info,
+        "connected": "Connected: yes" in info,
+        "inputPaths": sorted(event_paths),
+        "routerActive": _active("pocket-earth-ahakey.service"),
+        "reconnectActive": _active("pocket-earth-ahakey-reconnect.service"),
+    }
+
+
 def _pisugar_request(command):
     path = os.environ.get("PISUGAR_SOCKET_PATH", "/tmp/pisugar-server.sock")
     try:
@@ -221,6 +242,7 @@ def main(argv=None):
     whisplay = _whisplay_state()
     cjk = _cjk_font()
     power = _power_state()
+    ahakey = _ahakey()
     report = {
         "ok": True,
         "hostname": socket.gethostname(),
@@ -244,6 +266,7 @@ def main(argv=None):
             "cjkGlyphs": cjk["glyphs"],
             "speakerPlayer": bool(shutil.which("ffplay")),
             "offlineTts": bool(shutil.which("espeak-ng") or shutil.which("espeak")),
+            "ahaKey": ahakey,
         },
         "power": power,
         "eventLane": {

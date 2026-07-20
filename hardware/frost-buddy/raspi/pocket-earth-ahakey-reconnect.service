@@ -1,7 +1,7 @@
 [Unit]
 Description=Pocket Earth AhaKey Bluetooth Auto-Reconnect
-Wants=bluetooth.target
-After=bluetooth.target
+Wants=bluetooth.service
+After=bluetooth.service
 ConditionPathExists=/home/pi/pocket-earth/frost_pi_ahakey_reconnect.py
 
 [Service]
@@ -11,9 +11,12 @@ Group=pi
 WorkingDirectory=/home/pi/pocket-earth
 Environment=PYTHONUNBUFFERED=1
 Environment=AHAKEY_MAC=D4:6C:50:5C:F6:93
+Environment=AHAKEY_AUTO_PAIR=1
+Environment=AHAKEY_PAIR_RETRY_SECONDS=15
 ExecStart=/usr/bin/python3 -u /home/pi/pocket-earth/frost_pi_ahakey_reconnect.py
 Restart=always
 RestartSec=3
+TimeoutStopSec=5
 
 [Install]
 WantedBy=multi-user.target

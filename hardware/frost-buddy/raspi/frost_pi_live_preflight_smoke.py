@@ -10,6 +10,23 @@ assert preflight._boolean_metric("battery_power_plugged: true", "battery_power_p
 assert preflight._boolean_metric("battery_power_plugged: unknown", "battery_power_plugged") is None
 assert preflight._text_metric("model: PiSugar 3", "model") == "PiSugar 3"
 
+original_command = preflight._command
+original_active = preflight._active
+try:
+    preflight._command = lambda *args: type(
+        "Result", (), {"stdout": "Paired: yes\nTrusted: yes\nConnected: yes\n", "returncode": 0}
+    )()
+    preflight._active = lambda unit: unit.startswith("pocket-earth-ahakey")
+    ahakey = preflight._ahakey()
+    assert ahakey["paired"] is True
+    assert ahakey["trusted"] is True
+    assert ahakey["connected"] is True
+    assert ahakey["routerActive"] is True
+    assert ahakey["reconnectActive"] is True
+finally:
+    preflight._command = original_command
+    preflight._active = original_active
+
 safe = preflight._safe_shutdown({
     "auto_shutdown_level": 10,
     "auto_shutdown_delay": 30,

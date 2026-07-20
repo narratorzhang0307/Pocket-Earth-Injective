@@ -4,7 +4,13 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from frost_pi_ahakey_router import INPUT_EVENT, KEY_ROUTES, find_ahakey_event_paths, parse_input_events
+from frost_pi_ahakey_router import (
+    INPUT_EVENT,
+    KEY_ROUTES,
+    find_ahakey_event_paths,
+    parse_input_events,
+    should_route_press,
+)
 
 
 def main() -> int:
@@ -18,12 +24,23 @@ def main() -> int:
     assert remainder == b"partial"
     assert [code for event_type, code, value in events if event_type == 1 and value == 1] == list(KEY_ROUTES)
 
+    last_presses: dict[int, float] = {}
+    assert should_route_press(183, 1, 10.0, last_presses)
+    assert not should_route_press(183, 1, 10.1, last_presses)
+    assert not should_route_press(183, 2, 10.5, last_presses)
+    assert not should_route_press(183, 0, 10.5, last_presses)
+    assert should_route_press(183, 1, 10.5, last_presses)
+    assert not should_route_press(99, 1, 11.0, last_presses)
+
     with TemporaryDirectory() as directory:
         root = Path(directory)
         name = root / "event4" / "device" / "name"
         name.parent.mkdir(parents=True)
         name.write_text("AhaKey 505C\n", encoding="utf-8")
-        assert find_ahakey_event_paths(root) == [Path("/dev/input/event4")]
+        second = root / "event5" / "device" / "name"
+        second.parent.mkdir(parents=True)
+        second.write_text("AhaKey 505C Consumer Control\n", encoding="utf-8")
+        assert find_ahakey_event_paths(root) == [Path("/dev/input/event4"), Path("/dev/input/event5")]
 
     print("frost_pi_ahakey_router smoke passed")
     return 0

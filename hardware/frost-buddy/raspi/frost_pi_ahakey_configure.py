@@ -12,6 +12,8 @@ import time
 AHAKEY_MAC = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
 COMMAND_UUID = "00007343-0000-1000-8000-00805f9b34fb"
 MODE = 3
+CONNECT_RETRIES = 4
+SERVICES_TIMEOUT_SECONDS = 12.0
 
 
 def frame(command: int, *payload: int) -> bytes:
@@ -62,12 +64,28 @@ def bluetoothctl(*arguments: str, timeout: float = 15.0) -> subprocess.Completed
     )
 
 
+def connected_and_ready() -> bool:
+    info = bluetoothctl("info", AHAKEY_MAC)
+    return "Connected: yes" in info.stdout and "ServicesResolved: yes" in info.stdout
+
+
+def ensure_connected() -> None:
+    for attempt in range(CONNECT_RETRIES):
+        if not connected_and_ready():
+            bluetoothctl("connect", AHAKEY_MAC)
+        deadline = time.monotonic() + SERVICES_TIMEOUT_SECONDS
+        while time.monotonic() < deadline:
+            if connected_and_ready():
+                return
+            time.sleep(0.4)
+        if attempt + 1 < CONNECT_RETRIES:
+            bluetoothctl("disconnect", AHAKEY_MAC)
+            time.sleep(0.5)
+    raise RuntimeError("AhaKey did not expose its GATT service after reconnect retries")
+
+
 def write_commands(commands: list[bytes]) -> str:
-    connection = bluetoothctl("connect", AHAKEY_MAC)
-    if connection.returncode != 0 or "Connection successful" not in connection.stdout:
-        info = bluetoothctl("info", AHAKEY_MAC)
-        if "Connected: yes" not in info.stdout:
-            raise RuntimeError(f"AhaKey is not connected: {connection.stdout.strip()}")
+    ensure_connected()
 
     process = subprocess.Popen(
         ["bluetoothctl"],
@@ -80,11 +98,11 @@ def write_commands(commands: list[bytes]) -> str:
     process.stdin.write("menu gatt\n")
     process.stdin.write(f"select-attribute {COMMAND_UUID}\n")
     process.stdin.flush()
-    time.sleep(0.5)
+    time.sleep(0.8)
     for command in commands:
         process.stdin.write("write " + " ".join(f"{byte:02x}" for byte in command) + "\n")
         process.stdin.flush()
-        time.sleep(0.18)
+        time.sleep(0.22)
     process.stdin.write("back\nquit\n")
     process.stdin.flush()
     output, _ = process.communicate(timeout=15)
