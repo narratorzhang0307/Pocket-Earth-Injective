@@ -93,6 +93,12 @@ def _mirror():
 
 def _ahakey():
     mac = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
+    configuration_stamp = Path(
+        os.environ.get(
+            "AHAKEY_CONFIGURATION_STAMP",
+            "/home/pi/.local/state/pocket-earth/ahakey-mode4.configured",
+        )
+    )
     info = _command("bluetoothctl", "info", mac).stdout
     event_paths = []
     for name_file in Path("/sys/class/input").glob("event*/device/name"):
@@ -106,6 +112,7 @@ def _ahakey():
         "paired": "Paired: yes" in info,
         "trusted": "Trusted: yes" in info,
         "connected": "Connected: yes" in info,
+        "configurationWritten": configuration_stamp.is_file(),
         "inputPaths": sorted(event_paths),
         "routerActive": _active("pocket-earth-ahakey.service"),
         "reconnectActive": _active("pocket-earth-ahakey-reconnect.service"),

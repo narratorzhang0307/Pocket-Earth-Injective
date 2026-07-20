@@ -5,14 +5,23 @@ from __future__ import annotations
 
 import os
 import subprocess
+import sys
 import time
 from collections.abc import Callable
+from pathlib import Path
 
 
 AHAKEY_MAC = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
 RETRY_SECONDS = float(os.environ.get("AHAKEY_RETRY_SECONDS", "5"))
 PAIR_RETRY_SECONDS = float(os.environ.get("AHAKEY_PAIR_RETRY_SECONDS", "15"))
 AUTO_PAIR = os.environ.get("AHAKEY_AUTO_PAIR", "1").strip().lower() not in {"0", "false", "no"}
+CONFIGURATION_VERSION = "mode4-f13-f16-led-off-v1"
+CONFIGURATION_STAMP = Path(
+    os.environ.get(
+        "AHAKEY_CONFIGURATION_STAMP",
+        "/home/pi/.local/state/pocket-earth/ahakey-mode4.configured",
+    )
+)
 
 
 def bluetoothctl(*arguments: str, timeout: float = 12.0) -> subprocess.CompletedProcess[str]:
@@ -48,6 +57,40 @@ def pair_once() -> bool:
     return trusted.returncode == 0
 
 
+def write_pocket_earth_configuration() -> bool:
+    script = Path(__file__).with_name("frost_pi_ahakey_configure.py")
+    result = subprocess.run(
+        [sys.executable, str(script)],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=90,
+    )
+    if result.returncode != 0:
+        detail = (result.stderr or result.stdout).strip().replace("\n", " ")
+        print(f"ahakey-reconnect: configuration failed: {detail[:300]}", flush=True)
+        return False
+    return True
+
+
+def ensure_configuration(
+    configure_device: Callable[[], bool] = write_pocket_earth_configuration,
+    stamp: Path = CONFIGURATION_STAMP,
+) -> str:
+    try:
+        if stamp.read_text(encoding="utf-8").strip() == CONFIGURATION_VERSION:
+            return "configured"
+    except OSError:
+        pass
+    if not configure_device():
+        return "configuration-retry"
+    stamp.parent.mkdir(parents=True, exist_ok=True)
+    temporary = stamp.with_suffix(stamp.suffix + ".tmp")
+    temporary.write_text(CONFIGURATION_VERSION + "\n", encoding="utf-8")
+    temporary.replace(stamp)
+    return "configured-now"
+
+
 def reconnect_once(pair_device: Callable[[], bool] = pair_once) -> str:
     state = device_state()
     if not state["paired"]:
@@ -75,6 +118,12 @@ def main() -> int:
                 status = reconnect_once()
                 if status == "press-white-pairing-button":
                     next_pair_attempt = now + PAIR_RETRY_SECONDS
+                elif status in {"paired", "connected"}:
+                    configuration = ensure_configuration()
+                    if configuration == "configuration-retry":
+                        status = configuration
+                    elif configuration == "configured-now":
+                        status = "connected-configured"
         except (OSError, subprocess.TimeoutExpired) as exc:
             status = f"error:{exc}"
         if status != previous:
