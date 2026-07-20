@@ -45,12 +45,20 @@ def device_state() -> dict[str, bool]:
     }
 
 
+def ensure_adapter_powered() -> None:
+    state = bluetoothctl("show")
+    if "Powered: yes" not in state.stdout:
+        bluetoothctl("power", "on")
+
+
 def pair_once() -> bool:
     # AhaKey only accepts a new bond while its white pairing button is flashing.
     # This attempt is intentionally restricted to the configured MAC address.
     bluetoothctl("--timeout", "5", "scan", "on", timeout=8.0)
-    result = bluetoothctl("--agent", "NoInputNoOutput", "pair", AHAKEY_MAC, timeout=20.0)
-    bluetoothctl("scan", "off")
+    try:
+        result = bluetoothctl("--agent", "NoInputNoOutput", "pair", AHAKEY_MAC, timeout=20.0)
+    finally:
+        bluetoothctl("scan", "off")
     if result.returncode != 0 or "Pairing successful" not in result.stdout:
         return False
     trusted = bluetoothctl("trust", AHAKEY_MAC)
@@ -110,6 +118,7 @@ def main() -> int:
     next_pair_attempt = 0.0
     while True:
         try:
+            ensure_adapter_powered()
             state = device_state()
             now = time.monotonic()
             if not state["paired"] and now < next_pair_attempt:

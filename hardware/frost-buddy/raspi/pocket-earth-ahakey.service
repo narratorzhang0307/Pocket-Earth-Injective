@@ -3,6 +3,7 @@ Description=Pocket Earth AhaKey Input Router
 Wants=bluetooth.service pocket-earth-ahakey-reconnect.service
 After=bluetooth.service pocket-earth-ahakey-reconnect.service pocket-earth-launcher.service
 ConditionPathExists=/home/pi/pocket-earth/frost_pi_ahakey_router.py
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple

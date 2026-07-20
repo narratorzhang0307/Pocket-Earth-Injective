@@ -9,7 +9,21 @@ import frost_pi_ahakey_reconnect as reconnect
 
 def main() -> int:
     original_state = reconnect.device_state
+    original_bluetoothctl = reconnect.bluetoothctl
     try:
+        adapter_calls = []
+        def fake_bluetoothctl(*args, **kwargs):
+            adapter_calls.append(args)
+            return type(
+                "Result", (), {
+                    "stdout": "Powered: no\n" if args == ("show",) else "",
+                    "returncode": 0,
+                }
+            )()
+        reconnect.bluetoothctl = fake_bluetoothctl
+        reconnect.ensure_adapter_powered()
+        assert adapter_calls == [("show",), ("power", "on")]
+
         reconnect.device_state = lambda: {
             "known": True,
             "paired": False,
@@ -40,6 +54,7 @@ def main() -> int:
             assert not stamp.exists()
     finally:
         reconnect.device_state = original_state
+        reconnect.bluetoothctl = original_bluetoothctl
 
     print("frost_pi_ahakey_reconnect smoke passed")
     return 0

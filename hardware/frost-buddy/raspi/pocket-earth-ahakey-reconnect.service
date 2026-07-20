@@ -3,6 +3,7 @@ Description=Pocket Earth AhaKey Bluetooth Auto-Reconnect
 Wants=bluetooth.service
 After=bluetooth.service
 ConditionPathExists=/home/pi/pocket-earth/frost_pi_ahakey_reconnect.py
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
