@@ -7,8 +7,8 @@ const ROOT = path.join(PROJECT, "决赛提交的PPT", "PocketEarth_Injective_决
 const HIRES = path.join(ROOT, "16_PPT高清源图_第31-32页_2x");
 const CHAIN = path.join(ROOT, "08_Injective证据");
 const HARDWARE = path.join(ROOT, "09_硬件终端");
-const OUT = path.join(PROJECT, "决赛提交的PPT", "第31-32页终稿预览-v1-高清无网格底-2026-07-20");
-const PPTX = path.join(PROJECT, "决赛提交的PPT", "Pocket Earth on Injective-决赛路演PPT-第31-32页终稿-v1-高清无网格底-2026-07-20.pptx");
+const OUT = path.join(PROJECT, "决赛提交的PPT", "第31-32页终稿预览-v2-第40页证据区修正-2026-07-20");
+const PPTX = path.join(PROJECT, "决赛提交的PPT", "Pocket Earth on Injective-决赛路演PPT-第31-32页终稿-v2-第40页证据区修正-2026-07-20.pptx");
 
 const IMG = {
   source: path.join(HIRES, "02_现场闭环新闻全文与来源_2x.png"),
@@ -173,34 +173,56 @@ async function slide32(p) {
   textBox(s, "口袋地球装记忆，公共地球住分身。", 69, 570, 400, 24, 18, C.greenDark, true);
   textBox(s, "pocketearth-injective.throughtheglass.art", 69, 603, 400, 17, 11, C.muted, false, F.mono);
 
+  // Closing evidence collage.  The Public Earth source is a tall mobile capture
+  // (430×932), so it must be shown in a portrait frame instead of cropped into
+  // a landscape banner.  Every evidence object has one clear frame only.
   rect(s, 540, 66, 690, 566, C.white, "#C8CECB", 1, "rounded-md", "shadow-sm");
-  await addImage(s, IMG.map, 560, 86, 650, 268, "Public Earth knowledge map with verified public signals", "cover", "rounded-sm", C.greenDark);
-  rect(s, 574, 101, 190, 27, C.black, C.black, 0, "rounded-sm");
-  textBox(s, "SPACE · PUBLIC EARTH", 583, 107, 172, 16, 10, "#7CFFB0", true, F.mono, "center");
 
-  await addImage(s, IMG.tx, 560, 376, 296, 183, "Injective transaction proving a daily knowledge edition root", "cover", "rounded-sm", C.greenDark);
-  rect(s, 574, 389, 166, 27, C.greenDark, C.greenDark, 0, "rounded-sm");
-  textBox(s, "TIME · INJECTIVE", 584, 395, 146, 16, 10, C.white, true, F.mono, "center");
-
-  rect(s, 878, 376, 211, 183, C.black, C.black, 0, "rounded-sm", "shadow-sm");
-  rect(s, 934, 389, 99, 150, C.cream, "#8C948F", 1, "rounded-sm");
+  // SPACE · full Public Earth mobile screen
+  rect(s, 558, 84, 218, 480, "#F1F3F0", C.ink, 1.1, "rounded-md");
+  rect(s, 558, 84, 218, 34, C.black, C.black, 0, "rounded-md");
+  textBox(s, "SPACE · PUBLIC EARTH", 569, 93, 196, 16, 10, "#7CFFB0", true, F.mono, "center");
   s.images.add({
-    blob: await bytes(IMG.edge), contentType: contentType(IMG.edge), alt: "Frost Edge Node display",
-    fit: "contain", position: { left: 945, top: 399, width: 77, height: 130 }, geometry: "rect",
+    blob: await bytes(IMG.map), contentType: contentType(IMG.map),
+    alt: "Complete Public Earth mobile knowledge map with verified signals",
+    fit: "contain", position: { left: 571, top: 129, width: 192, height: 416 },
+    geometry: "rect",
   });
-  rect(s, 898, 400, 10, 10, "#7CFFB0", "#7CFFB0", 0, "rounded-full");
-  textBox(s, "FROST\nEDGE NODE", 1099, 421, 92, 45, 11, C.white, true, F.mono, "center");
-  textBox(s, "presence", 1098, 476, 92, 18, 9, C.yellow, true, F.mono, "center");
+  rect(s, 571, 129, 192, 416, "none", C.greenDark, 0.9);
 
-  rect(s, 1104, 376, 106, 183, C.white, C.ink, 1, "rounded-sm");
+  // TIME · readable Injective transaction evidence
+  rect(s, 794, 84, 416, 240, "#F7F8F6", C.ink, 1.1, "rounded-md");
+  rect(s, 794, 84, 416, 34, C.greenDark, C.greenDark, 0, "rounded-md");
+  textBox(s, "TIME · INJECTIVE", 807, 93, 390, 16, 10, C.white, true, F.mono, "center");
+  s.images.add({
+    blob: await bytes(IMG.tx), contentType: contentType(IMG.tx),
+    alt: "Injective transaction proving the daily knowledge edition root",
+    fit: "contain", position: { left: 807, top: 130, width: 390, height: 177 },
+    geometry: "rect",
+  });
+  rect(s, 807, 130, 390, 177, "none", C.greenDark, 0.9);
+
+  // PRESENCE · Frost Edge display
+  rect(s, 794, 342, 196, 222, C.black, C.ink, 1.1, "rounded-md");
+  rect(s, 794, 342, 196, 34, C.black, C.black, 0, "rounded-md");
+  textBox(s, "PRESENCE · FROST", 805, 351, 174, 16, 9, C.yellow, true, F.mono, "center");
+  rect(s, 807, 388, 170, 160, C.cream, "#8C948F", 0.9, "rounded-sm");
+  s.images.add({
+    blob: await bytes(IMG.edge), contentType: contentType(IMG.edge), alt: "Frost Edge Node daily answer display",
+    fit: "contain", position: { left: 823, top: 388, width: 138, height: 160 }, geometry: "rect",
+  });
+
+  // Open demo · large, scannable QR
+  rect(s, 1012, 342, 198, 222, C.white, C.ink, 1.1, "rounded-md");
+  rect(s, 1012, 342, 198, 34, C.mint, C.mint, 0, "rounded-md");
+  textBox(s, "OPEN DEMO", 1024, 351, 174, 16, 10, C.greenDark, true, F.mono, "center");
   s.images.add({
     blob: await bytes(IMG.qr), contentType: "image/png", alt: "QR code to Pocket Earth on Injective demo",
-    fit: "contain", position: { left: 1119, top: 391, width: 76, height: 76 }, geometry: "rect",
+    fit: "contain", position: { left: 1047, top: 387, width: 128, height: 128 }, geometry: "rect",
   });
-  textBox(s, "OPEN DEMO", 1116, 478, 82, 18, 9, C.greenDark, true, F.mono, "center");
-  textBox(s, "PUBLIC\nEVIDENCE", 1116, 506, 82, 30, 9, C.muted, true, F.mono, "center");
+  textBox(s, "PUBLIC EVIDENCE", 1027, 529, 168, 16, 9, C.muted, true, F.mono, "center");
 
-  textBox(s, "空间留在 Pocket Earth，时间由 Injective 见证。", 560, 582, 650, 26, 18, C.ink, true, F.sans, "center");
+  textBox(s, "空间留在 Pocket Earth，时间由 Injective 见证。", 558, 586, 652, 26, 17, C.ink, true, F.sans, "center");
   footer(s, 32, "POCKET EARTH ON INJECTIVE");
   notes(s, "Pocket Earth 把私人记忆和公共知识都放回空间；Injective 让身份、门牌、版次与公开事件拥有可核对的时间证据；Frost Edge Node 再把这些事实带回现实房间。空间留在 Pocket Earth，时间由 Injective 见证。谢谢各位评委。最后一句说完停顿两秒，进入问答。 ");
 }

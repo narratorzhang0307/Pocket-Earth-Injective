@@ -11,10 +11,10 @@ const SOURCES = [
   "Pocket Earth on Injective-决赛路演PPT-第16-20页样稿-v1-高清无网格底-2026-07-19.pptx",
   "Pocket Earth on Injective-决赛路演PPT-第21-25页样稿-v1-高清无网格底-2026-07-19.pptx",
   "Pocket Earth on Injective-决赛路演PPT-第26-30页样稿-v1-高清无网格底-2026-07-20.pptx",
-  "Pocket Earth on Injective-决赛路演PPT-第31-32页终稿-v1-高清无网格底-2026-07-20.pptx",
+  "Pocket Earth on Injective-决赛路演PPT-第31-32页终稿-v2-第40页证据区修正-2026-07-20.pptx",
 ].map((name) => path.join(PPT, name));
 
-const OUT = path.join(PPT, "Pocket Earth on Injective-决赛路演PPT-完整32页-高清无网格终稿-2026-07-20.pptx");
+const OUT = path.join(PPT, "Pocket Earth on Injective-决赛路演PPT-完整32页-高清无网格终稿-v2-第40页证据区修正-2026-07-20.pptx");
 
 const FALLBACK_NOTES = {
   1: "各位评委好，我带来的是 Pocket Earth on Injective。它从一张私人记忆地图出发，成长为一套空间 Agent 平台：私人生活留在自己的地球，公共身份与知识版次由 Injective 见证，Frost 再把经过验证的世界带到房间里的实体终端。开场时直接指向手机界面与桌面真机。",

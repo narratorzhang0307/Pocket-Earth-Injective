@@ -4,16 +4,22 @@ import { Presentation, PresentationFile } from "/Users/zhangcheng/.cache/codex-r
 
 const PROJECT = "/Users/zhangcheng/Desktop/Pocket-Earth-Injective";
 const PPT = path.join(PROJECT, "决赛提交的PPT");
-const ORIGINAL = path.join(PPT, "Pocket Earth on Injective-决赛路演PPT-完整32页-高清无网格终稿-2026-07-20.pptx");
+const ORIGINAL = path.join(PPT, "Pocket Earth on Injective-决赛路演PPT-完整32页-高清无网格终稿-v2-第40页证据区修正-2026-07-20.pptx");
 const HARDWARE = path.join(PPT, "Pocket Earth on Injective-硬件Azure适配页-8页-2026-07-20.pptx");
-const OUT = path.join(PPT, "Pocket Earth on Injective-决赛路演PPT-完整40页-硬件Azure强化终稿-2026-07-20.pptx");
+const OUT = path.join(PPT, "Pocket Earth on Injective-决赛路演PPT-完整40页-硬件Azure强化终稿-v2-第40页修正-2026-07-20.pptx");
 
 async function load(file) {
   const b = await fs.readFile(file);
   return PresentationFile.importPptx(new Uint8Array(b));
 }
 
-function footer(slide, n) {
+function footer(slide, n, coverEmbeddedFooter = false) {
+  if (coverEmbeddedFooter) {
+    slide.shapes.add({
+      geometry: "rect", position: { left: 38, top: 660, width: 395, height: 60 },
+      fill: "#F4F5F2", line: { style: "solid", fill: "#F4F5F2", width: 0 },
+    });
+  }
   slide.shapes.add({
     geometry: "rect", position: { left: 42, top: 690, width: 250, height: 22 },
     fill: "#F4F5F2", line: { style: "solid", fill: "#F4F5F2", width: 0 },
@@ -26,7 +32,7 @@ function footer(slide, n) {
   t.text.style = { fontSize: 8, color: "#858B87", fontFamily: "Arial" };
 }
 
-async function appendRendered(target, sourceDeck, sourceSlide, n, prefix) {
+async function appendRendered(target, sourceDeck, sourceSlide, n, prefix, coverEmbeddedFooter = false) {
   const rendered = await sourceDeck.export({ slide: sourceSlide, format: "png", scale: 2 });
   const imageBytes = new Uint8Array(await rendered.arrayBuffer());
   const slide = target.slides.add();
@@ -36,7 +42,7 @@ async function appendRendered(target, sourceDeck, sourceSlide, n, prefix) {
     contentType: "image/png", alt: `${prefix} slide ${n}`, fit: "fill",
     position: { left: 0, top: 0, width: 1280, height: 720 }, geometry: "rect",
   });
-  footer(slide, n);
+  footer(slide, n, coverEmbeddedFooter);
   slide.speakerNotes.textFrame.setText(sourceSlide.speakerNotes.text || "");
   slide.speakerNotes.setVisible(true);
 }
@@ -52,7 +58,7 @@ async function main() {
 
   for (let i = 0; i < 20; i += 1) {
     n += 1;
-    await appendRendered(finalDeck, original, original.slides.items[i], n, "Pocket Earth original");
+    await appendRendered(finalDeck, original, original.slides.items[i], n, "Pocket Earth original", true);
   }
   for (const slide of hardware.slides.items) {
     n += 1;
@@ -60,7 +66,7 @@ async function main() {
   }
   for (let i = 20; i < original.slides.items.length; i += 1) {
     n += 1;
-    await appendRendered(finalDeck, original, original.slides.items[i], n, "Pocket Earth original");
+    await appendRendered(finalDeck, original, original.slides.items[i], n, "Pocket Earth original", true);
   }
 
   if (n !== 40) throw new Error(`Expected 40 slides, got ${n}`);
