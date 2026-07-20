@@ -59,7 +59,9 @@ def main() -> int:
         assert reconnect.reconnect_once(lambda: False, lambda: True) == "connected"
         assert adapter_calls == [
             ("disconnect", reconnect.AHAKEY_MAC),
+            ("--timeout", str(reconnect.DISCOVERY_SECONDS), "scan", "on"),
             ("connect", reconnect.AHAKEY_MAC),
+            ("scan", "off"),
         ]
 
         with TemporaryDirectory() as directory:

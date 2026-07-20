@@ -15,6 +15,8 @@ AHAKEY_MAC = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
 RETRY_SECONDS = float(os.environ.get("AHAKEY_RETRY_SECONDS", "5"))
 PAIR_RETRY_SECONDS = float(os.environ.get("AHAKEY_PAIR_RETRY_SECONDS", "15"))
 AUTO_PAIR = os.environ.get("AHAKEY_AUTO_PAIR", "1").strip().lower() not in {"0", "false", "no"}
+DISCOVERY_SECONDS = int(os.environ.get("AHAKEY_DISCOVERY_SECONDS", "4"))
+HID_SETTLE_SECONDS = float(os.environ.get("AHAKEY_HID_SETTLE_SECONDS", "8"))
 CONFIGURATION_VERSION = "mode4-f13-f16-led-off-v1"
 CONFIGURATION_STAMP = Path(
     os.environ.get(
@@ -79,6 +81,21 @@ def pair_once() -> bool:
     return trusted.returncode == 0
 
 
+def connect_with_discovery() -> subprocess.CompletedProcess[str]:
+    """Wake a sleeping BLE keyboard before asking BlueZ to connect."""
+    bluetoothctl(
+        "--timeout",
+        str(DISCOVERY_SECONDS),
+        "scan",
+        "on",
+        timeout=DISCOVERY_SECONDS + 3,
+    )
+    try:
+        return bluetoothctl("connect", AHAKEY_MAC)
+    finally:
+        bluetoothctl("scan", "off")
+
+
 def write_pocket_earth_configuration() -> bool:
     script = Path(__file__).with_name("frost_pi_ahakey_configure.py")
     result = subprocess.run(
@@ -134,10 +151,10 @@ def reconnect_once(
         # clean reconnect so the kernel recreates /dev/input/event*.
         bluetoothctl("disconnect", AHAKEY_MAC)
         time.sleep(0.4)
-    result = bluetoothctl("connect", AHAKEY_MAC)
+    result = connect_with_discovery()
     if result.returncode != 0 or "Connection successful" not in result.stdout:
         return "retrying"
-    for _ in range(12):
+    for _ in range(max(1, int(HID_SETTLE_SECONDS / 0.25))):
         if input_device_ready():
             return "connected"
         time.sleep(0.25)
