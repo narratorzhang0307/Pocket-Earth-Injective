@@ -50,6 +50,20 @@ def main() -> int:
     assert len(flattened) == 3
     assert flattened[0]["cityNameZh"] == "洛杉矶"
     assert state.level == "root"
+    state.route("podcast")
+    assert state.level == "podcast_modes"
+    state.route("answers")
+    assert state.level == "earth_answer"
+    state.route("sunset")
+    assert state.level == "sunset_modes"
+    state.route("home")
+    assert state.level == "root" and state.root_index == 1
+    try:
+        state.route("unknown")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("unknown external launcher routes must be rejected")
     assert [item["label"] for item in PROJECTS] == ["日落电台", "口袋播客", "地球答案"]
     assert [item["path"] for item in PROJECTS] == [
         "/home/pi/sunset-radio",

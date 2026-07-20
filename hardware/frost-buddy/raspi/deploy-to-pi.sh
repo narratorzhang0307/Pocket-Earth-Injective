@@ -24,6 +24,11 @@ FILES=(
   frost_pi_podcast_sync.py
   frost_pi_podcast_sync_smoke.py
   frost_pi_podcast_cache.json
+  frost_pi_ahakey_router.py
+  frost_pi_ahakey_router_smoke.py
+  frost_pi_ahakey_reconnect.py
+  frost_pi_ahakey_configure.py
+  frost_pi_ahakey_configure_smoke.py
   frost_pi_project_launcher.py
   frost_pi_project_launcher_smoke.py
   frost_pi_quiet_home.py
@@ -38,6 +43,8 @@ FILES=(
   pocket-earth-launcher.service
   pocket-earth-podcast-sync.service
   pocket-earth-podcast-sync.timer
+  pocket-earth-ahakey.service
+  pocket-earth-ahakey-reconnect.service
 )
 
 NFT_SHEET="$SCRIPT_DIR/../../../public/frost-identities/frost-nft-group-1.png"
@@ -65,6 +72,11 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_podcast_sync.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_podcast_sync_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_podcast_cache.json' /home/pi/pocket-earth/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_ahakey_router.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_ahakey_router_smoke.py' /home/pi/pocket-earth/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_ahakey_reconnect.py' /home/pi/pocket-earth/
+  sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_ahakey_configure.py' /home/pi/pocket-earth/
+  sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_ahakey_configure_smoke.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost-nft-group-1.png' /home/pi/pocket-earth/assets/
   sudo install -m 0755 -o pi -g pi '$STAGE/frost_pi_project_launcher.py' /home/pi/pocket-earth/
   sudo install -m 0644 -o pi -g pi '$STAGE/frost_pi_project_launcher_smoke.py' /home/pi/pocket-earth/
@@ -80,6 +92,8 @@ ssh "$PI_HOST" "set -euo pipefail
   sudo install -m 0644 '$STAGE/pocket-earth-launcher.service' /etc/systemd/system/pocket-earth-launcher.service
   sudo install -m 0644 '$STAGE/pocket-earth-podcast-sync.service' /etc/systemd/system/pocket-earth-podcast-sync.service
   sudo install -m 0644 '$STAGE/pocket-earth-podcast-sync.timer' /etc/systemd/system/pocket-earth-podcast-sync.timer
+  sudo install -m 0644 '$STAGE/pocket-earth-ahakey.service' /etc/systemd/system/pocket-earth-ahakey.service
+  sudo install -m 0644 '$STAGE/pocket-earth-ahakey-reconnect.service' /etc/systemd/system/pocket-earth-ahakey-reconnect.service
   sudo install -d -m 0750 -o pi -g pi /var/lib/pocket-earth-edge /var/cache/pocket-earth-edge
   legacy_cursor=/home/pi/.local/state/pocket-earth/frost-feed.cursor
   state_cursor=/var/lib/pocket-earth-edge/frost-feed.cursor
@@ -95,10 +109,13 @@ ssh "$PI_HOST" "set -euo pipefail
   /usr/bin/python3 frost_pi_quiet_home_smoke.py
   /usr/bin/python3 frost_pi_live_preflight_smoke.py
   /usr/bin/python3 frost_pi_podcast_sync_smoke.py
+  /usr/bin/python3 frost_pi_ahakey_router_smoke.py
+  /usr/bin/python3 frost_pi_ahakey_configure_smoke.py
   /usr/bin/python3 whisplay_pi_home_guard_smoke.py
   sudo /usr/bin/python3 whisplay_pi_home_guard.py --install
   sudo systemctl daemon-reload
   sudo systemctl enable --now pocket-earth-podcast-sync.timer
+  sudo systemctl enable --now pocket-earth-ahakey-reconnect.service pocket-earth-ahakey.service
   if sudo test -f /etc/pocket-earth-edge.env; then
     sudo systemctl enable pocket-earth-edge.service pocket-earth-launcher.service
     sudo systemctl restart whisplay-daemon.service

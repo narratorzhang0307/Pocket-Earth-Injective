@@ -1,0 +1,20 @@
+[Unit]
+Description=Pocket Earth AhaKey Input Router
+Wants=bluetooth.target pocket-earth-ahakey-reconnect.service
+After=bluetooth.target pocket-earth-ahakey-reconnect.service pocket-earth-launcher.service
+ConditionPathExists=/home/pi/pocket-earth/frost_pi_ahakey_router.py
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+SupplementaryGroups=input
+WorkingDirectory=/home/pi/pocket-earth
+Environment=PYTHONUNBUFFERED=1
+Environment=POCKET_EARTH_CONTROL_SOCKET=/run/pocket-earth-edge/launcher-control.sock
+ExecStart=/usr/bin/python3 -u /home/pi/pocket-earth/frost_pi_ahakey_router.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

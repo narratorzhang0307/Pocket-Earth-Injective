@@ -13,6 +13,7 @@ import os
 import json
 import random
 import signal
+import socket
 import subprocess
 import sys
 import threading
@@ -47,6 +48,9 @@ MAGENTA = (255, 20, 199)
 CYAN = (30, 202, 255)
 GREY = (101, 105, 112)
 SOCKET_PATH = os.environ.get("WHISPLAY_DAEMON_SOCKET", "/tmp/whisplay-daemon.sock")
+CONTROL_SOCKET_PATH = Path(
+    os.environ.get("POCKET_EARTH_CONTROL_SOCKET", "/run/pocket-earth-edge/launcher-control.sock")
+)
 RUNTIME_PATH = os.environ.get("WHISPLAY_RUNTIME", "/home/pi/Whisplay/runtime")
 SNAPSHOT_PATH = Path(os.environ.get("FROST_MIRROR_PATH", "/run/pocket-earth-edge/live.png"))
 LONG_PRESS_SECONDS = float(os.environ.get("POCKET_LAUNCHER_LONG_PRESS_SECONDS", "1.2"))
@@ -803,6 +807,25 @@ class MenuState:
         self.dice_track = None
         self.earth_answer = EarthAnswerState()
 
+    def route(self, target: str) -> None:
+        """Open a stable top-level destination without triggering media."""
+        if target == "podcast":
+            self.podcast_mode_index = 0
+            self.level = "podcast_modes"
+            return
+        if target == "answers":
+            self.level = "earth_answer"
+            return
+        if target == "sunset":
+            self.sunset_mode_index = 0
+            self.level = "sunset_modes"
+            return
+        if target == "home":
+            self.root_index = 1
+            self.level = "root"
+            return
+        raise ValueError(f"unknown launcher route: {target}")
+
     def image(self) -> Image.Image:
         if self.level == "root":
             return render_root(self.root_index)
@@ -979,6 +1002,9 @@ class ProjectLauncher:
         self.recovery_requested_for = ""
         self.recovery_requested_at = 0.0
         self.last_clock_minute = ""
+        self.control_stop = threading.Event()
+        self.control_socket = None
+        self.control_thread = None
 
         self.board = WhisplayDaemonProxy(
             socket_path=SOCKET_PATH,
@@ -1006,6 +1032,48 @@ class ProjectLauncher:
         self.sunset_watch.on_button_press(self._sunset_press)
         self.sunset_watch.on_button_release(self._sunset_release)
         self.sunset_watch.start_event_listener()
+        self._start_control_socket()
+
+    def _start_control_socket(self) -> None:
+        CONTROL_SOCKET_PATH.parent.mkdir(parents=True, exist_ok=True)
+        CONTROL_SOCKET_PATH.unlink(missing_ok=True)
+        control = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+        control.bind(str(CONTROL_SOCKET_PATH))
+        os.chmod(CONTROL_SOCKET_PATH, 0o660)
+        control.settimeout(0.5)
+        self.control_socket = control
+        self.control_thread = threading.Thread(
+            target=self._control_loop,
+            name="pocket-earth-control",
+            daemon=True,
+        )
+        self.control_thread.start()
+
+    def _control_loop(self) -> None:
+        while not self.control_stop.is_set():
+            try:
+                payload = self.control_socket.recv(64)
+            except socket.timeout:
+                continue
+            except OSError:
+                return
+            target = payload.decode("ascii", errors="ignore").strip().lower()
+            try:
+                self.show_route(target)
+            except ValueError as exc:
+                print(f"pocket-launcher: ignored control command: {exc}", flush=True)
+
+    def show_route(self, target: str) -> None:
+        """Bring PI Home forward and show a requested page without playing audio."""
+        if not self.active:
+            self.enter_home()
+        with self.lock:
+            if not self.active:
+                print(f"pocket-launcher: route {target} unavailable; foreground not acquired", flush=True)
+                return
+            self.state.route(target)
+            print(f"pocket-launcher: external route -> {target}", flush=True)
+            self.draw()
 
     @staticmethod
     def _systemctl(action: str, unit: str, *, no_block: bool = False) -> None:
@@ -1286,6 +1354,10 @@ class ProjectLauncher:
 
     def close(self) -> None:
         with self.lock:
+            self.control_stop.set()
+            if self.control_socket:
+                self.control_socket.close()
+            CONTROL_SOCKET_PATH.unlink(missing_ok=True)
             self._cancel_press_timer()
             if self.click_timer:
                 self.click_timer.cancel()
