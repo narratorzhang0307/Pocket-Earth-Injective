@@ -11,6 +11,7 @@ import time
 
 AHAKEY_MAC = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
 COMMAND_UUID = "00007343-0000-1000-8000-00805f9b34fb"
+SERVICE_UUID = "00007340-0000-1000-8000-00805f9b34fb"
 MODE = 3
 CONNECT_WINDOW_SECONDS = 45.0
 CONNECT_RETRY_SECONDS = 0.8
@@ -66,7 +67,8 @@ def bluetoothctl(*arguments: str, timeout: float = 15.0) -> subprocess.Completed
 
 def connected_and_ready() -> bool:
     info = bluetoothctl("info", AHAKEY_MAC)
-    return "Connected: yes" in info.stdout and "ServicesResolved: yes" in info.stdout
+    services_ready = "ServicesResolved: yes" in info.stdout or SERVICE_UUID in info.stdout
+    return "Connected: yes" in info.stdout and services_ready
 
 
 def ensure_connected() -> None:

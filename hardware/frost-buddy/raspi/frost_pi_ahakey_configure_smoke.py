@@ -19,7 +19,10 @@ def main() -> int:
     original = configure.bluetoothctl
     try:
         configure.bluetoothctl = lambda *args, **kwargs: type(
-            "Result", (), {"stdout": "Connected: yes\nServicesResolved: yes\n", "returncode": 0}
+            "Result", (), {
+                "stdout": f"Connected: yes\nUUID: Unknown ({configure.SERVICE_UUID})\n",
+                "returncode": 0,
+            }
         )()
         assert configure.connected_and_ready()
         configure.ensure_connected()
