@@ -22,6 +22,7 @@ CONFIGURATION_STAMP = Path(
         "/home/pi/.local/state/pocket-earth/ahakey-mode4.configured",
     )
 )
+INPUT_ROOT = Path(os.environ.get("AHAKEY_INPUT_ROOT", "/sys/class/input"))
 
 
 def bluetoothctl(*arguments: str, timeout: float = 12.0) -> subprocess.CompletedProcess[str]:
@@ -34,6 +35,18 @@ def bluetoothctl(*arguments: str, timeout: float = 12.0) -> subprocess.Completed
     )
 
 
+def input_ready(input_root: Path = INPUT_ROOT) -> bool:
+    for name_file in input_root.glob("event*/device/name"):
+        try:
+            if "ahakey" in name_file.read_text(
+                encoding="utf-8", errors="ignore"
+            ).casefold():
+                return True
+        except OSError:
+            continue
+    return False
+
+
 def device_state() -> dict[str, bool]:
     result = bluetoothctl("info", AHAKEY_MAC)
     output = result.stdout
@@ -42,6 +55,7 @@ def device_state() -> dict[str, bool]:
         "paired": "Paired: yes" in output,
         "trusted": "Trusted: yes" in output,
         "connected": "Connected: yes" in output,
+        "inputReady": input_ready(),
     }
 
 
@@ -84,12 +98,15 @@ def write_pocket_earth_configuration() -> bool:
 def ensure_configuration(
     configure_device: Callable[[], bool] = write_pocket_earth_configuration,
     stamp: Path = CONFIGURATION_STAMP,
+    *,
+    force: bool = False,
 ) -> str:
-    try:
-        if stamp.read_text(encoding="utf-8").strip() == CONFIGURATION_VERSION:
-            return "configured"
-    except OSError:
-        pass
+    if not force:
+        try:
+            if stamp.read_text(encoding="utf-8").strip() == CONFIGURATION_VERSION:
+                return "configured"
+        except OSError:
+            pass
     if not configure_device():
         return "configuration-retry"
     stamp.parent.mkdir(parents=True, exist_ok=True)
@@ -99,7 +116,10 @@ def ensure_configuration(
     return "configured-now"
 
 
-def reconnect_once(pair_device: Callable[[], bool] = pair_once) -> str:
+def reconnect_once(
+    pair_device: Callable[[], bool] = pair_once,
+    input_device_ready: Callable[[], bool] = input_ready,
+) -> str:
     state = device_state()
     if not state["paired"]:
         if not AUTO_PAIR:
@@ -107,10 +127,21 @@ def reconnect_once(pair_device: Callable[[], bool] = pair_once) -> str:
         return "paired" if pair_device() else "press-white-pairing-button"
     if not state["trusted"]:
         bluetoothctl("trust", AHAKEY_MAC)
-    if state["connected"]:
+    if state["connected"] and state.get("inputReady", True):
         return "connected"
+    if state["connected"]:
+        # BlueZ may retain Connected=yes while the HID node is gone. Force a
+        # clean reconnect so the kernel recreates /dev/input/event*.
+        bluetoothctl("disconnect", AHAKEY_MAC)
+        time.sleep(0.4)
     result = bluetoothctl("connect", AHAKEY_MAC)
-    return "connected" if result.returncode == 0 and "Connection successful" in result.stdout else "retrying"
+    if result.returncode != 0 or "Connection successful" not in result.stdout:
+        return "retrying"
+    for _ in range(12):
+        if input_device_ready():
+            return "connected"
+        time.sleep(0.25)
+    return "recovering-hid"
 
 
 def main() -> int:
@@ -128,7 +159,9 @@ def main() -> int:
                 if status == "press-white-pairing-button":
                     next_pair_attempt = now + PAIR_RETRY_SECONDS
                 elif status in {"paired", "connected"}:
-                    configuration = ensure_configuration()
+                    # A fresh bond can follow a device reset. Re-apply Mode 4 even
+                    # when an older host-side stamp happens to survive that reset.
+                    configuration = ensure_configuration(force=status == "paired")
                     if configuration == "configuration-retry":
                         status = configuration
                     elif configuration == "configured-now":

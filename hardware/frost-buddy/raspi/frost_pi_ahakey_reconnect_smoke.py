@@ -14,9 +14,15 @@ def main() -> int:
         adapter_calls = []
         def fake_bluetoothctl(*args, **kwargs):
             adapter_calls.append(args)
+            if args and args[0] == "connect":
+                stdout = "Connection successful\n"
+            elif args == ("show",):
+                stdout = "Powered: no\n"
+            else:
+                stdout = ""
             return type(
                 "Result", (), {
-                    "stdout": "Powered: no\n" if args == ("show",) else "",
+                    "stdout": stdout,
                     "returncode": 0,
                 }
             )()
@@ -38,8 +44,23 @@ def main() -> int:
             "paired": True,
             "trusted": True,
             "connected": True,
+            "inputReady": True,
         }
         assert reconnect.reconnect_once(lambda: False) == "connected"
+
+        reconnect.device_state = lambda: {
+            "known": True,
+            "paired": True,
+            "trusted": True,
+            "connected": True,
+            "inputReady": False,
+        }
+        adapter_calls.clear()
+        assert reconnect.reconnect_once(lambda: False, lambda: True) == "connected"
+        assert adapter_calls == [
+            ("disconnect", reconnect.AHAKEY_MAC),
+            ("connect", reconnect.AHAKEY_MAC),
+        ]
 
         with TemporaryDirectory() as directory:
             stamp = Path(directory) / "ahakey.configured"
@@ -48,6 +69,13 @@ def main() -> int:
             assert stamp.read_text(encoding="utf-8").strip() == reconnect.CONFIGURATION_VERSION
             assert reconnect.ensure_configuration(lambda: calls.append(True) or True, stamp) == "configured"
             assert calls == [True]
+
+            assert reconnect.ensure_configuration(
+                lambda: calls.append(True) or True,
+                stamp,
+                force=True,
+            ) == "configured-now"
+            assert calls == [True, True]
 
             stamp.unlink()
             assert reconnect.ensure_configuration(lambda: False, stamp) == "configuration-retry"

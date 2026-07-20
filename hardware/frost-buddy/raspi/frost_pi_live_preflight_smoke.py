@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Offline parsing checks for the live power preflight."""
 
+import os
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
 import frost_pi_live_preflight as preflight
 
 
@@ -13,19 +17,49 @@ assert preflight._text_metric("model: PiSugar 3", "model") == "PiSugar 3"
 original_command = preflight._command
 original_active = preflight._active
 try:
-    preflight._command = lambda *args: type(
-        "Result", (), {"stdout": "Paired: yes\nTrusted: yes\nConnected: yes\n", "returncode": 0}
-    )()
-    preflight._active = lambda unit: unit.startswith("pocket-earth-ahakey")
-    ahakey = preflight._ahakey()
-    assert ahakey["paired"] is True
-    assert ahakey["trusted"] is True
-    assert ahakey["connected"] is True
-    assert ahakey["routerActive"] is True
-    assert ahakey["reconnectActive"] is True
-    assert ahakey["ready"] is False  # no synthetic /sys input device in this offline check
-    assert ahakey["pairingRequired"] is False
+    with TemporaryDirectory() as directory:
+        root = Path(directory) / "input"
+        device = root / "event5" / "device"
+        (device / "capabilities").mkdir(parents=True)
+        (device / "name").write_text("AhaKey 505C\n", encoding="utf-8")
+        # Codes 183-186 occupy bits 55-58 in the third 64-bit word.
+        (device / "capabilities" / "key").write_text(
+            "0780000000000000 0 0\n", encoding="ascii"
+        )
+        stamp = Path(directory) / "ahakey.configured"
+        stamp.write_text(preflight.AHAKEY_CONFIGURATION_VERSION + "\n", encoding="utf-8")
+        os.environ["AHAKEY_INPUT_ROOT"] = str(root)
+        os.environ["AHAKEY_CONFIGURATION_STAMP"] = str(stamp)
+        preflight._command = lambda *args: type(
+            "Result", (), {
+                "stdout": (
+                    "Paired: yes\nTrusted: yes\nConnected: yes\n"
+                    "Battery Percentage: 0x5e (94)\n"
+                ),
+                "returncode": 0,
+            }
+        )()
+        preflight._active = lambda unit: unit.startswith("pocket-earth-ahakey")
+        ahakey = preflight._ahakey()
+        assert ahakey["paired"] is True
+        assert ahakey["trusted"] is True
+        assert ahakey["connected"] is True
+        assert ahakey["batteryPercent"] == 94
+        assert ahakey["configurationWritten"] is True
+        assert ahakey["mappingReady"] is True
+        assert ahakey["keyMap"] == {
+            "podcast": True,
+            "answers": True,
+            "sunset": True,
+            "home": True,
+        }
+        assert ahakey["routerActive"] is True
+        assert ahakey["reconnectActive"] is True
+        assert ahakey["ready"] is True
+        assert ahakey["pairingRequired"] is False
 finally:
+    os.environ.pop("AHAKEY_INPUT_ROOT", None)
+    os.environ.pop("AHAKEY_CONFIGURATION_STAMP", None)
     preflight._command = original_command
     preflight._active = original_active
 

@@ -14,6 +14,15 @@ from urllib.error import URLError
 from urllib.request import urlopen
 
 
+AHAKEY_CONFIGURATION_VERSION = "mode4-f13-f16-led-off-v1"
+AHAKEY_KEY_CODES = {
+    "podcast": 183,  # F13
+    "answers": 184,  # F14
+    "sunset": 185,   # F15
+    "home": 186,     # F16
+}
+
+
 def _command(*args):
     try:
         return subprocess.run(args, text=True, capture_output=True, timeout=5, check=False)
@@ -91,6 +100,24 @@ def _mirror():
         return False
 
 
+def _linux_key_codes(bitmap_text):
+    """Decode a Linux sysfs input capability bitmap into integer key codes."""
+    words = bitmap_text.strip().split()
+    codes = set()
+    for word_index, word in enumerate(reversed(words)):
+        try:
+            value = int(word, 16)
+        except ValueError:
+            continue
+        bit = 0
+        while value:
+            if value & 1:
+                codes.add(word_index * 64 + bit)
+            value >>= 1
+            bit += 1
+    return codes
+
+
 def _ahakey():
     mac = os.environ.get("AHAKEY_MAC", "D4:6C:50:5C:F6:93")
     configuration_stamp = Path(
@@ -100,20 +127,35 @@ def _ahakey():
         )
     )
     info = _command("bluetoothctl", "info", mac).stdout
+    input_root = Path(os.environ.get("AHAKEY_INPUT_ROOT", "/sys/class/input"))
     event_paths = []
-    for name_file in Path("/sys/class/input").glob("event*/device/name"):
+    key_codes = set()
+    for name_file in input_root.glob("event*/device/name"):
         try:
             if "ahakey" in name_file.read_text(encoding="utf-8", errors="ignore").casefold():
                 event_paths.append(f"/dev/input/{name_file.parents[1].name}")
+                key_codes.update(_linux_key_codes(
+                    (name_file.parent / "capabilities" / "key").read_text(encoding="ascii")
+                ))
         except OSError:
             continue
+    try:
+        configuration_version = configuration_stamp.read_text(encoding="utf-8").strip()
+    except OSError:
+        configuration_version = ""
+    key_map = {name: code in key_codes for name, code in AHAKEY_KEY_CODES.items()}
+    battery_match = re.search(r"Battery Percentage:\s+0x[0-9a-f]+\s+\((\d+)\)", info, re.I)
     state = {
         "mac": mac,
         "paired": "Paired: yes" in info,
         "trusted": "Trusted: yes" in info,
         "connected": "Connected: yes" in info,
-        "configurationWritten": configuration_stamp.is_file(),
+        "batteryPercent": int(battery_match.group(1)) if battery_match else None,
+        "configurationVersion": configuration_version,
+        "configurationWritten": configuration_version == AHAKEY_CONFIGURATION_VERSION,
         "inputPaths": sorted(event_paths),
+        "keyMap": key_map,
+        "mappingReady": all(key_map.values()),
         "routerActive": _active("pocket-earth-ahakey.service"),
         "reconnectActive": _active("pocket-earth-ahakey-reconnect.service"),
     }
@@ -123,6 +165,7 @@ def _ahakey():
         state["connected"],
         state["configurationWritten"],
         bool(state["inputPaths"]),
+        state["mappingReady"],
         state["routerActive"],
         state["reconnectActive"],
     ])
@@ -307,6 +350,7 @@ def main(argv=None):
         report["hardware"]["cjkGlyphs"],
         report["hardware"]["speakerPlayer"],
         report["hardware"]["offlineTts"],
+        report["hardware"]["ahaKey"]["ready"],
         report["power"]["portableReady"],
         report["power"]["temperatureHealthy"],
         report["eventLane"]["mirrorResponding"],
